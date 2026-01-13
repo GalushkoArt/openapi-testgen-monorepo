@@ -1,0 +1,19 @@
+public final class art/galushko/openapi/testgen/pattern/support/PatternModuleSettingsExtractor : art/galushko/openapi/testgen/config/ModuleSettingsExtractor {
+	public static final field INSTANCE Lart/galushko/openapi/testgen/pattern/support/PatternModuleSettingsExtractor;
+	public static final field SETTINGS_KEY Ljava/lang/String;
+	public fun getSettingsKey ()Ljava/lang/String;
+	public fun parse (Ljava/lang/Object;)Lart/galushko/openapi/testgen/pattern/value/PatternGenerationOptions;
+	public synthetic fun parse (Ljava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class art/galushko/openapi/testgen/pattern/support/PatternSupportModule : art/galushko/openapi/testgen/config/TestGenerationModule {
+	public fun <init> ()V
+	public fun <init> (Lart/galushko/openapi/testgen/pattern/value/PatternGenerationOptions;)V
+	public synthetic fun <init> (Lart/galushko/openapi/testgen/pattern/value/PatternGenerationOptions;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun artifactGeneratorFactories ()Ljava/util/List;
+	public fun extraAuthRules (Lart/galushko/openapi/testgen/config/TestGeneratorExecutionOptions;)Ljava/util/List;
+	public fun extraSimpleSchemaRules (Lart/galushko/openapi/testgen/config/TestGeneratorExecutionOptions;)Ljava/util/List;
+	public fun getId ()Ljava/lang/String;
+	public fun schemaValueProviders (Lart/galushko/openapi/testgen/config/TestGeneratorExecutionOptions;)Ljava/util/Map;
+}
+

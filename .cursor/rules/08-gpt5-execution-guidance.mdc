@@ -1,0 +1,40 @@
+---
+description: AI execution guidance for this repository (self-reflection, tool usage, and communication)
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+Follow these behaviors when working on this repository:
+
+- Planning and self-reflection
+  - Spend a brief step planning the information you need. Parallelize discovery tool calls (searches and file reads) up to 3–5 at once.
+  - State assumptions explicitly when proceeding; do not pause for confirmation unless blocked by missing information.
+  - Before edits: checklist that names, plugin id, packages, and task names remain consistent.
+
+- Tool usage
+  - Prefer semantic codebase search first; use exact grep for symbols; read files before editing.
+  - Batch read-only operations in parallel. Sequence only when output of A is required for B.
+  - After non-trivial edits, run tests/build in this repo context; fix failures before returning.
+
+- Edit discipline
+  - Keep edits minimal and scoped; do not reformat unrelated code.
+  - Preserve indentation style and width; match existing formatting and imports.
+  - Respect Kotlin null-safety and explicit API rules; avoid `!!`.
+
+- Gradle plugin invariants
+  - Plugin id: `art.galushko.openapi-test-generator`.
+  - Implementation class: `art.galushko.openapi.testgen.plugin.OpenApiTestGeneratorPlugin`.
+  - Single task: `generateOpenApiTests` in group `verification`.
+  - Extension fields: `configFile`, `specFile`, `outputDir`, `generator`, `generatorOptions`, `testGenerationSettings` (typed nested object), `manualOnly`, `alwaysWriteTests`, `logLevel`.
+  - Nested in `testGenerationSettings`: `validSecurityValues`, `errorMode`, `maxErrors`, `maxSchemaDepth`, `maxSchemaCombinations`, `maxTestCasesPerOperation`, `ignoreTestCases`, `ignoreSchemaValidationRules`, `ignoreAuthValidationRules`, `overrideBasicTestData`, `exampleValues`, `patternGeneration`.
+
+- Communication
+  - Use concise status updates before tool batches and a short summary after completing a goal.
+  - Format only relevant snippets in code fences; reference files with backticks.
+
+- Acceptance bar
+  - `./gradlew check` passes.
+  - Deterministic outputs; rules and generators are sorted deterministically (rule name or class name, generator id).
+  - No new detekt violations; no unrelated diffs.
+

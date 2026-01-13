@@ -1,0 +1,52 @@
+---
+description: Project organization and contribution rules for OpenAPI Test Generator monorepo
+globs:
+  - "**/*"
+alwaysApply: false
+---
+
+You are contributing to a Gradle monorepo that hosts a reusable core module, optional feature modules, a Gradle plugin project, a CLI, and a shared model module. Keep the following structure and conventions:
+
+- Modules and packages
+  - Root project contains `settings.gradle.kts` with composite includes for `model`, `core`, `generator-template`, `pattern`, `plugin`, and `cli`. Keep the build cache local using:
+    - `buildCache { local { isEnabled = true; directory = File(rootDir, ".gradle/build-cache") } }`
+  - Root includes sample projects under `samples/` via `include(...)`.
+  - The core project lives under `core/` with root package `art.galushko.openapi.testgen` and contains reusable logic:
+    - Config: `core/src/main/kotlin/.../config/` (`TestGenerationEngine`, `TestGeneratorExecutionOptionsFactory`, `TestGenerationSettings`)
+    - SPI: `core/src/main/kotlin/.../spi/` (interfaces: `TestCaseProvider`, `SchemaValidationRule`, `ArtifactGenerator`, `TestGenerationModule`)
+    - Generation: `core/src/main/kotlin/.../generation/` (`TestGenerationContext`, `TestSuiteGenerator`, `DefaultTestSuiteGenerator`)
+    - Orchestration: `core/src/main/kotlin/.../generation/orchestration/` (`ProviderOrchestrator`, `OutcomeAggregator`)
+    - Providers: `core/src/main/kotlin/.../providers/` (parameter, body, auth providers)
+    - Rules: `core/src/main/kotlin/.../rules/` (schema, composed, auth validation rules; `BuiltInRules`, `ManualRuleRegistry`)
+    - Test Data: `core/src/main/kotlin/.../testdata/` (`ValidCaseBuilder`, `BasicTestDataProvider`, `SchemaExampleValueGenerator`)
+    - OpenAPI Utils: `core/src/main/kotlin/.../openapi/` (`SchemaMerger`, `SchemaTypeHelpers`, parsing)
+    - Generators: `core/src/main/kotlin/.../generator/` (`ArtifactGeneratorRegistry`, `BuiltInGenerators`, `TestSuiteWriter`)
+    - Utilities: `core/src/main/kotlin/.../util/` (`CombinationBudget`, helpers)
+    - Tests mirror the package structure under `core/src/test/kotlin`.
+  - The template generator module lives under `generator-template/` with `TemplateGeneratorModule` and Mustache-based generation.
+  - The pattern module lives under `pattern/` with `PatternModule` and pattern-based value generation.
+  - The plugin project lives under `plugin/` and contains only Gradle plugin-specific code with the same root package:
+    - Plugin wiring: `OpenApiTestGeneratorPlugin.kt`, `OpenApiTestGeneratorTask.kt`, `TestGeneratorExtension.kt`
+    - Depends on `art.galushko.openapi.testgen:core` and optional feature modules via composite include.
+  - The CLI lives under `cli/` with `MainKt` and Picocli wiring.
+  - The shared model module lives under `model/` providing `TestCase`, `TestSuite`, `KeyValuePair`, and error/reporting types.
+  - Sample consumer apps live under `samples/`.
+
+- Files and naming
+  - One top-level type per file when feasible; keep files short and cohesive.
+  - Prefer `*TestProvider` for providers, `*ValidationRule` for rules, and `*ArtifactGenerator` for generators.
+
+- Dependencies
+  - Manage domain/runtime dependencies primarily in `core/build.gradle.kts` (Swagger parser, Jackson, Kotlin stdlib).
+  - Mustache is scoped to `generator-template`.
+  - The plugin’s build script should only include Gradle plugin APIs and minimal runtime deps; it depends on `art.galushko.openapi.testgen:core`, `art.galushko.openapi.testgen:model`, and optional feature modules via composite build.
+  - Shared model module is consumed as `art.galushko.openapi.testgen:model` via the composite build.
+
+- Performance and CI
+  - No reflection is used for rule/generator discovery; wiring is explicit via `BuiltInRules`, `BuiltInGenerators`, and `TestGenerationModule`.
+  - Ensure tests run with `./gradlew check` from the repository root without network access.
+  - Do not change plugin id or package roots without explicit instruction; keep them stable across modules.
+
+- Documentation
+  - Update `README`/docs when adding new providers/rules or configuration options. Document monorepo layout and how to consume the included plugin and reuse the core module (e.g., CLI).
+

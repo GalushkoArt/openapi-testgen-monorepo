@@ -1,0 +1,147 @@
+openapi: 3.1.0
+
+info:
+    title: Complex Schema API - Validate Nullables
+    version: 1.0.0
+    description: POST /validation/nullables operation - Test nullable and null types
+
+servers:
+    -   url: https://api.example.com/v1
+        description: Production server
+
+tags:
+    -   name: validation
+        description: Advanced validation scenarios
+
+paths:
+    /validation/nullables:
+        post:
+            tags: [validation]
+            summary: Test nullable and null types
+            operationId: validateNullables
+            description: Endpoint demonstrating nullable string handling
+            parameters:
+                -   name: optionalEmail
+                    in: query
+                    description: Optional email parameter (string or null)
+                    required: false
+                    schema:
+                        $ref: '#/components/schemas/StringOrNull'
+
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                description:
+                                    $ref: '#/components/schemas/NullableString'
+                                alternateEmail:
+                                    $ref: '#/components/schemas/StringOrNull'
+                        examples:
+                            withValues:
+                                summary: With non-null values
+                                value:
+                                    description: "Valid description"
+                                    alternateEmail: "user@example.com"
+                            withNulls:
+                                summary: With null values
+                                value:
+                                    description: null
+                                    alternateEmail: null
+
+            responses:
+                '200':
+                    description: Validation successful
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ApiResponse'
+
+components:
+    schemas:
+        NullableString:
+            allOf:
+                -   type: string
+                    minLength: 1
+                    maxLength: 100
+                -   nullable: true
+
+        StringOrNull:
+            oneOf:
+                -   type: string
+                    minLength: 1
+                    format: email
+                -   type: "null"
+
+        ApiResponse:
+            type: object
+            allOf:
+                -   type: object
+                    required: [ status, timestamp, requestId ]
+                    properties:
+                        status:
+                            type: string
+                            enum: [ success, error, pending ]
+                        timestamp:
+                            type: string
+                            format: date-time
+                        requestId:
+                            type: string
+                            format: uuid
+
+            oneOf:
+                -   type: object
+                    required: [ data ]
+                    properties:
+                        data:
+                            type: object
+                            description: Success response payload
+
+                -   type: object
+                    required: [ error ]
+                    properties:
+                        error:
+                            type: object
+                            required: [ code, message ]
+                            properties:
+                                code:
+                                    type: string
+                                message:
+                                    type: string
+                                details:
+                                    type: array
+                                    items:
+                                        type: string
+
+                -   type: object
+                    required: [ pendingInfo ]
+                    properties:
+                        pendingInfo:
+                            type: object
+                            required: [ statusUrl ]
+                            properties:
+                                statusUrl:
+                                    type: string
+                                    format: uri
+                                estimatedCompletion:
+                                    type: string
+                                    format: date-time
+
+    securitySchemes:
+        BearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+            description: JWT-based authentication
+
+        ApiKeyAuth:
+            type: apiKey
+            in: header
+            name: X-API-Key
+            description: API key authentication
+
+security:
+    -   BearerAuth: []
+    -   ApiKeyAuth: []

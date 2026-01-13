@@ -1,0 +1,686 @@
+{
+    "createUser": {
+        "path": "/users",
+        "method": "POST",
+        "operationName": "createUser",
+        "testCases": [
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties age",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "contactInfo": {
+                        "email": "test0@example.com"
+                    },
+                    "firstName": "a"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties contactInfo",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": 0,
+                    "firstName": "a"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties firstName",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": 0,
+                    "contactInfo": {
+                        "email": "test0@example.com"
+                    }
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property age Integer Breaking",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": 1.5,
+                    "contactInfo": {
+                        "email": "test0@example.com"
+                    },
+                    "firstName": "a"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property age Out Of Minimum Boundary Number",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": -1,
+                    "contactInfo": {
+                        "email": "test0@example.com"
+                    },
+                    "firstName": "a"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property contactInfo Missed Required Object Properties address",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": 0,
+                    "contactInfo": {},
+                    "firstName": "a"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property contactInfo Missed Required Object Properties email",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": 0,
+                    "contactInfo": {},
+                    "firstName": "a"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property contactInfo Missed Required Object Properties phone",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": 0,
+                    "contactInfo": {},
+                    "firstName": "a"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property contactInfo Object Property address Missed Required Object Properties city",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": 0,
+                    "contactInfo": {
+                        "address": {
+                            "country": "a",
+                            "street": "a"
+                        }
+                    },
+                    "firstName": "a"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property contactInfo Object Property address Missed Required Object Properties country",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": 0,
+                    "contactInfo": {
+                        "address": {
+                            "city": "a",
+                            "street": "a"
+                        }
+                    },
+                    "firstName": "a"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property contactInfo Object Property address Missed Required Object Properties street",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": 0,
+                    "contactInfo": {
+                        "address": {
+                            "city": "a",
+                            "country": "a"
+                        }
+                    },
+                    "firstName": "a"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property contactInfo Object Property email Wrong Email Format",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": 0,
+                    "contactInfo": {
+                        "email": "invalid.email@example"
+                    },
+                    "firstName": "a"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property email Wrong Email Format",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": 0,
+                    "contactInfo": {
+                        "email": "test0@example.com"
+                    },
+                    "firstName": "a",
+                    "email": "invalid.email@example"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property metadata Out Of Minimum Length String",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": 0,
+                    "contactInfo": {
+                        "email": "test0@example.com"
+                    },
+                    "firstName": "a",
+                    "metadata": ""
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property role Invalid Enum Value",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": 0,
+                    "contactInfo": {
+                        "email": "test0@example.com"
+                    },
+                    "firstName": "a",
+                    "role": "invalid_enum1"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Authorization header security",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": 0,
+                    "contactInfo": {
+                        "email": "test0@example.com"
+                    },
+                    "firstName": "a"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Invalid X-API-Key API key security",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "some_really_invalid_api_key"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        },
+                        {
+                            "key": "X-API-Key",
+                            "value": "some_really_invalid_api_key"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": 0,
+                    "contactInfo": {
+                        "email": "test0@example.com"
+                    },
+                    "firstName": "a"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "No security values provided",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "age": 0,
+                    "contactInfo": {
+                        "email": "test0@example.com"
+                    },
+                    "firstName": "a"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "Required Request Body is missing",
+                "method": "POST",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+            }
+        ]
+    }
+}

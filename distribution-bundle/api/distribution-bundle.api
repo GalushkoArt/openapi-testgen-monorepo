@@ -1,0 +1,77 @@
+public final class art/galushko/openapi/testgen/distribution/DistributionDefaults {
+	public static final field INSTANCE Lart/galushko/openapi/testgen/distribution/DistributionDefaults;
+	public final fun extractors ()Ljava/util/List;
+	public final fun modules (Lart/galushko/openapi/testgen/pattern/value/PatternGenerationOptions;)Ljava/util/List;
+	public static synthetic fun modules$default (Lart/galushko/openapi/testgen/distribution/DistributionDefaults;Lart/galushko/openapi/testgen/pattern/value/PatternGenerationOptions;ILjava/lang/Object;)Ljava/util/List;
+	public final fun settings ()Lart/galushko/openapi/testgen/config/TestGenerationSettings;
+}
+
+public final class art/galushko/openapi/testgen/distribution/Slf4jReporter : art/galushko/openapi/testgen/distribution/TestGenerationReporter {
+	public fun <init> (Lorg/slf4j/Logger;)V
+	public fun formatReport (Lart/galushko/openapi/testgen/model/error/GenerationReport;)Ljava/lang/String;
+	public fun logError (Ljava/lang/String;)V
+	public fun logInfo (Ljava/lang/String;)V
+}
+
+public abstract interface class art/galushko/openapi/testgen/distribution/TestGenerationReporter {
+	public abstract fun formatReport (Lart/galushko/openapi/testgen/model/error/GenerationReport;)Ljava/lang/String;
+	public abstract fun logError (Ljava/lang/String;)V
+	public abstract fun logInfo (Ljava/lang/String;)V
+}
+
+public abstract class art/galushko/openapi/testgen/distribution/TestGenerationResult {
+}
+
+public final class art/galushko/openapi/testgen/distribution/TestGenerationResult$Failure : art/galushko/openapi/testgen/distribution/TestGenerationResult {
+	public fun <init> (Lart/galushko/openapi/testgen/model/error/GenerationReport;Ljava/lang/String;)V
+	public final fun component1 ()Lart/galushko/openapi/testgen/model/error/GenerationReport;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Lart/galushko/openapi/testgen/model/error/GenerationReport;Ljava/lang/String;)Lart/galushko/openapi/testgen/distribution/TestGenerationResult$Failure;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/distribution/TestGenerationResult$Failure;Lart/galushko/openapi/testgen/model/error/GenerationReport;Ljava/lang/String;ILjava/lang/Object;)Lart/galushko/openapi/testgen/distribution/TestGenerationResult$Failure;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Ljava/lang/String;
+	public final fun getReport ()Lart/galushko/openapi/testgen/model/error/GenerationReport;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/distribution/TestGenerationResult$Success : art/galushko/openapi/testgen/distribution/TestGenerationResult {
+	public fun <init> (Lart/galushko/openapi/testgen/model/error/GenerationReport;Z)V
+	public final fun component1 ()Lart/galushko/openapi/testgen/model/error/GenerationReport;
+	public final fun component2 ()Z
+	public final fun copy (Lart/galushko/openapi/testgen/model/error/GenerationReport;Z)Lart/galushko/openapi/testgen/distribution/TestGenerationResult$Success;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/distribution/TestGenerationResult$Success;Lart/galushko/openapi/testgen/model/error/GenerationReport;ZILjava/lang/Object;)Lart/galushko/openapi/testgen/distribution/TestGenerationResult$Success;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReport ()Lart/galushko/openapi/testgen/model/error/GenerationReport;
+	public final fun getTestsWritten ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/distribution/TestGenerationRunner {
+	public static final field Companion Lart/galushko/openapi/testgen/distribution/TestGenerationRunner$Companion;
+	public synthetic fun <init> (Lart/galushko/openapi/testgen/distribution/TestGenerationReporter;Ljava/util/List;Lart/galushko/openapi/testgen/config/TestGenerationSettings;Lart/galushko/openapi/testgen/distribution/TestGenerationRunner$ModuleFactory;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun execute (Lart/galushko/openapi/testgen/config/GeneratorConfig;Lart/galushko/openapi/testgen/config/TestGeneratorOverrides;)Lart/galushko/openapi/testgen/distribution/TestGenerationResult;
+}
+
+public final class art/galushko/openapi/testgen/distribution/TestGenerationRunner$Builder {
+	public fun <init> ()V
+	public final fun addModule (Lart/galushko/openapi/testgen/config/TestGenerationModule;)Lart/galushko/openapi/testgen/distribution/TestGenerationRunner$Builder;
+	public final fun addModuleExtractor (Lart/galushko/openapi/testgen/config/ModuleSettingsExtractor;)Lart/galushko/openapi/testgen/distribution/TestGenerationRunner$Builder;
+	public final fun build ()Lart/galushko/openapi/testgen/distribution/TestGenerationRunner;
+	public final fun defaultSettings (Lart/galushko/openapi/testgen/config/TestGenerationSettings;)Lart/galushko/openapi/testgen/distribution/TestGenerationRunner$Builder;
+	public final fun moduleExtractors (Ljava/util/List;)Lart/galushko/openapi/testgen/distribution/TestGenerationRunner$Builder;
+	public final fun moduleFactory (Lart/galushko/openapi/testgen/distribution/TestGenerationRunner$ModuleFactory;)Lart/galushko/openapi/testgen/distribution/TestGenerationRunner$Builder;
+	public final fun modules (Ljava/util/List;)Lart/galushko/openapi/testgen/distribution/TestGenerationRunner$Builder;
+	public final fun reporter (Lart/galushko/openapi/testgen/distribution/TestGenerationReporter;)Lart/galushko/openapi/testgen/distribution/TestGenerationRunner$Builder;
+}
+
+public final class art/galushko/openapi/testgen/distribution/TestGenerationRunner$Companion {
+	public final fun builder ()Lart/galushko/openapi/testgen/distribution/TestGenerationRunner$Builder;
+	public final fun withDefaults (Lart/galushko/openapi/testgen/distribution/TestGenerationReporter;)Lart/galushko/openapi/testgen/distribution/TestGenerationRunner;
+}
+
+public abstract interface class art/galushko/openapi/testgen/distribution/TestGenerationRunner$ModuleFactory {
+	public abstract fun createModules (Lart/galushko/openapi/testgen/config/TestGeneratorExecutionOptions;)Ljava/util/List;
+}
+

@@ -1,0 +1,163 @@
+{
+    "validateArrays": {
+        "path": "/validation/arrays",
+        "method": "POST",
+        "operationName": "validateArrays",
+        "testCases": [
+            {
+                "name": "Incorrect Request Body: Object Property smartArray Array Item Object Property id Integer Breaking",
+                "method": "POST",
+                "path": "/validation/arrays",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "smartArray": [
+                        {
+                            "id": 1.5
+                        }
+                    ]
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Authorization header security",
+                "method": "POST",
+                "path": "/validation/arrays",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {},
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Invalid X-API-Key API key security",
+                "method": "POST",
+                "path": "/validation/arrays",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "some_really_invalid_api_key"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        },
+                        {
+                            "key": "X-API-Key",
+                            "value": "some_really_invalid_api_key"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {},
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "No security values provided",
+                "method": "POST",
+                "path": "/validation/arrays",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {},
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "Required Request Body is missing",
+                "method": "POST",
+                "path": "/validation/arrays",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+            }
+        ]
+    }
+}

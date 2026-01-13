@@ -1,0 +1,124 @@
+[versions]
+# Project
+openapi-testgen = "0.8.0"
+
+# Kotlin
+kotlin = "2.2.10"
+
+# Docs
+dokka = "2.1.0"
+
+# Testing
+junit = "5.11.4"
+assertj = "3.27.6"
+allure-plugin = "2.12.0"
+allure = "2.32.0"
+allure-generator = "2.36.0"
+
+# Logging
+slf4j = "2.0.17"
+logback = "1.5.22"
+
+# Jackson
+jackson-lib = "2.19.4"
+jackson-annotations = "2.19.4"
+
+# OpenAPI / Swagger
+swagger-models = "2.2.41"
+swagger-parser = "2.1.36"
+
+# Template engine
+mustache = "0.9.14"
+
+# CLI
+picocli = "4.7.7"
+
+# Regex generation
+regexp-gen = "3.0.0"
+
+# Apache commons
+commons-lang3 = "3.20.0"
+
+# Code quality
+detekt = "1.23.8"
+kover = "0.9.4"
+
+# Gradle plugins
+graalvm-native = "0.11.3"
+shadow = "9.2.2"
+binary-compatibility = "0.18.1"
+dependency-versions = "0.53.0"
+dependency-analysis = "3.5.1"
+gradle-plugin-publish = "1.2.1"
+
+[libraries]
+# OpenAPI Test Generator (internal modules)
+testgen-model = { module = "art.galushko.openapi.testgen:model", version.ref = "openapi-testgen" }
+testgen-example-value = { module = "art.galushko.openapi.testgen:example-value", version.ref = "openapi-testgen" }
+testgen-core = { module = "art.galushko.openapi.testgen:core", version.ref = "openapi-testgen" }
+testgen-generator-template = { module = "art.galushko.openapi.testgen:generator-template", version.ref = "openapi-testgen" }
+testgen-pattern-value = { module = "art.galushko.openapi.testgen:pattern-value", version.ref = "openapi-testgen" }
+testgen-pattern-support = { module = "art.galushko.openapi.testgen:pattern-support", version.ref = "openapi-testgen" }
+testgen-distribution-bundle = { module = "art.galushko.openapi.testgen:distribution-bundle", version.ref = "openapi-testgen" }
+
+# Kotlin
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+# Logging
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+
+# Jackson
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-lib" }
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson-lib" }
+jackson-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-lib" }
+jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-lib" }
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson-annotations" }
+
+# OpenAPI / Swagger
+swagger-models = { module = "io.swagger.core.v3:swagger-models", version.ref = "swagger-models" }
+swagger-parser-core = { module = "io.swagger.parser.v3:swagger-parser-core", version.ref = "swagger-parser" }
+swagger-parser = { module = "io.swagger.parser.v3:swagger-parser-v3", version.ref = "swagger-parser" }
+
+# Template engine
+mustache = { module = "com.github.spullara.mustache.java:compiler", version.ref = "mustache" }
+
+# CLI
+picocli = { module = "info.picocli:picocli", version.ref = "picocli" }
+
+# Regex generation
+regexp-gen = { module = "org.cornutum.regexp:regexp-gen", version.ref = "regexp-gen" }
+
+# Apache commons
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
+
+# Testing
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+
+# Allure
+allure-junit5 = { module = "io.qameta.allure:allure-junit5", version.ref = "allure" }
+allure-java-commons = { module = "io.qameta.allure:allure-java-commons", version.ref = "allure" }
+allure-assertj = { module = "io.qameta.allure:allure-assertj", version.ref = "allure" }
+allure-attachments = { module = "io.qameta.allure:allure-attachments", version.ref = "allure" }
+allure-generator = { module = "io.qameta.allure:allure-generator", version.ref = "allure-generator" }
+
+# Code quality
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+allure = { id = "io.qameta.allure", version.ref = "allure-plugin" }
+binary-compatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility" }
+dependency-versions = { id = "com.github.ben-manes.versions", version.ref = "dependency-versions" }
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
+graalvm-native = { id = "org.graalvm.buildtools.native", version.ref = "graalvm-native" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-plugin-publish" }

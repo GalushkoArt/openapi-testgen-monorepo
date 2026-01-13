@@ -1,0 +1,185 @@
+site_name: OpenAPI Test Generator
+site_description: Deterministic test generation from OpenAPI specs (CLI + Gradle plugin)
+site_url: https://docs.galushko.art/openapi-test-generator
+repo_name: GalushkoArt/openapi-testgen
+repo_url: https://github.com/GalushkoArt/openapi-testgen-monorepo
+docs_dir: docs
+strict: true
+
+theme:
+  name: material
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  features:
+    # Navigation
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.tracking
+    - navigation.footer
+    - toc.follow
+    # Search
+    - search.highlight
+    - search.suggest
+    # Content
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+
+plugins:
+  - search:
+      lang: en
+      separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+  - minify:
+      minify_html: true
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: timeago
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.snippets:
+      auto_append:
+        - docs/includes/abbreviations.md
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+copyright: Copyright &copy; 2025-2026 Art Galushko
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/GalushkoArt/openapi-testgen-monorepo
+
+nav:
+  - Home: index.md
+  - Getting started:
+      - Overview: getting-started/index.md
+      - Installation: getting-started/installation.md
+      - First test suite (CLI): getting-started/first-test-suite.md
+      - Gradle integration: getting-started/gradle-integration.md
+      - Understanding output: getting-started/understanding-output.md
+  - Samples:
+      - Overview: samples/index.md
+      - Java Spring file writer: samples/java-spring-file-writer.md
+      - Java Spring RestAssured: samples/java-spring-rest-assured.md
+      - Kotlin Spring RestAssured: samples/kotlin-spring-rest-assured.md
+  - How-to:
+      - Overview: how-to/index.md
+      - Configuration:
+          - YAML config: how-to/configuration/yaml-config.md
+          - Ignore rules: how-to/configuration/ignore-rules.md
+          - Security values: how-to/configuration/security-values.md
+          - Positive testing: how-to/configuration/positive-testing.md
+      - Generators:
+          - Template generator: how-to/generators/template-generator.md
+          - Custom templates: how-to/generators/custom-templates.md
+          - Test-suite-writer: how-to/generators/test-suite-writer.md
+      - Extension:
+          - Custom rules: how-to/extension/custom-rules.md
+          - Custom providers: how-to/extension/custom-providers.md
+          - Custom generators: how-to/extension/custom-generators.md
+          - Custom modules: how-to/extension/custom-modules.md
+      - Integration:
+          - CI/CD: how-to/integration/ci-cd.md
+          - RestAssured: how-to/integration/restassured.md
+          - Spring Boot: how-to/integration/spring-boot.md
+      - Troubleshooting: how-to/troubleshooting.md
+  - Concepts:
+      - Overview: concepts/index.md
+      - Architecture: concepts/architecture.md
+      - Provider-rule model: concepts/provider-rule-model.md
+      - Test generation flow: concepts/test-generation-flow.md
+      - Schema composition: concepts/schema-composition.md
+      - Determinism: concepts/determinism.md
+      - Budget controls: concepts/budget-controls.md
+      - Error handling: concepts/error-handling.md
+      - Glossary: concepts/glossary.md
+  - Reference:
+      - Overview: reference/index.md
+      - Catalogs:
+          - Generator options: reference/catalogs/generator-options.md
+          - Rules: reference/catalogs/rules-catalog.md
+          - Providers: reference/catalogs/providers-catalog.md
+      - Distribution settings: reference/distribution-settings.md
+      - Model:
+          - TestSuite: reference/model/test-suite.md
+          - TestCase: reference/model/test-case.md
+          - Errors: reference/model/errors.md
+      - SPI:
+          - Overview: reference/spi/index.md
+          - Validation rules: reference/spi/validation-rules.md
+          - Test providers: reference/spi/test-providers.md
+          - Generators: reference/spi/generators.md
+          - Value providers: reference/spi/value-providers.md
+      - API reference: reference/api.md
+      - CLI: reference/cli.md
+      - Gradle plugin: reference/gradle-plugin.md
+  - Modules:
+      - Overview: modules/index.md
+      - Model: modules/model.md
+      - Example-value: modules/example-value.md
+      - Core: modules/core.md
+      - Pattern-value: modules/pattern-value.md
+      - Pattern-support: modules/pattern-support.md
+      - Generator-template: modules/generator-template.md
+      - Distribution-bundle: modules/distribution-bundle.md
+      - Plugin: modules/plugin.md
+      - CLI: modules/cli.md
+  - Contributing:
+      - Overview: contributing/index.md
+      - Development setup: contributing/development-setup.md
+      - Code style: contributing/code-style.md
+      - Testing guide: contributing/testing-guide.md
+      - Documentation guide: contributing/documentation-guide.md
+      - Publishing artifacts: contributing/publishing.md
+      - Release process: contributing/release-process.md
+  - Changelog: changelog/CHANGELOG.md

@@ -1,0 +1,32 @@
+    @Test
+    @DisplayName("{{testCaseName}}")
+    public void {{methodName}}() throws com.fasterxml.jackson.core.JsonProcessingException {
+        RequestSpecification requestSpec = RestAssured.given();
+{{#headers}}
+        requestSpec.header("{{key}}", "{{#escapeString}}{{value}}{{/escapeString}}");
+{{/headers}}
+{{#shouldHaveBody}}
+        requestSpec.header("Content-Type", "application/json");
+{{/shouldHaveBody}}
+{{#requestBody}}
+        String requestBody = "{{#escapeString}}{{{ requestBody.rawBody }}}{{/escapeString}}";
+        requestSpec.body(requestBody);
+{{/requestBody}}
+{{#pathParams}}
+        requestSpec.pathParam("{{key}}", "{{#escapeString}}{{value}}{{/escapeString}}");
+{{/pathParams}}
+{{#queryParams}}
+        requestSpec.queryParam("{{key}}", "{{#escapeString}}{{value}}{{/escapeString}}");
+{{/queryParams}}
+
+        Response response = requestSpec.{{httpMethod}}("{{path}}");
+        response.then().statusCode({{expectedStatusCode}});
+{{#expectedResponseBody}}
+
+        String responseBody = response.getBody().asString();
+        String expectedBodyJson = "{{#escapeString}}{{{expectedResponseBody.rawBody}}}{{/escapeString}}";
+        java.util.Map<?, ?> expected = objectMapper.readValue(expectedBodyJson, java.util.Map.class);
+        java.util.Map<?, ?> actual = objectMapper.readValue(responseBody, java.util.Map.class);
+        Assertions.assertEquals(expected, actual);
+{{/expectedResponseBody}}
+    }

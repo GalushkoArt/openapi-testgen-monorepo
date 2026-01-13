@@ -1,0 +1,142 @@
+openapi: 3.1.0
+
+info:
+  title: Partial Success Test API
+  version: 1.0.0
+  description: |
+    API designed to trigger PartialSuccess outcome during test generation.
+    Simple parameters will succeed, but complex request body will exceed schema combination budget.
+
+servers:
+  - url: https://api.example.com/v1
+    description: Test server
+
+paths:
+  /simple-operation:
+    get:
+      summary: Simple operation that succeeds completely
+      operationId: simpleOperation
+      description: Operation with simple parameter that generates test cases successfully
+      parameters:
+        - name: status
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [active, inactive]
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+        '400':
+          description: Bad request
+
+  /partial-success:
+    post:
+      summary: Operation causing partial success
+      operationId: partialSuccessOperation
+      description: |
+        This operation has a simple query parameter (succeeds) and a complex request body
+        with deeply nested oneOf/anyOf that will exceed combination budget.
+      parameters:
+        - name: simpleParam
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComplexBudgetExceedingSchema'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+        '400':
+          description: Bad request
+
+components:
+  schemas:
+    ComplexBudgetExceedingSchema:
+      description: |
+        Complex schema with nested oneOf/anyOf structures designed to exceed
+        the maxSchemaCombinations budget (set to 3 in test).
+        Combinations: 3 oneOf × 2 anyOf × 2 nested oneOf = 12 combinations
+      type: object
+      required: [data]
+      properties:
+        data:
+          oneOf:
+            - $ref: '#/components/schemas/VariantA'
+            - $ref: '#/components/schemas/VariantB'
+            - $ref: '#/components/schemas/VariantC'
+
+    VariantA:
+      type: object
+      required: [typeA, valueA]
+      properties:
+        typeA:
+          type: string
+          const: "typeA"
+        valueA:
+          anyOf:
+            - type: string
+              minLength: 1
+            - type: integer
+              minimum: 0
+
+    VariantB:
+      type: object
+      required: [typeB, nestedB]
+      properties:
+        typeB:
+          type: string
+          const: "typeB"
+        nestedB:
+          oneOf:
+            - type: object
+              required: [x]
+              properties:
+                x:
+                  type: number
+            - type: object
+              required: [y]
+              properties:
+                y:
+                  type: boolean
+
+    VariantC:
+      type: object
+      required: [typeC, configC]
+      properties:
+        typeC:
+          type: string
+          const: "typeC"
+        configC:
+          anyOf:
+            - type: string
+              enum: [option1, option2]
+            - type: integer
+              enum: [1, 2, 3]
+
+
+
+
+
+

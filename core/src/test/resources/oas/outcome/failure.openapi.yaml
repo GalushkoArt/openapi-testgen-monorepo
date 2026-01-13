@@ -1,0 +1,192 @@
+openapi: 3.1.0
+
+info:
+  title: Failure Test API
+  version: 1.0.0
+  description: |
+    API designed to trigger Failure outcome during test generation.
+    Contains operation with schema so complex it exceeds budget immediately,
+    before any test cases can be generated.
+
+servers:
+  - url: https://api.example.com/v1
+    description: Test server
+
+paths:
+  /budget-exceeded-failure:
+    post:
+      summary: Operation that fails completely due to budget exceeded
+      operationId: budgetExceededOperation
+      description: |
+        This operation has a request body with extremely complex nested oneOf/anyOf
+        that will exceed combination budget immediately, causing complete failure.
+        No simpler parameters to generate partial results.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExtremelyComplexSchema'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+        '400':
+          description: Bad request
+
+  /valid-case-failure:
+    post:
+      summary: Operation that fails during valid case generation
+      operationId: validCaseFailureOperation
+      description: |
+        This operation has a required request body with unsupported media type,
+        causing ValidCaseBuilder to fail before any providers run.
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad request
+
+  /security-reference-failure:
+    get:
+      summary: Operation with undefined security scheme reference
+      operationId: securityReferenceFailureOperation
+      description: |
+        This operation references an apiKey security scheme that is not defined
+        in components/securitySchemes, causing validation failure.
+        Has dual security: apiKey or unknownSecurity which it undefined.
+      security:
+        - apiKeyHeader: []
+        - unknownSecurity: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
+components:
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  schemas:
+    ExtremelyComplexSchema:
+      description: |
+        Very complex schema designed to exceed budget of 3 combinations immediately.
+        Structure: 4 oneOf at top level, each containing nested structures.
+      oneOf:
+        - $ref: '#/components/schemas/BranchAlpha'
+        - $ref: '#/components/schemas/BranchBeta'
+        - $ref: '#/components/schemas/BranchGamma'
+        - $ref: '#/components/schemas/BranchDelta'
+
+    BranchAlpha:
+      type: object
+      required: [branchType, alphaConfig]
+      properties:
+        branchType:
+          type: string
+          const: "alpha"
+        alphaConfig:
+          oneOf:
+            - type: object
+              required: [mode]
+              properties:
+                mode:
+                  type: string
+                  enum: [fast, slow]
+            - type: object
+              required: [level]
+              properties:
+                level:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+
+    BranchBeta:
+      type: object
+      required: [branchType, betaData]
+      properties:
+        branchType:
+          type: string
+          const: "beta"
+        betaData:
+          anyOf:
+            - type: string
+              minLength: 1
+            - type: number
+              minimum: 0
+            - type: boolean
+
+    BranchGamma:
+      type: object
+      required: [branchType, gammaItems]
+      properties:
+        branchType:
+          type: string
+          const: "gamma"
+        gammaItems:
+          type: array
+          items:
+            oneOf:
+              - type: string
+              - type: integer
+
+    BranchDelta:
+      type: object
+      required: [branchType, deltaObject]
+      properties:
+        branchType:
+          type: string
+          const: "delta"
+        deltaObject:
+          allOf:
+            - type: object
+              properties:
+                base:
+                  type: string
+            - oneOf:
+                - type: object
+                  properties:
+                    extended:
+                      type: boolean
+                - type: object
+                  properties:
+                    advanced:
+                      type: number
+
+
+
+
+
+

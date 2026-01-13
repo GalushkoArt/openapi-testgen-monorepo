@@ -1,0 +1,31 @@
+    @Test
+    @DisplayName("{{testCaseName}}")
+    fun {{methodName}}() {
+        val requestSpec = RestAssured.given()
+{{#headers}}
+        requestSpec.header("{{key}}", "{{#escapeString}}{{value}}{{/escapeString}}")
+{{/headers}}
+{{#shouldHaveBody}}
+        requestSpec.header("Content-Type", "application/json")
+{{/shouldHaveBody}}
+{{#requestBody}}
+        val requestBody = "{{#escapeString}}{{{ requestBody.rawBody }}}{{/escapeString}}"
+        requestSpec.body(requestBody)
+{{/requestBody}}
+{{#pathParams}}
+        requestSpec.pathParam("{{key}}", "{{#escapeString}}{{value}}{{/escapeString}}")
+{{/pathParams}}
+{{#queryParams}}
+        requestSpec.queryParam("{{key}}", "{{#escapeString}}{{value}}{{/escapeString}}")
+{{/queryParams}}
+
+        val response = requestSpec.{{httpMethod}}("{{path}}")
+        response.then().statusCode({{expectedStatusCode}})
+{{#expectedResponseBody}}
+        val responseBody = response.body.asString()
+        val expectedBodyJson = "{{#escapeString}}{{{expectedResponseBody.rawBody}}}{{/escapeString}}"
+        val expected = objectMapper.readValue(expectedBodyJson, java.util.Map::class.java)
+        val actual = objectMapper.readValue(responseBody, java.util.Map::class.java)
+        Assertions.assertEquals(expected, actual)
+{{/expectedResponseBody}}
+    }

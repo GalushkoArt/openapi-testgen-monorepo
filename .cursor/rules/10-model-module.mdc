@@ -1,0 +1,37 @@
+---
+description: Shared model module semantics and usage
+globs:
+  - "model/src/main/kotlin/**/*.kt"
+  - "core/src/main/kotlin/**/*.kt"
+alwaysApply: false
+---
+
+The `model` module defines stable data classes and error/reporting types used across generators and providers.
+
+- Types
+  - `TestCase`: request details, expectations, metadata (rule, needToComplete, securityValues). Treat as immutable value; copy to modify.
+  - `TestSuite`: a collection of test cases for a single operation.
+  - `SecurityValues`: grouped security query/header/cookie values.
+  - `KeyValuePair<K,V>`: ordered name–value pair for headers/cookies.
+
+- Error types
+  - `Outcome<T>`: sealed class with `Success`, `PartialSuccess`, `Failure` variants.
+  - `GenerationError`: individual error with `message`, `ErrorContext`, and optional `cause`.
+  - `GenerationReport`: top-level report with successes, partials, and failures lists.
+  - `ErrorHandlingConfig`: controls error behavior with `errorMode` and `maxErrors`.
+  - `ErrorMode`: enum with `FAIL_FAST` (stop on first) and `COLLECT_ALL` (accumulate up to limit).
+  - `ErrorContext`: location info (`Operation`, `Field`, `Rule` variants) for precise error reporting.
+  - `BudgetExceededException`: thrown when budget limits exceeded (schema combinations, test cases per operation).
+
+- Contracts
+  - Generators must not mutate instances passed into them; create new instances if adjustments are needed.
+  - Preserve field order deterministically when serializing; avoid iteration over hash-based maps without sorting keys.
+  - Backward-compatible changes to `model` require bumping consumers and keeping JSON shape stable.
+
+- Testing
+  - Prefer `usingRecursiveComparison()` for structure equality.
+  - Keep fixtures small and representative; avoid adding optional fields unless needed by a test.
+
+- Dependencies
+  - Keep the model free of runtime deps; only data classes and error/reporting types.
+  - The `core` and `plugin` modules consume the model via composite build coordinates `art.galushko.openapi.testgen:model`.

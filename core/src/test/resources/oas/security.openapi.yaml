@@ -1,0 +1,270 @@
+openapi: 3.1.0
+info:
+    title: Auth Test API
+    version: "1.0.0"
+servers:
+    - url: https://api.example.com
+components:
+    schemas:
+        Error:
+            type: object
+            properties:
+                code: { type: integer }
+                message: { type: string }
+            required: [code, message]
+    headers:
+        WWW-Authenticate:
+            description: Challenge per scheme.
+            schema: { type: string }
+    responses:
+        Unauthorized401:
+            description: Unauthorized
+            headers:
+                WWW-Authenticate:
+                    $ref: '#/components/headers/WWW-Authenticate'
+            content:
+                application/json:
+                    schema: { $ref: '#/components/schemas/Error' }
+                    examples:
+                        basic: { value: { code: 401, message: "Missing or invalid Basic credentials" } }
+                        bearer: { value: { code: 401, message: "Invalid or expired bearer token" } }
+                        digest: { value: { code: 401, message: "Digest challenge required" } }
+        Forbidden403:
+            description: Forbidden
+            content:
+                application/json:
+                    schema: { $ref: '#/components/schemas/Error' }
+                    examples:
+                        scope: { value: { code: 403, message: "Insufficient scope" } }
+    securitySchemes:
+        basicAuth:
+            type: http
+            scheme: basic
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+        apiKeyHeader:
+            type: apiKey
+            in: header
+            name: X-API-Key
+        apiKeyQuery:
+            type: apiKey
+            in: query
+            name: api_key
+        apiKeyCookie:
+            type: apiKey
+            in: cookie
+            name: api_key
+        oauth2:
+            type: oauth2
+            flows:
+                authorizationCode:
+                    authorizationUrl: https://auth.example.com/authorize
+                    tokenUrl: https://auth.example.com/token
+                    refreshUrl: https://auth.example.com/refresh
+                    scopes:
+                        read: Read access
+                        write: Write access
+                        admin: Admin access
+                clientCredentials:
+                    tokenUrl: https://auth.example.com/token
+                    scopes:
+                        read: Read access
+                        write: Write access
+                password:
+                    tokenUrl: https://auth.example.com/token
+                    scopes:
+                        read: Read access
+                        write: Write access
+        oidc:
+            type: openIdConnect
+            openIdConnectUrl: https://id.example.com/.well-known/openid-configuration
+
+    parameters:
+        LimitParam:
+            name: limit
+            in: query
+            description: Maximum number of items to return
+            required: false
+            schema:
+                type: integer
+                minimum: 1
+                maximum: 100
+                default: 20
+            example: 20
+
+security:
+    - apiKeyHeader: []
+
+paths:
+    /public:
+        get:
+            summary: Open endpoint (no auth)
+            description: Anonymous access; credentials ignored.
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+            security: []
+            responses:
+                '200':
+                    description: OK
+
+    /basic:
+        get:
+            summary: Basic only
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+            security:
+                - basicAuth: []
+            responses:
+                '200': { description: OK }
+                '401': { $ref: '#/components/responses/Unauthorized401' }
+                '403': { $ref: '#/components/responses/Forbidden403' }
+
+    /default:
+        get:
+            summary: Default security
+            description: Default security scheme should be used.
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+            responses:
+                '200': { description: OK }
+                '401': { $ref: '#/components/responses/Unauthorized401' }
+                '403': { $ref: '#/components/responses/Forbidden403' }
+
+    /bearer:
+        get:
+            summary: Bearer only (JWT implied)
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+            security:
+                - bearerAuth: []
+            responses:
+                '200': { description: OK }
+                '401': { $ref: '#/components/responses/Unauthorized401' }
+                '403': { $ref: '#/components/responses/Forbidden403' }
+
+    /apikey/header:
+        get:
+            summary: API key in header
+            security:
+                - apiKeyHeader: []
+            responses:
+                '200': { description: OK }
+                '401': { $ref: '#/components/responses/Unauthorized401' }
+
+    /apikey/query:
+        get:
+            summary: API key in query
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+            security:
+                - apiKeyQuery: []
+            responses:
+                '200': { description: OK }
+                '401': { $ref: '#/components/responses/Unauthorized401' }
+
+    /apikey/cookie:
+        get:
+            summary: API key in cookie
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+            security:
+                - apiKeyCookie: []
+            responses:
+                '200': { description: OK }
+                '401': { $ref: '#/components/responses/Unauthorized401' }
+
+    /oauth2/resource:
+        get:
+            summary: OAuth2 read scope required
+            description: Requires scope "read".
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+            security:
+                - oauth2: [read]
+            responses:
+                '200': { description: OK }
+                '401': { $ref: '#/components/responses/Unauthorized401' }
+                '403': { $ref: '#/components/responses/Forbidden403' }
+
+    /oauth2/write-read:
+        get:
+            summary: OAuth2 multiple scopes
+            description: Requires both "read" and "write".
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+            security:
+                - oauth2: [read, write]
+            responses:
+                '200': { description: OK }
+                '401': { $ref: '#/components/responses/Unauthorized401' }
+                '403': { $ref: '#/components/responses/Forbidden403' }
+
+    /oauth2/access:
+        get:
+            summary: OAuth2 without scopes
+            description: Does not require any scope.
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+            security:
+                - oauth2: []
+            responses:
+                '200': { description: OK }
+                '401': { $ref: '#/components/responses/Unauthorized401' }
+                '403': { $ref: '#/components/responses/Forbidden403' }
+
+    /oidc/profile:
+        get:
+            summary: OIDC access with scopes
+            description: Requires OIDC scopes "openid" and "profile" and a valid access token.
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+            security:
+                - oidc: [openid, profile]
+            responses:
+                '200': { description: OK }
+                '401': { $ref: '#/components/responses/Unauthorized401' }
+                '403': { $ref: '#/components/responses/Forbidden403' }
+
+    /secure-and:
+        get:
+            summary: AND combination (header API key + basicAuth)
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+            security:
+                - apiKeyHeader: []
+                  basicAuth: []
+            responses:
+                '200': { description: OK }
+                '401': { $ref: '#/components/responses/Unauthorized401' }
+                '403': { $ref: '#/components/responses/Forbidden403' }
+
+    /secure-or:
+        get:
+            summary: OR alternatives (Basic OR header API key OR OAuth2 read)
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+            security:
+                - basicAuth: []
+                - apiKeyHeader: []
+                - oauth2: [read]
+            responses:
+                '200': { description: OK }
+                '401': { $ref: '#/components/responses/Unauthorized401' }
+                '403': { $ref: '#/components/responses/Forbidden403' }
+
+    /secure-or-and:
+        get:
+            summary: OR with AND alternatives (Basic and header API key OR OAuth2 read and OIDC profile)
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+            security:
+                - apiKeyHeader: []
+                  basicAuth: []
+                - oauth2: [read]
+                  oidc: [openid, profile]
+            responses:
+                '200': { description: OK }
+                '401': { $ref: '#/components/responses/Unauthorized401' }
+                '403': { $ref: '#/components/responses/Forbidden403' }

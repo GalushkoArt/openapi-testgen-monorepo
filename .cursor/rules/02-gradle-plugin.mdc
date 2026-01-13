@@ -1,0 +1,105 @@
+---
+description: Gradle plugin wiring and task authoring rules for OpenAPI Test Generator (monorepo)
+globs:
+  - "settings.gradle.kts"
+  - "plugin/settings.gradle.kts"
+  - "plugin/build.gradle.kts"
+  - "core/build.gradle.kts"
+  - "plugin/src/main/kotlin/**/OpenApiTestGeneratorPlugin.kt"
+  - "plugin/src/main/kotlin/**/OpenApiTestGeneratorTask.kt"
+  - "plugin/src/main/kotlin/**/TestGeneratorExtension.kt"
+  - "plugin/src/main/kotlin/**/TestGenerationSettingsExtension.kt"
+  - "core/src/main/kotlin/**/TestGeneratorConfigurer.kt"
+alwaysApply: true
+---
+
+You are enhancing a custom Gradle plugin that generates tests from OpenAPI specifications.
+
+- Monorepo setup
+  - Use a composite build. In root `settings.gradle.kts`, include `model`, `core`, `generator-template`, `pattern`, `plugin`, and `cli` via `includeBuild(...)`. Keep the build cache local to the repo.
+  - Root includes sample projects under `samples/` via `include(...)`.
+  - The `plugin` project owns the Gradle Plugin Development configuration, including the `gradlePlugin {}` block and plugin metadata.
+
+- Plugin registration
+  - Keep plugin id `art.galushko.openapi-test-generator` in `gradlePlugin {}` consistent with `implementationClass`.
+  - Ensure the implementation class remains `art.galushko.openapi.testgen.plugin.OpenApiTestGeneratorPlugin` unless explicitly changed.
+
+- Extension design (`TestGeneratorExtension`)
+  - Expose: `configFile: Property<String>` (optional), `specFile: Property<String>`, `outputDir: DirectoryProperty`,
+    `generator: Property<String>` (default `""`),
+    `generatorOptions: MapProperty<String, Any?>`,
+    `testGenerationSettings: TestGenerationSettingsExtension` (typed nested extension),
+    `manualOnly: Property<Boolean>` (default `false`),
+    `alwaysWriteTests: Property<Boolean>` (default `null`),
+    `logLevel: Property<String>` (optional).
+  - The `testGenerationSettings` property is a typed nested object (`TestGenerationSettingsExtension`) with its own properties:
+    - `validSecurityValues: MapProperty<String, String>`
+    - `errorMode: Property<ErrorMode>` (default `COLLECT_ALL`)
+    - `maxErrors: Property<Int>` (default 100)
+    - `maxSchemaDepth: Property<Int>`, `maxSchemaCombinations: Property<Int>`, `maxTestCasesPerOperation: Property<Int>`
+    - `ignoreTestCases: MapProperty<String, Any>`, `ignoreSchemaValidationRules: SetProperty<String>`, `ignoreAuthValidationRules: SetProperty<String>`
+    - `overrideBasicTestData: MapProperty<String, String>`
+    - `exampleValues: MapProperty<String, Any>` (raw map passed to core)
+    - `patternGeneration: MapProperty<String, Any>` (raw map parsed by `PatternModuleSettingsExtractor`)
+  - Configure settings via DSL: `testGenerationSettings { validSecurityValues.putAll(...); maxSchemaDepth.set(15) }`
+  - Avoid nullable flows at usage sites: validate eagerly in the task using `require(...)`/`requireNotNull(...)`.
+
+- Task registration
+  - Register a single task `generateOpenApiTests` in group `verification` that:
+    - Loads optional YAML config via `configFile` if provided
+    - Merges extension values with config using `TestGeneratorExecutionOptionsFactory`
+    - Delegates to `TestGenerationEngine` for parsing OpenAPI, creating processor, creating artifact generator, and running generation
+    - Resolves `specFile` to an absolute path when it exists in the project directory; missing/invalid specs are surfaced by parsing
+    - Ensures `outputDir` exists via `TestGeneratorExecutionOptionsFactory`
+  - Declare task inputs/outputs with explicit types and path sensitivity:
+    - Keep `configFile: Property<String>` annotated with `@InputFile` and `@PathSensitive(PathSensitivity.RELATIVE)`.
+    - Keep `specFile: Property<String>` annotated with `@Input`.
+    - Keep `outputDir: DirectoryProperty` annotated with `@OutputDirectory`.
+    - Mark scalars (`generator`, `maxErrors`, `errorMode`, `alwaysWriteTests`, `manualOnly`) and maps (`validSecurityValues`, `generatorOptions`, `testGenerationSettings`) with `@Input`.
+  - Do not introduce Gradle task inputs/outputs without declaring their types and path sensitivity.
+  - Plugin wiring happens at configuration time based on `extension.generator.get()`:
+    - For `generator == "template"`: Wire source sets and compilation tasks to include generated test code
+    - For `generator == "test-suite-writer"`: Wire resource processing to include generated JSON/YAML files
+  - The plugin configures task dependencies using `afterEvaluate` to respect `manualOnly` flag:
+    - When `manualOnly == false`: automatically wire `generateOpenApiTests` before compilation/resource processing
+    - When `manualOnly == true`: task must be invoked manually, no automatic wiring
+
+- Compatibility
+  - Target Java 21, Kotlin 2.x as configured. Keep dependencies aligned with `build.gradle.kts`.
+  - Respect configuration cache and task avoidance APIs; avoid expensive work at configuration time.
+
+- Logging
+  - Use `project.logger.lifecycle` for high-level progress, `warn` for recoverable issues, and fail fast for invalid configuration.
+  - Surface parser messages and file validation errors with actionable context.
+
+- Source sets
+  - For `template`, add `outputDir` to the `test` source set: `sourceSets.getByName("test").java.srcDir(outputDir)`.
+  - The plugin depends on `core` for generation logic; do not duplicate providers/rules/generators in the plugin.
+
+- Keep edits minimal; do not change plugin id, package names, or task name unless requested.
+
+- Consumer usage (for modules in this monorepo or external builds)
+  - Apply and configure the plugin in a consumer module:
+    - `plugins { id("art.galushko.openapi-test-generator") }`
+    - Example with typed settings DSL:
+      ```kotlin
+      openApiTestGenerator {
+          specFile.set("src/test/resources/openapi.yaml")
+          generator.set("template")
+          generatorOptions.putAll(mapOf(
+              "templateSet" to "restassured-java",
+              "templateVariables" to mapOf(
+                  "package" to "com.example.generated",
+                  "baseUrl" to "http://localhost:8080"
+              )
+          ))
+          testGenerationSettings {
+              validSecurityValues.putAll(mapOf("X-API-Key" to "test-key"))
+              errorMode.set(ErrorMode.COLLECT_ALL)
+              maxErrors.set(100)
+              maxSchemaDepth.set(15)
+          }
+      }
+      ```
+    - To emit JSON/YAML instead of Java tests: set `generator = "test-suite-writer"` and provide `outputFileName`, optional `format`, `writeMode` in `generatorOptions`.
+

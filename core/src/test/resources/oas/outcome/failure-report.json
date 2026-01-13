@@ -1,0 +1,90 @@
+{
+    "successfulSuites": [
+        {
+            "path": "/budget-exceeded-failure",
+            "method": "POST",
+            "operationName": "budgetExceededOperation",
+            "testCases": [
+                {
+                    "name": "Required Request Body is missing",
+                    "method": "POST",
+                    "path": "/budget-exceeded-failure",
+                    "queryParams": {},
+                    "pathParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "securityValues": {
+                        "queryParams": {},
+                        "headers": [],
+                        "cookie": [],
+                        "other": {}
+                    },
+                    "body": null,
+                    "expectedBody": null,
+                    "needToComplete": false,
+                    "expectedStatusCode": 400,
+                    "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+                }
+            ]
+        }
+    ],
+    "errors": [
+        {
+            "providerClass": "art.galushko.openapi.testgen.providers.body.RequestBodySchemaValidationTestProvider",
+            "message": "Budget exceeded for POST /budget-exceeded-failure:\n  Generated: 4 schema combinations\n  Limit: 2\n\nPossible solutions:\n  1. Increase the limit by setting testGenerationSettings.maxSchemaCombinations to a higher value\n  2. Simplify the OpenAPI schema by reducing nested oneOf/anyOf/allOf structures\n  3. Use ignoreTestCases or ignoreSchemaValidationRules to exclude specific scenarios\n",
+            "context": {
+                "operation": {
+                    "path": "/budget-exceeded-failure",
+                    "method": "POST",
+                    "operationId": "budgetExceededOperation"
+                },
+                "ref": null
+            }
+        },
+        {
+            "providerClass": "art.galushko.openapi.testgen.testdata.ValidCaseBuilder",
+            "message": "Unexpected error: validCaseFailureOperation Unsupported request body media type [application/octet-stream, multipart/form-data]",
+            "context": {
+                "path": "/valid-case-failure",
+                "method": "POST",
+                "operationId": "validCaseFailureOperation"
+            }
+        },
+        {
+            "providerClass": "art.galushko.openapi.testgen.testdata.ValidCaseBuilder",
+            "message": "Unexpected error: Unknown security schemes: [unknownSecurity]",
+            "context": {
+                "path": "/security-reference-failure",
+                "method": "GET",
+                "operationId": "securityReferenceFailureOperation"
+            }
+        }
+    ],
+    "summary": {
+        "totalOperations": 3,
+        "successfulOperations": [],
+        "notTestedOperations": [],
+        "partialOperations": [
+            {
+                "operationId": "budgetExceededOperation",
+                "path": "/budget-exceeded-failure",
+                "method": "POST"
+            }
+        ],
+        "failedOperations": [
+            {
+                "operationId": "validCaseFailureOperation",
+                "path": "/valid-case-failure",
+                "method": "POST"
+            },
+            {
+                "operationId": "securityReferenceFailureOperation",
+                "path": "/security-reference-failure",
+                "method": "GET"
+            }
+        ],
+        "totalTestCases": 1,
+        "totalErrors": 3
+    },
+    "hasErrors": true
+}

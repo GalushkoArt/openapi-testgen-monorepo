@@ -1,0 +1,223 @@
+openapi: 3.1.0
+
+info:
+    title: Complex Schema API - Update User
+    version: 1.0.0
+    description: PATCH /users/{userId} operation - Update user
+
+servers:
+    -   url: https://api.example.com/v1
+        description: Production server
+
+tags:
+    -   name: users
+        description: User management operations
+
+paths:
+    /users/{userId}:
+        parameters:
+            -   name: userId
+                in: path
+                required: true
+                description: User identifier (UUID format)
+                schema:
+                    type: string
+                    format: uuid
+
+        patch:
+            tags: [users]
+            summary: Update user
+            operationId: updateUser
+            description: Partially update user with conditional requirements
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ConditionalRequired'
+
+            responses:
+                '200':
+                    description: User updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                allOf:
+                                    -   $ref: '#/components/schemas/ApiResponse'
+                                    -   type: object
+                                        properties:
+                                            data:
+                                                $ref: '#/components/schemas/User'
+
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+
+components:
+    schemas:
+        ConditionalRequired:
+            type: object
+            properties:
+                firstName:
+                    type: string
+                lastName:
+                    type: string
+                email:
+                    type: string
+                    format: email
+                phone:
+                    type: string
+
+            anyOf:
+                -   required: [ firstName, lastName ]
+                    description: Name is required
+
+                -   required: [ email ]
+                    description: Email is required
+
+                -   required: [ phone ]
+                    description: Phone is required
+
+        BaseEntity:
+            type: object
+            required: [ id, createdAt ]
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+
+        User:
+            allOf:
+                -   $ref: '#/components/schemas/BaseEntity'
+                -   type: object
+                    required: [ username, email ]
+                    properties:
+                        username:
+                            type: string
+                            minLength: 3
+                            maxLength: 20
+                        email:
+                            type: string
+                            format: email
+                        role:
+                            type: string
+                            enum: [ admin, user, guest ]
+                            default: user
+
+        ApiResponse:
+            type: object
+            allOf:
+                -   type: object
+                    required: [ status, timestamp, requestId ]
+                    properties:
+                        status:
+                            type: string
+                            enum: [ success, error, pending ]
+                        timestamp:
+                            type: string
+                            format: date-time
+                        requestId:
+                            type: string
+                            format: uuid
+
+            oneOf:
+                -   type: object
+                    required: [ data ]
+                    properties:
+                        data:
+                            type: object
+                            description: Success response payload
+
+                -   type: object
+                    required: [ error ]
+                    properties:
+                        error:
+                            type: object
+                            required: [ code, message ]
+                            properties:
+                                code:
+                                    type: string
+                                message:
+                                    type: string
+                                details:
+                                    type: array
+                                    items:
+                                        type: string
+
+                -   type: object
+                    required: [ pendingInfo ]
+                    properties:
+                        pendingInfo:
+                            type: object
+                            required: [ statusUrl ]
+                            properties:
+                                statusUrl:
+                                    type: string
+                                    format: uri
+                                estimatedCompletion:
+                                    type: string
+                                    format: date-time
+
+    responses:
+        BadRequest:
+            description: Bad request - validation error
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            -   $ref: '#/components/schemas/ApiResponse'
+                            -   type: object
+                                properties:
+                                    error:
+                                        type: object
+                                        properties:
+                                            code:
+                                                type: string
+                                                enum: [VALIDATION_ERROR, INVALID_INPUT]
+                                            message:
+                                                type: string
+                                            details:
+                                                type: array
+                                                items:
+                                                    type: string
+
+        NotFound:
+            description: Resource not found
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            -   $ref: '#/components/schemas/ApiResponse'
+                            -   type: object
+                                properties:
+                                    error:
+                                        type: object
+                                        properties:
+                                            code:
+                                                const: NOT_FOUND
+                                            message:
+                                                type: string
+
+    securitySchemes:
+        BearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+            description: JWT-based authentication
+
+        ApiKeyAuth:
+            type: apiKey
+            in: header
+            name: X-API-Key
+            description: API key authentication
+
+security:
+    -   BearerAuth: []
+    -   ApiKeyAuth: []

@@ -1,0 +1,40 @@
+---
+description: Navigation heuristics for efficient code comprehension in this repo
+globs:
+  - "**/*"
+alwaysApply: false
+---
+
+Prioritize these files when exploring or answering questions:
+
+- Gradle wiring
+  - `settings.gradle.kts`, `plugin/build.gradle.kts`, `model/build.gradle.kts`
+  - `OpenApiTestGeneratorPlugin.kt`, `OpenApiTestGeneratorTask.kt`, `TestGeneratorExtension.kt`
+
+- Configuration layer
+  - `config/TestGenerationEngine.kt` - top-level facade
+  - `config/TestGeneratorExecutionOptionsFactory.kt` - config merging
+  - `config/TestGenerationSettings.kt` - typed settings container
+  - `config/TestGeneratorConfigurer.kt` - wiring factory
+
+- Core generation flow
+  - `spi/TestCaseProvider.kt`, `spi/SchemaValidationRule.kt`, `spi/ArtifactGenerator.kt`, `spi/TestGenerationModule.kt`
+  - `generation/TestGenerationContext.kt`, `generation/DefaultTestGenerationContext.kt`
+  - `generation/TestSuiteGenerator.kt`, `generation/DefaultTestSuiteGenerator.kt`
+  - `generation/orchestration/ProviderOrchestrator.kt`, `generation/orchestration/OutcomeAggregator.kt`
+  - `testdata/ValidCaseBuilder.kt`, `testdata/SchemaExampleValueGenerator.kt`
+  - Providers under `providers/**`, rules under `rules/**`
+
+- Code generators
+  - `core/src/main/kotlin/**/generator/writer/**` (JSON/YAML test suite writer)
+  - `generator-template/src/main/kotlin/**/generator/template/**` and `generator-template/src/main/resources/templates/**` (Mustache templates)
+  - Add new generators under `core/src/main/kotlin/**/generator/<name>/**` or a dedicated feature module with their own `Options` file and `transformAndValidateOptions(...)`.
+
+- Shared models
+  - `model/src/main/kotlin/**`
+
+Conventions and cues
+- Rules and generators are explicitly registered in `BuiltInRules` and `BuiltInGenerators`; check `.sortedBy { it.getRuleName() }` / `.sortedBy { it.id }` patterns and `ManualRuleRegistry` for class-name sorting.
+- For option keys, search for `transformAndValidateOptions` and keep examples in sync with the source.
+- For ignore/override semantics, review `IgnoreConfigValidator`, `IgnoreConfigHandler`, `TestSuiteWriter` merge logic, and tests in `core/src/test/kotlin`.
+- For new features, anchor changes around `TestGeneratorConfigurer.createTestSuiteGenerator()` for routing and around `BuiltInRules`/`BuiltInGenerators` for registration.

@@ -1,0 +1,1892 @@
+openapi: 3.0.3
+info:
+    title: Project Management API
+    description: |
+        A comprehensive project management system API that allows teams to manage projects,
+        tasks, users, and collaboration features. This API supports both public endpoints
+        for basic information and authenticated endpoints for full project management functionality.
+    version: 2.1.0
+    contact:
+        name: API Support Team
+        email: api-support@projectmanager.com
+        url: https://docs.projectmanager.com
+    license:
+        name: MIT
+        url: https://opensource.org/licenses/MIT
+    termsOfService: https://projectmanager.com/terms
+
+servers:
+    -   url: https://api.projectmanager.com/v2
+        description: Production server
+    -   url: https://staging-api.projectmanager.com/v2
+        description: Staging server
+    -   url: https://dev-api.projectmanager.com/v2
+        description: Development server
+
+security:
+    -   ApiKeyAuth: [ ]
+    - { }  # Some endpoints allow anonymous access
+
+paths:
+    # Public endpoints
+    /health:
+        get:
+            summary: Health check endpoint
+            description: Returns the API health status - publicly accessible
+            operationId: getHealthStatus
+            security: [ ]  # Override global security - no auth required
+            tags:
+                - System
+            responses:
+                '200':
+                    $ref: '#/components/responses/HealthResponse'
+                '503':
+                    $ref: '#/components/responses/ServiceUnavailable'
+
+    /projects/public:
+        get:
+            summary: List public projects
+            description: Get a list of publicly visible projects
+            operationId: listPublicProjects
+            security: [ ]  # No auth required
+            tags:
+                - Projects
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+                -   $ref: '#/components/parameters/OffsetParam'
+                -   name: category
+                    in: query
+                    description: Filter by project category
+                    required: false
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/ProjectCategory'
+                    style: form
+                    explode: true
+                    example: [ "web_development", "mobile_app" ]
+            responses:
+                '200':
+                    $ref: '#/components/responses/PublicProjectsResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+
+    # Authenticated endpoints
+    /users:
+        get:
+            summary: List users
+            description: Get a paginated list of users in the organization
+            operationId: listUsers
+            tags:
+                - Users
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+                -   $ref: '#/components/parameters/OffsetParam'
+                -   name: role
+                    in: query
+                    description: Filter users by role
+                    required: false
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/UserRole'
+                    style: form
+                    explode: true
+                    example: [ "project_manager", "developer" ]
+                -   name: active
+                    in: query
+                    description: Filter by user active status
+                    required: false
+                    schema:
+                        type: boolean
+                    example: true
+                -   name: skills
+                    in: query
+                    description: Filter users by skills
+                    required: false
+                    schema:
+                        type: array
+                        items:
+                            type: string
+                            minLength: 2
+                            maxLength: 50
+                    style: form
+                    explode: true
+                    example: [ "javascript", "python", "project-management" ]
+            responses:
+                '200':
+                    $ref: '#/components/responses/UsersResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+
+        post:
+            summary: Create a new user
+            description: Create a new user in the organization
+            operationId: createUser
+            tags:
+                - Users
+            requestBody:
+                $ref: '#/components/requestBodies/CreateUserRequest'
+            responses:
+                '201':
+                    $ref: '#/components/responses/UserResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '409':
+                    $ref: '#/components/responses/Conflict'
+
+    /users/bulk:
+        post:
+            summary: Create multiple users
+            description: Bulk create users in the organization
+            operationId: createUsersBulk
+            tags:
+                - Users
+            requestBody:
+                $ref: '#/components/requestBodies/CreateUsersBulkRequest'
+            responses:
+                '201':
+                    $ref: '#/components/responses/UsersResponse'
+                '400':
+                    $ref: '#/components/responses/ValidationErrorsArray'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '409':
+                    $ref: '#/components/responses/Conflict'
+
+    /users/{userId}:
+        parameters:
+            -   $ref: '#/components/parameters/UserIdParam'
+
+        get:
+            summary: Get user by ID
+            description: Retrieve detailed information about a specific user
+            operationId: getUserById
+            tags:
+                - Users
+            responses:
+                '200':
+                    $ref: '#/components/responses/UserResponse'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+
+        put:
+            summary: Update user
+            description: Update all user information
+            operationId: updateUser
+            tags:
+                - Users
+            requestBody:
+                $ref: '#/components/requestBodies/UpdateUserRequest'
+            responses:
+                '200':
+                    $ref: '#/components/responses/UserResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+
+        patch:
+            summary: Partially update user
+            description: Update specific user fields
+            operationId: patchUser
+            tags:
+                - Users
+            requestBody:
+                $ref: '#/components/requestBodies/PatchUserRequest'
+            responses:
+                '200':
+                    $ref: '#/components/responses/UserResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+
+        delete:
+            summary: Delete user
+            description: Soft delete a user (deactivate account)
+            operationId: deleteUser
+            tags:
+                - Users
+            responses:
+                '204':
+                    description: User successfully deleted
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+
+    /projects:
+        get:
+            summary: List projects
+            description: Get a paginated list of projects the user has access to
+            operationId: listProjects
+            tags:
+                - Projects
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+                -   $ref: '#/components/parameters/OffsetParam'
+                -   name: status
+                    in: query
+                    description: Filter projects by status
+                    required: false
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/ProjectStatus'
+                    style: form
+                    explode: true
+                    example: [ "active", "planning" ]
+                -   name: priority
+                    in: query
+                    description: Filter projects by priority level
+                    required: false
+                    schema:
+                        type: array
+                        items:
+                            type: integer
+                            minimum: 1
+                            maximum: 5
+                    style: form
+                    explode: true
+                    example: [ 1, 2 ]
+                -   name: startDate
+                    in: query
+                    description: Filter projects starting after this date
+                    required: false
+                    schema:
+                        type: string
+                        format: date
+                    example: "2024-01-01"
+                -   name: endDate
+                    in: query
+                    description: Filter projects ending before this date
+                    required: false
+                    schema:
+                        type: string
+                        format: date
+                    example: "2024-12-31"
+            responses:
+                '200':
+                    $ref: '#/components/responses/ProjectsResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+
+        post:
+            summary: Create a new project
+            description: Create a new project
+            operationId: createProject
+            tags:
+                - Projects
+            requestBody:
+                $ref: '#/components/requestBodies/CreateProjectRequest'
+            responses:
+                '201':
+                    $ref: '#/components/responses/ProjectResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+
+    /projects/{projectId}:
+        parameters:
+            -   $ref: '#/components/parameters/ProjectIdParam'
+
+        get:
+            summary: Get project by ID
+            description: Retrieve detailed information about a specific project
+            operationId: getProjectById
+            tags:
+                - Projects
+            responses:
+                '200':
+                    $ref: '#/components/responses/ProjectResponse'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+
+        put:
+            summary: Update project
+            description: Update all project information
+            operationId: updateProject
+            tags:
+                - Projects
+            requestBody:
+                $ref: '#/components/requestBodies/UpdateProjectRequest'
+            responses:
+                '200':
+                    $ref: '#/components/responses/ProjectResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+
+        delete:
+            summary: Delete project
+            description: Delete a project and all associated data
+            operationId: deleteProject
+            tags:
+                - Projects
+            responses:
+                '204':
+                    description: Project successfully deleted
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+
+    /projects/{projectId}/tasks:
+        parameters:
+            -   $ref: '#/components/parameters/ProjectIdParam'
+
+        get:
+            summary: List tasks in project
+            description: Get all tasks belonging to a specific project
+            operationId: listProjectTasks
+            tags:
+                - Tasks
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+                -   $ref: '#/components/parameters/OffsetParam'
+                -   name: assignee
+                    in: query
+                    description: Filter tasks by assignee user ID
+                    required: false
+                    schema:
+                        type: string
+                        format: uuid
+                    example: "550e8400-e29b-41d4-a716-446655440000"
+                -   name: status
+                    in: query
+                    description: Filter tasks by status
+                    required: false
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/TaskStatus'
+                    style: form
+                    explode: true
+                    example: [ "in_progress", "review" ]
+                -   name: dueDate
+                    in: query
+                    description: Filter tasks due before this date
+                    required: false
+                    schema:
+                        type: string
+                        format: date
+                    example: "2024-03-15"
+            responses:
+                '200':
+                    $ref: '#/components/responses/TasksResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+
+        post:
+            summary: Create a new task
+            description: Create a new task in the specified project
+            operationId: createTask
+            tags:
+                - Tasks
+            requestBody:
+                $ref: '#/components/requestBodies/CreateTaskRequest'
+            responses:
+                '201':
+                    $ref: '#/components/responses/TaskResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+
+        head:
+            summary: Head to check tasks are present
+            description: Head to check task are present
+            operationId: headProjectTasks
+            tags:
+                - Tasks
+            responses:
+                '200':
+                    description: Tasks are present
+
+    /tasks/{taskId}:
+        parameters:
+            -   $ref: '#/components/parameters/TaskIdParam'
+
+        get:
+            summary: Get task by ID
+            description: Retrieve detailed information about a specific task
+            operationId: getTaskById
+            tags:
+                - Tasks
+            responses:
+                '200':
+                    $ref: '#/components/responses/TaskResponse'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+
+        patch:
+            summary: Update task
+            description: Partially update task information
+            operationId: updateTask
+            tags:
+                - Tasks
+            requestBody:
+                $ref: '#/components/requestBodies/PatchTaskRequest'
+            responses:
+                '200':
+                    $ref: '#/components/responses/TaskResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+
+        delete:
+            summary: Delete task
+            description: Delete a task
+            operationId: deleteTask
+            tags:
+                - Tasks
+            responses:
+                '204':
+                    description: Task successfully deleted
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+
+        head:
+            summary: Head to check task
+            description: Head to check task
+            operationId: headTask
+            tags:
+                - Tasks
+            responses:
+                '200':
+                    description: Task is present
+
+    /fake:
+        get:
+            summary: Fake operation to check ignore
+            description: Operation to check if it will be ignored in TestGenerator
+            operationId: fakeOperation
+            tags:
+                - Projects
+            parameters:
+                -   $ref: '#/components/parameters/LimitParam'
+            responses:
+                '200':
+                    description: Answer from fake handler
+
+components:
+    securitySchemes:
+        ApiKeyAuth:
+            type: apiKey
+            in: header
+            name: X-API-Key
+            description: API key for authentication
+
+    parameters:
+        UserIdParam:
+            name: userId
+            in: path
+            required: true
+            description: Unique identifier for the user
+            schema:
+                type: string
+                format: uuid
+                pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+            example: "550e8400-e29b-41d4-a716-446655440000"
+
+        ProjectIdParam:
+            name: projectId
+            in: path
+            required: true
+            description: Unique identifier for the project
+            schema:
+                type: string
+                format: uuid
+                pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+            example: "123e4567-e89b-12d3-a456-426614174000"
+
+        TaskIdParam:
+            name: taskId
+            in: path
+            required: true
+            description: Unique identifier for the task
+            schema:
+                type: string
+                format: uuid
+                pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+            example: "987fcdeb-51a2-43d1-9c47-123456789abc"
+
+        LimitParam:
+            name: limit
+            in: query
+            description: Maximum number of items to return
+            required: false
+            schema:
+                type: integer
+                minimum: 1
+                maximum: 100
+                default: 20
+            example: 20
+
+        OffsetParam:
+            name: offset
+            in: query
+            description: Number of items to skip for pagination
+            required: false
+            schema:
+                type: integer
+                minimum: 0
+                default: 0
+            example: 0
+
+    schemas:
+        # Enums
+        UserRole:
+            type: string
+            enum:
+                - admin
+                - project_manager
+                - developer
+                - designer
+                - tester
+                - viewer
+            example: developer
+
+        ProjectStatus:
+            type: string
+            enum:
+                - planning
+                - active
+                - on_hold
+                - completed
+                - archived
+                - cancelled
+            example: active
+
+        ProjectCategory:
+            type: string
+            enum:
+                - web_development
+                - mobile_app
+                - data_science
+                - infrastructure
+                - marketing
+                - research
+            example: web_development
+
+        TaskStatus:
+            type: string
+            enum:
+                - todo
+                - in_progress
+                - review
+                - testing
+                - done
+                - blocked
+            example: in_progress
+
+        Priority:
+            type: integer
+            minimum: 1
+            maximum: 5
+            description: Priority level (1 = highest, 5 = lowest)
+            example: 2
+
+        # Base schemas
+        BaseEntity:
+            type: object
+            required:
+                - id
+                - createdAt
+                - updatedAt
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                    description: Unique identifier
+                    readOnly: true
+                    example: "550e8400-e29b-41d4-a716-446655440000"
+                createdAt:
+                    type: string
+                    format: date-time
+                    description: Timestamp when the entity was created
+                    readOnly: true
+                    example: "2024-01-15T10:30:00Z"
+                updatedAt:
+                    type: string
+                    format: date-time
+                    description: Timestamp when the entity was last updated
+                    readOnly: true
+                    example: "2024-01-20T14:45:30Z"
+
+        # User schemas
+        UserProfile:
+            type: object
+            required:
+                - firstName
+                - lastName
+            properties:
+                firstName:
+                    type: string
+                    minLength: 1
+                    maxLength: 50
+                    pattern: '^[a-zA-Z\s\-\.]+$'
+                    example: "John"
+                lastName:
+                    type: string
+                    minLength: 1
+                    maxLength: 50
+                    pattern: '^[a-zA-Z\s\-\.]+$'
+                    example: "Doe"
+                avatar:
+                    type: string
+                    format: uri
+                    nullable: true
+                    example: "https://cdn.example.com/avatars/johndoe.jpg"
+                bio:
+                    type: string
+                    maxLength: 500
+                    nullable: true
+                    example: "Senior full-stack developer with 8+ years of experience"
+                phoneNumber:
+                    type: string
+                    pattern: '^\+?[1-9]\d{1,14}$'
+                    nullable: true
+                    example: "+1-555-123-4567"
+                timezone:
+                    type: string
+                    minLength: 3
+                    maxLength: 50
+                    example: "America/New_York"
+                skills:
+                    type: array
+                    items:
+                        type: string
+                        minLength: 2
+                        maxLength: 50
+                    maxItems: 20
+                    example: [ "JavaScript", "Python", "React", "Node.js" ]
+
+        User:
+            allOf:
+                -   $ref: '#/components/schemas/BaseEntity'
+                -   type: object
+                    required:
+                        - email
+                        - role
+                        - isActive
+                        - profile
+                    properties:
+                        email:
+                            type: string
+                            format: email
+                            maxLength: 255
+                            example: "john.doe@example.com"
+                        role:
+                            $ref: '#/components/schemas/UserRole'
+                        isActive:
+                            type: boolean
+                            description: Whether the user account is active
+                            example: true
+                        lastLoginAt:
+                            type: string
+                            format: date-time
+                            nullable: true
+                            readOnly: true
+                            example: "2024-01-20T09:15:00Z"
+                        profile:
+                            $ref: '#/components/schemas/UserProfile'
+
+        # Project schemas
+        ProjectSettings:
+            type: object
+            properties:
+                isPublic:
+                    type: boolean
+                    description: Whether the project is publicly visible
+                    default: false
+                    example: false
+                allowGuestComments:
+                    type: boolean
+                    description: Whether guests can comment on public projects
+                    default: false
+                    example: true
+                defaultTaskPriority:
+                    $ref: '#/components/schemas/Priority'
+                autoArchiveDays:
+                    type: integer
+                    minimum: 30
+                    maximum: 365
+                    nullable: true
+                    description: Auto-archive project after N days of inactivity
+                    example: 90
+
+        Project:
+            allOf:
+                -   $ref: '#/components/schemas/BaseEntity'
+                -   type: object
+                    required:
+                        - name
+                        - description
+                        - status
+                        - category
+                        - priority
+                        - ownerId
+                        - settings
+                    properties:
+                        name:
+                            type: string
+                            minLength: 1
+                            maxLength: 100
+                            example: "E-commerce Platform Redesign"
+                        description:
+                            type: string
+                            minLength: 1
+                            maxLength: 2000
+                            example: "Complete redesign of the e-commerce platform with improved UX and performance"
+                        status:
+                            $ref: '#/components/schemas/ProjectStatus'
+                        category:
+                            $ref: '#/components/schemas/ProjectCategory'
+                        priority:
+                            $ref: '#/components/schemas/Priority'
+                        startDate:
+                            type: string
+                            format: date
+                            nullable: true
+                            example: "2024-02-01"
+                        endDate:
+                            type: string
+                            format: date
+                            nullable: true
+                            example: "2024-06-30"
+                        budget:
+                            type: number
+                            minimum: 0
+                            nullable: true
+                            example: 50000.00
+                        ownerId:
+                            type: string
+                            format: uuid
+                            example: "550e8400-e29b-41d4-a716-446655440000"
+                        teamMembers:
+                            type: array
+                            items:
+                                type: string
+                                format: uuid
+                            maxItems: 50
+                            example: [ "550e8400-e29b-41d4-a716-446655440000", "123e4567-e89b-12d3-a456-426614174000" ]
+                        tags:
+                            type: array
+                            items:
+                                type: string
+                                minLength: 1
+                                maxLength: 30
+                            maxItems: 10
+                            example: [ "frontend", "react", "responsive", "api" ]
+                        settings:
+                            $ref: '#/components/schemas/ProjectSettings'
+
+        # Task schemas
+        TaskAttachment:
+            type: object
+            required:
+                - id
+                - filename
+                - url
+                - size
+                - uploadedAt
+                - uploadedBy
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                    example: "987fcdeb-51a2-43d1-9c47-123456789abc"
+                filename:
+                    type: string
+                    minLength: 1
+                    maxLength: 255
+                    example: "wireframe_v2.pdf"
+                url:
+                    type: string
+                    format: uri
+                    example: "https://cdn.example.com/attachments/wireframe_v2.pdf"
+                size:
+                    type: integer
+                    minimum: 0
+                    description: File size in bytes
+                    example: 1048576
+                mimeType:
+                    type: string
+                    example: "application/pdf"
+                uploadedAt:
+                    type: string
+                    format: date-time
+                    example: "2024-01-18T16:20:00Z"
+                uploadedBy:
+                    type: string
+                    format: uuid
+                    example: "550e8400-e29b-41d4-a716-446655440000"
+
+        Task:
+            allOf:
+                -   $ref: '#/components/schemas/BaseEntity'
+                -   type: object
+                    required:
+                        - title
+                        - status
+                        - priority
+                        - projectId
+                        - createdBy
+                    properties:
+                        title:
+                            type: string
+                            minLength: 1
+                            maxLength: 200
+                            example: "Implement user authentication system"
+                        description:
+                            type: string
+                            maxLength: 5000
+                            nullable: true
+                            example: "Create a secure authentication system with JWT tokens, password hashing, and role-based access control"
+                        status:
+                            $ref: '#/components/schemas/TaskStatus'
+                        priority:
+                            $ref: '#/components/schemas/Priority'
+                        projectId:
+                            type: string
+                            format: uuid
+                            example: "123e4567-e89b-12d3-a456-426614174000"
+                        assigneeId:
+                            type: string
+                            format: uuid
+                            nullable: true
+                            example: "550e8400-e29b-41d4-a716-446655440000"
+                        createdBy:
+                            type: string
+                            format: uuid
+                            example: "123e4567-e89b-12d3-a456-426614174000"
+                        dueDate:
+                            type: string
+                            format: date
+                            nullable: true
+                            example: "2024-03-15"
+                        estimatedHours:
+                            type: number
+                            minimum: 0.5
+                            maximum: 1000
+                            nullable: true
+                            example: 16.5
+                        actualHours:
+                            type: number
+                            minimum: 0
+                            nullable: true
+                            readOnly: true
+                            example: 12.5
+                        labels:
+                            type: array
+                            items:
+                                type: string
+                                minLength: 1
+                                maxLength: 30
+                            maxItems: 10
+                            example: [ "backend", "authentication", "security" ]
+                        attachments:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/TaskAttachment'
+                            maxItems: 20
+                            readOnly: true
+
+        # Response wrapper schemas
+        PaginatedResponse:
+            type: object
+            required:
+                - data
+                - pagination
+            properties:
+                pagination:
+                    type: object
+                    required:
+                        - limit
+                        - offset
+                        - total
+                        - hasMore
+                    properties:
+                        limit:
+                            type: integer
+                            minimum: 1
+                            example: 20
+                        offset:
+                            type: integer
+                            minimum: 0
+                            example: 0
+                        total:
+                            type: integer
+                            minimum: 0
+                            example: 150
+                        hasMore:
+                            type: boolean
+                            example: true
+
+        UsersResponse:
+            allOf:
+                -   $ref: '#/components/schemas/PaginatedResponse'
+                -   type: object
+                    properties:
+                        data:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/User'
+
+        ProjectsResponse:
+            allOf:
+                -   $ref: '#/components/schemas/PaginatedResponse'
+                -   type: object
+                    properties:
+                        data:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Project'
+
+        PublicProjectsResponse:
+            allOf:
+                -   $ref: '#/components/schemas/PaginatedResponse'
+                -   type: object
+                    properties:
+                        data:
+                            type: array
+                            items:
+                                allOf:
+                                    -   $ref: '#/components/schemas/Project'
+                                    -   type: object
+                                        properties:
+                                            # Override sensitive fields for public view
+                                            budget:
+                                                type: "null"
+                                            teamMembers:
+                                                type: array
+                                                items:
+                                                    type: string
+                                                description: "Public view shows member count only"
+                                                maxItems: 0
+
+        TasksResponse:
+            allOf:
+                -   $ref: '#/components/schemas/PaginatedResponse'
+                -   type: object
+                    properties:
+                        data:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Task'
+
+        HealthStatus:
+            type: object
+            required:
+                - status
+                - timestamp
+                - version
+            properties:
+                status:
+                    type: string
+                    enum: [ healthy, degraded, unhealthy ]
+                    example: healthy
+                timestamp:
+                    type: string
+                    format: date-time
+                    example: "2024-01-20T15:30:00Z"
+                version:
+                    type: string
+                    pattern: '^\d+\.\d+\.\d+$'
+                    example: "2.1.0"
+                services:
+                    type: object
+                    properties:
+                        database:
+                            type: string
+                            enum: [ up, down, degraded ]
+                            example: up
+                        cache:
+                            type: string
+                            enum: [ up, down, degraded ]
+                            example: up
+                        storage:
+                            type: string
+                            enum: [ up, down, degraded ]
+                            example: up
+
+        ApiError:
+            type: object
+            required:
+                - error
+                - message
+                - timestamp
+                - path
+            properties:
+                error:
+                    type: string
+                    example: "Bad Request"
+                message:
+                    oneOf:
+                        -   type: string
+                            example: "Invalid input data"
+                        -   type: array
+                            items:
+                                type: string
+                            example: [ "Email is required", "Password must be at least 8 characters" ]
+                code:
+                    type: string
+                    nullable: true
+                    example: "VALIDATION_ERROR"
+                timestamp:
+                    type: string
+                    format: date-time
+                    example: "2024-01-20T15:30:00Z"
+                path:
+                    type: string
+                    example: "/api/v2/users"
+                details:
+                    type: object
+                    nullable: true
+                    additionalProperties: true
+                    example:
+                        field: "email"
+                        rejectedValue: "invalid-email"
+
+        ValidationError:
+            type: object
+            required:
+                - index
+                - field
+                - message
+                - code
+            properties:
+                index:
+                    type: integer
+                    minimum: 0
+                    description: Index of the item in the array that failed validation
+                    example: 0
+                field:
+                    type: string
+                    description: The field that failed validation
+                    example: "email"
+                message:
+                    type: string
+                    description: Human-readable error message
+                    example: "Email is required"
+                code:
+                    type: string
+                    description: Machine-readable error code
+                    example: "REQUIRED_FIELD"
+                rejectedValue:
+                    description: The value that was rejected (can be any type)
+                    nullable: true
+                    example: ""
+                constraint:
+                    type: object
+                    nullable: true
+                    additionalProperties: true
+                    description: The constraint that was violated
+                    example:
+                        required: true
+
+    requestBodies:
+        CreateUserRequest:
+            description: User creation data
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        required:
+                            - email
+                            - role
+                            - profile
+                        properties:
+                            id:
+                                type: string
+                                format: uuid
+                            email:
+                                type: string
+                                format: email
+                                maxLength: 255
+                                example: "jane.doe@example.com"
+                            role:
+                                $ref: '#/components/schemas/UserRole'
+                            profile:
+                                $ref: '#/components/schemas/UserProfile'
+                            isActive:
+                                type: boolean
+                                default: true
+                                example: true
+                    example:
+                        email: "jane.doe@example.com"
+                        role: "developer"
+                        isActive: true
+                        profile:
+                            firstName: "Jane"
+                            lastName: "Doe"
+                            bio: "Frontend developer specializing in React and Vue.js"
+                            phoneNumber: "+1-555-987-6543"
+                            timezone: "America/Los_Angeles"
+                            skills: [ "React", "Vue.js", "TypeScript", "CSS3" ]
+
+        CreateUsersBulkRequest:
+            description: Bulk user creation data (array of users)
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: array
+                        items:
+                            type: object
+                            required:
+                                - email
+                                - role
+                                - profile
+                            properties:
+                                id:
+                                    type: string
+                                    format: uuid
+                                email:
+                                    type: string
+                                    format: email
+                                    maxLength: 255
+                                role:
+                                    $ref: '#/components/schemas/UserRole'
+                                profile:
+                                    $ref: '#/components/schemas/UserProfile'
+                                isActive:
+                                    type: boolean
+                                    default: true
+                        minItems: 1
+                        maxItems: 100
+                    example:
+                        -   email: "jane.doe@example.com"
+                            role: "developer"
+                            isActive: true
+                            profile:
+                                firstName: "Jane"
+                                lastName: "Doe"
+                                bio: "Frontend developer specializing in React and Vue.js"
+                                phoneNumber: "+1-555-987-6543"
+                                timezone: "America/Los_Angeles"
+                                skills: [ "React", "Vue.js", "TypeScript", "CSS3" ]
+                        -   email: "bob.smith@example.com"
+                            role: "designer"
+                            isActive: true
+                            profile:
+                                firstName: "Bob"
+                                lastName: "Smith"
+                                bio: "UX/UI designer with focus on accessibility"
+                                phoneNumber: "+1-555-234-5678"
+                                timezone: "America/Chicago"
+                                skills: [ "Figma", "Sketch", "CSS", "HTML" ]
+
+        UpdateUserRequest:
+            description: Complete user update data
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        required:
+                            - email
+                            - role
+                            - profile
+                            - isActive
+                        properties:
+                            email:
+                                type: string
+                                format: email
+                                maxLength: 255
+                            role:
+                                $ref: '#/components/schemas/UserRole'
+                            profile:
+                                $ref: '#/components/schemas/UserProfile'
+                            isActive:
+                                type: boolean
+
+        PatchUserRequest:
+            description: Partial user update data
+            required: true
+            content:
+                application/json:
+                    schema:
+                        anyOf:
+                            -   type: object
+                                properties:
+                                    email:
+                                        type: string
+                                        format: email
+                                        maxLength: 255
+                            -   type: object
+                                properties:
+                                    role:
+                                        $ref: '#/components/schemas/UserRole'
+                            -   type: object
+                                properties:
+                                    isActive:
+                                        type: boolean
+                            -   type: object
+                                properties:
+                                    profile:
+                                        $ref: '#/components/schemas/UserProfile'
+                        additionalProperties: false
+                    example:
+                        profile:
+                            bio: "Updated bio with new experience"
+                            skills: [ "React", "Vue.js", "TypeScript", "Node.js", "GraphQL" ]
+
+        CreateProjectRequest:
+            description: Project creation data
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        required:
+                            - name
+                            - description
+                            - category
+                            - priority
+                        properties:
+                            name:
+                                type: string
+                                minLength: 1
+                                maxLength: 100
+                                example: "Mobile App Development"
+                            description:
+                                type: string
+                                minLength: 1
+                                maxLength: 2000
+                                example: "Develop a cross-platform mobile application for customer engagement"
+                            category:
+                                $ref: '#/components/schemas/ProjectCategory'
+                            priority:
+                                $ref: '#/components/schemas/Priority'
+                            startDate:
+                                type: string
+                                format: date
+                                nullable: true
+                                example: "2024-03-01"
+                            endDate:
+                                type: string
+                                format: date
+                                nullable: true
+                                example: "2024-08-31"
+                            budget:
+                                type: number
+                                minimum: 0
+                                nullable: true
+                                example: 75000.00
+                            teamMembers:
+                                type: array
+                                items:
+                                    type: string
+                                    format: uuid
+                                maxItems: 50
+                                example: [ "550e8400-e29b-41d4-a716-446655440000" ]
+                            tags:
+                                type: array
+                                items:
+                                    type: string
+                                    minLength: 1
+                                    maxLength: 30
+                                maxItems: 10
+                                example: [ "mobile", "react-native", "ios", "android" ]
+                            settings:
+                                allOf:
+                                    -   $ref: '#/components/schemas/ProjectSettings'
+                                    -   type: object
+                                        properties:
+                                            isPublic:
+                                                default: false
+                                            allowGuestComments:
+                                                default: false
+                    example:
+                        name: "Mobile App Development"
+                        description: "Develop a cross-platform mobile application for customer engagement"
+                        category: "mobile_app"
+                        priority: 2
+                        startDate: "2024-03-01"
+                        endDate: "2024-08-31"
+                        budget: 75000.00
+                        teamMembers: [ "550e8400-e29b-41d4-a716-446655440000" ]
+                        tags: [ "mobile", "react-native", "ios", "android" ]
+                        settings:
+                            isPublic: false
+                            allowGuestComments: false
+                            defaultTaskPriority: 3
+                            autoArchiveDays: 90
+
+        UpdateProjectRequest:
+            description: Complete project update data
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        required:
+                            - name
+                            - description
+                            - status
+                            - category
+                            - priority
+                            - settings
+                        properties:
+                            name:
+                                type: string
+                                minLength: 1
+                                maxLength: 100
+                            description:
+                                type: string
+                                minLength: 1
+                                maxLength: 2000
+                            status:
+                                $ref: '#/components/schemas/ProjectStatus'
+                            category:
+                                $ref: '#/components/schemas/ProjectCategory'
+                            priority:
+                                $ref: '#/components/schemas/Priority'
+                            startDate:
+                                type: string
+                                format: date
+                                nullable: true
+                            endDate:
+                                type: string
+                                format: date
+                                nullable: true
+                            budget:
+                                type: number
+                                minimum: 0
+                                nullable: true
+                            teamMembers:
+                                type: array
+                                items:
+                                    type: string
+                                    format: uuid
+                                maxItems: 50
+                            tags:
+                                type: array
+                                items:
+                                    type: string
+                                    minLength: 1
+                                    maxLength: 30
+                                maxItems: 10
+                            settings:
+                                $ref: '#/components/schemas/ProjectSettings'
+
+        CreateTaskRequest:
+            description: Task creation data
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        required:
+                            - title
+                            - priority
+                        properties:
+                            title:
+                                type: string
+                                minLength: 1
+                                maxLength: 200
+                                example: "Design user registration flow"
+                            description:
+                                type: string
+                                maxLength: 5000
+                                nullable: true
+                                example: "Create wireframes and mockups for the user registration process, including form validation and error handling"
+                            priority:
+                                $ref: '#/components/schemas/Priority'
+                            assigneeId:
+                                type: string
+                                format: uuid
+                                nullable: true
+                                example: "550e8400-e29b-41d4-a716-446655440000"
+                            dueDate:
+                                type: string
+                                format: date
+                                nullable: true
+                                example: "2024-03-20"
+                            estimatedHours:
+                                type: number
+                                minimum: 0.5
+                                maximum: 1000
+                                nullable: true
+                                example: 8.0
+                            labels:
+                                type: array
+                                items:
+                                    type: string
+                                    minLength: 1
+                                    maxLength: 30
+                                maxItems: 10
+                                example: [ "design", "ux", "registration" ]
+                    example:
+                        title: "Design user registration flow"
+                        description: "Create wireframes and mockups for the user registration process, including form validation and error handling"
+                        priority: 2
+                        assigneeId: "550e8400-e29b-41d4-a716-446655440000"
+                        dueDate: "2024-03-20"
+                        estimatedHours: 8.0
+                        labels: [ "design", "ux", "registration" ]
+
+        PatchTaskRequest:
+            description: Partial task update data
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        additionalProperties: false
+                        properties:
+                            title:
+                                type: string
+                                minLength: 1
+                                maxLength: 200
+                            description:
+                                type: string
+                                maxLength: 5000
+                                nullable: true
+                            status:
+                                $ref: '#/components/schemas/TaskStatus'
+                            priority:
+                                $ref: '#/components/schemas/Priority'
+                            assigneeId:
+                                type: string
+                                format: uuid
+                                nullable: true
+                            dueDate:
+                                type: string
+                                format: date
+                                nullable: true
+                            estimatedHours:
+                                type: number
+                                minimum: 0.5
+                                maximum: 1000
+                                nullable: true
+                            actualHours:
+                                type: number
+                                minimum: 0
+                                nullable: true
+                            labels:
+                                type: array
+                                items:
+                                    type: string
+                                    minLength: 1
+                                    maxLength: 30
+                                maxItems: 10
+                    example:
+                        status: "in_progress"
+                        assigneeId: "123e4567-e89b-12d3-a456-426614174000"
+                        actualHours: 3.5
+
+    responses:
+        # Success responses
+        HealthResponse:
+            description: API health status
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/HealthStatus'
+                    example:
+                        status: "healthy"
+                        timestamp: "2024-01-20T15:30:00Z"
+                        version: "2.1.0"
+                        services:
+                            database: "up"
+                            cache: "up"
+                            storage: "up"
+
+        UserResponse:
+            description: Single user data
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/User'
+                    example:
+                        id: "550e8400-e29b-41d4-a716-446655440000"
+                        email: "john.doe@example.com"
+                        role: "developer"
+                        isActive: true
+                        lastLoginAt: "2024-01-20T09:15:00Z"
+                        createdAt: "2024-01-15T10:30:00Z"
+                        updatedAt: "2024-01-20T14:45:30Z"
+                        profile:
+                            firstName: "John"
+                            lastName: "Doe"
+                            avatar: "https://cdn.example.com/avatars/johndoe.jpg"
+                            bio: "Senior full-stack developer with 8+ years of experience"
+                            phoneNumber: "+1-555-123-4567"
+                            timezone: "America/New_York"
+                            skills: [ "JavaScript", "Python", "React", "Node.js" ]
+
+        UsersResponse:
+            description: Paginated list of users
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/UsersResponse'
+                    example:
+                        data:
+                            -   id: "550e8400-e29b-41d4-a716-446655440000"
+                                email: "john.doe@example.com"
+                                role: "developer"
+                                isActive: true
+                                lastLoginAt: "2024-01-20T09:15:00Z"
+                                createdAt: "2024-01-15T10:30:00Z"
+                                updatedAt: "2024-01-20T14:45:30Z"
+                                profile:
+                                    firstName: "John"
+                                    lastName: "Doe"
+                                    avatar: "https://cdn.example.com/avatars/johndoe.jpg"
+                                    bio: "Senior full-stack developer with 8+ years of experience"
+                                    phoneNumber: "+1-555-123-4567"
+                                    timezone: "America/New_York"
+                                    skills: [ "JavaScript", "Python", "React", "Node.js" ]
+                        pagination:
+                            limit: 20
+                            offset: 0
+                            total: 150
+                            hasMore: true
+
+        ProjectResponse:
+            description: Single project data
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Project'
+                    example:
+                        id: "123e4567-e89b-12d3-a456-426614174000"
+                        name: "E-commerce Platform Redesign"
+                        description: "Complete redesign of the e-commerce platform with improved UX and performance"
+                        status: "active"
+                        category: "web_development"
+                        priority: 2
+                        startDate: "2024-02-01"
+                        endDate: "2024-06-30"
+                        budget: 50000.00
+                        ownerId: "550e8400-e29b-41d4-a716-446655440000"
+                        teamMembers: [ "550e8400-e29b-41d4-a716-446655440000", "123e4567-e89b-12d3-a456-426614174000" ]
+                        tags: [ "frontend", "react", "responsive", "api" ]
+                        settings:
+                            isPublic: false
+                            allowGuestComments: true
+                            defaultTaskPriority: 3
+                            autoArchiveDays: 90
+                        createdAt: "2024-01-15T10:30:00Z"
+                        updatedAt: "2024-01-20T14:45:30Z"
+
+        ProjectsResponse:
+            description: Paginated list of projects
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/ProjectsResponse'
+                    example:
+                        data:
+                            -   id: "123e4567-e89b-12d3-a456-426614174000"
+                                name: "E-commerce Platform Redesign"
+                                description: "Complete redesign of the e-commerce platform with improved UX and performance"
+                                status: "active"
+                                category: "web_development"
+                                priority: 2
+                                startDate: "2024-02-01"
+                                endDate: "2024-06-30"
+                                budget: 50000.00
+                                ownerId: "550e8400-e29b-41d4-a716-446655440000"
+                                teamMembers: [ "550e8400-e29b-41d4-a716-446655440000" ]
+                                tags: [ "frontend", "react", "responsive" ]
+                                settings:
+                                    isPublic: false
+                                    allowGuestComments: true
+                                    defaultTaskPriority: 3
+                                    autoArchiveDays: 90
+                                createdAt: "2024-01-15T10:30:00Z"
+                                updatedAt: "2024-01-20T14:45:30Z"
+                        pagination:
+                            limit: 20
+                            offset: 0
+                            total: 25
+                            hasMore: true
+
+        PublicProjectsResponse:
+            description: Paginated list of public projects
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/PublicProjectsResponse'
+                    example:
+                        data:
+                            -   id: "123e4567-e89b-12d3-a456-426614174000"
+                                name: "Open Source UI Components"
+                                description: "A collection of reusable React UI components"
+                                status: "active"
+                                category: "web_development"
+                                priority: 3
+                                startDate: "2024-01-01"
+                                endDate: null
+                                budget: null
+                                ownerId: "550e8400-e29b-41d4-a716-446655440000"
+                                teamMembers: [ ]
+                                tags: [ "react", "components", "open-source" ]
+                                settings:
+                                    isPublic: true
+                                    allowGuestComments: true
+                                    defaultTaskPriority: 3
+                                    autoArchiveDays: null
+                                createdAt: "2024-01-01T00:00:00Z"
+                                updatedAt: "2024-01-15T12:00:00Z"
+                        pagination:
+                            limit: 20
+                            offset: 0
+                            total: 8
+                            hasMore: false
+
+        TaskResponse:
+            description: Single task data
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Task'
+                    example:
+                        id: "987fcdeb-51a2-43d1-9c47-123456789abc"
+                        title: "Implement user authentication system"
+                        description: "Create a secure authentication system with JWT tokens, password hashing, and role-based access control"
+                        status: "in_progress"
+                        priority: 2
+                        projectId: "123e4567-e89b-12d3-a456-426614174000"
+                        assigneeId: "550e8400-e29b-41d4-a716-446655440000"
+                        createdBy: "123e4567-e89b-12d3-a456-426614174000"
+                        dueDate: "2024-03-15"
+                        estimatedHours: 16.5
+                        actualHours: 12.5
+                        labels: [ "backend", "authentication", "security" ]
+                        attachments:
+                            -   id: "abc123def-456g-789h-012i-345jklmnopqr"
+                                filename: "auth_flow_diagram.png"
+                                url: "https://cdn.example.com/attachments/auth_flow_diagram.png"
+                                size: 524288
+                                mimeType: "image/png"
+                                uploadedAt: "2024-01-18T16:20:00Z"
+                                uploadedBy: "550e8400-e29b-41d4-a716-446655440000"
+                        createdAt: "2024-01-15T10:30:00Z"
+                        updatedAt: "2024-01-20T14:45:30Z"
+
+        TasksResponse:
+            description: Paginated list of tasks
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/TasksResponse'
+                    example:
+                        data:
+                            -   id: "987fcdeb-51a2-43d1-9c47-123456789abc"
+                                title: "Implement user authentication system"
+                                description: "Create a secure authentication system with JWT tokens"
+                                status: "in_progress"
+                                priority: 2
+                                projectId: "123e4567-e89b-12d3-a456-426614174000"
+                                assigneeId: "550e8400-e29b-41d4-a716-446655440000"
+                                createdBy: "123e4567-e89b-12d3-a456-426614174000"
+                                dueDate: "2024-03-15"
+                                estimatedHours: 16.5
+                                actualHours: 12.5
+                                labels: [ "backend", "authentication", "security" ]
+                                attachments: [ ]
+                                createdAt: "2024-01-15T10:30:00Z"
+                                updatedAt: "2024-01-20T14:45:30Z"
+                        pagination:
+                            limit: 20
+                            offset: 0
+                            total: 45
+                            hasMore: true
+
+        # Error responses
+        BadRequest:
+            description: Bad request - invalid input data
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/ApiError'
+                    example:
+                        error: "Bad Request"
+                        message: [ "Email is required", "Password must be at least 8 characters" ]
+                        code: "VALIDATION_ERROR"
+                        timestamp: "2024-01-20T15:30:00Z"
+                        path: "/api/v2/users"
+                        details:
+                            field: "email"
+                            rejectedValue: ""
+
+        ValidationErrorsArray:
+            description: Array of validation errors for bulk operations
+            content:
+                application/json:
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/ValidationError'
+                        minItems: 1
+                    example:
+                        -   index: 0
+                            field: "email"
+                            message: "Email is required"
+                            code: "REQUIRED_FIELD"
+                            rejectedValue: null
+                            constraint:
+                                required: true
+                        -   index: 1
+                            field: "profile.firstName"
+                            message: "First name must match pattern ^[a-zA-Z\\s\\-\\.]+$"
+                            code: "PATTERN_MISMATCH"
+                            rejectedValue: "John123"
+                            constraint:
+                                pattern: "^[a-zA-Z\\s\\-\\.]+$"
+                        -   index: 2
+                            field: "role"
+                            message: "Role must be one of: admin, project_manager, developer, designer, tester, viewer"
+                            code: "ENUM_MISMATCH"
+                            rejectedValue: "super_admin"
+                            constraint:
+                                enum: [ "admin", "project_manager", "developer", "designer", "tester", "viewer" ]
+
+        Unauthorized:
+            description: Authentication required
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/ApiError'
+                    example:
+                        error: "Unauthorized"
+                        message: "Authentication required. Please provide a valid API key."
+                        code: "AUTHENTICATION_REQUIRED"
+                        timestamp: "2024-01-20T15:30:00Z"
+                        path: "/api/v2/users"
+
+        Forbidden:
+            description: Access denied - insufficient permissions
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/ApiError'
+                    example:
+                        error: "Forbidden"
+                        message: "You don't have permission to access this resource."
+                        code: "INSUFFICIENT_PERMISSIONS"
+                        timestamp: "2024-01-20T15:30:00Z"
+                        path: "/api/v2/users/550e8400-e29b-41d4-a716-446655440000"
+
+        NotFound:
+            description: Resource not found
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/ApiError'
+                    example:
+                        error: "Not Found"
+                        message: "The requested resource was not found."
+                        code: "RESOURCE_NOT_FOUND"
+                        timestamp: "2024-01-20T15:30:00Z"
+                        path: "/api/v2/users/550e8400-e29b-41d4-a716-446655440000"
+
+        Conflict:
+            description: Resource conflict - duplicate data
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/ApiError'
+                    example:
+                        error: "Conflict"
+                        message: "A user with this email already exists."
+                        code: "DUPLICATE_RESOURCE"
+                        timestamp: "2024-01-20T15:30:00Z"
+                        path: "/api/v2/users"
+                        details:
+                            field: "email"
+                            rejectedValue: "john.doe@example.com"
+
+        ServiceUnavailable:
+            description: Service temporarily unavailable
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/ApiError'
+                    example:
+                        error: "Service Unavailable"
+                        message: "The service is temporarily unavailable. Please try again later."
+                        code: "SERVICE_UNAVAILABLE"
+                        timestamp: "2024-01-20T15:30:00Z"
+                        path: "/api/v2/health"
+
+tags:
+    -   name: System
+        description: System health and status endpoints
+    -   name: Users
+        description: User management operations
+    -   name: Projects
+        description: Project management operations
+    -   name: Tasks
+        description: Task management operations
+
+externalDocs:
+    description: Full API Documentation
+    url: https://docs.projectmanager.com/api

@@ -1,0 +1,65 @@
+---
+description: Cursor guidance for implementing new rules/providers/codegen backends
+globs:
+  - "core/src/main/kotlin/**/providers/**/*.kt"
+  - "core/src/main/kotlin/**/rules/**/*.kt"
+  - "core/src/main/kotlin/**/generator/**/*.kt"
+  - "core/src/test/kotlin/**/providers/**/*.kt"
+  - "core/src/test/kotlin/**/rules/**/*.kt"
+  - "generator-template/src/main/kotlin/**/generator/**/*.kt"
+alwaysApply: false
+---
+
+When refactoring or adding new functionality (rules, providers, generators), follow these generalized checklists:
+
+- New validation rule (schema/auth/compound)
+  - Implement `getRuleName()` and `apply(schema, context)`; return empty when not applicable.
+  - Use helper functions to dereference schemas and detect types.
+  - Register rule in `BuiltInRules.simpleSchemaValidationRules()` or `authValidationRules()`.
+  - Add focused tests under `core/src/test/kotlin/.../rules` covering typical and edge cases.
+  - Ensure rule returns `Sequence<RuleValue>` without side effects and preserves ordering for determinism.
+  - Keep rules small and composable; prefer composing simple rules over monoliths.
+
+- New test case provider (parameters/body/auth)
+  - Implement `provideTestCases(spec, context)`; must not mutate inputs.
+  - Set `expectedStatusCode` appropriately (typically 400 for validation failures).
+  - Add tests under `core/src/test/kotlin/.../providers` mirroring existing ones.
+  - Derive concise, user-facing test names; see existing tests for style.
+  - Accept dependencies via constructor for testability; avoid global state.
+
+- New code generator backend
+  - Implement `ArtifactGenerator` interface. Prefer Mustache templates; avoid string templating.
+  - Create `ArtifactGeneratorFactory` and register in `BuiltInGenerators.all()`.
+  - Add end-to-end test ensuring deterministic file outputs.
+  - Validate options via a dedicated `transformAndValidateOptions(...)` function; fail fast with clear errors.
+  - Keep I/O responsibilities in the generator; avoid mixing parsing/derivation concerns.
+
+- New feature module (TestGenerationModule)
+  - Create module directory with its own `build.gradle.kts` and `settings.gradle.kts`.
+  - Implement `TestGenerationModule` interface with unique `id` and `description`.
+  - Implement optional contributions: `createArtifactGeneratorFactories()`, `createSchemaValueProviders()`, `createSimpleSchemaValidationRules()`, `createAuthValidationRules()`.
+  - Add `ModuleSettingsExtractor` if module has configurable settings.
+  - Register module in CLI `GenerateCommand` and plugin `OpenApiTestGeneratorPlugin`.
+  - Add module to composite build in root `settings.gradle.kts`.
+  - Add tests under `<module>/src/test/kotlin`.
+
+- New schema value provider
+  - Implement `SchemaValueProvider` interface with unique `id`.
+  - Return `null` when not applicable; next provider in chain will be tried.
+  - Contribute via `TestGenerationModule.createSchemaValueProviders()`.
+  - Configure provider order via `exampleValues.providers` setting.
+  - Add tests ensuring deterministic output.
+
+- Acceptance criteria (for any change)
+  - `./gradlew :plugin:check :plugin:test` passes locally (Java 21, Kotlin 2.x).
+  - No detekt violations in changed files; do not reformat unrelated code.
+  - Configuration cache and task avoidance preserved (no heavy work at configuration time).
+  - Public API changes are explicitly annotated and documented.
+  - Deterministic output ordering (sort by class name and keys where applicable).
+
+- Refactoring guidance
+  - Isolate seams: extract pure functions for transformation logic to enable unit testing.
+  - Prefer constructor injection over service locators or singletons.
+  - Remove duplication by introducing small helpers or base classes when three or more call sites repeat.
+  - Keep files cohesive; split when classes exceed a clear responsibility boundary.
+

@@ -1,0 +1,228 @@
+openapi: 3.1.0
+
+info:
+    title: Complex Schema API - Validate Complex Combinations
+    version: 1.0.0
+    description: POST /validation/complex-combinations operation - Complex schema combinations
+
+servers:
+    -   url: https://api.example.com/v1
+        description: Production server
+
+tags:
+    -   name: validation
+        description: Advanced validation scenarios
+
+paths:
+    /validation/complex-combinations:
+        post:
+            tags: [validation]
+            summary: Complex schema combinations
+            operationId: validateComplexCombinations
+            description: Test endpoint for complex oneOf, anyOf, and allOf combinations
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                oneOfAnyOf:
+                                    $ref: '#/components/schemas/OneOfAnyOfObject'
+                                    description: Object with oneOf and anyOf constraints
+                                allOfAnyOf:
+                                    $ref: '#/components/schemas/AllOfAnyOfObject'
+                                    description: Object with allOf and anyOf constraints
+                                anyOfAllOf:
+                                    $ref: '#/components/schemas/AnyOfAllOfObject'
+                                    description: Object with anyOf and allOf constraints
+                        examples:
+                            example1:
+                                summary: Valid combination example
+                                value:
+                                    oneOfAnyOf:
+                                        primaryType: A
+                                        featureX: true
+                                    allOfAnyOf:
+                                        baseField: "required value"
+                                        optionA: "option A value"
+                                    anyOfAllOf:
+                                        id: "abc-123"
+                                        timestamp: "2025-10-30T10:00:00Z"
+                                        successData:
+                                            result: "success"
+
+            responses:
+                '200':
+                    description: Validation successful
+                    content:
+                        application/json:
+                            schema:
+                                allOf:
+                                    -   $ref: '#/components/schemas/ApiResponse'
+                                    -   type: object
+                                        properties:
+                                            data:
+                                                type: object
+                                                properties:
+                                                    validationResults:
+                                                        type: array
+                                                        items:
+                                                            type: string
+
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+
+components:
+    schemas:
+        OneOfAnyOfObject:
+            type: object
+
+            oneOf:
+                -   type: object
+                    required: [ primaryType ]
+                    properties:
+                        primaryType: { const: A }
+
+                -   type: object
+                    required: [ primaryType ]
+                    properties:
+                        primaryType: { const: B }
+
+            anyOf:
+                -   type: object
+                    properties:
+                        featureX: { type: boolean }
+
+                -   type: object
+                    properties:
+                        featureY: { type: boolean }
+
+        AllOfAnyOfObject:
+            type: object
+            allOf:
+                -   type: object
+                    required: [ baseField ]
+                    properties:
+                        baseField: { type: string }
+            anyOf:
+                -   type: object
+                    properties:
+                        optionA: { type: string }
+                -   type: object
+                    properties:
+                        optionB: { type: integer }
+
+        AnyOfAllOfObject:
+            type: object
+            allOf:
+                -   type: object
+                    required: [ id, timestamp ]
+                    properties:
+                        id: { type: string }
+                        timestamp: { type: string, format: date-time }
+
+            oneOf:
+                -   type: object
+                    required: [ successData ]
+                    properties:
+                        successData: { type: object }
+
+                -   type: object
+                    required: [ errorData ]
+                    properties:
+                        errorData: { type: object }
+
+        ApiResponse:
+            type: object
+            allOf:
+                -   type: object
+                    required: [ status, timestamp, requestId ]
+                    properties:
+                        status:
+                            type: string
+                            enum: [ success, error, pending ]
+                        timestamp:
+                            type: string
+                            format: date-time
+                        requestId:
+                            type: string
+                            format: uuid
+
+            oneOf:
+                -   type: object
+                    required: [ data ]
+                    properties:
+                        data:
+                            type: object
+                            description: Success response payload
+
+                -   type: object
+                    required: [ error ]
+                    properties:
+                        error:
+                            type: object
+                            required: [ code, message ]
+                            properties:
+                                code:
+                                    type: string
+                                message:
+                                    type: string
+                                details:
+                                    type: array
+                                    items:
+                                        type: string
+
+                -   type: object
+                    required: [ pendingInfo ]
+                    properties:
+                        pendingInfo:
+                            type: object
+                            required: [ statusUrl ]
+                            properties:
+                                statusUrl:
+                                    type: string
+                                    format: uri
+                                estimatedCompletion:
+                                    type: string
+                                    format: date-time
+
+    responses:
+        BadRequest:
+            description: Bad request - validation error
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            -   $ref: '#/components/schemas/ApiResponse'
+                            -   type: object
+                                properties:
+                                    error:
+                                        type: object
+                                        properties:
+                                            code:
+                                                type: string
+                                                enum: [VALIDATION_ERROR, INVALID_INPUT]
+                                            message:
+                                                type: string
+                                            details:
+                                                type: array
+                                                items:
+                                                    type: string
+
+    securitySchemes:
+        BearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+            description: JWT-based authentication
+
+        ApiKeyAuth:
+            type: apiKey
+            in: header
+            name: X-API-Key
+            description: API key authentication
+
+security:
+    -   BearerAuth: []
+    -   ApiKeyAuth: []

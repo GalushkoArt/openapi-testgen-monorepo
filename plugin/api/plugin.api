@@ -1,0 +1,53 @@
+public final class art/galushko/openapi/testgen/plugin/OpenApiTestGeneratorPlugin : org/gradle/api/Plugin {
+	public fun <init> ()V
+	public synthetic fun apply (Ljava/lang/Object;)V
+	public fun apply (Lorg/gradle/api/Project;)V
+}
+
+public abstract class art/galushko/openapi/testgen/plugin/OpenApiTestGeneratorTask : org/gradle/api/DefaultTask {
+	public fun <init> (Lorg/gradle/api/model/ObjectFactory;)V
+	public final fun generate ()V
+	public abstract fun getAlwaysWriteTests ()Lorg/gradle/api/provider/Property;
+	public abstract fun getConfigFile ()Lorg/gradle/api/provider/Property;
+	public abstract fun getGenerator ()Lorg/gradle/api/provider/Property;
+	public abstract fun getGeneratorOptions ()Lorg/gradle/api/provider/MapProperty;
+	public abstract fun getLogLevel ()Lorg/gradle/api/provider/Property;
+	public abstract fun getOutputDir ()Lorg/gradle/api/file/DirectoryProperty;
+	public abstract fun getSpecFile ()Lorg/gradle/api/provider/Property;
+	public final fun getTestGenerationSettings ()Lart/galushko/openapi/testgen/plugin/TestGenerationSettingsExtension;
+	public final fun testGenerationSettings (Lkotlin/jvm/functions/Function1;)V
+}
+
+public class art/galushko/openapi/testgen/plugin/TestGenerationSettingsExtension {
+	public fun <init> (Lorg/gradle/api/model/ObjectFactory;)V
+	public final fun buildTestGenerationSettingsMap ()Ljava/util/Map;
+	public final fun getErrorMode ()Lorg/gradle/api/provider/Property;
+	public final fun getExampleValues ()Lorg/gradle/api/provider/MapProperty;
+	public final fun getIgnoreAuthValidationRules ()Lorg/gradle/api/provider/SetProperty;
+	public final fun getIgnoreSchemaValidationRules ()Lorg/gradle/api/provider/SetProperty;
+	public final fun getIgnoreTestCases ()Lorg/gradle/api/provider/MapProperty;
+	public final fun getIncludeValidCase ()Lorg/gradle/api/provider/Property;
+	public final fun getMaxErrors ()Lorg/gradle/api/provider/Property;
+	public final fun getMaxMergedSchemaDepth ()Lorg/gradle/api/provider/Property;
+	public final fun getMaxSchemaCombinations ()Lorg/gradle/api/provider/Property;
+	public final fun getMaxSchemaDepth ()Lorg/gradle/api/provider/Property;
+	public final fun getMaxTestCasesPerOperation ()Lorg/gradle/api/provider/Property;
+	public final fun getOverrideBasicTestData ()Lorg/gradle/api/provider/MapProperty;
+	public final fun getPatternGeneration ()Lorg/gradle/api/provider/MapProperty;
+	public final fun getValidSecurityValues ()Lorg/gradle/api/provider/MapProperty;
+}
+
+public class art/galushko/openapi/testgen/plugin/TestGeneratorExtension {
+	public fun <init> (Lorg/gradle/api/model/ObjectFactory;)V
+	public final fun getAlwaysWriteTests ()Lorg/gradle/api/provider/Property;
+	public final fun getConfigFile ()Lorg/gradle/api/provider/Property;
+	public final fun getGenerator ()Lorg/gradle/api/provider/Property;
+	public final fun getGeneratorOptions ()Lorg/gradle/api/provider/MapProperty;
+	public final fun getLogLevel ()Lorg/gradle/api/provider/Property;
+	public final fun getManualOnly ()Lorg/gradle/api/provider/Property;
+	public final fun getOutputDir ()Lorg/gradle/api/file/DirectoryProperty;
+	public final fun getSpecFile ()Lorg/gradle/api/provider/Property;
+	public final fun getTestGenerationSettings ()Lart/galushko/openapi/testgen/plugin/TestGenerationSettingsExtension;
+	public final fun testGenerationSettings (Lkotlin/jvm/functions/Function1;)V
+}
+

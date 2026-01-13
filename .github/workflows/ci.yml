@@ -1,0 +1,134 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+jobs:
+  validate-wrapper:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: gradle/actions/wrapper-validation@v5
+
+  build:
+    needs: validate-wrapper
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+      - name: Build and Test
+        run: ./gradlew :model:check :plugin:check :cli:check :core:check :pattern-value:check :pattern-support:check :generator-template:check :example-value:check :distribution-bundle:check :samples:java-spring-file-writer:build :samples:java-spring-rest-assured:build :samples:kotlin-spring-rest-assured:build --scan
+
+  build-fat-jar:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+      - name: Build Fat JAR
+        run: ./gradlew :cli:shadowJar --build-cache
+      - name: Test Fat JAR
+        run: ./gradlew :cli:testFatJar --build-cache
+      - name: Upload Fat JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi-testgen-fatjar
+          path: cli/build/libs/openapi-testgen-*-all.jar
+          retention-days: 7
+
+  build-native-linux:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          native-image-job-reports: 'true'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+      - name: Build and Test Native Image
+        run: ./gradlew :cli:testDistributions --build-cache
+      - name: Upload Native Binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi-testgen-native-linux
+          path: cli/build/native/nativeCompile/openapi-testgen
+          retention-days: 7
+
+  build-native-macos:
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+      - name: Build and Test Native Image
+        run: ./gradlew :cli:testNative --build-cache
+      - name: Upload Native Binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi-testgen-native-macos
+          path: cli/build/native/nativeCompile/openapi-testgen
+          retention-days: 7
+
+  build-native-windows:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+      # Workaround for https://github.com/graalvm/native-build-tools/issues/754
+      # native-build-tools fails when project (D:) and temp dir (C:) are on different drives
+      - name: Create temp directory on same drive
+        run: New-Item -ItemType Directory -Force -Path D:\Temp
+      - name: Build and Test Native Image
+        run: .\gradlew.bat :cli:testNative --build-cache
+        env:
+          GRADLE_OPTS: -Djava.io.tmpdir=D:\Temp
+      - name: Upload Native Binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi-testgen-native-windows
+          path: cli/build/native/nativeCompile/openapi-testgen.exe
+          retention-days: 7
+
+

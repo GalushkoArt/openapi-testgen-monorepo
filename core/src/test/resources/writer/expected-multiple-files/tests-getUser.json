@@ -1,0 +1,52 @@
+{
+    "path" : "/users/{userId}",
+    "method" : "GET",
+    "operationName" : "getUser",
+    "testCases" : [ {
+        "name" : "Invalid Path Param: userId Empty",
+        "method" : "GET",
+        "path" : "/users/{userId}",
+        "queryParams" : { },
+        "pathParams" : {
+            "userId" : ""
+        },
+        "headers" : [ ],
+        "cookie" : [ ],
+        "securityValues" : {
+            "queryParams" : { },
+            "headers" : [ ],
+            "cookie" : [ ],
+            "other" : { }
+        },
+        "body" : null,
+        "expectedBody" : null,
+        "needToComplete" : false,
+        "expectedStatusCode" : 400,
+        "rule" : "EmptyValueRule"
+    }, {
+        "name" : "Valid Case",
+        "method" : "GET",
+        "path" : "/users/{userId}",
+        "queryParams" : { },
+        "pathParams" : {
+            "userId" : "123"
+        },
+        "headers" : [ ],
+        "cookie" : [ ],
+        "securityValues" : {
+            "queryParams" : { },
+            "headers" : [ ],
+            "cookie" : [ ],
+            "other" : { }
+        },
+        "body" : null,
+        "expectedBody" : null,
+        "needToComplete" : false,
+        "expectedStatusCode" : 200,
+        "rule" : null
+    } ]
+}
+
+
+
+

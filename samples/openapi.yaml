@@ -1,0 +1,355 @@
+openapi: 3.1.0
+info:
+    title: Sample Users & Orders API
+    version: 1.0.1
+    description: Minimal test spec with two services and ~5 operations.
+tags:
+    -   name: Users
+        description: User service
+    -   name: Orders
+        description: Order service
+servers:
+    -   url: https://api.test/v1
+        description: API gateway (default)
+
+paths:
+    /users:
+        servers:
+            -   url: https://users.api.test/v1
+                description: Users service
+        get:
+            tags: [ Users ]
+            summary: List users
+            operationId: listUsers
+            parameters:
+                -   $ref: '#/components/parameters/page'
+                -   $ref: '#/components/parameters/pageSize'
+                -   name: q
+                    in: query
+                    description: Search by name or email
+                    schema: { type: string, maxLength: 100 }
+            responses:
+                '200':
+                    description: Users page
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UserList'
+                            examples:
+                                ok:
+                                    value:
+                                        page: 1
+                                        pageSize: 2
+                                        total: 12
+                                        items:
+                                            -   id: "u_123"
+                                                name: Ada Lovelace
+                                                email: ada@example.com
+                                                createdAt: "2025-07-01T12:00:00Z"
+                                            -   id: "u_124"
+                                                name: Alan Turing
+                                                email: alan@example.com
+                                                createdAt: "2025-07-03T12:00:00Z"
+                '401': { $ref: '#/components/responses/Unauthorized' }
+                '400': { $ref: '#/components/responses/BadRequest' }
+        post:
+            tags: [ Users ]
+            summary: Create user
+            operationId: createUser
+            parameters:
+                -   $ref: '#/components/parameters/IdempotencyKey'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema: { $ref: '#/components/schemas/NewUser' }
+                        examples:
+                            create:
+                                value:
+                                    name: Grace Hopper
+                                    email: grace@example.com
+            responses:
+                '201':
+                    description: Created
+                    headers:
+                        Location:
+                            description: URL of the new resource
+                            schema: { type: string, format: uri }
+                    content:
+                        application/json:
+                            schema: { $ref: '#/components/schemas/User' }
+                            examples:
+                                created:
+                                    value:
+                                        id: "u_999"
+                                        name: Grace Hopper
+                                        email: grace@example.com
+                                        createdAt: "2025-08-15T10:00:00Z"
+                '409': { $ref: '#/components/responses/Conflict' }
+                '401': { $ref: '#/components/responses/Unauthorized' }
+                '400': { $ref: '#/components/responses/BadRequest' }
+
+    /users/{userId}:
+        servers:
+            -   url: https://users.api.test/v1
+                description: Users service
+        get:
+            tags: [ Users ]
+            summary: Get user
+            operationId: getUser
+            parameters:
+                -   name: userId
+                    in: path
+                    required: true
+                    description: User ID
+                    schema: { type: string, pattern: '^[a-z0-9_]+$' }
+            responses:
+                '200':
+                    description: User
+                    content:
+                        application/json:
+                            schema: { $ref: '#/components/schemas/User' }
+                '400': { $ref: '#/components/responses/BadRequest' }
+                '404': { $ref: '#/components/responses/NotFound' }
+                '401': { $ref: '#/components/responses/Unauthorized' }
+
+    /orders:
+        servers:
+            -   url: https://orders.api.test/v1
+                description: Orders service
+        get:
+            tags: [ Orders ]
+            summary: List orders
+            operationId: listOrders
+            parameters:
+                -   $ref: '#/components/parameters/page'
+                -   $ref: '#/components/parameters/pageSize'
+                -   name: status
+                    in: query
+                    description: Filter by order status
+                    schema:
+                        $ref: '#/components/schemas/Status' # Enum schema in components to workaround https://github.com/OpenAPITools/openapi-generator/issues/13493
+                -   name: userId
+                    in: query
+                    description: Filter by user ID
+                    schema: { type: string }
+            responses:
+                '200':
+                    description: Orders page
+                    content:
+                        application/json:
+                            schema: { $ref: '#/components/schemas/OrderList' }
+                            examples:
+                                ok:
+                                    value:
+                                        page: 1
+                                        pageSize: 1
+                                        total: 3
+                                        items:
+                                            -   id: "o_1000"
+                                                userId: "u_123"
+                                                status: paid
+                                                total: 149.95
+                                                currency: USD
+                                                createdAt: "2025-08-10T09:30:00Z"
+                                                items:
+                                                    -   sku: "SKU-1"
+                                                        quantity: 1
+                                                        price: 99.95
+                                                    -   sku: "SKU-2"
+                                                        quantity: 1
+                                                        price: 50.00
+                '400': { $ref: '#/components/responses/BadRequest' }
+                '401': { $ref: '#/components/responses/Unauthorized' }
+        post:
+            tags: [ Orders ]
+            summary: Create order
+            operationId: createOrder
+            parameters:
+                -   $ref: '#/components/parameters/IdempotencyKey'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema: { $ref: '#/components/schemas/NewOrder' }
+                        examples:
+                            create:
+                                value:
+                                    userId: "u_123"
+                                    items:
+                                        -   sku: "SKU-1"
+                                            quantity: 1
+                                            price: 99.95
+                                        -   sku: "SKU-2"
+                                            quantity: 1
+                                            price: 50.00
+            responses:
+                '201':
+                    description: Created
+                    headers:
+                        Location:
+                            description: URL of the new resource
+                            schema: { type: string, format: uri }
+                    content:
+                        application/json:
+                            schema: { $ref: '#/components/schemas/Order' }
+                '400': { $ref: '#/components/responses/BadRequest' }
+                '401': { $ref: '#/components/responses/Unauthorized' }
+                '409': { $ref: '#/components/responses/Conflict' }
+
+components:
+    securitySchemes:
+        ApiKeyAuth:
+            type: apiKey
+            in: header
+            name: X-API-Key
+            description: API key with account scope
+    parameters:
+        page:
+            name: page
+            in: query
+            description: 1-based page index
+            schema:
+                type: integer
+                minimum: 1
+                default: 1
+        pageSize:
+            name: pageSize
+            in: query
+            description: Items per page
+            schema:
+                type: integer
+                minimum: 1
+                maximum: 100
+                default: 20
+        IdempotencyKey:
+            name: Idempotency-Key
+            in: header
+            description: Provide to make POST idempotent for 24h
+            required: false
+            schema:
+                type: string
+                maxLength: 200
+    responses:
+        BadRequest:
+            description: Bad request
+            content:
+                application/json:
+                    schema: { $ref: '#/components/schemas/Error' }
+                    examples:
+                        badRequest:
+                            value: { code: "bad_request", message: "Invalid input" }
+        Unauthorized:
+            description: Missing or invalid API key
+            content:
+                application/json:
+                    schema: { $ref: '#/components/schemas/Error' }
+                    examples:
+                        unauthorized:
+                            value: { code: "unauthorized", message: "API key required" }
+        NotFound:
+            description: Resource not found
+            content:
+                application/json:
+                    schema: { $ref: '#/components/schemas/Error' }
+                    examples:
+                        notFound:
+                            value: { code: "not_found", message: "No such user" }
+        Conflict:
+            description: Conflict
+            content:
+                application/json:
+                    schema: { $ref: '#/components/schemas/Error' }
+                    examples:
+                        conflict:
+                            value: { code: "conflict", message: "Email already exists" }
+    schemas:
+        Status:
+            type: string
+            enum: [ pending, paid, shipped, cancelled ]
+        Error:
+            type: object
+            required: [ code, message ]
+            properties:
+                code: { type: string }
+                message: { type: string }
+        User:
+            type: object
+            required: [ id, name, email, createdAt ]
+            properties:
+                id: { type: string, example: "u_123" }
+                name: { type: string, example: "Ada Lovelace" }
+                email: { type: string, format: email, example: "ada@example.com" }
+                createdAt: { type: string, format: date-time }
+        NewUser:
+            type: object
+            required: [ name, email ]
+            additionalProperties: false
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                name:
+                    type: string
+                    minLength: 1
+                    maxLength: 100
+                email:
+                    type: string
+                    format: email
+                    pattern: '^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$' # pattern to add validation of enum format
+        UserList:
+            type: object
+            required: [ page, pageSize, total, items ]
+            properties:
+                page: { type: integer, minimum: 1 }
+                pageSize: { type: integer, minimum: 1, maximum: 100 }
+                total: { type: integer, minimum: 0 }
+                items:
+                    type: array
+                    items: { $ref: '#/components/schemas/User' }
+        OrderItem:
+            type: object
+            required: [ sku, quantity, price ]
+            additionalProperties: false
+            properties:
+                sku: { type: string }
+                quantity: { type: integer, minimum: 1 }
+                price: { type: number, minimum: 0 }
+        Order:
+            type: object
+            required: [ id, userId, status, total, currency, createdAt, items ]
+            properties:
+                id: { type: string, example: "o_1000" }
+                userId: { type: string, example: "u_123" }
+                status:
+                    $ref: '#/components/schemas/Status'
+                total: { type: number, minimum: 0 }
+                currency: { type: string, minLength: 3, maxLength: 3, example: "USD" }
+                createdAt: { type: string, format: date-time }
+                items:
+                    type: array
+                    minItems: 1
+                    items: { $ref: '#/components/schemas/OrderItem' }
+        NewOrder:
+            type: object
+            required: [ userId, items ]
+            additionalProperties: false
+            properties:
+                userId: { type: string }
+                items:
+                    type: array
+                    minItems: 1
+                    items: { $ref: '#/components/schemas/OrderItem' }
+        OrderList:
+            type: object
+            required: [ page, pageSize, total, items ]
+            properties:
+                page: { type: integer, minimum: 1 }
+                pageSize: { type: integer, minimum: 1, maximum: 100 }
+                total: { type: integer, minimum: 0 }
+                items:
+                    type: array
+                    items: { $ref: '#/components/schemas/Order' }
+
+security:
+    -   ApiKeyAuth: [ ]

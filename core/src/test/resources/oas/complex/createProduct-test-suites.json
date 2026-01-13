@@ -1,0 +1,925 @@
+{
+    "createProduct": {
+        "path": "/products",
+        "method": "POST",
+        "operationName": "createProduct",
+        "testCases": [
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties downloadUrl",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "id": "a",
+                    "name": "a",
+                    "price": 0,
+                    "type": "digital"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties duration",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "id": "a",
+                    "name": "a",
+                    "price": 0,
+                    "type": "service"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties id",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "name": "a",
+                    "price": 0,
+                    "type": "physical",
+                    "weight": 1
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties id",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "downloadUrl": "a",
+                    "name": "a",
+                    "price": 0,
+                    "type": "digital"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties id",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "duration": 1,
+                    "name": "a",
+                    "price": 0,
+                    "type": "service"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties name",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "id": "a",
+                    "price": 0,
+                    "type": "physical",
+                    "weight": 1
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties name",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "downloadUrl": "a",
+                    "id": "a",
+                    "price": 0,
+                    "type": "digital"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties name",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "duration": 1,
+                    "id": "a",
+                    "price": 0,
+                    "type": "service"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties price",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "id": "a",
+                    "name": "a",
+                    "type": "physical",
+                    "weight": 1
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties price",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "downloadUrl": "a",
+                    "id": "a",
+                    "name": "a",
+                    "type": "digital"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties price",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "duration": 1,
+                    "id": "a",
+                    "name": "a",
+                    "type": "service"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties type",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "id": "a",
+                    "name": "a",
+                    "price": 0,
+                    "weight": 1
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties type",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "downloadUrl": "a",
+                    "id": "a",
+                    "name": "a",
+                    "price": 0
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties type",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "duration": 1,
+                    "id": "a",
+                    "name": "a",
+                    "price": 0
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Missed Required Object Properties weight",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "id": "a",
+                    "name": "a",
+                    "price": 0,
+                    "type": "physical"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property duration Integer Breaking",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "duration": 1.5,
+                    "id": "a",
+                    "name": "a",
+                    "price": 0,
+                    "type": "service"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property fileSize Integer Breaking",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "downloadUrl": "a",
+                    "id": "a",
+                    "name": "a",
+                    "price": 0,
+                    "type": "digital",
+                    "fileSize": 1.5
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property format Invalid Enum Value",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "downloadUrl": "a",
+                    "id": "a",
+                    "name": "a",
+                    "price": 0,
+                    "type": "digital",
+                    "format": "invalid_enum1"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property location Invalid Enum Value",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "duration": 1,
+                    "id": "a",
+                    "name": "a",
+                    "price": 0,
+                    "type": "service",
+                    "location": "invalid_enum1"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property price Out Of Minimum Boundary Number",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "id": "a",
+                    "name": "a",
+                    "price": -1,
+                    "type": "physical",
+                    "weight": 1
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property price Out Of Minimum Boundary Number",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "downloadUrl": "a",
+                    "id": "a",
+                    "name": "a",
+                    "price": -1,
+                    "type": "digital"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Incorrect Request Body: Object Property price Out Of Minimum Boundary Number",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "duration": 1,
+                    "id": "a",
+                    "name": "a",
+                    "price": -1,
+                    "type": "service"
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Authorization header security",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "id": "a",
+                    "name": "a",
+                    "price": 0,
+                    "type": "physical",
+                    "weight": 1
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Invalid X-API-Key API key security",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "some_really_invalid_api_key"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        },
+                        {
+                            "key": "X-API-Key",
+                            "value": "some_really_invalid_api_key"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "id": "a",
+                    "name": "a",
+                    "price": 0,
+                    "type": "physical",
+                    "weight": 1
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "No security values provided",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "id": "a",
+                    "name": "a",
+                    "price": 0,
+                    "type": "physical",
+                    "weight": 1
+                },
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "Required Request Body is missing",
+                "method": "POST",
+                "path": "/products",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+            }
+        ]
+    }
+}

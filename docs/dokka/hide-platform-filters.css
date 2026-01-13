@@ -1,0 +1,7 @@
+/* Hide source-set/platform filter UI and badges (single JVM source set). */
+#filter-section,
+.filter-section,
+.filter-section--dropdown,
+.platform-tags--wrapper {
+    display: none !important;
+}

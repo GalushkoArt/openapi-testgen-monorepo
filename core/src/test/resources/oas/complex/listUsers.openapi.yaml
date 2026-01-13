@@ -1,0 +1,288 @@
+openapi: 3.1.0
+
+info:
+    title: Complex Schema API - List Users
+    version: 1.0.0
+    description: GET /users operation - List users with flexible filtering
+
+servers:
+    -   url: https://api.example.com/v1
+        description: Production server
+
+tags:
+    -   name: users
+        description: User management operations
+
+paths:
+    /users:
+        get:
+            tags: [users]
+            summary: List users with flexible filtering
+            operationId: listUsers
+            description: Retrieve users with support for various filter types and pagination
+            parameters:
+                -   name: role
+                    in: query
+                    description: Filter by user role
+                    required: false
+                    schema:
+                        type: string
+                        enum: [admin, user, guest]
+
+                -   name: limit
+                    in: query
+                    description: Maximum number of results (constrained integer)
+                    required: false
+                    schema:
+                        $ref: '#/components/schemas/ConstrainedInteger'
+
+                -   name: sortBy
+                    in: query
+                    description: Sort field (flexible value)
+                    schema:
+                        $ref: '#/components/schemas/FlexibleValue'
+
+                -   name: search
+                    in: query
+                    description: Search term (must be alphabetic string)
+                    required: false
+                    schema:
+                        $ref: '#/components/schemas/LongString'
+
+                -   name: filter
+                    in: query
+                    description: Flexible filter value (string or number)
+                    required: false
+                    schema:
+                        $ref: '#/components/schemas/StringOrNumber'
+
+                -   name: X-Request-ID
+                    in: header
+                    description: Unique request identifier
+                    required: true
+                    schema:
+                        type: string
+                        format: uuid
+
+                -   name: tags
+                    in: query
+                    description: Filter by tags (validated tag list)
+                    required: false
+                    style: form
+                    explode: false
+                    schema:
+                        $ref: '#/components/schemas/TagList'
+
+            responses:
+                '200':
+                    description: Successful response with users
+                    content:
+                        application/json:
+                            schema:
+                                allOf:
+                                    -   $ref: '#/components/schemas/ApiResponse'
+                                    -   type: object
+                                        properties:
+                                            data:
+                                                type: object
+                                                properties:
+                                                    users:
+                                                        type: array
+                                                        items:
+                                                            $ref: '#/components/schemas/User'
+                                                    total:
+                                                        type: integer
+                                                    page:
+                                                        type: integer
+
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '500':
+                    $ref: '#/components/responses/InternalError'
+
+components:
+    schemas:
+        FlexibleValue:
+            anyOf:
+                -   type: string
+                    minLength: 1
+                -   type: number
+                -   type: boolean
+
+        LongString:
+            allOf:
+                -   type: string
+                -   minLength: 5
+                -   maxLength: 50
+                -   pattern: '^[A-Za-z]+$'
+
+        ConstrainedInteger:
+            allOf:
+                -   type: number
+                -   type: integer
+                -   minimum: 1
+                -   maximum: 100
+                -   multipleOf: 5
+
+        StringOrNumber:
+            oneOf:
+                -   type: string
+                    minLength: 1
+                -   type: number
+                    minimum: 0
+
+        TagList:
+            allOf:
+                -   type: array
+                    minItems: 1
+                    maxItems: 10
+                -   type: array
+                    items:
+                        type: string
+                        minLength: 2
+                        maxLength: 20
+                        pattern: '^[a-z0-9-]+$'
+                    uniqueItems: true
+
+        BaseEntity:
+            type: object
+            required: [ id, createdAt ]
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+
+        User:
+            allOf:
+                -   $ref: '#/components/schemas/BaseEntity'
+                -   type: object
+                    required: [ username, email ]
+                    properties:
+                        username:
+                            type: string
+                            minLength: 3
+                            maxLength: 20
+                        email:
+                            type: string
+                            format: email
+                        role:
+                            type: string
+                            enum: [ admin, user, guest ]
+                            default: user
+
+        ApiResponse:
+            type: object
+            allOf:
+                -   type: object
+                    required: [ status, timestamp, requestId ]
+                    properties:
+                        status:
+                            type: string
+                            enum: [ success, error, pending ]
+                        timestamp:
+                            type: string
+                            format: date-time
+                        requestId:
+                            type: string
+                            format: uuid
+
+            oneOf:
+                -   type: object
+                    required: [ data ]
+                    properties:
+                        data:
+                            type: object
+                            description: Success response payload
+
+                -   type: object
+                    required: [ error ]
+                    properties:
+                        error:
+                            type: object
+                            required: [ code, message ]
+                            properties:
+                                code:
+                                    type: string
+                                message:
+                                    type: string
+                                details:
+                                    type: array
+                                    items:
+                                        type: string
+
+                -   type: object
+                    required: [ pendingInfo ]
+                    properties:
+                        pendingInfo:
+                            type: object
+                            required: [ statusUrl ]
+                            properties:
+                                statusUrl:
+                                    type: string
+                                    format: uri
+                                estimatedCompletion:
+                                    type: string
+                                    format: date-time
+
+    responses:
+        BadRequest:
+            description: Bad request - validation error
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            -   $ref: '#/components/schemas/ApiResponse'
+                            -   type: object
+                                properties:
+                                    error:
+                                        type: object
+                                        properties:
+                                            code:
+                                                type: string
+                                                enum: [VALIDATION_ERROR, INVALID_INPUT]
+                                            message:
+                                                type: string
+                                            details:
+                                                type: array
+                                                items:
+                                                    type: string
+
+        InternalError:
+            description: Internal server error
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            -   $ref: '#/components/schemas/ApiResponse'
+                            -   type: object
+                                properties:
+                                    error:
+                                        type: object
+                                        properties:
+                                            code:
+                                                const: INTERNAL_ERROR
+                                            message:
+                                                type: string
+
+    securitySchemes:
+        BearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+            description: JWT-based authentication
+
+        ApiKeyAuth:
+            type: apiKey
+            in: header
+            name: X-API-Key
+            description: API key authentication
+
+security:
+    -   BearerAuth: []
+    -   ApiKeyAuth: []

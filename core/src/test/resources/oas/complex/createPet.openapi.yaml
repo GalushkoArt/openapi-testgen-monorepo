@@ -1,0 +1,181 @@
+openapi: 3.1.0
+
+info:
+    title: Complex Schema API - Create Pet
+    version: 1.0.0
+    description: POST /pets operation - Register a new pet
+
+servers:
+    -   url: https://api.example.com/v1
+        description: Production server
+
+tags:
+    -   name: pets
+        description: Pet management with discriminated types
+
+paths:
+    /pets:
+        post:
+            tags: [pets]
+            summary: Register a new pet
+            operationId: createPet
+            description: Create a pet using discriminated union (Cat or Dog)
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Pet'
+                        examples:
+                            cat:
+                                summary: Register a cat
+                                value:
+                                    petType: cat
+                                    meowVolume: 7
+                            dog:
+                                summary: Register a dog
+                                value:
+                                    petType: dog
+                                    barkFrequency: often
+
+            responses:
+                '201':
+                    description: Pet registered successfully
+                    content:
+                        application/json:
+                            schema:
+                                allOf:
+                                    -   $ref: '#/components/schemas/ApiResponse'
+                                    -   type: object
+                                        properties:
+                                            data:
+                                                $ref: '#/components/schemas/Pet'
+
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+
+components:
+    schemas:
+        Pet:
+            oneOf:
+                -   $ref: '#/components/schemas/Cat'
+                -   $ref: '#/components/schemas/Dog'
+            discriminator:
+                propertyName: petType
+
+        Cat:
+            type: object
+            required: [ petType, meowVolume ]
+            properties:
+                petType:
+                    type: string
+                    const: cat
+                meowVolume:
+                    type: integer
+                    minimum: 1
+                    maximum: 10
+
+        Dog:
+            type: object
+            required: [ petType, barkFrequency ]
+            properties:
+                petType:
+                    type: string
+                    const: dog
+                barkFrequency:
+                    type: string
+                    enum: [ rarely, sometimes, often, constantly ]
+
+        ApiResponse:
+            type: object
+            allOf:
+                -   type: object
+                    required: [ status, timestamp, requestId ]
+                    properties:
+                        status:
+                            type: string
+                            enum: [ success, error, pending ]
+                        timestamp:
+                            type: string
+                            format: date-time
+                        requestId:
+                            type: string
+                            format: uuid
+
+            oneOf:
+                -   type: object
+                    required: [ data ]
+                    properties:
+                        data:
+                            type: object
+                            description: Success response payload
+
+                -   type: object
+                    required: [ error ]
+                    properties:
+                        error:
+                            type: object
+                            required: [ code, message ]
+                            properties:
+                                code:
+                                    type: string
+                                message:
+                                    type: string
+                                details:
+                                    type: array
+                                    items:
+                                        type: string
+
+                -   type: object
+                    required: [ pendingInfo ]
+                    properties:
+                        pendingInfo:
+                            type: object
+                            required: [ statusUrl ]
+                            properties:
+                                statusUrl:
+                                    type: string
+                                    format: uri
+                                estimatedCompletion:
+                                    type: string
+                                    format: date-time
+
+    responses:
+        BadRequest:
+            description: Bad request - validation error
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            -   $ref: '#/components/schemas/ApiResponse'
+                            -   type: object
+                                properties:
+                                    error:
+                                        type: object
+                                        properties:
+                                            code:
+                                                type: string
+                                                enum: [VALIDATION_ERROR, INVALID_INPUT]
+                                            message:
+                                                type: string
+                                            details:
+                                                type: array
+                                                items:
+                                                    type: string
+
+    securitySchemes:
+        BearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+            description: JWT-based authentication
+
+        ApiKeyAuth:
+            type: apiKey
+            in: header
+            name: X-API-Key
+            description: API key authentication
+
+security:
+    -   BearerAuth: []
+    -   ApiKeyAuth: []

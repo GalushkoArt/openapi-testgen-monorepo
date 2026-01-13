@@ -1,0 +1,3170 @@
+{
+    "get /apikey/cookie": {
+        "path": "/apikey/cookie",
+        "method": "GET",
+        "operationName": "get /apikey/cookie",
+        "testCases": [
+            {
+                "name": "Invalid Query limit parameter: Integer Breaking",
+                "method": "GET",
+                "path": "/apikey/cookie",
+                "queryParams": {
+                    "limit": 1.5
+                },
+                "pathParams": {},
+                "headers": [],
+                "cookie": [
+                    {
+                        "key": "api_key",
+                        "value": "<valid_apiKeyCookie_api_key_placeholder>"
+                    }
+                ],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [
+                        {
+                            "key": "api_key",
+                            "value": "<valid_apiKeyCookie_api_key_placeholder>"
+                        }
+                    ],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Maximum Boundary Number",
+                "method": "GET",
+                "path": "/apikey/cookie",
+                "queryParams": {
+                    "limit": 101
+                },
+                "pathParams": {},
+                "headers": [],
+                "cookie": [
+                    {
+                        "key": "api_key",
+                        "value": "<valid_apiKeyCookie_api_key_placeholder>"
+                    }
+                ],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [
+                        {
+                            "key": "api_key",
+                            "value": "<valid_apiKeyCookie_api_key_placeholder>"
+                        }
+                    ],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Minimum Boundary Number",
+                "method": "GET",
+                "path": "/apikey/cookie",
+                "queryParams": {
+                    "limit": 0
+                },
+                "pathParams": {},
+                "headers": [],
+                "cookie": [
+                    {
+                        "key": "api_key",
+                        "value": "<valid_apiKeyCookie_api_key_placeholder>"
+                    }
+                ],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [
+                        {
+                            "key": "api_key",
+                            "value": "<valid_apiKeyCookie_api_key_placeholder>"
+                        }
+                    ],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid api_key API key security",
+                "method": "GET",
+                "path": "/apikey/cookie",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [
+                    {
+                        "key": "api_key",
+                        "value": "some_really_invalid_api_key"
+                    }
+                ],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [
+                        {
+                            "key": "api_key",
+                            "value": "some_really_invalid_api_key"
+                        }
+                    ],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "No security values provided",
+                "method": "GET",
+                "path": "/apikey/cookie",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            }
+        ]
+    },
+    "get /apikey/header": {
+        "path": "/apikey/header",
+        "method": "GET",
+        "operationName": "get /apikey/header",
+        "testCases": [
+            {
+                "name": "Invalid X-API-Key API key security",
+                "method": "GET",
+                "path": "/apikey/header",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "some_really_invalid_api_key"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "some_really_invalid_api_key"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "No security values provided",
+                "method": "GET",
+                "path": "/apikey/header",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            }
+        ]
+    },
+    "get /apikey/query": {
+        "path": "/apikey/query",
+        "method": "GET",
+        "operationName": "get /apikey/query",
+        "testCases": [
+            {
+                "name": "Invalid Query limit parameter: Integer Breaking",
+                "method": "GET",
+                "path": "/apikey/query",
+                "queryParams": {
+                    "api_key": "<valid_apiKeyQuery_api_key_placeholder>",
+                    "limit": 1.5
+                },
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {
+                        "api_key": "<valid_apiKeyQuery_api_key_placeholder>"
+                    },
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Maximum Boundary Number",
+                "method": "GET",
+                "path": "/apikey/query",
+                "queryParams": {
+                    "api_key": "<valid_apiKeyQuery_api_key_placeholder>",
+                    "limit": 101
+                },
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {
+                        "api_key": "<valid_apiKeyQuery_api_key_placeholder>"
+                    },
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Minimum Boundary Number",
+                "method": "GET",
+                "path": "/apikey/query",
+                "queryParams": {
+                    "api_key": "<valid_apiKeyQuery_api_key_placeholder>",
+                    "limit": 0
+                },
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {
+                        "api_key": "<valid_apiKeyQuery_api_key_placeholder>"
+                    },
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid api_key API key security",
+                "method": "GET",
+                "path": "/apikey/query",
+                "queryParams": {
+                    "api_key": "some_really_invalid_api_key"
+                },
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {
+                        "api_key": "some_really_invalid_api_key"
+                    },
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "No security values provided",
+                "method": "GET",
+                "path": "/apikey/query",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            }
+        ]
+    },
+    "get /basic": {
+        "path": "/basic",
+        "method": "GET",
+        "operationName": "get /basic",
+        "testCases": [
+            {
+                "name": "Invalid Authorization header security",
+                "method": "GET",
+                "path": "/basic",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Integer Breaking",
+                "method": "GET",
+                "path": "/basic",
+                "queryParams": {
+                    "limit": 1.5
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Maximum Boundary Number",
+                "method": "GET",
+                "path": "/basic",
+                "queryParams": {
+                    "limit": 101
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Minimum Boundary Number",
+                "method": "GET",
+                "path": "/basic",
+                "queryParams": {
+                    "limit": 0
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "No security values provided",
+                "method": "GET",
+                "path": "/basic",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            }
+        ]
+    },
+    "get /bearer": {
+        "path": "/bearer",
+        "method": "GET",
+        "operationName": "get /bearer",
+        "testCases": [
+            {
+                "name": "Invalid Authorization header security",
+                "method": "GET",
+                "path": "/bearer",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Integer Breaking",
+                "method": "GET",
+                "path": "/bearer",
+                "queryParams": {
+                    "limit": 1.5
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_bearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_bearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Maximum Boundary Number",
+                "method": "GET",
+                "path": "/bearer",
+                "queryParams": {
+                    "limit": 101
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_bearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_bearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Minimum Boundary Number",
+                "method": "GET",
+                "path": "/bearer",
+                "queryParams": {
+                    "limit": 0
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_bearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_bearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "No security values provided",
+                "method": "GET",
+                "path": "/bearer",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            }
+        ]
+    },
+    "get /default": {
+        "path": "/default",
+        "method": "GET",
+        "operationName": "get /default",
+        "testCases": [
+            {
+                "name": "Invalid Query limit parameter: Integer Breaking",
+                "method": "GET",
+                "path": "/default",
+                "queryParams": {
+                    "limit": 1.5
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Maximum Boundary Number",
+                "method": "GET",
+                "path": "/default",
+                "queryParams": {
+                    "limit": 101
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Minimum Boundary Number",
+                "method": "GET",
+                "path": "/default",
+                "queryParams": {
+                    "limit": 0
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid X-API-Key API key security",
+                "method": "GET",
+                "path": "/default",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "some_really_invalid_api_key"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "some_really_invalid_api_key"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "No security values provided",
+                "method": "GET",
+                "path": "/default",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            }
+        ]
+    },
+    "get /oauth2/access": {
+        "path": "/oauth2/access",
+        "method": "GET",
+        "operationName": "get /oauth2/access",
+        "testCases": [
+            {
+                "name": "Invalid Authorization header security",
+                "method": "GET",
+                "path": "/oauth2/access",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Integer Breaking",
+                "method": "GET",
+                "path": "/oauth2/access",
+                "queryParams": {
+                    "limit": 1.5
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Maximum Boundary Number",
+                "method": "GET",
+                "path": "/oauth2/access",
+                "queryParams": {
+                    "limit": 101
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Minimum Boundary Number",
+                "method": "GET",
+                "path": "/oauth2/access",
+                "queryParams": {
+                    "limit": 0
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "No security values provided",
+                "method": "GET",
+                "path": "/oauth2/access",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            }
+        ]
+    },
+    "get /oauth2/resource": {
+        "path": "/oauth2/resource",
+        "method": "GET",
+        "operationName": "get /oauth2/resource",
+        "testCases": [
+            {
+                "name": "Invalid Authorization header security",
+                "method": "GET",
+                "path": "/oauth2/resource",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Integer Breaking",
+                "method": "GET",
+                "path": "/oauth2/resource",
+                "queryParams": {
+                    "limit": 1.5
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[read]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[read]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Maximum Boundary Number",
+                "method": "GET",
+                "path": "/oauth2/resource",
+                "queryParams": {
+                    "limit": 101
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[read]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[read]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Minimum Boundary Number",
+                "method": "GET",
+                "path": "/oauth2/resource",
+                "queryParams": {
+                    "limit": 0
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[read]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[read]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Missing [read] scopes of oauth2 in security",
+                "method": "GET",
+                "path": "/oauth2/resource",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule"
+            },
+            {
+                "name": "No security values provided",
+                "method": "GET",
+                "path": "/oauth2/resource",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "oauth2 security scheme has invalid scope",
+                "method": "GET",
+                "path": "/oauth2/resource",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[some_invalid_scope]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[some_invalid_scope]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.IncorrectScopesAuthValidationRule"
+            }
+        ]
+    },
+    "get /oauth2/write-read": {
+        "path": "/oauth2/write-read",
+        "method": "GET",
+        "operationName": "get /oauth2/write-read",
+        "testCases": [
+            {
+                "name": "Invalid Authorization header security",
+                "method": "GET",
+                "path": "/oauth2/write-read",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Integer Breaking",
+                "method": "GET",
+                "path": "/oauth2/write-read",
+                "queryParams": {
+                    "limit": 1.5
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[read,write]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[read,write]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Maximum Boundary Number",
+                "method": "GET",
+                "path": "/oauth2/write-read",
+                "queryParams": {
+                    "limit": 101
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[read,write]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[read,write]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Minimum Boundary Number",
+                "method": "GET",
+                "path": "/oauth2/write-read",
+                "queryParams": {
+                    "limit": 0
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[read,write]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[read,write]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Missing [read,write] scopes of oauth2 in security",
+                "method": "GET",
+                "path": "/oauth2/write-read",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule"
+            },
+            {
+                "name": "Missing [read] scopes of oauth2 in security",
+                "method": "GET",
+                "path": "/oauth2/write-read",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[write]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[write]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule"
+            },
+            {
+                "name": "Missing [write] scopes of oauth2 in security",
+                "method": "GET",
+                "path": "/oauth2/write-read",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[read]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[read]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule"
+            },
+            {
+                "name": "No security values provided",
+                "method": "GET",
+                "path": "/oauth2/write-read",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "oauth2 security scheme has invalid scope",
+                "method": "GET",
+                "path": "/oauth2/write-read",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[some_invalid_scope]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[some_invalid_scope]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.IncorrectScopesAuthValidationRule"
+            }
+        ]
+    },
+    "get /oidc/profile": {
+        "path": "/oidc/profile",
+        "method": "GET",
+        "operationName": "get /oidc/profile",
+        "testCases": [
+            {
+                "name": "Invalid Authorization header security",
+                "method": "GET",
+                "path": "/oidc/profile",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Integer Breaking",
+                "method": "GET",
+                "path": "/oidc/profile",
+                "queryParams": {
+                    "limit": 1.5
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oidc:[openid,profile]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oidc:[openid,profile]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Maximum Boundary Number",
+                "method": "GET",
+                "path": "/oidc/profile",
+                "queryParams": {
+                    "limit": 101
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oidc:[openid,profile]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oidc:[openid,profile]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Minimum Boundary Number",
+                "method": "GET",
+                "path": "/oidc/profile",
+                "queryParams": {
+                    "limit": 0
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oidc:[openid,profile]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oidc:[openid,profile]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Missing [openid,profile] scopes of oidc in security",
+                "method": "GET",
+                "path": "/oidc/profile",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oidc:[]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oidc:[]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule"
+            },
+            {
+                "name": "Missing [openid] scopes of oidc in security",
+                "method": "GET",
+                "path": "/oidc/profile",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oidc:[profile]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oidc:[profile]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule"
+            },
+            {
+                "name": "Missing [profile] scopes of oidc in security",
+                "method": "GET",
+                "path": "/oidc/profile",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oidc:[openid]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oidc:[openid]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule"
+            },
+            {
+                "name": "No security values provided",
+                "method": "GET",
+                "path": "/oidc/profile",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "oidc security scheme has invalid scope",
+                "method": "GET",
+                "path": "/oidc/profile",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oidc:[some_invalid_scope]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oidc:[some_invalid_scope]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.IncorrectScopesAuthValidationRule"
+            }
+        ]
+    },
+    "get /public": {
+        "path": "/public",
+        "method": "GET",
+        "operationName": "get /public",
+        "testCases": [
+            {
+                "name": "Invalid Query limit parameter: Integer Breaking",
+                "method": "GET",
+                "path": "/public",
+                "queryParams": {
+                    "limit": 1.5
+                },
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Maximum Boundary Number",
+                "method": "GET",
+                "path": "/public",
+                "queryParams": {
+                    "limit": 101
+                },
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Minimum Boundary Number",
+                "method": "GET",
+                "path": "/public",
+                "queryParams": {
+                    "limit": 0
+                },
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+            }
+        ]
+    },
+    "get /secure-and": {
+        "path": "/secure-and",
+        "method": "GET",
+        "operationName": "get /secure-and",
+        "testCases": [
+            {
+                "name": "Invalid Authorization header security",
+                "method": "GET",
+                "path": "/secure-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        },
+                        {
+                            "key": "authorization",
+                            "value": "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Integer Breaking",
+                "method": "GET",
+                "path": "/secure-and",
+                "queryParams": {
+                    "limit": 1.5
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        },
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Maximum Boundary Number",
+                "method": "GET",
+                "path": "/secure-and",
+                "queryParams": {
+                    "limit": 101
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        },
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Minimum Boundary Number",
+                "method": "GET",
+                "path": "/secure-and",
+                "queryParams": {
+                    "limit": 0
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        },
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid X-API-Key API key and Authorization header security",
+                "method": "GET",
+                "path": "/secure-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "some_really_invalid_api_key"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "some_really_invalid_api_key"
+                        },
+                        {
+                            "key": "authorization",
+                            "value": "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Invalid X-API-Key API key security",
+                "method": "GET",
+                "path": "/secure-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "some_really_invalid_api_key"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        },
+                        {
+                            "key": "X-API-Key",
+                            "value": "some_really_invalid_api_key"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Missing Authorization header security",
+                "method": "GET",
+                "path": "/secure-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.MissingSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Missing X-API-Key API key security",
+                "method": "GET",
+                "path": "/secure-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.MissingSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "No security values provided",
+                "method": "GET",
+                "path": "/secure-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            }
+        ]
+    },
+    "get /secure-or": {
+        "path": "/secure-or",
+        "method": "GET",
+        "operationName": "get /secure-or",
+        "testCases": [
+            {
+                "name": "Invalid Authorization header security",
+                "method": "GET",
+                "path": "/secure-or",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Integer Breaking",
+                "method": "GET",
+                "path": "/secure-or",
+                "queryParams": {
+                    "limit": 1.5
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Maximum Boundary Number",
+                "method": "GET",
+                "path": "/secure-or",
+                "queryParams": {
+                    "limit": 101
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Minimum Boundary Number",
+                "method": "GET",
+                "path": "/secure-or",
+                "queryParams": {
+                    "limit": 0
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid X-API-Key API key security",
+                "method": "GET",
+                "path": "/secure-or",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "some_really_invalid_api_key"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        },
+                        {
+                            "key": "X-API-Key",
+                            "value": "some_really_invalid_api_key"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Missing [read] scopes of oauth2 in security",
+                "method": "GET",
+                "path": "/secure-or",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule"
+            },
+            {
+                "name": "No security values provided",
+                "method": "GET",
+                "path": "/secure-or",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "oauth2 security scheme has invalid scope",
+                "method": "GET",
+                "path": "/secure-or",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[some_invalid_scope]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[some_invalid_scope]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.IncorrectScopesAuthValidationRule"
+            }
+        ]
+    },
+    "get /secure-or-and": {
+        "path": "/secure-or-and",
+        "method": "GET",
+        "operationName": "get /secure-or-and",
+        "testCases": [
+            {
+                "name": "Invalid Authorization header security",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        },
+                        {
+                            "key": "authorization",
+                            "value": "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Invalid Authorization header security",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        },
+                        {
+                            "key": "authorization",
+                            "value": "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Integer Breaking",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {
+                    "limit": 1.5
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        },
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Maximum Boundary Number",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {
+                    "limit": 101
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        },
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid Query limit parameter: Out Of Minimum Boundary Number",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {
+                    "limit": 0
+                },
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        },
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": false,
+                "expectedStatusCode": 400,
+                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Invalid X-API-Key API key and Authorization header security",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "some_really_invalid_api_key"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "some_really_invalid_api_key"
+                        },
+                        {
+                            "key": "authorization",
+                            "value": "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Invalid X-API-Key API key security",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "some_really_invalid_api_key"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        },
+                        {
+                            "key": "X-API-Key",
+                            "value": "some_really_invalid_api_key"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Missing Authorization header security",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.MissingSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Missing X-API-Key API key security",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.MissingSecurityValuesAuthValidationRule"
+            },
+            {
+                "name": "Missing [openid,profile] scopes of oidc in security",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[read]&oidc:[]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[read]&oidc:[]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule"
+            },
+            {
+                "name": "Missing [openid] scopes of oidc in security",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[read]&oidc:[profile]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[read]&oidc:[profile]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule"
+            },
+            {
+                "name": "Missing [profile] scopes of oidc in security",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[read]&oidc:[openid]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[read]&oidc:[openid]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule"
+            },
+            {
+                "name": "Missing [read] scopes of oauth2 and [openid,profile] scopes of oidc in security",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[]&oidc:[]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[]&oidc:[]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule"
+            },
+            {
+                "name": "Missing [read] scopes of oauth2 and [openid] scopes of oidc in security",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[]&oidc:[profile]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[]&oidc:[profile]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule"
+            },
+            {
+                "name": "Missing [read] scopes of oauth2 and [profile] scopes of oidc in security",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[]&oidc:[openid]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[]&oidc:[openid]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule"
+            },
+            {
+                "name": "Missing [read] scopes of oauth2 in security",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[]&oidc:[openid,profile]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[]&oidc:[openid,profile]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule"
+            },
+            {
+                "name": "No security values provided",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 401,
+                    "message": "Missing or invalid Basic credentials"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 401,
+                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "oauth2 security scheme has invalid scope",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[some_invalid_scope]&oidc:[openid,profile]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        },
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[some_invalid_scope]&oidc:[openid,profile]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.IncorrectScopesAuthValidationRule"
+            },
+            {
+                "name": "oidc security scheme has invalid scope",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[read]&oidc:[some_invalid_scope]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        },
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[read]&oidc:[some_invalid_scope]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "code": 403,
+                    "message": "Insufficient scope"
+                },
+                "needToComplete": false,
+                "expectedStatusCode": 403,
+                "rule": "art.galushko.openapi.testgen.rules.auth.IncorrectScopesAuthValidationRule"
+            }
+        ]
+    }
+}

@@ -1,0 +1,12 @@
+server:
+  port: 8080
+spring:
+  main:
+    banner-mode: off
+  jackson:
+    deserialization:
+      accept-float-as-int: false
+
+app:
+  security:
+    apiKey: "test-api-key-123"

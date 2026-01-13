@@ -1,0 +1,44 @@
+{{#fileHeaderComment}}
+{{fileHeaderComment}}
+{{/fileHeaderComment}}
+{{#customVariables.package}}
+package {{customVariables.package}};
+{{/customVariables.package}}
+
+import io.restassured.RestAssured;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.response.Response;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeAll;
+import com.fasterxml.jackson.databind.ObjectMapper;
+{{#customVariables.springBootTest}}
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
+{{/customVariables.springBootTest}}
+
+{{#customVariables.springBootTest}}
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT
+)
+{{/customVariables.springBootTest}}
+@DisplayName("Tests for {{operationName}}")
+public class {{className}} {
+{{#customVariables.springBootTest}}
+    @Autowired
+    private ObjectMapper objectMapper;
+{{/customVariables.springBootTest}}
+{{^customVariables.springBootTest}}
+    private ObjectMapper objectMapper = new ObjectMapper();
+{{/customVariables.springBootTest}}
+
+    @BeforeAll
+    public static void setup() {
+        RestAssured.baseURI = "{{customVariables.baseUrl}}";
+    }
+
+{{#methods}}
+{{> method}}
+{{/methods}}
+}

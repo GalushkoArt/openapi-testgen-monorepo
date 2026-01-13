@@ -1,0 +1,119 @@
+openapi: 3.0.0
+info:
+    title: Circular Reference Test API
+    version: 1.0.0
+    description: OpenAPI spec with circular schema references for testing cycle detection
+
+paths:
+    /persons:
+        get:
+            operationId: listPersons
+            summary: List persons with circular address reference
+            parameters:
+                -   name: person
+                    in: query
+                    required: true
+                    schema:
+                        $ref: '#/components/schemas/Person'
+            responses:
+                '200':
+                    description: Success
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Person'
+
+    /linked-list:
+        post:
+            operationId: createLinkedList
+            summary: Create a self-referencing linked list
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LinkedList'
+            responses:
+                '201':
+                    description: Created
+
+    /tree:
+        post:
+            operationId: createTree
+            summary: Create a tree structure (self-referencing)
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/TreeNode'
+            responses:
+                '201':
+                    description: Created
+
+components:
+    schemas:
+        Person:
+            type: object
+            required: [ name, age ]
+            properties:
+                name:
+                    type: string
+                    minLength: 1
+                    maxLength: 100
+                age:
+                    type: integer
+                    minimum: 0
+                    maximum: 150
+                address:
+                    $ref: '#/components/schemas/Address'
+
+        Address:
+            type: object
+            required: [ street, city ]
+            properties:
+                street:
+                    type: string
+                    minLength: 1
+                city:
+                    type: string
+                zipCode:
+                    type: string
+                    pattern: '^\d{5}$'
+                resident:
+                    $ref: '#/components/schemas/Person'  # Circular reference back to Person
+
+        LinkedList:
+            type: object
+            description: Self-referencing linked list node
+            required: [ value, priority ]
+            properties:
+                value:
+                    type: string
+                    minLength: 1
+                priority:
+                    type: integer
+                    minimum: 1
+                    maximum: 10
+                next:
+                    $ref: '#/components/schemas/LinkedList'  # Self-reference
+
+        TreeNode:
+            type: object
+            description: Self-referencing tree node with multiple children
+            required: [ value ]
+            properties:
+                value:
+                    type: string
+                    minLength: 1
+                children:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/TreeNode'  # Self-reference via array
+                metadata:
+                    type: object
+                    properties:
+                        parent:
+                            $ref: '#/components/schemas/TreeNode'  # Additional circular path

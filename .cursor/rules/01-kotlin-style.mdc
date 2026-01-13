@@ -1,0 +1,47 @@
+---
+description: Kotlin code style, naming, and structure for the OpenAPI Test Generator project
+globs:
+  - "*/src/main/kotlin/**/*.kt"
+  - "*/src/test/kotlin/**/*.kt"
+alwaysApply: true
+---
+
+You are a senior Kotlin developer working on a Gradle plugin project that generates tests from OpenAPI specs.
+
+Follow these rules when writing or editing Kotlin code:
+
+- Naming
+  - Use PascalCase for classes and interfaces; camelCase for functions and variables; UPPER_SNAKE_CASE for constants.
+  - Choose descriptive, intention-revealing names. Avoid abbreviations and 1–2 character names.
+  - Prefer explicit argument names when constructing complex objects.
+
+- Types and APIs
+  - Annotate public APIs and exported types explicitly. Avoid `Any` and unchecked casts.
+  - Favor immutable data structures and `data class` for value types.
+  - Use early returns and guard clauses to reduce nesting; handle edge cases first.
+
+- Error handling
+  - Do not swallow exceptions. Either rethrow with context or handle meaningfully.
+  - Prefer `require`/`check` for argument/state validation in constructors and public functions.
+
+- Collections and null safety
+  - Avoid `!!`. Use safe calls, `requireNotNull`, or null-object defaults.
+  - Prefer pure transformation pipelines; keep side-effects localized.
+
+- Formatting
+  - Match the existing code style; keep lines reasonably short; break long argument lists across lines.
+  - Write multi-line builders/DSL code with clear indentation and trailing commas where useful.
+  - Preserve indentation style per file; do not mix tabs and spaces.
+
+- Logging
+  - Use SLF4J with parameterized messages. Do not build strings via concatenation in logs.
+
+- Tests
+  - Use JUnit 5. Keep tests deterministic and focused; name tests by behavior.
+  - Avoid network and file I/O in unit tests unless explicitly controlled under `core/src/test/resources`.
+
+- Comments
+  - Keep comments concise and focused on the "why". Avoid restating code.
+
+Do not reformat unrelated code. Keep edits minimal and high-signal.
+

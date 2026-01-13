@@ -1,0 +1,18 @@
+specFile: "../openapi.yaml"
+outputDir: "src/test/kotlin/art/galushko/kotlin/spring/rest/assured"
+generator: "template"
+generatorOptions:
+    templateSet: "restassured-kotlin"
+    templateVariables:
+        springBootTest: true
+        package: "art.galushko.kotlin.spring.rest.assured"
+        baseUrl: "http://localhost:8080/v1"
+testGenerationSettings:
+    validSecurityValues:
+        ApiKeyAuth: "test-api-key-123"
+#    ignoreAuthValidationRules:
+#        - "art.galushko.openapi.testgen.rules.auth.MissingSecurityValuesAuthValidationRule"
+    ignoreSchemaValidationRules:
+        - "art.galushko.openapi.testgen.rules.schema.InvalidEnumValueSchemaValidationRule"
+    overrideBasicTestData:
+        invalidApiKey: "new_invalid_api_key"

@@ -1,0 +1,128 @@
+package art.galushko.openapi.testgen.generation
+
+import art.galushko.openapi.testgen.model.TestCase
+import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGenerator
+import art.galushko.openapi.testgen.example.openapi.SchemaMerger
+import art.galushko.openapi.testgen.example.util.CombinationBudget
+import art.galushko.openapi.testgen.openapi.SchemaStructureHasher
+import art.galushko.openapi.testgen.openapi.SkipReason
+import art.galushko.openapi.testgen.testdata.BasicTestDataProvider
+import art.galushko.openapi.testgen.testdata.SecurityValueProvider
+import io.swagger.v3.oas.models.OpenAPI
+import io.swagger.v3.oas.models.Operation
+import io.swagger.v3.oas.models.media.Schema
+
+/**
+ * SPI-facing context for rule/provider evaluation during test generation.
+ *
+ * This contract is intentionally small and stable. Concrete orchestration may carry more
+ * internal state than what is exposed here.
+ *
+ * Determinism: providers and rules should treat this context as immutable and avoid side effects.
+ */
+public interface TestGenerationContext {
+    /** The parsed OpenAPI specification being processed. */
+    public val openAPI: OpenAPI
+
+    /** The current operation being processed. */
+    public val operation: Operation
+
+    /** The valid (baseline) test case from which negative cases are derived. */
+    public val validCase: TestCase
+
+    /** Provider for basic test data values (e.g., strings, integers). */
+    public val basicTestData: BasicTestDataProvider
+
+    /** Provider for security scheme values. */
+    public val securityValueProvider: SecurityValueProvider
+
+    /** Generator for deriving example values from schemas. */
+    public val schemaExampleValueGenerator: SchemaExampleValueGenerator
+
+    /** Merger for composed schemas (allOf/anyOf/oneOf). */
+    public val schemaMerger: SchemaMerger
+
+    /** Maximum schema traversal depth. */
+    public val maxDepth: Int
+
+    /** Optional budget limiting schema combinations to prevent explosion. */
+    public val combinationBudget: CombinationBudget?
+
+    /** Set of `$ref` pointers already visited in the current traversal path. */
+    public val visitedSchemaRefs: Set<String>
+
+    /** Current recursion depth in schema traversal. */
+    public val depth: Int
+
+    /** Path of property/item names leading to the current schema location. */
+    public val schemaPath: List<String>
+
+    /**
+     * Checks if the schema should be skipped based on cycles or depth.
+     *
+     * @param schema the schema to check
+     * @return skip reason if schema should be skipped, null otherwise
+     */
+    public fun checkSkip(schema: Schema<*>): SkipReason?
+
+    /**
+     * Returns a new context with the schema visited, or null if it should be skipped.
+     *
+     * @param schema the schema being visited
+     * @param name the name to append to the schema path
+     * @return new context with updated traversal state, or null if schema should be skipped
+     */
+    public fun withVisitedSchema(schema: Schema<*>, name: String): TestGenerationContext?
+}
+
+internal data class DefaultTestGenerationContext(
+    override val openAPI: OpenAPI,
+    override val operation: Operation,
+    override val validCase: TestCase,
+    override val basicTestData: BasicTestDataProvider,
+    override val securityValueProvider: SecurityValueProvider,
+    override val schemaExampleValueGenerator: SchemaExampleValueGenerator,
+    override val schemaMerger: SchemaMerger,
+    override val maxDepth: Int,
+    override val combinationBudget: CombinationBudget?,
+    override val visitedSchemaRefs: Set<String> = emptySet(),
+    private val visitedStructures: Set<Int> = emptySet(),
+    override val depth: Int = 0,
+    override val schemaPath: List<String> = emptyList(),
+) : TestGenerationContext {
+
+    override fun checkSkip(schema: Schema<*>): SkipReason? {
+        if (depth >= maxDepth) return SkipReason.DEPTH_EXCEEDED
+
+        val ref = schema.`$ref`
+        if (ref != null && ref in visitedSchemaRefs) {
+            return SkipReason.CYCLE_DETECTED
+        }
+
+        val hash = SchemaStructureHasher(maxDepth).computeSchemaStructureHash(schema, depth)
+        if (hash in visitedStructures) {
+            return SkipReason.CYCLE_DETECTED
+        }
+
+        return null
+    }
+
+    override fun withVisitedSchema(schema: Schema<*>, name: String): TestGenerationContext? {
+        if (checkSkip(schema) != null) return null
+
+        val newDepth = depth + 1
+        val ref = schema.`$ref`
+        val hash = SchemaStructureHasher(maxDepth).computeSchemaStructureHash(schema, newDepth)
+
+        val newVisitedSchemas = if (ref != null) visitedSchemaRefs + ref else visitedSchemaRefs
+
+        return copy(
+            visitedSchemaRefs = newVisitedSchemas,
+            visitedStructures = visitedStructures + hash,
+            depth = newDepth,
+            schemaPath = schemaPath + name,
+        )
+    }
+}
+
+

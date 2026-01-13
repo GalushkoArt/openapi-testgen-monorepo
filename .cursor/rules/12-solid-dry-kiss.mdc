@@ -1,0 +1,64 @@
+---
+description: General engineering principles — SOLID, DRY, KISS, YAGNI, SoC, and more (tailored for this repo)
+globs:
+  - "**/*.kt"
+  - "**/*.kts"
+alwaysApply: true
+---
+
+Apply these principles when refactoring or adding features (rules, providers, generators, plugin wiring).
+
+- SOLID
+  - Single Responsibility: keep classes focused (e.g., separate option validation from code emission in generators).
+  - Open/Closed: add new rules/providers/generators via extension points (`ManualRuleRegistry`, `ArtifactGeneratorRegistry`, `TestGenerationModule`) without modifying existing behavior.
+  - Liskov: preserve contracts; generated test suites and cases must remain comparable and serializable.
+  - Interface Segregation: prefer small interfaces (`ArtifactGenerator`) and optional helpers over fat interfaces.
+  - Dependency Inversion: inject dependencies (rules, options) via constructors; avoid global state and static singletons.
+
+- DRY
+  - Extract common transformations into helpers (naming, indentation, map key sorting) and reuse across generators.
+  - Centralize option parsing in `transformAndValidateOptions(...)`; share defaults and error messaging patterns.
+  - Deduplicate provider logic by composing smaller providers instead of branching inside a single one.
+
+- KISS
+  - Prefer simple data flows: pure transformations, minimal mutable state, clear boundaries.
+  - Fail fast with precise error messages and keep logs actionable.
+  - Avoid premature generalization; introduce abstractions after at least three usages.
+
+- YAGNI (You Aren't Gonna Need It)
+  - Don't add functionality until it's actually needed; resist speculative features.
+  - Keep generators focused on current requirements; don't add "just in case" options or parameters.
+  - Avoid building extension points for hypothetical future use cases; wait for real demand (rule of three).
+  - Remove unused code, parameters, and configuration options; don't keep them "for later".
+  - Example: don't add `maxDepth` parameter to a rule until depth issues actually occur in practice.
+
+- Separation of Concerns (SoC)
+  - Keep distinct responsibilities in separate classes: parsing (OpenAPI), generation (providers/rules), output (generators).
+  - Don't mix business logic with I/O; generators emit files, providers derive test cases, rules validate schemas.
+  - Configuration concerns stay in `config/` package; domain logic stays in `generation/`, `providers/`, `rules/`, `testdata/`; code emission stays in `generator/` (or feature modules).
+  - Test generation settings (`TestGenerationSettings`) are separate from execution options (`TestGeneratorExecutionOptions`).
+  - Example: `ValidCaseBuilder` builds valid cases; it doesn't know about file I/O or Gradle tasks.
+
+- Principle of Least Surprise
+  - Follow established conventions: PascalCase for classes, `Provider` suffix for providers, `Rule` suffix for rules.
+  - Name things by their purpose: `ParameterTestCaseProviderForOperation` clearly states it provides test cases for operation parameters.
+  - Default behaviors should be safe and intuitive: `errorMode = COLLECT_ALL` (not fail-fast), `manualOnly = false` (auto-wire by default).
+  - Error messages should explain what went wrong and how to fix it; include context (operation name, parameter name, rule name).
+  - Avoid surprising side effects: providers return new test cases, they don't modify the input `validCase`.
+
+- Dependency Direction
+  - Dependencies flow inward: `plugin`/`cli`/feature modules → `core` → `model`; never reverse (model must not depend on core).
+  - High-level modules (plugin, CLI, feature modules) depend on low-level modules (core), not vice versa.
+  - Abstractions (`TestCaseProvider`, `SchemaValidationRule`, `AuthValidationRule`) are defined in core; implementations register via `BuiltInRules`, `BuiltInGenerators`, or `TestGenerationModule`.
+  - Configuration layer (`TestGenerationEngine`, `TestGeneratorExecutionOptions`) orchestrates without knowing implementation details.
+  - Generators depend on models (`TestCase`, `TestSuite`) but models don't know about generators.
+  - Example: `OpenApiTestGeneratorTask` (plugin) depends on `TestGenerationEngine` (core), which depends on `TestCase` (model).
+
+- Determinism and Safety
+  - Sort collections by class name or key; ensure stable output order. Rules and generators in `BuiltInRules`/`BuiltInGenerators` are sorted.
+  - Validate inputs early with `require(...)`/`requireNotNull(...)` and explicit types.
+  - Keep I/O localized and side-effect boundaries clear; no hidden work at configuration time.
+
+- Testing posture
+  - Unit-test rules and providers in isolation; snapshot or end-to-end test generators for stable outputs.
+  - Prefer constructor injection to control dependencies.

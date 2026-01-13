@@ -1,0 +1,287 @@
+public final class art/galushko/openapi/testgen/model/KeyValuePair {
+	public fun <init> (Ljava/lang/Object;Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;Ljava/lang/Object;)Lart/galushko/openapi/testgen/model/KeyValuePair;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/model/KeyValuePair;Ljava/lang/Object;Ljava/lang/Object;ILjava/lang/Object;)Lart/galushko/openapi/testgen/model/KeyValuePair;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getKey ()Ljava/lang/Object;
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/model/KeyValuePairKt {
+	public static final fun with (Ljava/lang/Object;Ljava/lang/Object;)Lart/galushko/openapi/testgen/model/KeyValuePair;
+}
+
+public final class art/galushko/openapi/testgen/model/SecurityValues {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/Map;Ljava/util/List;Ljava/util/List;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/util/Map;Ljava/util/List;Ljava/util/List;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/Map;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/util/Map;
+	public final fun copy (Ljava/util/Map;Ljava/util/List;Ljava/util/List;Ljava/util/Map;)Lart/galushko/openapi/testgen/model/SecurityValues;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/model/SecurityValues;Ljava/util/Map;Ljava/util/List;Ljava/util/List;Ljava/util/Map;ILjava/lang/Object;)Lart/galushko/openapi/testgen/model/SecurityValues;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCookie ()Ljava/util/List;
+	public final fun getHeaders ()Ljava/util/List;
+	public final fun getOther ()Ljava/util/Map;
+	public final fun getQueryParams ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/model/TestCase {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/util/List;Ljava/util/List;Lart/galushko/openapi/testgen/model/SecurityValues;Ljava/lang/Object;Ljava/lang/Object;ZILjava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/util/List;Ljava/util/List;Lart/galushko/openapi/testgen/model/SecurityValues;Ljava/lang/Object;Ljava/lang/Object;ZILjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/lang/Object;
+	public final fun component11 ()Z
+	public final fun component12 ()I
+	public final fun component13 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/util/Map;
+	public final fun component5 ()Ljava/util/Map;
+	public final fun component6 ()Ljava/util/List;
+	public final fun component7 ()Ljava/util/List;
+	public final fun component8 ()Lart/galushko/openapi/testgen/model/SecurityValues;
+	public final fun component9 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/util/List;Ljava/util/List;Lart/galushko/openapi/testgen/model/SecurityValues;Ljava/lang/Object;Ljava/lang/Object;ZILjava/lang/String;)Lart/galushko/openapi/testgen/model/TestCase;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/model/TestCase;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/util/List;Ljava/util/List;Lart/galushko/openapi/testgen/model/SecurityValues;Ljava/lang/Object;Ljava/lang/Object;ZILjava/lang/String;ILjava/lang/Object;)Lart/galushko/openapi/testgen/model/TestCase;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBody ()Ljava/lang/Object;
+	public final fun getCookie ()Ljava/util/List;
+	public final fun getExpectedBody ()Ljava/lang/Object;
+	public final fun getExpectedStatusCode ()I
+	public final fun getHeaders ()Ljava/util/List;
+	public final fun getMethod ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getNeedToComplete ()Z
+	public final fun getPath ()Ljava/lang/String;
+	public final fun getPathParams ()Ljava/util/Map;
+	public final fun getQueryParams ()Ljava/util/Map;
+	public final fun getRule ()Ljava/lang/String;
+	public final fun getSecurityValues ()Lart/galushko/openapi/testgen/model/SecurityValues;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/model/TestSuite {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)Lart/galushko/openapi/testgen/model/TestSuite;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/model/TestSuite;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lart/galushko/openapi/testgen/model/TestSuite;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMethod ()Ljava/lang/String;
+	public final fun getOperationName ()Ljava/lang/String;
+	public final fun getPath ()Ljava/lang/String;
+	public final fun getTestCases ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/model/error/BudgetExceededException : java/lang/RuntimeException {
+	public fun <init> (Lart/galushko/openapi/testgen/model/error/BudgetExceededException$BudgetType;Lart/galushko/openapi/testgen/model/error/ErrorContext;II)V
+	public final fun getBudgetType ()Lart/galushko/openapi/testgen/model/error/BudgetExceededException$BudgetType;
+	public final fun getContext ()Lart/galushko/openapi/testgen/model/error/ErrorContext;
+	public final fun getLimit ()I
+	public final fun getUsed ()I
+}
+
+public final class art/galushko/openapi/testgen/model/error/BudgetExceededException$BudgetType : java/lang/Enum {
+	public static final field SCHEMA_COMBINATIONS Lart/galushko/openapi/testgen/model/error/BudgetExceededException$BudgetType;
+	public static final field TEST_CASES_PER_OPERATION Lart/galushko/openapi/testgen/model/error/BudgetExceededException$BudgetType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lart/galushko/openapi/testgen/model/error/BudgetExceededException$BudgetType;
+	public static fun values ()[Lart/galushko/openapi/testgen/model/error/BudgetExceededException$BudgetType;
+}
+
+public abstract interface class art/galushko/openapi/testgen/model/error/ErrorContext {
+}
+
+public final class art/galushko/openapi/testgen/model/error/ErrorContext$Operation : art/galushko/openapi/testgen/model/error/ErrorContext {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lart/galushko/openapi/testgen/model/error/ErrorContext$Operation;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/model/error/ErrorContext$Operation;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lart/galushko/openapi/testgen/model/error/ErrorContext$Operation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMethod ()Ljava/lang/String;
+	public final fun getOperationId ()Ljava/lang/String;
+	public final fun getPath ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/model/error/ErrorContext$Parameter : art/galushko/openapi/testgen/model/error/ErrorContext {
+	public fun <init> (Lart/galushko/openapi/testgen/model/error/ErrorContext$Operation;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Lart/galushko/openapi/testgen/model/error/ErrorContext$Operation;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy (Lart/galushko/openapi/testgen/model/error/ErrorContext$Operation;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lart/galushko/openapi/testgen/model/error/ErrorContext$Parameter;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/model/error/ErrorContext$Parameter;Lart/galushko/openapi/testgen/model/error/ErrorContext$Operation;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lart/galushko/openapi/testgen/model/error/ErrorContext$Parameter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLocation ()Ljava/lang/String;
+	public final fun getOperation ()Lart/galushko/openapi/testgen/model/error/ErrorContext$Operation;
+	public final fun getParameterName ()Ljava/lang/String;
+	public final fun getRef ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/model/error/ErrorContext$RequestBody : art/galushko/openapi/testgen/model/error/ErrorContext {
+	public fun <init> (Lart/galushko/openapi/testgen/model/error/ErrorContext$Operation;Ljava/lang/String;)V
+	public final fun component1 ()Lart/galushko/openapi/testgen/model/error/ErrorContext$Operation;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Lart/galushko/openapi/testgen/model/error/ErrorContext$Operation;Ljava/lang/String;)Lart/galushko/openapi/testgen/model/error/ErrorContext$RequestBody;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/model/error/ErrorContext$RequestBody;Lart/galushko/openapi/testgen/model/error/ErrorContext$Operation;Ljava/lang/String;ILjava/lang/Object;)Lart/galushko/openapi/testgen/model/error/ErrorContext$RequestBody;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOperation ()Lart/galushko/openapi/testgen/model/error/ErrorContext$Operation;
+	public final fun getRef ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/model/error/ErrorHandlingConfig {
+	public fun <init> ()V
+	public fun <init> (Lart/galushko/openapi/testgen/model/error/ErrorMode;I)V
+	public synthetic fun <init> (Lart/galushko/openapi/testgen/model/error/ErrorMode;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lart/galushko/openapi/testgen/model/error/ErrorMode;
+	public final fun component2 ()I
+	public final fun copy (Lart/galushko/openapi/testgen/model/error/ErrorMode;I)Lart/galushko/openapi/testgen/model/error/ErrorHandlingConfig;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/model/error/ErrorHandlingConfig;Lart/galushko/openapi/testgen/model/error/ErrorMode;IILjava/lang/Object;)Lart/galushko/openapi/testgen/model/error/ErrorHandlingConfig;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMaxErrors ()I
+	public final fun getMode ()Lart/galushko/openapi/testgen/model/error/ErrorMode;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/model/error/ErrorMode : java/lang/Enum {
+	public static final field COLLECT_ALL Lart/galushko/openapi/testgen/model/error/ErrorMode;
+	public static final field FAIL_FAST Lart/galushko/openapi/testgen/model/error/ErrorMode;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lart/galushko/openapi/testgen/model/error/ErrorMode;
+	public static fun values ()[Lart/galushko/openapi/testgen/model/error/ErrorMode;
+}
+
+public final class art/galushko/openapi/testgen/model/error/GenerationError {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lart/galushko/openapi/testgen/model/error/ErrorContext;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lart/galushko/openapi/testgen/model/error/ErrorContext;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lart/galushko/openapi/testgen/model/error/ErrorContext;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lart/galushko/openapi/testgen/model/error/ErrorContext;Ljava/lang/String;)Lart/galushko/openapi/testgen/model/error/GenerationError;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/model/error/GenerationError;Ljava/lang/String;Ljava/lang/String;Lart/galushko/openapi/testgen/model/error/ErrorContext;Ljava/lang/String;ILjava/lang/Object;)Lart/galushko/openapi/testgen/model/error/GenerationError;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContext ()Lart/galushko/openapi/testgen/model/error/ErrorContext;
+	public final fun getExceptionText ()Ljava/lang/String;
+	public final fun getMessage ()Ljava/lang/String;
+	public final fun getProviderClass ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/model/error/GenerationReport {
+	public fun <init> (Ljava/util/List;Ljava/util/List;Lart/galushko/openapi/testgen/model/error/GenerationSummary;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Lart/galushko/openapi/testgen/model/error/GenerationSummary;
+	public final fun copy (Ljava/util/List;Ljava/util/List;Lart/galushko/openapi/testgen/model/error/GenerationSummary;)Lart/galushko/openapi/testgen/model/error/GenerationReport;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/model/error/GenerationReport;Ljava/util/List;Ljava/util/List;Lart/galushko/openapi/testgen/model/error/GenerationSummary;ILjava/lang/Object;)Lart/galushko/openapi/testgen/model/error/GenerationReport;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getErrors ()Ljava/util/List;
+	public final fun getHasErrors ()Z
+	public final fun getSuccessfulSuites ()Ljava/util/List;
+	public final fun getSummary ()Lart/galushko/openapi/testgen/model/error/GenerationSummary;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/model/error/GenerationSummary {
+	public fun <init> (ILjava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;II)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()I
+	public final fun component7 ()I
+	public final fun copy (ILjava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;II)Lart/galushko/openapi/testgen/model/error/GenerationSummary;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/model/error/GenerationSummary;ILjava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;IIILjava/lang/Object;)Lart/galushko/openapi/testgen/model/error/GenerationSummary;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFailedOperations ()Ljava/util/List;
+	public final fun getNotTestedOperations ()Ljava/util/List;
+	public final fun getPartialOperations ()Ljava/util/List;
+	public final fun getSuccessfulOperations ()Ljava/util/List;
+	public final fun getTotalErrors ()I
+	public final fun getTotalOperations ()I
+	public final fun getTotalTestCases ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/model/error/OperationInfo {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lart/galushko/openapi/testgen/model/error/OperationInfo;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/model/error/OperationInfo;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lart/galushko/openapi/testgen/model/error/OperationInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMethod ()Ljava/lang/String;
+	public final fun getOperationId ()Ljava/lang/String;
+	public final fun getPath ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class art/galushko/openapi/testgen/model/error/Outcome {
+}
+
+public final class art/galushko/openapi/testgen/model/error/Outcome$Failure : art/galushko/openapi/testgen/model/error/Outcome {
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lart/galushko/openapi/testgen/model/error/Outcome$Failure;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/model/error/Outcome$Failure;Ljava/util/List;ILjava/lang/Object;)Lart/galushko/openapi/testgen/model/error/Outcome$Failure;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getErrors ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/model/error/Outcome$PartialSuccess : art/galushko/openapi/testgen/model/error/Outcome {
+	public fun <init> (Ljava/lang/Object;Ljava/util/List;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/Object;Ljava/util/List;)Lart/galushko/openapi/testgen/model/error/Outcome$PartialSuccess;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/model/error/Outcome$PartialSuccess;Ljava/lang/Object;Ljava/util/List;ILjava/lang/Object;)Lart/galushko/openapi/testgen/model/error/Outcome$PartialSuccess;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getErrors ()Ljava/util/List;
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/model/error/Outcome$Success : art/galushko/openapi/testgen/model/error/Outcome {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lart/galushko/openapi/testgen/model/error/Outcome$Success;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/model/error/Outcome$Success;Ljava/lang/Object;ILjava/lang/Object;)Lart/galushko/openapi/testgen/model/error/Outcome$Success;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+

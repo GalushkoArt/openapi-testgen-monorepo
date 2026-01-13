@@ -1,0 +1,1064 @@
+---
+createOrder:
+  path: "/orders"
+  method: "POST"
+  operationName: "createOrder"
+  testCases:
+  - name: "Incorrect Request Body: Missed Required Object Properties items"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      userId: "a"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+  - name: "Incorrect Request Body: Missed Required Object Properties userId"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      items:
+      - price: 0
+        quantity: 1
+        sku: "a"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+  - name: "Incorrect Request Body: Object Property items Array Item Missed Required\
+      \ Object Properties price"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      items:
+      - quantity: 1
+        sku: "a"
+      userId: "a"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+  - name: "Incorrect Request Body: Object Property items Array Item Missed Required\
+      \ Object Properties quantity"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      items:
+      - price: 0
+        sku: "a"
+      userId: "a"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+  - name: "Incorrect Request Body: Object Property items Array Item Missed Required\
+      \ Object Properties sku"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      items:
+      - price: 0
+        quantity: 1
+      userId: "a"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+  - name: "Incorrect Request Body: Object Property items Array Item Object Property\
+      \ price Out Of Minimum Boundary Number"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      items:
+      - price: -1
+        quantity: 1
+        sku: "a"
+      userId: "a"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+  - name: "Incorrect Request Body: Object Property items Array Item Object Property\
+      \ quantity Integer Breaking"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      items:
+      - price: 0
+        quantity: 1.5
+        sku: "a"
+      userId: "a"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+  - name: "Incorrect Request Body: Object Property items Array Item Object Property\
+      \ quantity Out Of Minimum Boundary Number"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      items:
+      - price: 0
+        quantity: 0
+        sku: "a"
+      userId: "a"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+  - name: "Incorrect Request Body: Object Property items Below Min Items Array"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      items: []
+      userId: "a"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+  - name: "Invalid Header Idempotency-Key parameter: Out Of Maximum Length String"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    - key: "Idempotency-Key"
+      value: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      items:
+      - price: 0
+        quantity: 1
+        sku: "a"
+      userId: "a"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.OutOfMaximumLengthStringSchemaValidationRule"
+  - name: "Invalid X-API-Key API key security"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "new_invalid_api_key"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "new_invalid_api_key"
+      cookie: []
+      other: {}
+    body:
+      items:
+      - price: 0
+        quantity: 1
+        sku: "a"
+      userId: "a"
+    expectedBody:
+      code: "unauthorized"
+      message: "API key required"
+    needToComplete: false
+    expectedStatusCode: 401
+    rule: "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+  - name: "No security values provided"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers: []
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers: []
+      cookie: []
+      other: {}
+    body:
+      items:
+      - price: 0
+        quantity: 1
+        sku: "a"
+      userId: "a"
+    expectedBody:
+      code: "unauthorized"
+      message: "API key required"
+    needToComplete: false
+    expectedStatusCode: 401
+    rule: "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+  - name: "Required Request Body is missing"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+createUser:
+  path: "/users"
+  method: "POST"
+  operationName: "createUser"
+  testCases:
+  - name: "Incorrect Request Body: Missed Required Object Properties email"
+    method: "POST"
+    path: "/users"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+  - name: "Incorrect Request Body: Missed Required Object Properties name"
+    method: "POST"
+    path: "/users"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      email: "test0@example.com"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+  - name: "Incorrect Request Body: Object Property email Invalid Pattern"
+    method: "POST"
+    path: "/users"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      email: "[ {"
+      name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+  - name: "Incorrect Request Body: Object Property email Wrong Email Format"
+    method: "POST"
+    path: "/users"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      email: "invalid.email@example"
+      name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+  - name: "Incorrect Request Body: Object Property id Wrong UUID Format"
+    method: "POST"
+    path: "/users"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      email: "test0@example.com"
+      name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      id: "8e258b27-c787-49ef-9539-11461b251ffg"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+  - name: "Incorrect Request Body: Object Property name Out Of Maximum Length String"
+    method: "POST"
+    path: "/users"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      email: "test0@example.com"
+      name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+  - name: "Incorrect Request Body: Object Property name Out Of Minimum Length String"
+    method: "POST"
+    path: "/users"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      email: "test0@example.com"
+      name: ""
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+  - name: "Invalid Header Idempotency-Key parameter: Out Of Maximum Length String"
+    method: "POST"
+    path: "/users"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    - key: "Idempotency-Key"
+      value: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      email: "test0@example.com"
+      name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.OutOfMaximumLengthStringSchemaValidationRule"
+  - name: "Invalid X-API-Key API key security"
+    method: "POST"
+    path: "/users"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "new_invalid_api_key"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "new_invalid_api_key"
+      cookie: []
+      other: {}
+    body:
+      email: "test0@example.com"
+      name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    expectedBody:
+      code: "unauthorized"
+      message: "API key required"
+    needToComplete: false
+    expectedStatusCode: 401
+    rule: "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+  - name: "No security values provided"
+    method: "POST"
+    path: "/users"
+    queryParams: {}
+    pathParams: {}
+    headers: []
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers: []
+      cookie: []
+      other: {}
+    body:
+      email: "test0@example.com"
+      name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    expectedBody:
+      code: "unauthorized"
+      message: "API key required"
+    needToComplete: false
+    expectedStatusCode: 401
+    rule: "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+  - name: "Required Request Body is missing"
+    method: "POST"
+    path: "/users"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+getUser:
+  path: "/users/{userId}"
+  method: "GET"
+  operationName: "getUser"
+  testCases:
+  - name: "Invalid Path userId parameter: Invalid Pattern"
+    method: "GET"
+    path: "/users/{userId}"
+    queryParams: {}
+    pathParams:
+      userId: "AE."
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.pattern.support.InvalidPatternSchemaValidationRule"
+  - name: "Invalid X-API-Key API key security"
+    method: "GET"
+    path: "/users/{userId}"
+    queryParams: {}
+    pathParams:
+      userId: "wha_262laxjwhyaz8"
+    headers:
+    - key: "X-API-Key"
+      value: "new_invalid_api_key"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "new_invalid_api_key"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "unauthorized"
+      message: "API key required"
+    needToComplete: false
+    expectedStatusCode: 401
+    rule: "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+  - name: "No security values provided"
+    method: "GET"
+    path: "/users/{userId}"
+    queryParams: {}
+    pathParams:
+      userId: "wha_262laxjwhyaz8"
+    headers: []
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers: []
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "unauthorized"
+      message: "API key required"
+    needToComplete: false
+    expectedStatusCode: 401
+    rule: "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+listOrders:
+  path: "/orders"
+  method: "GET"
+  operationName: "listOrders"
+  testCases:
+  - name: "Invalid Query page parameter: Integer Breaking"
+    method: "GET"
+    path: "/orders"
+    queryParams:
+      page: 1.5
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+  - name: "Invalid Query page parameter: Out Of Minimum Boundary Number"
+    method: "GET"
+    path: "/orders"
+    queryParams:
+      page: 0
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+  - name: "Invalid Query pageSize parameter: Integer Breaking"
+    method: "GET"
+    path: "/orders"
+    queryParams:
+      pageSize: 1.5
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+  - name: "Invalid Query pageSize parameter: Out Of Maximum Boundary Number"
+    method: "GET"
+    path: "/orders"
+    queryParams:
+      pageSize: 101
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+  - name: "Invalid Query pageSize parameter: Out Of Minimum Boundary Number"
+    method: "GET"
+    path: "/orders"
+    queryParams:
+      pageSize: 0
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+  - name: "Invalid X-API-Key API key security"
+    method: "GET"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "new_invalid_api_key"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "new_invalid_api_key"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "unauthorized"
+      message: "API key required"
+    needToComplete: false
+    expectedStatusCode: 401
+    rule: "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+  - name: "No security values provided"
+    method: "GET"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers: []
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers: []
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "unauthorized"
+      message: "API key required"
+    needToComplete: false
+    expectedStatusCode: 401
+    rule: "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+listUsers:
+  path: "/users"
+  method: "GET"
+  operationName: "listUsers"
+  testCases:
+  - name: "Invalid Query page parameter: Integer Breaking"
+    method: "GET"
+    path: "/users"
+    queryParams:
+      page: 1.5
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+  - name: "Invalid Query page parameter: Out Of Minimum Boundary Number"
+    method: "GET"
+    path: "/users"
+    queryParams:
+      page: 0
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+  - name: "Invalid Query pageSize parameter: Integer Breaking"
+    method: "GET"
+    path: "/users"
+    queryParams:
+      pageSize: 1.5
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+  - name: "Invalid Query pageSize parameter: Out Of Maximum Boundary Number"
+    method: "GET"
+    path: "/users"
+    queryParams:
+      pageSize: 101
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+  - name: "Invalid Query pageSize parameter: Out Of Minimum Boundary Number"
+    method: "GET"
+    path: "/users"
+    queryParams:
+      pageSize: 0
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+  - name: "Invalid Query q parameter: Out Of Maximum Length String"
+    method: "GET"
+    path: "/users"
+    queryParams:
+      q: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.OutOfMaximumLengthStringSchemaValidationRule"
+  - name: "Invalid X-API-Key API key security"
+    method: "GET"
+    path: "/users"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "new_invalid_api_key"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "new_invalid_api_key"
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "unauthorized"
+      message: "API key required"
+    needToComplete: false
+    expectedStatusCode: 401
+    rule: "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+  - name: "No security values provided"
+    method: "GET"
+    path: "/users"
+    queryParams: {}
+    pathParams: {}
+    headers: []
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers: []
+      cookie: []
+      other: {}
+    body: null
+    expectedBody:
+      code: "unauthorized"
+      message: "API key required"
+    needToComplete: false
+    expectedStatusCode: 401
+    rule: "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"

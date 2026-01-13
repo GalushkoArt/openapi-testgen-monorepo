@@ -1,0 +1,221 @@
+openapi: 3.1.0
+
+info:
+    title: Complex Schema API - Validate Arrays
+    version: 1.0.0
+    description: POST /validation/arrays operation - Validate complex array structures
+
+servers:
+    -   url: https://api.example.com/v1
+        description: Production server
+
+tags:
+    -   name: validation
+        description: Advanced validation scenarios
+
+paths:
+    /validation/arrays:
+        post:
+            tags: [validation]
+            summary: Validate complex array structures
+            operationId: validateArrays
+            description: Test endpoint for various array validation scenarios
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                valueArray:
+                                    $ref: '#/components/schemas/ValueArray'
+                                    description: Array of homogeneous types
+                                flexibleArray:
+                                    $ref: '#/components/schemas/FlexibleArray'
+                                    description: Array with flexible constraints
+                                smartArray:
+                                    $ref: '#/components/schemas/SmartArray'
+                                    description: Array with complex object validation
+                        examples:
+                            stringArray:
+                                summary: String value array
+                                value:
+                                    valueArray: ["apple", "banana", "cherry"]
+                            numberArray:
+                                summary: Number value array
+                                value:
+                                    valueArray: [10, 20, 30, 40]
+                            flexibleExample:
+                                summary: Flexible array with important element
+                                value:
+                                    flexibleArray: ["item1", "important", "item3"]
+                            smartExample:
+                                summary: Smart array with complex objects
+                                value:
+                                    smartArray:
+                                        -   id: 1
+                                            value: "first"
+                                        -   id: 150
+                                            value: "second"
+
+            responses:
+                '200':
+                    description: Arrays validated successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ApiResponse'
+
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+
+components:
+    schemas:
+        ValueArray:
+            oneOf:
+                -   type: array
+                    items:
+                        type: string
+                    minItems: 1
+
+                -   type: array
+                    items:
+                        type: number
+                        minimum: 0
+                    minItems: 1
+
+                -   type: array
+                    items:
+                        type: boolean
+                    minItems: 1
+
+        FlexibleArray:
+            type: array
+            items:
+                type: string
+            anyOf:
+                -   minItems: 1
+                    description: Must have at least one item
+
+                -   maxItems: 10
+                    description: Should have at most 10 items
+
+                -   contains:
+                        const: "important"
+                    description: Or must contain 'important'
+
+        SmartArray:
+            type: array
+            items:
+                type: object
+                properties:
+                    id:
+                        type: integer
+                    value:
+                        type: string
+
+            anyOf:
+                # At least one must be true
+                -   minItems: 1
+                    maxItems: 5
+                    description: Small array (1-5 items)
+
+                -   contains:
+                        properties:
+                            id:
+                                minimum: 100
+                    description: Contains at least one item with id >= 100
+
+        ApiResponse:
+            type: object
+            allOf:
+                -   type: object
+                    required: [ status, timestamp, requestId ]
+                    properties:
+                        status:
+                            type: string
+                            enum: [ success, error, pending ]
+                        timestamp:
+                            type: string
+                            format: date-time
+                        requestId:
+                            type: string
+                            format: uuid
+
+            oneOf:
+                -   type: object
+                    required: [ data ]
+                    properties:
+                        data:
+                            type: object
+                            description: Success response payload
+
+                -   type: object
+                    required: [ error ]
+                    properties:
+                        error:
+                            type: object
+                            required: [ code, message ]
+                            properties:
+                                code:
+                                    type: string
+                                message:
+                                    type: string
+                                details:
+                                    type: array
+                                    items:
+                                        type: string
+
+                -   type: object
+                    required: [ pendingInfo ]
+                    properties:
+                        pendingInfo:
+                            type: object
+                            required: [ statusUrl ]
+                            properties:
+                                statusUrl:
+                                    type: string
+                                    format: uri
+                                estimatedCompletion:
+                                    type: string
+                                    format: date-time
+
+    responses:
+        BadRequest:
+            description: Bad request - validation error
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            -   $ref: '#/components/schemas/ApiResponse'
+                            -   type: object
+                                properties:
+                                    error:
+                                        type: object
+                                        properties:
+                                            code:
+                                                type: string
+                                                enum: [VALIDATION_ERROR, INVALID_INPUT]
+                                            message:
+                                                type: string
+                                            details:
+                                                type: array
+                                                items:
+                                                    type: string
+
+    securitySchemes:
+        BearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+            description: JWT-based authentication
+
+        ApiKeyAuth:
+            type: apiKey
+            in: header
+            name: X-API-Key
+            description: API key authentication
+
+security:
+    -   BearerAuth: []
+    -   ApiKeyAuth: []

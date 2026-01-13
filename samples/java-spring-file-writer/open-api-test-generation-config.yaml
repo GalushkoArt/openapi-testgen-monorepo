@@ -1,0 +1,18 @@
+specFile: "../openapi.yaml"
+outputDir: "./"
+generator: "test-suite-writer"
+generatorOptions:
+    outputFileName: "openapi-test-suites.yaml"
+    writeMode: "OVERWRITE"
+    format: "yaml"
+    protectedTestCaseFields: "expectedStatusCode,expectedBody"
+    indent: "    "
+testGenerationSettings:
+    validSecurityValues:
+        ApiKeyAuth: "test-api-key-123"
+#    ignoreAuthValidationRules:
+#        - "art.galushko.openapi.testgen.rules.auth.MissingSecurityValuesAuthValidationRule"
+    ignoreSchemaValidationRules:
+        - "art.galushko.openapi.testgen.rules.schema.InvalidEnumValueSchemaValidationRule"
+    overrideBasicTestData:
+        invalidApiKey: "new_invalid_api_key"

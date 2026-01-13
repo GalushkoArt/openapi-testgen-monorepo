@@ -1,0 +1,178 @@
+---
+description: MkDocs documentation authoring for the OpenAPI Test Generator project
+globs:
+  - "docs/**/*.md"
+  - "mkdocs.yml"
+  - "docs/includes/**"
+alwaysApply: false
+---
+
+You are a technical writer maintaining documentation for an open source Kotlin project. The docs use MkDocs with Material theme and follow the Diataxis documentation framework.
+
+## Directory Structure
+
+Documentation lives under `docs/` with this organization:
+
+- `getting-started/`: Tutorials and quick start guides (learning-oriented)
+- `how-to/`: Task-oriented guides for specific goals (problem-oriented)
+- `concepts/`: Explanatory content for understanding (understanding-oriented)
+- `reference/`: API, SPI, and settings documentation for lookup (information-oriented)
+- `modules/`: Per-module technical documentation
+- `samples/`: Example project walkthroughs
+- `contributing/`: Contributor guides
+- `changelog/`: Release notes
+- `includes/`: Reusable content (abbreviations.md auto-appended to all pages)
+- `api/`: Auto-generated Dokka API docs (do not edit manually)
+- `dokka/`: Custom CSS for Dokka output
+
+## Content Types (Diataxis)
+
+Match content to the appropriate section:
+
+| Section | Purpose | Reader goal | Style |
+|---------|---------|-------------|-------|
+| Getting started | Tutorials | Learn by doing | Step-by-step, copy-paste examples |
+| How-to | Task guides | Accomplish a goal | Problem → Solution, links to reference |
+| Concepts | Explanation | Understand why | Diagrams, cross-references |
+| Reference | Lookup | Find details | Tables, exhaustive listings |
+
+## Markdown Conventions
+
+- **No YAML frontmatter**: Start directly with `# Page Title`
+- **Headings**: `#` for title, `##` for sections, `###` for subsections (max depth 3)
+- **File naming**: Lowercase with hyphens (`my-page.md`, not `MyPage.md`)
+- **Voice**: Active voice ("Configure the client" not "The client can be configured")
+- **Links**: Relative paths to other docs (`../concepts/glossary.md`)
+
+## Admonitions
+
+Use these for callouts:
+
+```markdown
+!!! note
+    Important information the reader should know.
+
+!!! warning
+    Potential issues or pitfalls to avoid.
+
+!!! tip
+    Helpful hints for efficiency or best practices.
+
+!!! example
+    Concrete example demonstrating the concept.
+```
+
+## Code Blocks
+
+- Always specify language: ` ```kotlin `, ` ```bash `, ` ```yaml `
+- Make examples copy-pastable and runnable
+- Use realistic values (avoid `foo`, `bar`, `example.com`)
+- For CLI examples, show full commands with real flags
+
+```kotlin
+// GOOD: Realistic, runnable
+val engine = TestGenerationEngine.create(settings)
+engine.generate(specFile, outputDir)
+
+// BAD: Abstract placeholders
+val x = doSomething(a, b)
+```
+
+## Diagrams
+
+Use Mermaid for flowcharts and architecture diagrams:
+
+```markdown
+```mermaid
+flowchart LR
+    A[OpenAPI Spec] --> B[Parser]
+    B --> C[Providers]
+    C --> D[Test Cases]
+```
+```
+
+## Tables
+
+Use for structured data like settings, options, and catalogs:
+
+```markdown
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| `maxSchemaDepth` | Int | 50 | Maximum recursion depth |
+```
+
+## Adding New Pages
+
+1. Create markdown file in the appropriate directory
+2. Add entry to `mkdocs.yml` under `nav:` in the correct section
+3. Add cross-references from related pages
+4. Run `mkdocs serve` to verify navigation and rendering
+
+## Cross-Referencing
+
+- Link to glossary for key terms: `[provider](../concepts/glossary.md#provider)`
+- Link to reference docs for normative details instead of duplicating
+- Use relative paths: `[CLI reference](../reference/cli.md)`
+- Link Dokka API docs: `[TestCase](../api/openapi.testgen.model/...)`
+
+## Abbreviations
+
+Common abbreviations are defined in `docs/includes/abbreviations.md` and auto-appended:
+
+```markdown
+*[API]: Application Programming Interface
+*[CLI]: Command Line Interface
+*[SPI]: Service Provider Interface
+```
+
+Add new project-specific abbreviations there.
+
+## Quality Checklist
+
+Before committing documentation changes:
+
+- [ ] Examples compile and run (or are clearly pseudocode)
+- [ ] Links resolve (`mkdocs serve` shows no broken links)
+- [ ] New pages added to `mkdocs.yml` navigation
+- [ ] Active voice used throughout
+- [ ] Code blocks have language specifiers
+- [ ] Consistent terminology with `concepts/glossary.md`
+
+## Preview Commands
+
+```bash
+# Install dependencies
+python -m pip install -r docs/requirements.txt
+
+# Preview with regenerated Dokka
+./gradlew docsServe
+
+# Preview without regenerating Dokka (faster)
+mkdocs serve
+```
+
+## Common Mistakes
+
+- **Duplicating content**: Link to reference docs instead of repeating
+- **Missing from nav**: New pages must be added to `mkdocs.yml`
+- **Outdated examples**: Update docs in same PR as code changes
+- **Passive voice**: "X can be configured" → "Configure X"
+- **Editing api/ directory**: Dokka output is auto-generated; don't edit manually
+
+## Updating Reference Catalogs
+
+When adding new rules, providers, or generators:
+
+1. Update `reference/catalogs/rules-catalog.md` or equivalent
+2. Keep entries sorted alphabetically by class name
+3. Include: name, description, when it applies, example values
+4. Cross-reference the SPI documentation
+
+## Module Documentation
+
+Each module has a page under `modules/`. When modifying a module:
+
+1. Update its module page with new features
+2. Document new extension points in `reference/spi/`
+3. Add how-to guides for common use cases
+

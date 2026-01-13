@@ -1,0 +1,46 @@
+---
+path: "/users"
+method: "POST"
+operationName: "createUser"
+testCases:
+- name: "Invalid Body: Missing Required Field email"
+  method: "POST"
+  path: "/users"
+  queryParams: {}
+  pathParams: {}
+  headers: []
+  cookie: []
+  securityValues:
+    queryParams: {}
+    headers: []
+    cookie: []
+    other: {}
+  body:
+    name: "John Doe"
+  expectedBody: null
+  needToComplete: false
+  expectedStatusCode: 400
+  rule: "RequiredFieldRule"
+- name: "Valid Case"
+  method: "POST"
+  path: "/users"
+  queryParams: {}
+  pathParams: {}
+  headers: []
+  cookie: []
+  securityValues:
+    queryParams: {}
+    headers: []
+    cookie: []
+    other: {}
+  body:
+    name: "John Doe"
+    email: "john@example.com"
+  expectedBody: null
+  needToComplete: false
+  expectedStatusCode: 201
+  rule: null
+
+
+
+

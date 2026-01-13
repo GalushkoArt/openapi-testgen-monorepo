@@ -1,0 +1,268 @@
+openapi: 3.1.0
+
+info:
+    title: Complex Schema API - Process Payment
+    version: 1.0.0
+    description: POST /payments operation - Process a payment
+
+servers:
+    -   url: https://api.example.com/v1
+        description: Production server
+
+tags:
+    -   name: payments
+        description: Payment processing
+
+paths:
+    /payments:
+        post:
+            tags: [payments]
+            summary: Process a payment
+            operationId: processPayment
+            description: Process payment using various payment methods (discriminated union)
+            parameters:
+                -   name: X-Idempotency-Key
+                    in: header
+                    required: true
+                    description: Idempotency key for payment processing
+                    schema:
+                        type: string
+                        format: uuid
+
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required: [amount, currency, paymentMethod]
+                            properties:
+                                amount:
+                                    type: number
+                                    minimum: 0.01
+                                    description: Payment amount
+                                currency:
+                                    type: string
+                                    enum: [USD, EUR, GBP, JPY]
+                                    description: Currency code
+                                paymentMethod:
+                                    $ref: '#/components/schemas/PaymentMethod'
+                                description:
+                                    $ref: '#/components/schemas/NullableString'
+                        examples:
+                            creditCard:
+                                summary: Credit card payment
+                                value:
+                                    amount: 99.99
+                                    currency: USD
+                                    paymentMethod:
+                                        method: credit_card
+                                        cardNumber: "4532015112830366"
+                                        expiryDate: "12/25"
+                                        cvv: "123"
+                            bankTransfer:
+                                summary: Bank transfer payment
+                                value:
+                                    amount: 500.00
+                                    currency: EUR
+                                    paymentMethod:
+                                        method: bank_transfer
+                                        accountNumber: "12345678"
+                                        routingNumber: "987654321"
+                                        bankName: "Example Bank"
+                            crypto:
+                                summary: Cryptocurrency payment
+                                value:
+                                    amount: 0.05
+                                    currency: USD
+                                    paymentMethod:
+                                        method: crypto
+                                        walletAddress: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
+                                        cryptocurrency: BTC
+
+            responses:
+                '200':
+                    description: Payment processed successfully
+                    content:
+                        application/json:
+                            schema:
+                                allOf:
+                                    -   $ref: '#/components/schemas/ApiResponse'
+                                    -   type: object
+                                        properties:
+                                            data:
+                                                type: object
+                                                properties:
+                                                    transactionId:
+                                                        type: string
+                                                        format: uuid
+                                                    status:
+                                                        type: string
+                                                        enum: [pending, completed, failed]
+                                                    processedAt:
+                                                        type: string
+                                                        format: date-time
+
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '402':
+                    description: Payment required - insufficient funds
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ApiResponse'
+
+components:
+    schemas:
+        PaymentMethod:
+            oneOf:
+                -   $ref: '#/components/schemas/CreditCardPayment'
+                -   $ref: '#/components/schemas/BankTransferPayment'
+                -   $ref: '#/components/schemas/CryptoPayment'
+            discriminator:
+                propertyName: method
+
+        CreditCardPayment:
+            type: object
+            required: [ method, cardNumber, expiryDate, cvv ]
+            properties:
+                method:
+                    type: string
+                    const: credit_card
+                cardNumber:
+                    type: string
+                    pattern: '^\d{16}$'
+                expiryDate:
+                    type: string
+                    pattern: '^\d{2}/\d{2}$'
+                cvv:
+                    type: string
+                    pattern: '^\d{3,4}$'
+
+        BankTransferPayment:
+            type: object
+            required: [ method, accountNumber, routingNumber ]
+            properties:
+                method:
+                    type: string
+                    const: bank_transfer
+                accountNumber:
+                    type: string
+                routingNumber:
+                    type: string
+                bankName:
+                    type: string
+
+        CryptoPayment:
+            type: object
+            required: [ method, walletAddress, cryptocurrency ]
+            properties:
+                method:
+                    type: string
+                    const: crypto
+                walletAddress:
+                    type: string
+                cryptocurrency:
+                    type: string
+                    enum: [ BTC, ETH, USDT ]
+
+        NullableString:
+            allOf:
+                -   type: string
+                    minLength: 1
+                    maxLength: 100
+                -   nullable: true
+
+        ApiResponse:
+            type: object
+            allOf:
+                -   type: object
+                    required: [ status, timestamp, requestId ]
+                    properties:
+                        status:
+                            type: string
+                            enum: [ success, error, pending ]
+                        timestamp:
+                            type: string
+                            format: date-time
+                        requestId:
+                            type: string
+                            format: uuid
+
+            oneOf:
+                -   type: object
+                    required: [ data ]
+                    properties:
+                        data:
+                            type: object
+                            description: Success response payload
+
+                -   type: object
+                    required: [ error ]
+                    properties:
+                        error:
+                            type: object
+                            required: [ code, message ]
+                            properties:
+                                code:
+                                    type: string
+                                message:
+                                    type: string
+                                details:
+                                    type: array
+                                    items:
+                                        type: string
+
+                -   type: object
+                    required: [ pendingInfo ]
+                    properties:
+                        pendingInfo:
+                            type: object
+                            required: [ statusUrl ]
+                            properties:
+                                statusUrl:
+                                    type: string
+                                    format: uri
+                                estimatedCompletion:
+                                    type: string
+                                    format: date-time
+
+    responses:
+        BadRequest:
+            description: Bad request - validation error
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            -   $ref: '#/components/schemas/ApiResponse'
+                            -   type: object
+                                properties:
+                                    error:
+                                        type: object
+                                        properties:
+                                            code:
+                                                type: string
+                                                enum: [VALIDATION_ERROR, INVALID_INPUT]
+                                            message:
+                                                type: string
+                                            details:
+                                                type: array
+                                                items:
+                                                    type: string
+
+    securitySchemes:
+        BearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+            description: JWT-based authentication
+
+        ApiKeyAuth:
+            type: apiKey
+            in: header
+            name: X-API-Key
+            description: API key authentication
+
+security:
+    -   BearerAuth: []
+    -   ApiKeyAuth: []

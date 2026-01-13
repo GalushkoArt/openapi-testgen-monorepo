@@ -1,0 +1,31 @@
+{
+    "existingSuite" : {
+        "path" : "/existing",
+        "method" : "GET",
+        "operationName" : "existingSuite",
+        "testCases" : [ {
+            "name" : "Existing Test Case",
+            "method" : "GET",
+            "path" : "/existing",
+            "queryParams" : { },
+            "pathParams" : { },
+            "headers" : [ ],
+            "cookie" : [ ],
+            "securityValues" : {
+                "queryParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "other" : { }
+            },
+            "body" : null,
+            "expectedBody" : null,
+            "needToComplete" : false,
+            "expectedStatusCode" : 200,
+            "rule" : null
+        } ]
+    }
+}
+
+
+
+

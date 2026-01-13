@@ -1,0 +1,239 @@
+openapi: 3.1.0
+
+info:
+    title: Complex Schema API - Create Product
+    version: 1.0.0
+    description: POST /products operation - Create a product
+
+servers:
+    -   url: https://api.example.com/v1
+        description: Production server
+
+tags:
+    -   name: products
+        description: Product catalog management
+
+paths:
+    /products:
+        post:
+            tags: [products]
+            summary: Create a product
+            operationId: createProduct
+            description: Create a product with different type variants (physical, digital, or service)
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Product'
+                        examples:
+                            physical:
+                                summary: Physical product
+                                value:
+                                    id: "prod-123"
+                                    name: "Laptop"
+                                    price: 999.99
+                                    description: "High-performance laptop"
+                                    type: physical
+                                    weight: 1.5
+                                    dimensions:
+                                        length: 35
+                                        width: 25
+                                        height: 2
+                            digital:
+                                summary: Digital product
+                                value:
+                                    id: "prod-456"
+                                    name: "E-book"
+                                    price: 19.99
+                                    type: digital
+                                    downloadUrl: "https://example.com/download/ebook.pdf"
+                                    fileSize: 5242880
+                                    format: pdf
+                            service:
+                                summary: Service product
+                                value:
+                                    id: "prod-789"
+                                    name: "Consulting"
+                                    price: 150.00
+                                    type: service
+                                    duration: 60
+                                    location: remote
+
+            responses:
+                '201':
+                    description: Product created
+                    content:
+                        application/json:
+                            schema:
+                                allOf:
+                                    -   $ref: '#/components/schemas/ApiResponse'
+                                    -   type: object
+                                        properties:
+                                            data:
+                                                $ref: '#/components/schemas/Product'
+
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+
+components:
+    schemas:
+        Product:
+            allOf:
+                # Base product properties
+                -   type: object
+                    required: [ id, name, price ]
+                    properties:
+                        id:
+                            type: string
+                        name:
+                            type: string
+                        price:
+                            type: number
+                            minimum: 0
+                        description:
+                            type: string
+
+                # Product type variant
+                -   oneOf:
+                        -   type: object
+                            required: [ type, weight ]
+                            properties:
+                                type:
+                                    type: string
+                                    const: physical
+                                weight:
+                                    type: number
+                                    description: Weight in kg
+                                dimensions:
+                                    type: object
+                                    properties:
+                                        length:
+                                            type: number
+                                        width:
+                                            type: number
+                                        height:
+                                            type: number
+
+                        -   type: object
+                            required: [ type, downloadUrl ]
+                            properties:
+                                type:
+                                    type: string
+                                    const: digital
+                                downloadUrl:
+                                    type: string
+                                    format: uri
+                                fileSize:
+                                    type: integer
+                                    description: Size in bytes
+                                format:
+                                    type: string
+                                    enum: [ pdf, epub, mp3, mp4, zip ]
+
+                        -   type: object
+                            required: [ type, duration ]
+                            properties:
+                                type:
+                                    type: string
+                                    const: service
+                                duration:
+                                    type: integer
+                                    description: Service duration in minutes
+                                location:
+                                    type: string
+                                    enum: [ onsite, remote, hybrid ]
+
+        ApiResponse:
+            type: object
+            allOf:
+                -   type: object
+                    required: [ status, timestamp, requestId ]
+                    properties:
+                        status:
+                            type: string
+                            enum: [ success, error, pending ]
+                        timestamp:
+                            type: string
+                            format: date-time
+                        requestId:
+                            type: string
+                            format: uuid
+
+            oneOf:
+                -   type: object
+                    required: [ data ]
+                    properties:
+                        data:
+                            type: object
+                            description: Success response payload
+
+                -   type: object
+                    required: [ error ]
+                    properties:
+                        error:
+                            type: object
+                            required: [ code, message ]
+                            properties:
+                                code:
+                                    type: string
+                                message:
+                                    type: string
+                                details:
+                                    type: array
+                                    items:
+                                        type: string
+
+                -   type: object
+                    required: [ pendingInfo ]
+                    properties:
+                        pendingInfo:
+                            type: object
+                            required: [ statusUrl ]
+                            properties:
+                                statusUrl:
+                                    type: string
+                                    format: uri
+                                estimatedCompletion:
+                                    type: string
+                                    format: date-time
+
+    responses:
+        BadRequest:
+            description: Bad request - validation error
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            -   $ref: '#/components/schemas/ApiResponse'
+                            -   type: object
+                                properties:
+                                    error:
+                                        type: object
+                                        properties:
+                                            code:
+                                                type: string
+                                                enum: [VALIDATION_ERROR, INVALID_INPUT]
+                                            message:
+                                                type: string
+                                            details:
+                                                type: array
+                                                items:
+                                                    type: string
+
+    securitySchemes:
+        BearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+            description: JWT-based authentication
+
+        ApiKeyAuth:
+            type: apiKey
+            in: header
+            name: X-API-Key
+            description: API key authentication
+
+security:
+    -   BearerAuth: []
+    -   ApiKeyAuth: []

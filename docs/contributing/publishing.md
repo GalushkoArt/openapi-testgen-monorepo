@@ -15,8 +15,8 @@ This project publishes library modules to Maven Central and the Gradle plugin to
 
 1. **Create account**: Register at [central.sonatype.com](https://central.sonatype.com/)
 2. **Verify namespace**: Go to Namespaces and claim `art.galushko` (requires domain or GitHub verification)
-3. **Generate user token**: Visit [central.sonatype.com/usertoken](https://central.sonatype.com/usertoken) and click "Generate User Token"
-4. **Save credentials**: Copy the username and password from the modal (cannot be retrieved later)
+3. **Generate user token**: Visit [central.sonatype.com/account](https://central.sonatype.com/account) and create credentials
+4. **Save credentials**: Copy the username and password (cannot be retrieved later)
 
 ### Gradle Plugin Portal
 
@@ -44,36 +44,40 @@ gpg --keyserver keyserver.ubuntu.com --send-keys KEY_ID
 
 ## Credentials configuration
 
-Provide credentials via `~/.gradle/gradle.properties` or environment variables:
+The project uses the [vanniktech maven-publish plugin](https://github.com/vanniktech/gradle-maven-publish-plugin) which expects specific credential names.
 
-```properties
-# Maven Central Portal (generate at https://central.sonatype.com/usertoken)
-centralPortalUsername=...
-centralPortalPassword=...
-
-# GPG signing
-signingKey=-----BEGIN PGP PRIVATE KEY BLOCK-----\n...\n-----END PGP PRIVATE KEY BLOCK-----
-signingPassword=...
-
-# Gradle Plugin Portal (from https://plugins.gradle.org/ profile → API Keys)
-gradle.publish.key=...
-gradle.publish.secret=...
-```
-
-Or use environment variables (preferred for CI):
+### Environment variables (recommended for CI)
 
 ```bash
-# Maven Central Portal
-export CENTRAL_PORTAL_USERNAME=...
-export CENTRAL_PORTAL_PASSWORD=...
+# Maven Central Portal credentials
+export ORG_GRADLE_PROJECT_mavenCentralUsername=your-portal-username
+export ORG_GRADLE_PROJECT_mavenCentralPassword=your-portal-password
 
-# GPG signing
-export SIGNING_KEY="$(cat private-key.asc)"
-export SIGNING_PASSWORD=...
+# GPG signing (ASCII-armored private key)
+export ORG_GRADLE_PROJECT_signingInMemoryKey="$(cat private-key.asc)"
+export ORG_GRADLE_PROJECT_signingInMemoryKeyPassword=your-gpg-passphrase
 
 # Gradle Plugin Portal
-export GRADLE_PUBLISH_KEY=...
-export GRADLE_PUBLISH_SECRET=...
+export GRADLE_PUBLISH_KEY=your-plugin-portal-key
+export GRADLE_PUBLISH_SECRET=your-plugin-portal-secret
+```
+
+### Gradle properties file
+
+Alternatively, add to `~/.gradle/gradle.properties`:
+
+```properties
+# Maven Central Portal
+mavenCentralUsername=your-portal-username
+mavenCentralPassword=your-portal-password
+
+# GPG signing (use \n for newlines in the key)
+signingInMemoryKey=-----BEGIN PGP PRIVATE KEY BLOCK-----\n...\n-----END PGP PRIVATE KEY BLOCK-----
+signingInMemoryKeyPassword=your-gpg-passphrase
+
+# Gradle Plugin Portal
+gradle.publish.key=your-plugin-portal-key
+gradle.publish.secret=your-plugin-portal-secret
 ```
 
 ## Prepare a release
@@ -89,50 +93,78 @@ export GRADLE_PUBLISH_SECRET=...
 
 ## Publish to Maven Central
 
-Publish each library module (excludes samples):
+### Using the publish script (recommended)
+
+The simplest way to publish all artifacts:
 
 ```bash
+./scripts/publish-to-maven-central.sh
+```
+
+This script:
+
+- Verifies credentials are set
+- Publishes all modules in dependency order
+- Provides instructions for the manual release step
+
+### Manual publishing
+
+Publish individual modules:
+
+```bash
+# Single module
+./gradlew :model:publishAllPublicationsToMavenCentralRepository
+
+# All library modules
 for module in model example-value core generator-template pattern-value pattern-support distribution-bundle cli plugin; do
-  ./gradlew -p "$module" publishAllPublicationsToMavenCentralRepository
+  ./gradlew ":${module}:publishAllPublicationsToMavenCentralRepository"
 done
 ```
 
-For local verification before publishing:
+### Local verification
+
+Test publishing locally before uploading:
 
 ```bash
-./gradlew -p core publishToMavenLocal
+./gradlew :core:publishToMavenLocal
+
+# Check the local Maven repository
+ls ~/.m2/repository/art/galushko/openapi/testgen/core/
 ```
 
-### Post-upload steps
+### Post-upload steps (manual release)
 
-After artifacts are uploaded to the staging API:
+The project uses manual release mode (`automaticRelease = false`). After artifacts are uploaded:
 
-1. Log in to [central.sonatype.com](https://central.sonatype.com/)
-2. Go to "Deployments" to view staged repositories
-3. Verify the staged content
-4. Click "Publish" to release to Maven Central
+1. Go to [central.sonatype.com/publishing/deployments](https://central.sonatype.com/publishing/deployments)
+2. Find your deployment (status should show **VALIDATED**)
+3. Review the artifacts list
+4. Click **Publish** to release to Maven Central
 
-!!! tip "Automatic publishing"
-    The staging API supports automatic publishing. Add `publishing_type=automatic` to skip manual verification (use with caution for releases).
+!!! note "Sync timing"
+    - Artifacts appear on [repo1.maven.org](https://repo1.maven.org/maven2/) within ~30 minutes
+    - Searchable on [search.maven.org](https://search.maven.org/) within ~2-4 hours
 
 ## Publish to Gradle Plugin Portal
 
+The Gradle plugin is published separately:
+
 ```bash
-./gradlew -p plugin publishPlugins
+./gradlew :plugin:publishPlugins
 ```
 
 The plugin portal is separate from Maven Central; run both for a complete release.
 
 ## CI/CD publishing
 
-For GitHub Actions or other CI systems, configure secrets:
+For GitHub Actions, configure repository secrets:
 
 ```yaml
 env:
-  CENTRAL_PORTAL_USERNAME: ${{ secrets.CENTRAL_PORTAL_USERNAME }}
-  CENTRAL_PORTAL_PASSWORD: ${{ secrets.CENTRAL_PORTAL_PASSWORD }}
-  SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-  SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+  ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+  ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+  ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+  ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
   GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
   GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
 ```
@@ -141,25 +173,35 @@ env:
 
 ### Signing failures
 
-- Ensure `SIGNING_KEY` contains the full ASCII-armored key including headers
+- Ensure the signing key contains the full ASCII-armored key including headers
 - Check that the key is not expired: `gpg --list-secret-keys`
-- Verify password is correct
+- Verify the passphrase is correct
 
 ### Upload failures (401/403)
 
-- Regenerate Portal User Token if expired
-- Verify namespace is claimed and verified
-- Check that credentials are Portal User Token (not other credentials)
+- Regenerate Portal credentials if expired
+- Verify namespace `art.galushko` is claimed and verified
+- Check credentials are Maven Central Portal tokens (not OSSRH or other credentials)
 
-### Staging repository not visible
+### Deployment not visible
 
-- Artifacts must be uploaded from the same IP address
-- Check [central.sonatype.com/deployments](https://central.sonatype.com/deployments) for pending uploads
+- Check [central.sonatype.com/publishing/deployments](https://central.sonatype.com/publishing/deployments)
+- Verify the upload completed without errors in Gradle output
 - Contact [central-support@sonatype.com](mailto:central-support@sonatype.com) for assistance
+
+### Validation failures
+
+Common validation errors in the Portal:
+
+| Error | Solution |
+|-------|----------|
+| Missing POM element | Ensure `description` is set in build.gradle.kts |
+| Invalid signature | Check GPG key and passphrase |
+| Missing javadoc JAR | Dokka task may have failed; check build logs |
 
 ## Reference links
 
+- [vanniktech maven-publish plugin](https://github.com/vanniktech/gradle-maven-publish-plugin)
 - [Central Portal documentation](https://central.sonatype.org/)
-- [Central Portal Gradle publishing](https://central.sonatype.org/publish/publish-portal-gradle/)
+- [Central Portal publishing guide](https://central.sonatype.org/publish/publish-portal-gradle/)
 - [Gradle Plugin Portal publishing](https://plugins.gradle.org/docs/publish-plugin)
-- [Gradle signing plugin](https://docs.gradle.org/current/userguide/signing_plugin.html)

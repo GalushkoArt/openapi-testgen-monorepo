@@ -1,3 +1,6 @@
+import com.vanniktech.maven.publish.GradlePlugin
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_2
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -12,6 +15,7 @@ plugins {
     alias(libs.plugins.binary.compatibility)
     alias(libs.plugins.dependency.versions)
     alias(libs.plugins.dependency.analysis)
+    alias(libs.plugins.maven.publish)
 }
 
 group = "art.galushko.openapi.testgen"
@@ -94,6 +98,47 @@ gradlePlugin {
     }
 }
 
+// Maven Central Publishing
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = false)
+    signAllPublications()
+    // Use None() to completely skip javadoc jar handling by vanniktech
+    // java-gradle-plugin already adds its own javadoc jar
+    configure(GradlePlugin(javadocJar = JavadocJar.None()))
+
+    coordinates(
+        groupId = project.group.toString(),
+        artifactId = project.name,
+        version = project.version.toString()
+    )
+
+    pom {
+        name.set(project.name)
+        description.set(project.description)
+        url.set("https://docs.galushko.art/openapi-test-generator/")
+
+        licenses {
+            license {
+                name.set("MIT License")
+                url.set("https://opensource.org/licenses/MIT")
+            }
+        }
+
+        scm {
+            url.set("https://github.com/GalushkoArt/openapi-testgen-monorepo")
+            connection.set("scm:git:https://github.com/GalushkoArt/openapi-testgen-monorepo.git")
+            developerConnection.set("scm:git:ssh://git@github.com/GalushkoArt/openapi-testgen-monorepo.git")
+        }
+
+        developers {
+            developer {
+                id.set("GalushkoArt")
+                name.set("Artem Galushko")
+            }
+        }
+    }
+}
+
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
     options.compilerArgs.add("-parameters")
@@ -124,8 +169,6 @@ kover {
         }
     }
 }
-
-apply(from = "../gradle/publishing.gradle.kts")
 
 // Wire checks into the standard lifecycle
 tasks.named("check") {
@@ -168,3 +211,4 @@ dokka {
         }
     }
 }
+

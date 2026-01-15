@@ -1,3 +1,6 @@
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.KotlinJvm
+import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_2
 
@@ -6,6 +9,7 @@ plugins {
     alias(libs.plugins.dokka)
     alias(libs.plugins.kover)
     alias(libs.plugins.binary.compatibility)
+    alias(libs.plugins.maven.publish)
 }
 
 group = "art.galushko.openapi.testgen"
@@ -105,6 +109,41 @@ dokka {
     }
 }
 
-apply(from = "../gradle/publishing.gradle.kts")
+// Maven Central Publishing
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = false)
+    signAllPublications()
+    configure(KotlinJvm(javadocJar = JavadocJar.Dokka("dokkaGeneratePublicationHtml")))
 
+    coordinates(
+        groupId = project.group.toString(),
+        artifactId = project.name,
+        version = project.version.toString()
+    )
 
+    pom {
+        name.set(project.name)
+        description.set(project.description)
+        url.set("https://docs.galushko.art/openapi-test-generator/")
+
+        licenses {
+            license {
+                name.set("MIT License")
+                url.set("https://opensource.org/licenses/MIT")
+            }
+        }
+
+        scm {
+            url.set("https://github.com/GalushkoArt/openapi-testgen-monorepo")
+            connection.set("scm:git:https://github.com/GalushkoArt/openapi-testgen-monorepo.git")
+            developerConnection.set("scm:git:ssh://git@github.com/GalushkoArt/openapi-testgen-monorepo.git")
+        }
+
+        developers {
+            developer {
+                id.set("GalushkoArt")
+                name.set("Artem Galushko")
+            }
+        }
+    }
+}

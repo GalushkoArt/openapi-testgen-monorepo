@@ -8,9 +8,9 @@ Download from [GitHub Releases](https://github.com/GalushkoArt/openapi-testgen-m
 
 ```bash
 # Option A: Download native binary (no Java required)
-curl -LO https://github.com/GalushkoArt/openapi-testgen-monorepo/releases/latest/download/openapi-testgen-linux-amd64
-chmod +x openapi-testgen-linux-amd64
-mv openapi-testgen-linux-amd64 openapi-testgen
+curl -LO https://github.com/GalushkoArt/openapi-testgen-monorepo/releases/download/0.8.0/openapi-testgen-0.8.0-linux-amd64.zip
+unzip openapi-testgen-0.8.0-linux-amd64.zip
+chmod +x openapi-testgen
 
 # Option B: Build from source
 ./gradlew :cli:installDist

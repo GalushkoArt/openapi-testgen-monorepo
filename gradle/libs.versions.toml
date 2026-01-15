@@ -44,6 +44,7 @@ detekt = "1.23.8"
 kover = "0.9.4"
 
 # Gradle plugins
+maven-publish = "0.30.0"
 graalvm-native = "0.11.3"
 shadow = "9.2.2"
 binary-compatibility = "0.18.1"
@@ -111,6 +112,7 @@ allure-generator = { module = "io.qameta.allure:allure-generator", version.ref =
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
 [plugins]
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

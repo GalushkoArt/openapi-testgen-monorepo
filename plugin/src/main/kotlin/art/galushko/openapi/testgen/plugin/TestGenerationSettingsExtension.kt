@@ -18,6 +18,11 @@ import javax.inject.Inject
 public open class TestGenerationSettingsExtension @Inject constructor(
     objects: ObjectFactory,
 ) {
+    /** Map of paths to HTTP methods to include. Empty means include all (default). */
+    @get:Input
+    @get:Optional
+    public val includeOperations: MapProperty<String, Any> = objects.mapProperty(String::class.java, Any::class.java)
+
     /** Map of operation patterns to ignore during test generation. */
     @get:Input
     @get:Optional
@@ -104,6 +109,7 @@ public open class TestGenerationSettingsExtension @Inject constructor(
             }
         }
 
+        add("includeOperations", includeOperations)
         add("validSecurityValues", validSecurityValues)
         add("errorMode", errorMode)
         add("includeValidCase", includeValidCase)

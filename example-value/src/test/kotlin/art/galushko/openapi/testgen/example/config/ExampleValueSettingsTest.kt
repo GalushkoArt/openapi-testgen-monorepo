@@ -25,6 +25,9 @@ class ExampleValueSettingsTest {
     fun shouldUseDefaultProviderOrder() {
         val settings = ExampleValueSettings()
         assertThat(settings.providers).isEqualTo(ExampleValueSettings.DEFAULT_PROVIDER_ORDER)
+        assertThat(settings.includeOptionalExampleProperties).isFalse()
+        assertThat(settings.includeWriteOnly).isTrue()
+        assertThat(settings.useSchemaExampleFallback).isFalse()
     }
 
     @Test
@@ -79,6 +82,9 @@ class ExampleValueSettingsTest {
             mapOf(
                 "providers" to listOf("enum", "const", "pattern", "plain-string"),
                 "maxExampleDepth" to 30,
+                "includeOptionalExampleProperties" to true,
+                "includeWriteOnly" to false,
+                "useSchemaExampleFallback" to true,
                 "email" to mapOf("template" to "user%s@mycompany.com"),
                 "date" to mapOf("startDate" to "2025-01-01"),
                 "dateTime" to mapOf(
@@ -91,6 +97,9 @@ class ExampleValueSettingsTest {
 
         assertThat(settings.providers).containsExactly("enum", "const", "pattern", "plain-string")
         assertThat(settings.maxExampleDepth).isEqualTo(30)
+        assertThat(settings.includeOptionalExampleProperties).isTrue()
+        assertThat(settings.includeWriteOnly).isFalse()
+        assertThat(settings.useSchemaExampleFallback).isTrue()
         assertThat(settings.email.template).isEqualTo("user%s@mycompany.com")
         assertThat(settings.date.startDate).isEqualTo("2025-01-01")
         assertThat(settings.dateTime.startDate).isEqualTo("2025-01-01")

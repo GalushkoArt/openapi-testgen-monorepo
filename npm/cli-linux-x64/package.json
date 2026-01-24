@@ -1,0 +1,30 @@
+{
+  "name": "@openapi-testgen/cli-linux-x64",
+  "version": "0.0.0",
+  "description": "Native Linux x64 binary for @openapi-testgen/cli",
+  "license": "MIT",
+  "author": "Artem Galushko",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "libc": [
+    "glibc"
+  ],
+  "bin": {
+    "openapi-testgen": "./bin/openapi-testgen"
+  },
+  "files": [
+    "bin/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GalushkoArt/openapi-testgen-monorepo.git",
+    "directory": "npm/cli-linux-x64"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

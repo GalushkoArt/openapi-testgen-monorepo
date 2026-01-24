@@ -67,6 +67,34 @@ openApiTestGenerator {
 - `writeMode`: `OVERWRITE` or `SKIP_IF_EXISTS`
 - `fileHeaderComment`: optional header emitted by templates
 
+Note: `className` is derived from `operationName` (operationId). When operationId is missing, the generator uses HTTP method + path and normalizes the result into a valid identifier by treating non-alphanumeric characters as word separators.
+
+## Example: Request Body Validation Test
+
+Excerpt from `samples/java-spring-rest-assured/src/test/java/art/galushko/java/spring/rest/assured/CreateOrderTest.java`:
+
+```java
+@Test
+@DisplayName("Incorrect Request Body: Missed Required Object Properties items")
+public void incorrectRequestBodyMissedRequiredObjectPropertiesItems()  {
+    RequestSpecification requestSpec = RestAssured.given();
+    requestSpec.header("X-API-Key", "test-api-key-123");
+    requestSpec.header("Content-Type", "application/json");
+    String requestBody = "{\"userId\":\"a\"}";
+    requestSpec.body(requestBody);
+
+    Response response = requestSpec.post("/orders");
+    response.then().statusCode(400);
+
+    String responseBody = response.getBody().asString();
+    String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
+    assertExpectedBody(expectedBodyJson, responseBody);
+}
+```
+
+!!! note "Response body assertions"
+    The built-in RestAssured templates assert `expectedBody` as JSON. For non-JSON responses, provide an explicit example value (for example, a `text/plain` string) in the OpenAPI spec. Schema-derived fallbacks are applied only for JSON-like media types.
+
 ## Related documentation
 
 - Modules: [`generator-template`](../../modules/generator-template.md)

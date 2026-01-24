@@ -1,6 +1,7 @@
 package art.galushko.openapi.testgen.generation
 
 import art.galushko.openapi.testgen.filtering.IgnoreConfigHandler
+import art.galushko.openapi.testgen.filtering.IncludeOperationsHandler
 import art.galushko.openapi.testgen.model.TestSuite
 import art.galushko.openapi.testgen.model.error.ErrorHandlingConfig
 import art.galushko.openapi.testgen.model.error.GenerationReport
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory
 /** Orchestrates generation of test suites from an OpenAPI model. */
 internal class TestGenerationProcessor(
     private val testSuiteGenerator: TestSuiteGenerator,
+    private val includeHandler: IncludeOperationsHandler,
     private val ignoreHandler: IgnoreConfigHandler,
 ) {
     private val log = LoggerFactory.getLogger(TestGenerationProcessor::class.java)
@@ -25,12 +27,12 @@ internal class TestGenerationProcessor(
     public fun generateReport(openAPI: OpenAPI, errorConfig: ErrorHandlingConfig): GenerationReport {
         val generationReportBuilder = GenerationReportBuilder(errorConfig)
 
-        validateIgnoreConfig(openAPI)
+        validateConfig(openAPI)
 
-        val pathsToProcess = filterIgnoredPaths(openAPI)
+        val pathsToProcess = filterPaths(openAPI)
 
         for ((path, pathItem) in pathsToProcess.entries) {
-            val operationsToProcess = filterIgnoredOperations(path, pathItem)
+            val operationsToProcess = filterOperations(path, pathItem)
 
             for ((httpMethod, operation) in operationsToProcess.entries) {
                 generationReportBuilder.incrementTotalOperations()
@@ -51,34 +53,37 @@ internal class TestGenerationProcessor(
     }
 
     /**
-     * Validates ignore configuration and logs warnings for invalid paths or patterns.
+     * Validates include and ignore configurations, logging warnings for invalid paths or patterns.
      */
-    private fun validateIgnoreConfig(openAPI: OpenAPI) {
+    private fun validateConfig(openAPI: OpenAPI) {
+        includeHandler.validatePathsExist(openAPI.paths.keys)
         ignoreHandler.validatePathsExist(openAPI.paths.keys)
         ignoreHandler.warnOnForbiddenWildcards()
     }
 
     /**
-     * Filters out paths that are entirely ignored in the configuration.
+     * Filters paths based on include and ignore configurations.
+     * Include filter runs first (for performance), then ignore filter.
      */
-    private fun filterIgnoredPaths(
+    private fun filterPaths(
         openAPI: OpenAPI,
     ): Map<String, PathItem> {
-        return openAPI.paths.filterNot { (path, _) ->
-            ignoreHandler.shouldIgnorePath(path)
-        }
+        return openAPI.paths
+            .filter { (path, _) -> includeHandler.shouldIncludePath(path) }
+            .filterNot { (path, _) -> ignoreHandler.shouldIgnorePath(path) }
     }
 
     /**
-     * Filters out operations that are ignored in the configuration.
+     * Filters operations based on include and ignore configurations.
+     * Include filter runs first (for performance), then ignore filter.
      */
-    private fun filterIgnoredOperations(
+    private fun filterOperations(
         path: String,
         pathItem: PathItem,
     ): Map<PathItem.HttpMethod, Operation> {
-        return pathItem.readOperationsMap().filterNot { (httpMethod, _) ->
-            ignoreHandler.shouldIgnoreOperation(path, httpMethod.name)
-        }
+        return pathItem.readOperationsMap()
+            .filter { (httpMethod, _) -> includeHandler.shouldIncludeOperation(path, httpMethod.name) }
+            .filterNot { (httpMethod, _) -> ignoreHandler.shouldIgnoreOperation(path, httpMethod.name) }
     }
 
     /**

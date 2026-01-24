@@ -6,6 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 OpenAPI Test Generator is a Kotlin-based monorepo that automatically generates test cases (both negative and positive) from OpenAPI specifications. It consists of:
 
+- **build-logic**: Convention plugins for centralized build configuration (Kotlin/JVM, quality, publishing)
 - **model**: Core data models (`TestCase`, `TestSuite`)
 - **example-value**: Standalone example value generation from OpenAPI schemas (`SchemaExampleValueGenerator`, `SchemaValueProvider` SPI)
 - **core**: Test generation logic (providers, rules, generators)
@@ -171,6 +172,7 @@ Budget violations produce `GenerationError` with `BudgetExceededException` conte
 
 Composite build defined in `settings.gradle.kts`:
 ```kotlin
+includeBuild("build-logic")
 includeBuild("model")
 includeBuild("example-value")
 includeBuild("core")
@@ -205,6 +207,39 @@ Dependency flow:
 - **Extensibility**: Custom rules/generators are added via constructor injection or `TestGenerationModule`
 - **Deterministic**: Rules, generators, and modules are sorted for stable output ordering
 - **GraalVM native image**: CLI has native support; core avoids reflection for discovery, but Mustache templates use reflection and the OpenAPI parser/Jackson can require reflection config (see `cli/README.md`)
+
+### Build Infrastructure (Convention Plugins)
+
+The `build-logic` module contains precompiled script plugins that centralize build configuration:
+
+| Plugin | Purpose |
+|--------|---------|
+| `testgen.kotlin-base` | Kotlin/JVM toolchain (Java 21), compiler options (Kotlin 2.2, JSR305 strict), Dokka documentation |
+| `testgen.quality` | Detekt linting, Kover coverage, binary compatibility validation, dependency analysis, JUnit 5 test config |
+| `testgen.library` | Combines `kotlin-base` + `quality` + Maven Central publishing |
+| `testgen.library-with-allure` | Extends `library` with Allure test reporting |
+
+Modules apply convention plugins instead of configuring each tool individually:
+```kotlin
+// Example: core/build.gradle.kts
+plugins {
+    id("testgen.library-with-allure")
+}
+
+testgenQuality {
+    koverMinCoverage = 95
+}
+
+dependencies {
+    api(libs.testgen.model)
+    // ...
+}
+```
+
+Key features:
+- **Centralized detekt config**: Single `build-logic/config/detekt.yml` shared across all modules
+- **Version catalog**: All modules use the root `gradle/libs.versions.toml` via `settings-conventions.gradle.kts`
+- **Shared settings**: `gradle/settings-base.gradle.kts` configures repositories and build cache
 
 
 ## Kotlin Style & Conventions

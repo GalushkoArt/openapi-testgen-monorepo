@@ -1,5 +1,6 @@
 package art.galushko.openapi.testgen.example.config
 
+import art.galushko.openapi.testgen.example.config.ConfigExtractors.extractBoolean
 import art.galushko.openapi.testgen.example.config.ConfigExtractors.extractStringAnyNullableMap
 import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGeneratorOptions
 import art.galushko.openapi.testgen.example.providers.DateTimeValueProvider
@@ -32,6 +33,21 @@ public data class ExampleValueSettings(
      * Maximum depth for recursive schema traversal while generating examples.
      */
     val maxExampleDepth: Int = SchemaExampleValueGeneratorOptions.DEFAULT_MAX_EXAMPLE_DEPTH,
+
+    /**
+     * When true, optional properties with explicit examples/defaults are included for object examples.
+     */
+    val includeOptionalExampleProperties: Boolean = SchemaExampleValueGeneratorOptions.DEFAULT_INCLUDE_OPTIONAL_EXAMPLES,
+
+    /**
+     * When false, writeOnly properties are excluded from generated examples.
+     */
+    val includeWriteOnly: Boolean = SchemaExampleValueGeneratorOptions.DEFAULT_INCLUDE_WRITE_ONLY,
+
+    /**
+     * When true, schema.examples and schema.default are used as fallbacks when example is missing.
+     */
+    val useSchemaExampleFallback: Boolean = SchemaExampleValueGeneratorOptions.DEFAULT_USE_SCHEMA_EXAMPLE_FALLBACK,
 
     /** UUID provider settings. */
     val uuid: UuidProviderSettings = UuidProviderSettings(),
@@ -116,6 +132,13 @@ public data class ExampleValueSettings(
             val maxExampleDepth = ConfigExtractors.extractInteger("maxExampleDepth", mutableMap)
                 ?: default.maxExampleDepth
 
+            val includeOptionalExampleProperties = extractBoolean("includeOptionalExampleProperties", mutableMap)
+                ?: default.includeOptionalExampleProperties
+            val includeWriteOnly = extractBoolean("includeWriteOnly", mutableMap)
+                ?: default.includeWriteOnly
+            val useSchemaExampleFallback = extractBoolean("useSchemaExampleFallback", mutableMap)
+                ?: default.useSchemaExampleFallback
+
             val uuidMap = extractStringAnyNullableMap("uuid", mutableMap) ?: emptyMap()
             val emailMap = extractStringAnyNullableMap("email", mutableMap) ?: emptyMap()
             val dateMap = extractStringAnyNullableMap("date", mutableMap) ?: emptyMap()
@@ -125,6 +148,9 @@ public data class ExampleValueSettings(
             val result = ExampleValueSettings(
                 providers = providers,
                 maxExampleDepth = maxExampleDepth,
+                includeOptionalExampleProperties = includeOptionalExampleProperties,
+                includeWriteOnly = includeWriteOnly,
+                useSchemaExampleFallback = useSchemaExampleFallback,
                 uuid = UuidProviderSettings.fromMap(uuidMap, default.uuid),
                 email = EmailProviderSettings.fromMap(emailMap, default.email),
                 date = DateProviderSettings.fromMap(dateMap, default.date),

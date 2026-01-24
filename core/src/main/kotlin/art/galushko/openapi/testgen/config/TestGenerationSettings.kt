@@ -1,6 +1,7 @@
 package art.galushko.openapi.testgen.config
 
 import art.galushko.openapi.testgen.config.IgnoreConfigValidator.validateIgnoreConfig
+import art.galushko.openapi.testgen.config.IncludeOperationsValidator.validate
 import art.galushko.openapi.testgen.example.config.ConfigExtractors
 import art.galushko.openapi.testgen.example.config.ExampleValueSettings
 import art.galushko.openapi.testgen.example.openapi.SchemaMergerOptions.Companion.DEFAULT_MAX_MERGED_SCHEMA_DEPTH
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory
  * Validation: numeric budgets must be positive and ignore config must be structurally valid.
  * Determinism: ordering-sensitive settings (ignore lists, provider order) are preserved as provided.
  *
+ * @property includeOperations map of paths to HTTP methods to include (empty = include all)
  * @property ignoreTestCases map of ignore rules keyed by path/method/test case
  * @property ignoreSchemaValidationRules set of schema rule class names to ignore
  * @property ignoreAuthValidationRules set of auth rule class names to ignore
@@ -34,6 +36,7 @@ import org.slf4j.LoggerFactory
  * @property exampleValues configuration for schema-derived example value generation
  */
 public data class TestGenerationSettings(
+    val includeOperations: Map<String, List<String>> = emptyMap(),
     val ignoreTestCases: Map<String, Any> = emptyMap(),
     val ignoreSchemaValidationRules: Set<String> = emptySet(),
     val ignoreAuthValidationRules: Set<String> = emptySet(),
@@ -65,11 +68,13 @@ public data class TestGenerationSettings(
         require(maxErrors > 0) {
             "maxErrors must be positive, was $maxErrors"
         }
+        validate(includeOperations)
         validateIgnoreConfig(ignoreTestCases)
     }
 
     public companion object {
         private val log = LoggerFactory.getLogger(TestGenerationSettings::class.java)
+        private val includeOperationsName = TestGenerationSettings::includeOperations.name
         private val ignoreTestCasesName = TestGenerationSettings::ignoreTestCases.name
         private val overrideBasicTestDataName = TestGenerationSettings::overrideBasicTestData.name
         private val validSecurityValuesName = TestGenerationSettings::validSecurityValues.name
@@ -100,6 +105,9 @@ public data class TestGenerationSettings(
                 ?: default.exampleValues
 
             val result = TestGenerationSettings(
+                includeOperations = ConfigExtractors.extractStringListMap(
+                    includeOperationsName, mutableMap
+                ) ?: default.includeOperations,
                 ignoreTestCases = ConfigExtractors.extractStringAnyMap(
                     ignoreTestCasesName, mutableMap
                 ) ?: default.ignoreTestCases,

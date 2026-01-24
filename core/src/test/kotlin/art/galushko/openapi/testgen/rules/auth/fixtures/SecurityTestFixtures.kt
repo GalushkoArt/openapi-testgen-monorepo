@@ -111,8 +111,15 @@ fun validCaseFor(
     }
 }
 
-fun TestCase.copyWithHeaders(name: String, headers: List<KeyValuePair<String, String>>): TestCase = copy(
+fun TestCase.copyWithHeaders(
+    name: String,
+    headers: List<KeyValuePair<String, String>>,
+    authorizationScopes: List<Map<String, Any>>? = null,
+): TestCase = copy(
     name = name,
     headers = headers,
-    securityValues = securityValues.copy(headers = headers)
+    securityValues = securityValues.copy(
+        headers = headers,
+        other = authorizationScopes?.let { mapOf(SecurityHelpers.AUTHORIZATION_SCOPES_KEY to it) } ?: emptyMap(),
+    )
 )

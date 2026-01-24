@@ -3,6 +3,7 @@ package art.galushko.openapi.testgen.generation
 import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGenerator
 import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGeneratorFactory
 import art.galushko.openapi.testgen.example.openapi.SchemaMerger
+import art.galushko.openapi.testgen.example.response.ResponseExampleExtractor
 import art.galushko.openapi.testgen.example.util.CombinationBudget
 import art.galushko.openapi.testgen.model.KeyValuePair
 import art.galushko.openapi.testgen.model.SecurityValues
@@ -72,6 +73,7 @@ fun createTestContext(
     basicTestData: BasicTestDataProvider = BasicTestDataProvider(),
     securityValueProvider: SecurityValueProvider = SecurityValueProvider(),
     schemaExampleValueGenerator: SchemaExampleValueGenerator = SchemaExampleValueGeneratorFactory().create(),
+    responseExampleExtractor: ResponseExampleExtractor = ResponseExampleExtractor(schemaExampleValueGenerator),
     schemaMerger: SchemaMerger = SchemaMerger(),
     maxDepth: Int = 50,
     combinationBudget: CombinationBudget? = null,
@@ -82,6 +84,7 @@ fun createTestContext(
     basicTestData = basicTestData,
     securityValueProvider = securityValueProvider,
     schemaExampleValueGenerator = schemaExampleValueGenerator,
+    responseExampleExtractor = responseExampleExtractor,
     schemaMerger = schemaMerger,
     maxDepth = maxDepth,
     combinationBudget = combinationBudget,

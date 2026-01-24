@@ -22,6 +22,34 @@ import io.swagger.v3.oas.models.security.SecurityScheme.Type.APIKEY
 @Suppress("TooManyFunctions")
 internal object SecurityHelpers {
     internal const val AUTHORIZATION_HEADER: String = "authorization"
+    internal const val AUTHORIZATION_SCOPES_KEY: String = "authorizationScopes"
+
+    /**
+     * Builds authorizationScopes metadata for OAuth2/OpenID schemes.
+     * Returns null if no OAuth2/OpenID schemes present.
+     *
+     * @param requirements list of security schemes with their scopes
+     * @return list of scope metadata maps, or null if no OAuth2/OpenID schemes
+     */
+    @JvmStatic
+    internal fun buildAuthorizationScopes(
+        requirements: List<SecuritySchemeToScope>
+    ): List<Map<String, Any>>? {
+        val oauthScopes = requirements
+            .filter {
+                it.scheme.type == SecurityScheme.Type.OAUTH2 ||
+                    it.scheme.type == SecurityScheme.Type.OPENIDCONNECT
+            }
+            .sortedBy { it.name }
+            .map {
+                mapOf(
+                    "name" to it.name,
+                    "type" to it.scheme.type.toString().lowercase(),
+                    "scopes" to it.scopes.toList()
+                )
+            }
+        return oauthScopes.takeIf { it.isNotEmpty() }
+    }
 
     /**
      * Returns operation-level security or falls back to global `OpenAPI.security`.
@@ -144,7 +172,7 @@ internal object SecurityHelpers {
         val cookie = testCase.cookie.filter { (key, _) -> !testCase.securityValues.cookie.any { it.key == key } }
         return testCase.copy(
             expectedStatusCode = UNAUTHORIZED_CODE,
-            expectedBody = context.schemaExampleValueGenerator.extractExpectedResponseExample(context, UNAUTHORIZED_CODE),
+            expectedBody = context.responseExampleExtractor.extractExpectedResponseExample(context, UNAUTHORIZED_CODE),
             queryParams = queryParams,
             headers = headers,
             cookie = cookie,
@@ -171,7 +199,7 @@ internal object SecurityHelpers {
         val validCase = context.validCase
         return validCase.copy(
             expectedStatusCode = UNAUTHORIZED_CODE,
-            expectedBody = context.schemaExampleValueGenerator.extractExpectedResponseExample(context, UNAUTHORIZED_CODE),
+            expectedBody = context.responseExampleExtractor.extractExpectedResponseExample(context, UNAUTHORIZED_CODE),
             headers = validCase.headers.remove(headers, true),
             cookie = validCase.cookie.remove(cookies),
             queryParams = validCase.queryParams.remove(queries),
@@ -215,6 +243,10 @@ internal object SecurityHelpers {
             requirement.scheme.name to apiKeyValueProvider(requirement)
         }
         requirements.filter { !isApiKeySecurity(it) }.takeIf { it.isNotEmpty() }?.let { headers.add(AUTHORIZATION_HEADER with authHeaderValueProvider(it)) }
+        val authScopes = buildAuthorizationScopes(requirements)
+        val updatedOther = authScopes?.let {
+            testCase.securityValues.other + (AUTHORIZATION_SCOPES_KEY to it)
+        } ?: (testCase.securityValues.other - AUTHORIZATION_SCOPES_KEY)
         return testCase.copy(
             headers = testCase.headers.addOrReplace(headers, true),
             cookie = testCase.cookie.addOrReplace(cookies),
@@ -223,6 +255,7 @@ internal object SecurityHelpers {
                 headers = testCase.securityValues.headers.addOrReplace(headers, true),
                 cookie = testCase.securityValues.cookie.addOrReplace(cookies),
                 queryParams = testCase.securityValues.queryParams.addOrReplace(queries),
+                other = updatedOther,
             )
         )
     }

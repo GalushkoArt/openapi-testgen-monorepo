@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.BeforeAll;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 {{#customVariables.springBootTest}}
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,6 +38,31 @@ public class {{className}} {
     @BeforeAll
     public static void setup() {
         RestAssured.baseURI = "{{customVariables.baseUrl}}";
+    }
+
+    private void assertExpectedBody(String expectedBodyJson, String responseBody) {
+        JsonNode expectedNode;
+        try {
+            expectedNode = objectMapper.readTree(expectedBodyJson);
+        } catch (JsonProcessingException e) {
+            Assertions.fail("Expected body is not valid JSON: " + e.getMessage());
+            return;
+        }
+
+        JsonNode actualNode;
+        try {
+            actualNode = objectMapper.readTree(responseBody);
+        } catch (JsonProcessingException ignored) {
+            actualNode = null;
+        }
+
+        if (actualNode != null) {
+            Assertions.assertEquals(expectedNode, actualNode);
+        } else if (expectedNode.isValueNode()) {
+            Assertions.assertEquals(expectedNode.asText(), responseBody);
+        } else {
+            Assertions.fail("Response body is not valid JSON");
+        }
     }
 
 {{#methods}}

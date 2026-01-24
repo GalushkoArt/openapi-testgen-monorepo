@@ -5,6 +5,7 @@ import io.qameta.allure.Feature
 import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.Operation
+import io.swagger.v3.oas.models.examples.Example
 import io.swagger.v3.oas.models.media.ArraySchema
 import io.swagger.v3.oas.models.media.BooleanSchema
 import io.swagger.v3.oas.models.media.IntegerSchema
@@ -96,8 +97,8 @@ class SchemaTypeHelpersTest {
     }
 
     @Nested
-    @DisplayName("tryGetResponseFromRef")
-    inner class TryGetResponseFromRefTest {
+    @DisplayName("resolveResponseByStatus")
+    inner class ResolveResponseByStatusTest {
 
         @Test
         @DisplayName("should return null when operation has no responses")
@@ -105,45 +106,84 @@ class SchemaTypeHelpersTest {
             val operation = Operation()
             val openAPI = OpenAPI()
 
-            val result = SchemaTypeHelpers.tryGetResponseFromRef(operation, openAPI, 200)
+            val result = SchemaTypeHelpers.resolveResponseByStatus(operation, openAPI, 200)
 
             assertThat(result).isNull()
         }
 
         @Test
-        @DisplayName("should return null when status code not found")
-        fun shouldReturnNullWhenStatusCodeNotFound() {
+        @DisplayName("should return exact match when present")
+        fun shouldReturnExactMatchWhenPresent() {
+            val exactResponse = ApiResponse().description("OK")
+            val rangeResponse = ApiResponse().description("2XX Range")
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    addApiResponse("200", exactResponse)
+                    addApiResponse("2XX", rangeResponse)
+                }
+            }
+            val openAPI = OpenAPI()
+
+            val result = SchemaTypeHelpers.resolveResponseByStatus(operation, openAPI, 200)
+
+            assertThat(result).isSameAs(exactResponse)
+        }
+
+        @Test
+        @DisplayName("should return range match when exact not found")
+        fun shouldReturnRangeMatchWhenExactNotFound() {
+            val rangeResponse = ApiResponse().description("2XX Range")
             val operation = Operation().apply {
                 responses = ApiResponses().apply {
                     addApiResponse("201", ApiResponse().description("Created"))
+                    addApiResponse("2XX", rangeResponse)
                 }
             }
             val openAPI = OpenAPI()
 
-            val result = SchemaTypeHelpers.tryGetResponseFromRef(operation, openAPI, 200)
+            val result = SchemaTypeHelpers.resolveResponseByStatus(operation, openAPI, 200)
 
-            assertThat(result).isNull()
+            assertThat(result).isSameAs(rangeResponse)
         }
 
         @Test
-        @DisplayName("should return direct response when no ref")
-        fun shouldReturnDirectResponseWhenNoRef() {
-            val response = ApiResponse().description("OK")
+        @DisplayName("should return default when no exact or range match")
+        fun shouldReturnDefaultWhenNoExactOrRangeMatch() {
+            val defaultResponse = ApiResponse().description("Default")
             val operation = Operation().apply {
                 responses = ApiResponses().apply {
-                    addApiResponse("200", response)
+                    addApiResponse("201", ApiResponse().description("Created"))
+                    addApiResponse("default", defaultResponse)
                 }
             }
             val openAPI = OpenAPI()
 
-            val result = SchemaTypeHelpers.tryGetResponseFromRef(operation, openAPI, 200)
+            val result = SchemaTypeHelpers.resolveResponseByStatus(operation, openAPI, 200)
 
-            assertThat(result).isSameAs(response)
+            assertThat(result).isSameAs(defaultResponse)
         }
 
         @Test
-        @DisplayName("should dereference response ref")
-        fun shouldDereferenceResponseRef() {
+        @DisplayName("should prefer range over default")
+        fun shouldPreferRangeOverDefault() {
+            val rangeResponse = ApiResponse().description("2XX Range")
+            val defaultResponse = ApiResponse().description("Default")
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    addApiResponse("2XX", rangeResponse)
+                    addApiResponse("default", defaultResponse)
+                }
+            }
+            val openAPI = OpenAPI()
+
+            val result = SchemaTypeHelpers.resolveResponseByStatus(operation, openAPI, 200)
+
+            assertThat(result).isSameAs(rangeResponse)
+        }
+
+        @Test
+        @DisplayName("should resolve ref in matched response")
+        fun shouldResolveRefInMatchedResponse() {
             val referencedResponse = ApiResponse().description("Referenced OK")
             val refResponse = ApiResponse().apply {
                 `$ref` = "#/components/responses/SuccessResponse"
@@ -159,31 +199,258 @@ class SchemaTypeHelpersTest {
                 }
             }
 
-            val result = SchemaTypeHelpers.tryGetResponseFromRef(operation, openAPI, 200)
+            val result = SchemaTypeHelpers.resolveResponseByStatus(operation, openAPI, 200)
 
             assertThat(result).isSameAs(referencedResponse)
         }
 
         @Test
-        @DisplayName("should return original response when ref not found")
-        fun shouldReturnOriginalResponseWhenRefNotFound() {
-            val refResponse = ApiResponse().apply {
-                `$ref` = "#/components/responses/NonExistent"
-            }
+        @DisplayName("should return null when no matching response")
+        fun shouldReturnNullWhenNoMatchingResponse() {
             val operation = Operation().apply {
                 responses = ApiResponses().apply {
-                    addApiResponse("200", refResponse)
+                    addApiResponse("400", ApiResponse().description("Bad Request"))
                 }
+            }
+            val openAPI = OpenAPI()
+
+            val result = SchemaTypeHelpers.resolveResponseByStatus(operation, openAPI, 200)
+
+            assertThat(result).isNull()
+        }
+
+        @Test
+        @DisplayName("should handle case-insensitive range keys")
+        fun shouldHandleCaseInsensitiveRangeKeys() {
+            val rangeResponse = ApiResponse().description("2xx Range")
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    addApiResponse("2xx", rangeResponse)
+                }
+            }
+            val openAPI = OpenAPI()
+
+            val result = SchemaTypeHelpers.resolveResponseByStatus(operation, openAPI, 200)
+
+            assertThat(result).isSameAs(rangeResponse)
+        }
+    }
+
+    @Nested
+    @DisplayName("resolveExampleRef")
+    inner class ResolveExampleRefTest {
+
+        @Test
+        @DisplayName("should return original example when no ref present")
+        fun shouldReturnOriginalExampleWhenNoRefPresent() {
+            val example = Example().value(mapOf("id" to 1))
+            val openAPI = OpenAPI()
+
+            val result = SchemaTypeHelpers.resolveExampleRef(example, openAPI)
+
+            assertThat(result).isSameAs(example)
+        }
+
+        @Test
+        @DisplayName("should resolve example ref from components")
+        fun shouldResolveExampleRefFromComponents() {
+            val referencedExample = Example().value(mapOf("status" to "ok"))
+            val refExample = Example().apply {
+                `$ref` = "#/components/examples/OkExample"
             }
             val openAPI = OpenAPI().apply {
                 components = Components().apply {
-                    addResponses("SomeOtherResponse", ApiResponse().description("Other"))
+                    addExamples("OkExample", referencedExample)
                 }
             }
 
-            val result = SchemaTypeHelpers.tryGetResponseFromRef(operation, openAPI, 200)
+            val result = SchemaTypeHelpers.resolveExampleRef(refExample, openAPI)
 
-            assertThat(result).isSameAs(refResponse)
+            assertThat(result).isSameAs(referencedExample)
+        }
+
+        @Test
+        @DisplayName("should return original example when ref not found in components")
+        fun shouldReturnOriginalExampleWhenRefNotFoundInComponents() {
+            val refExample = Example().apply {
+                `$ref` = "#/components/examples/NonExistent"
+            }
+            val openAPI = OpenAPI().apply {
+                components = Components().apply {
+                    addExamples("SomeOtherExample", Example().value("other"))
+                }
+            }
+
+            val result = SchemaTypeHelpers.resolveExampleRef(refExample, openAPI)
+
+            assertThat(result).isSameAs(refExample)
+        }
+
+        @Test
+        @DisplayName("should return original example when components is null")
+        fun shouldReturnOriginalExampleWhenComponentsNull() {
+            val refExample = Example().apply {
+                `$ref` = "#/components/examples/SomeExample"
+            }
+            val openAPI = OpenAPI()
+
+            val result = SchemaTypeHelpers.resolveExampleRef(refExample, openAPI)
+
+            assertThat(result).isSameAs(refExample)
+        }
+
+        @Test
+        @DisplayName("should return original example when ref has invalid prefix")
+        fun shouldReturnOriginalExampleWhenRefHasInvalidPrefix() {
+            val refExample = Example().apply {
+                `$ref` = "#/components/schemas/NotAnExample"
+            }
+            val openAPI = OpenAPI().apply {
+                components = Components().apply {
+                    addExamples("NotAnExample", Example().value("wrong path"))
+                }
+            }
+
+            val result = SchemaTypeHelpers.resolveExampleRef(refExample, openAPI)
+
+            assertThat(result).isSameAs(refExample)
+        }
+    }
+
+    @Nested
+    @DisplayName("findSuccessStatusCode")
+    inner class FindSuccessStatusCodeTest {
+
+        @Test
+        @DisplayName("should throw when operation has no responses")
+        fun shouldThrowWhenNoResponses() {
+            val operation = Operation()
+
+            org.junit.jupiter.api.assertThrows<IllegalStateException> {
+                SchemaTypeHelpers.findSuccessStatusCode(operation)
+            }
+        }
+
+        @Test
+        @DisplayName("should return minimum 2xx status code when present")
+        fun shouldReturnMinimum2xxStatusCode() {
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    addApiResponse("201", ApiResponse().description("Created"))
+                    addApiResponse("200", ApiResponse().description("OK"))
+                    addApiResponse("204", ApiResponse().description("No Content"))
+                }
+            }
+
+            val result = SchemaTypeHelpers.findSuccessStatusCode(operation)
+
+            assertThat(result).isEqualTo(200)
+        }
+
+        @Test
+        @DisplayName("should return 200 when only 2XX range key is present")
+        fun shouldReturn200When2XXRangePresent() {
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    addApiResponse("2XX", ApiResponse().description("Success"))
+                    addApiResponse("400", ApiResponse().description("Bad Request"))
+                }
+            }
+
+            val result = SchemaTypeHelpers.findSuccessStatusCode(operation)
+
+            assertThat(result).isEqualTo(200)
+        }
+
+        @Test
+        @DisplayName("should return 200 when only default key is present")
+        fun shouldReturn200WhenDefaultPresent() {
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    addApiResponse("default", ApiResponse().description("Default"))
+                }
+            }
+
+            val result = SchemaTypeHelpers.findSuccessStatusCode(operation)
+
+            assertThat(result).isEqualTo(200)
+        }
+
+        @Test
+        @DisplayName("should prefer numeric 2xx over range key")
+        fun shouldPreferNumeric2xxOverRange() {
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    addApiResponse("201", ApiResponse().description("Created"))
+                    addApiResponse("2XX", ApiResponse().description("Range"))
+                }
+            }
+
+            val result = SchemaTypeHelpers.findSuccessStatusCode(operation)
+
+            assertThat(result).isEqualTo(201)
+        }
+
+        @Test
+        @DisplayName("should prefer range key over default")
+        fun shouldPreferRangeOverDefault() {
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    addApiResponse("2XX", ApiResponse().description("Range"))
+                    addApiResponse("default", ApiResponse().description("Default"))
+                }
+            }
+
+            val result = SchemaTypeHelpers.findSuccessStatusCode(operation)
+
+            assertThat(result).isEqualTo(200)
+        }
+
+        @Test
+        @DisplayName("should handle case-insensitive 2xx range key")
+        fun shouldHandleCaseInsensitive2xxRange() {
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    addApiResponse("2xx", ApiResponse().description("Range"))
+                }
+            }
+
+            val result = SchemaTypeHelpers.findSuccessStatusCode(operation)
+
+            assertThat(result).isEqualTo(200)
+        }
+
+        @Test
+        @DisplayName("should throw when no success response found")
+        fun shouldThrowWhenNoSuccessResponse() {
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    addApiResponse("400", ApiResponse().description("Bad Request"))
+                    addApiResponse("500", ApiResponse().description("Error"))
+                }
+            }
+
+            val exception = org.junit.jupiter.api.assertThrows<IllegalStateException> {
+                SchemaTypeHelpers.findSuccessStatusCode(operation)
+            }
+
+            assertThat(exception.message).contains("Success status code not found")
+        }
+
+        @Test
+        @DisplayName("should ignore non-2xx numeric codes")
+        fun shouldIgnoreNon2xxNumericCodes() {
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    addApiResponse("300", ApiResponse().description("Redirect"))
+                    addApiResponse("400", ApiResponse().description("Bad Request"))
+                    addApiResponse("default", ApiResponse().description("Default"))
+                }
+            }
+
+            val result = SchemaTypeHelpers.findSuccessStatusCode(operation)
+
+            assertThat(result).isEqualTo(200)
         }
     }
 

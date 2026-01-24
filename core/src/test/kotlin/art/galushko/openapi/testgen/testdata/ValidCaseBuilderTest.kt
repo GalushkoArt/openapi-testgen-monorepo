@@ -29,8 +29,10 @@ import io.swagger.v3.oas.models.security.SecurityScheme
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
 
@@ -302,6 +304,49 @@ class ValidCaseBuilderTest {
     }
 
     @Test
+    @DisplayName("generateValidCase should populate authorizationScopes in securityValues.other for OAuth2")
+    @Description("Verifies that OAuth2 security schemes populate the authorizationScopes metadata in securityValues.other")
+    fun generateValidCaseShouldPopulateAuthorizationScopesForOAuth2() {
+        val operation = operationWithResponse("200").security(
+            listOf(SecurityRequirement().addList("oauth", listOf("read", "write")))
+        )
+        val openAPI = createOpenAPIWithSecurity(
+            "oauth",
+            SecurityScheme().type(SecurityScheme.Type.OAUTH2)
+        )
+
+        val testCase = generateValidCase("/test", "get", operation, openAPI)
+
+        step("Verify authorizationScopes is populated in securityValues.other") {
+            assertThat(testCase.securityValues.other).containsKey("authorizationScopes")
+            @Suppress("UNCHECKED_CAST")
+            val scopes = testCase.securityValues.other["authorizationScopes"] as List<Map<String, Any>>
+            assertThat(scopes).hasSize(1)
+            assertThat(scopes[0]).isEqualTo(
+                mapOf(
+                    "name" to "oauth",
+                    "type" to "oauth2",
+                    "scopes" to listOf("read", "write")
+                )
+            )
+        }
+    }
+
+    @Test
+    @DisplayName("generateValidCase should not populate authorizationScopes for API key only")
+    @Description("Verifies that API key-only security does not populate authorizationScopes in securityValues.other")
+    fun generateValidCaseShouldNotPopulateAuthorizationScopesForApiKeyOnly() {
+        val operation = operationWithResponse("200").security(securityRequirements("api_key"))
+        val openAPI = createOpenAPIWithSecurity("api_key", createApiKeySecurityScheme(SecurityScheme.In.HEADER, "X-API-Key"))
+
+        val testCase = generateValidCase("/test", "get", operation, openAPI)
+
+        step("Verify authorizationScopes is not populated") {
+            assertThat(testCase.securityValues.other).doesNotContainKey("authorizationScopes")
+        }
+    }
+
+    @Test
     @DisplayName("Parallel test generation should be thread-safe")
     @Description("Verify that ValidCaseBuilder with SecurityValueProvider is thread-safe during parallel execution")
     fun parallelGenerationShouldBeThreadSafe() {
@@ -339,6 +384,175 @@ class ValidCaseBuilderTest {
             val (name, value) = queryParams.entries.first()
             assertThat(value).isEqualTo("$name-value")
             assertThat(testCase.cookie).hasSize(1).first().isEqualTo("api_key" with "secret_$name")
+        }
+    }
+
+    @Nested
+    @DisplayName("Success Status Code Resolution")
+    inner class SuccessStatusCodeResolutionTest {
+        fun successStatusCodeProvider(): Stream<Arguments> = Stream.of(
+            Arguments.of("exact 200", listOf("200"), 200),
+            Arguments.of("exact 201", listOf("201"), 201),
+            Arguments.of("prefer lower numeric code", listOf("201", "200"), 200),
+            Arguments.of("prefer numeric over 2XX range", listOf("2XX", "201"), 201),
+            Arguments.of("2XX range fallback", listOf("2XX"), 200),
+            Arguments.of("lowercase 2xx range", listOf("2xx"), 200),
+            Arguments.of("default fallback", listOf("default"), 200),
+            Arguments.of("prefer 2XX range over default", listOf("default", "2XX"), 200),
+            Arguments.of("ignore non-2xx numeric codes", listOf("400", "201", "500"), 201),
+            Arguments.of("complex: numeric preferred over range and default", listOf("400", "2XX", "default", "204"), 204),
+        )
+
+        @Suppress("UNUSED_PARAMETER") // scenario is used in test name via {0}
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("successStatusCodeProvider")
+        @DisplayName("should resolve success status code correctly")
+        fun shouldResolveSuccessStatusCodeCorrectly(scenario: String, responseCodes: List<String>, expected: Int) {
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    responseCodes.forEach { code ->
+                        addApiResponse(code, ApiResponse().description("Response $code"))
+                    }
+                }
+            }
+            val builder = ValidCaseBuilder("/test", "get", operation, createOpenAPIWithoutSecurity())
+
+            val outcome = builder.generateValidCase()
+
+            assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+            val testCase = (outcome as Outcome.Success).value
+            assertThat(testCase.expectedStatusCode).isEqualTo(expected)
+        }
+
+        @Test
+        @DisplayName("should throw when no success response defined")
+        fun shouldThrowWhenNoSuccessResponseDefined() {
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    addApiResponse("400", ApiResponse().description("Bad Request"))
+                    addApiResponse("500", ApiResponse().description("Server Error"))
+                }
+            }
+            val builder = ValidCaseBuilder("/test", "get", operation, createOpenAPIWithoutSecurity())
+
+            val outcome = builder.generateValidCase()
+
+            assertThat(outcome).isInstanceOf(Outcome.Failure::class.java)
+            val failure = outcome as Outcome.Failure
+            assertThat(failure.errors).hasSize(1)
+            assertThat(failure.errors[0].message).contains("Success status code not found")
+        }
+    }
+
+    @Nested
+    @DisplayName("Expected body population")
+    inner class ExpectedBodyPopulationTest {
+
+        @Test
+        @DisplayName("should populate expectedBody from response example")
+        fun shouldPopulateExpectedBodyFromResponseExample() {
+            val responseExample = mapOf("id" to 1, "name" to "test")
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    addApiResponse(
+                        "200",
+                        ApiResponse()
+                            .description("OK")
+                            .content(
+                                Content().addMediaType(
+                                    "application/json",
+                                    MediaType().example(responseExample)
+                                )
+                            )
+                    )
+                }
+            }
+            val builder = ValidCaseBuilder("/test", "get", operation, createOpenAPIWithoutSecurity())
+
+            val outcome = builder.generateValidCase()
+
+            assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+            val testCase = (outcome as Outcome.Success).value
+            assertThat(testCase.expectedBody).isEqualTo(responseExample)
+        }
+
+        @Test
+        @DisplayName("should return null expectedBody when no response example defined")
+        fun shouldReturnNullExpectedBodyWhenNoExample() {
+            val operation = operationWithResponse("200")
+            val builder = ValidCaseBuilder("/test", "get", operation, createOpenAPIWithoutSecurity())
+
+            val outcome = builder.generateValidCase()
+
+            assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+            val testCase = (outcome as Outcome.Success).value
+            assertThat(testCase.expectedBody).isNull()
+        }
+
+        @Test
+        @DisplayName("should populate expectedBody from schema-derived example")
+        fun shouldPopulateExpectedBodyFromSchemaDerivedExample() {
+            val schema = ObjectSchema().apply {
+                addProperty("status", StringSchema().example("ok"))
+                required = listOf("status")
+            }
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    addApiResponse(
+                        "200",
+                        ApiResponse()
+                            .description("OK")
+                            .content(Content().addMediaType("application/json", MediaType().schema(schema)))
+                    )
+                }
+            }
+            val builder = ValidCaseBuilder("/test", "get", operation, createOpenAPIWithoutSecurity())
+
+            val outcome = builder.generateValidCase()
+
+            assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+            val testCase = (outcome as Outcome.Success).value
+            assertThat(testCase.expectedBody).isEqualTo(mapOf("status" to "ok"))
+        }
+
+        @Test
+        @DisplayName("should use correct status code for expectedBody extraction")
+        fun shouldUseCorrectStatusCodeForExpectedBody() {
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    addApiResponse(
+                        "201",
+                        ApiResponse()
+                            .description("Created")
+                            .content(
+                                Content().addMediaType(
+                                    "application/json",
+                                    MediaType().example(mapOf("created" to true))
+                                )
+                            )
+                    )
+                    addApiResponse(
+                        "200",
+                        ApiResponse()
+                            .description("OK")
+                            .content(
+                                Content().addMediaType(
+                                    "application/json",
+                                    MediaType().example(mapOf("ok" to true))
+                                )
+                            )
+                    )
+                }
+            }
+            val builder = ValidCaseBuilder("/test", "post", operation, createOpenAPIWithoutSecurity())
+
+            val outcome = builder.generateValidCase()
+
+            assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+            val testCase = (outcome as Outcome.Success).value
+            // Should use 200 (minimum 2xx) not 201
+            assertThat(testCase.expectedStatusCode).isEqualTo(200)
+            assertThat(testCase.expectedBody).isEqualTo(mapOf("ok" to true))
         }
     }
 
@@ -417,7 +631,7 @@ class ValidCaseBuilderTest {
     private fun securityRequirements(vararg requirements: String): List<SecurityRequirement> =
         requirements.map { requirement -> SecurityRequirement().addList(requirement) }
 
-    private companion object {
+    companion object {
         private const val VALID_CASE_NAME = "Test Valid Case"
         private const val VALID_API_KEY_PLACEHOLDER = "<valid_api_key_api_key_placeholder>"
     }

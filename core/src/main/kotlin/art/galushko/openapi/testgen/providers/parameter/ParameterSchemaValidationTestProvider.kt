@@ -53,7 +53,7 @@ internal class ParameterSchemaValidationTestProvider(private val rules: List<Sch
                     val common = validCase.copy(
                         rule = rule::class.java.name,
                         expectedStatusCode = BAD_REQUEST_CODE,
-                        expectedBody = context.schemaExampleValueGenerator.extractExpectedResponseExample(context, BAD_REQUEST_CODE),
+                        expectedBody = context.responseExampleExtractor.extractExpectedResponseExample(context, BAD_REQUEST_CODE),
                     )
                     val updated = when (deref) {
                         is QueryParameter -> common.copy(

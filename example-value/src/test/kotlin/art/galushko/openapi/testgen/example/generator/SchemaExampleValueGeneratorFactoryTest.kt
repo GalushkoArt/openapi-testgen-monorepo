@@ -68,6 +68,68 @@ class SchemaExampleValueGeneratorFactoryTest {
     }
 
     @Nested
+    @DisplayName("Generator options")
+    inner class GeneratorOptions {
+
+        @Test
+        @DisplayName("should include optional example properties when enabled")
+        fun shouldIncludeOptionalExamplePropertiesWhenEnabled() {
+            val generator = factory.create(
+                ExampleValueSettings(includeOptionalExampleProperties = true)
+            )
+
+            val schema = ObjectSchema().apply {
+                addProperty("requiredProp", StringSchema().example("required"))
+                addProperty("optionalProp", StringSchema().example("optional"))
+                required = listOf("requiredProp")
+            }
+
+            val result = generator.getExampleObject("obj", schema, OpenAPI())
+
+            assertThat(result)
+                .containsEntry("requiredProp", "required")
+                .containsEntry("optionalProp", "optional")
+        }
+
+        @Test
+        @DisplayName("should exclude writeOnly properties when disabled")
+        fun shouldExcludeWriteOnlyPropertiesWhenDisabled() {
+            val generator = factory.create(
+                ExampleValueSettings(
+                    includeOptionalExampleProperties = true,
+                    includeWriteOnly = false,
+                )
+            )
+
+            val schema = ObjectSchema().apply {
+                addProperty("visible", StringSchema().example("ok"))
+                addProperty("secret", StringSchema().example("hidden").writeOnly(true))
+                required = listOf("visible")
+            }
+
+            val result = generator.getExampleObject("obj", schema, OpenAPI())
+
+            assertThat(result)
+                .containsEntry("visible", "ok")
+                .doesNotContainKey("secret")
+        }
+
+        @Test
+        @DisplayName("should use schema examples/defaults as fallback when enabled")
+        fun shouldUseSchemaExampleFallbackWhenEnabled() {
+            val generator = factory.create(
+                ExampleValueSettings(useSchemaExampleFallback = true)
+            )
+
+            val schema = StringSchema()._default("fallback")
+
+            val result = generator.getExampleValue("field", schema, OpenAPI())
+
+            assertThat(result).isEqualTo("fallback")
+        }
+    }
+
+    @Nested
     @DisplayName("Provider ordering")
     inner class ProviderOrdering {
 

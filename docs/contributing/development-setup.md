@@ -7,6 +7,7 @@ This guide targets contributors and maintainers. For a system-level view, see
 
 This repository is a Gradle composite build with these key modules:
 
+- `build-logic`: convention plugins for centralized build configuration.
 - `model`: shared data types (`TestCase`, `TestSuite`, error types).
 - `example-value`: schema-derived example value generation (SPI + built-ins).
 - `core`: test generation engine (providers, rules, generators).
@@ -17,6 +18,36 @@ This repository is a Gradle composite build with these key modules:
 - `plugin`: Gradle plugin for build integration.
 - `cli`: command-line interface (JVM and native).
 - `samples`: runnable example projects.
+
+### Convention plugins
+
+The `build-logic` module provides precompiled script plugins that standardize module builds:
+
+| Plugin                        | Description                                               |
+|-------------------------------|-----------------------------------------------------------|
+| `testgen.kotlin-base`         | Kotlin/JVM toolchain (Java 21), compiler options, Dokka   |
+| `testgen.quality`             | Detekt, Kover, binary compatibility, dependency analysis  |
+| `testgen.library`             | Combines kotlin-base + quality + Maven Central publishing |
+| `testgen.library-with-allure` | Extends library with Allure test reporting                |
+
+Modules apply these plugins instead of configuring each tool:
+
+```kotlin
+// build.gradle.kts
+plugins {
+    id("testgen.library-with-allure")
+}
+
+testgenQuality {
+    koverMinCoverage = 95  // Customize coverage threshold
+}
+```
+
+Shared configuration files:
+
+- `build-logic/config/detekt.yml`: centralized detekt rules for all modules
+- `gradle/settings-base.gradle.kts`: repositories and build cache
+- `gradle/settings-conventions.gradle.kts`: version catalog resolution
 
 ## Build and test
 

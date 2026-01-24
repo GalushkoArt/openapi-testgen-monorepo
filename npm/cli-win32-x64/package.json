@@ -1,0 +1,27 @@
+{
+  "name": "@openapi-testgen/cli-win32-x64",
+  "version": "0.0.0",
+  "description": "Native Windows x64 binary for @openapi-testgen/cli",
+  "license": "MIT",
+  "author": "Artem Galushko",
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "bin": {
+    "openapi-testgen": "./bin/openapi-testgen.exe"
+  },
+  "files": [
+    "bin/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GalushkoArt/openapi-testgen-monorepo.git",
+    "directory": "npm/cli-win32-x64"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

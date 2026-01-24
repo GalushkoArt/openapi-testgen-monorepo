@@ -331,6 +331,230 @@ class SecurityHelpersTest {
         val result = step("Act: filter invalid requirements") { SecurityHelpers.findSingleApiKeyRequirementSchemes(requirements, openAPI) }
         assertThat(result).isEmpty()
     }
+
+    @Test
+    @DisplayName("buildAuthorizationScopes returns OAuth2 with scopes metadata")
+    fun buildAuthorizationScopes_oauth2WithScopes() {
+        val oauth = SecuritySchemeToScope(
+            SecurityScheme().type(SecurityScheme.Type.OAUTH2),
+            "oauth",
+            listOf("read", "write")
+        )
+
+        val result = step("Act: build authorization scopes") { SecurityHelpers.buildAuthorizationScopes(listOf(oauth)) }
+
+        assertThat(result).isNotNull
+        assertThat(result).hasSize(1)
+        assertThat(result!![0]).isEqualTo(
+            mapOf(
+                "name" to "oauth",
+                "type" to "oauth2",
+                "scopes" to listOf("read", "write")
+            )
+        )
+    }
+
+    @Test
+    @DisplayName("buildAuthorizationScopes returns OpenID Connect with empty scopes")
+    fun buildAuthorizationScopes_openIdWithEmptyScopes() {
+        val openid = SecuritySchemeToScope(
+            SecurityScheme().type(SecurityScheme.Type.OPENIDCONNECT),
+            "openid",
+            emptyList()
+        )
+
+        val result = step("Act: build authorization scopes") { SecurityHelpers.buildAuthorizationScopes(listOf(openid)) }
+
+        assertThat(result).isNotNull
+        assertThat(result).hasSize(1)
+        assertThat(result!![0]).isEqualTo(
+            mapOf(
+                "name" to "openid",
+                "type" to "openidconnect",
+                "scopes" to emptyList<String>()
+            )
+        )
+    }
+
+    @Test
+    @DisplayName("buildAuthorizationScopes sorts entries by name")
+    fun buildAuthorizationScopes_sortedByName() {
+        val zulu = SecuritySchemeToScope(
+            SecurityScheme().type(SecurityScheme.Type.OAUTH2),
+            "zulu_oauth",
+            listOf("write")
+        )
+        val alpha = SecuritySchemeToScope(
+            SecurityScheme().type(SecurityScheme.Type.OPENIDCONNECT),
+            "alpha_openid",
+            listOf("profile")
+        )
+
+        val result = step("Act: build authorization scopes") { SecurityHelpers.buildAuthorizationScopes(listOf(zulu, alpha)) }
+
+        assertThat(result).isNotNull
+        assertThat(result).hasSize(2)
+        assertThat(result!![0]["name"]).isEqualTo("alpha_openid")
+        assertThat(result[1]["name"]).isEqualTo("zulu_oauth")
+    }
+
+    @Test
+    @DisplayName("buildAuthorizationScopes returns null for API key only")
+    fun buildAuthorizationScopes_apiKeyOnly() {
+        val apiKey = SecuritySchemeToScope(
+            SecurityScheme().type(SecurityScheme.Type.APIKEY).`in`(SecurityScheme.In.HEADER).name("X-API-Key"),
+            "api_key",
+            emptyList()
+        )
+
+        val result = step("Act: build authorization scopes") { SecurityHelpers.buildAuthorizationScopes(listOf(apiKey)) }
+
+        assertThat(result).isNull()
+    }
+
+    @Test
+    @DisplayName("buildAuthorizationScopes returns null for empty requirements list")
+    fun buildAuthorizationScopes_emptyRequirements() {
+        val result = step("Act: build authorization scopes") { SecurityHelpers.buildAuthorizationScopes(emptyList()) }
+
+        assertThat(result).isNull()
+    }
+
+    @Test
+    @DisplayName("buildAuthorizationScopes includes only OAuth2/OpenID when mixed with API key")
+    fun buildAuthorizationScopes_mixedOauthAndApiKey() {
+        val oauth = SecuritySchemeToScope(
+            SecurityScheme().type(SecurityScheme.Type.OAUTH2),
+            "oauth",
+            listOf("read")
+        )
+        val apiKey = SecuritySchemeToScope(
+            SecurityScheme().type(SecurityScheme.Type.APIKEY).`in`(SecurityScheme.In.HEADER).name("X-API-Key"),
+            "api_key",
+            emptyList()
+        )
+
+        val result = step("Act: build authorization scopes") { SecurityHelpers.buildAuthorizationScopes(listOf(oauth, apiKey)) }
+
+        assertThat(result).isNotNull
+        assertThat(result).hasSize(1)
+        assertThat(result!![0]["name"]).isEqualTo("oauth")
+    }
+
+    @Test
+    @DisplayName("applySecurityRequirementToTestCase populates authorizationScopes in other for OAuth2")
+    fun applySecurityRequirementToTestCase_populatesAuthorizationScopes() {
+        val oauth = SecuritySchemeToScope(
+            SecurityScheme().type(SecurityScheme.Type.OAUTH2),
+            "oauth",
+            listOf("read", "write")
+        )
+        val testCase = createBasicTestCase()
+
+        val result = step("Act: apply security requirement") {
+            SecurityHelpers.applySecurityRequirementToTestCase(
+                testCase,
+                listOf(oauth),
+                { "<valid_api_key>" },
+                { "<oauth:[read,write]>" }
+            )
+        }
+
+        assertThat(result.securityValues.other).containsKey(SecurityHelpers.AUTHORIZATION_SCOPES_KEY)
+        @Suppress("UNCHECKED_CAST")
+        val scopes = result.securityValues.other[SecurityHelpers.AUTHORIZATION_SCOPES_KEY] as List<Map<String, Any>>
+        assertThat(scopes).hasSize(1)
+        assertThat(scopes[0]).isEqualTo(
+            mapOf(
+                "name" to "oauth",
+                "type" to "oauth2",
+                "scopes" to listOf("read", "write")
+            )
+        )
+    }
+
+    @Test
+    @DisplayName("applySecurityRequirementToTestCase replaces authorizationScopes when already present")
+    fun applySecurityRequirementToTestCase_replacesAuthorizationScopes() {
+        val oauth = SecuritySchemeToScope(
+            SecurityScheme().type(SecurityScheme.Type.OAUTH2),
+            "oauth",
+            listOf("read")
+        )
+        val existingScopes = listOf(
+            mapOf(
+                "name" to "oauth",
+                "type" to "oauth2",
+                "scopes" to listOf("legacy")
+            )
+        )
+        val testCase = createBasicTestCase(
+            securityValues = SecurityValues(
+                other = mapOf(
+                    SecurityHelpers.AUTHORIZATION_SCOPES_KEY to existingScopes,
+                    "note" to "keep"
+                )
+            )
+        )
+
+        val result = step("Act: apply security requirement") {
+            SecurityHelpers.applySecurityRequirementToTestCase(
+                testCase,
+                listOf(oauth),
+                { "<valid_api_key>" },
+                { "<oauth:[read]>" }
+            )
+        }
+
+        assertThat(result.securityValues.other).containsKey(SecurityHelpers.AUTHORIZATION_SCOPES_KEY)
+        assertThat(result.securityValues.other).containsEntry("note", "keep")
+        @Suppress("UNCHECKED_CAST")
+        val scopes = result.securityValues.other[SecurityHelpers.AUTHORIZATION_SCOPES_KEY] as List<Map<String, Any>>
+        assertThat(scopes).hasSize(1)
+        assertThat(scopes[0]).isEqualTo(
+            mapOf(
+                "name" to "oauth",
+                "type" to "oauth2",
+                "scopes" to listOf("read")
+            )
+        )
+    }
+
+    @Test
+    @DisplayName("applySecurityRequirementToTestCase removes authorizationScopes for API key only")
+    fun applySecurityRequirementToTestCase_removesAuthorizationScopesForApiKeyOnly() {
+        val apiKey = SecuritySchemeToScope(
+            SecurityScheme().type(SecurityScheme.Type.APIKEY).`in`(SecurityScheme.In.HEADER).name("X-API-Key"),
+            "api_key",
+            emptyList()
+        )
+        val testCase = createBasicTestCase(
+            securityValues = SecurityValues(
+                other = mapOf(
+                    SecurityHelpers.AUTHORIZATION_SCOPES_KEY to listOf(
+                        mapOf(
+                            "name" to "oauth",
+                            "type" to "oauth2",
+                            "scopes" to listOf("read")
+                        )
+                    ),
+                    "note" to "keep"
+                )
+            )
+        )
+
+        val result = step("Act: apply security requirement") {
+            SecurityHelpers.applySecurityRequirementToTestCase(
+                testCase,
+                listOf(apiKey),
+                { "<valid_api_key>" },
+                { "<oauth:[]>" }
+            )
+        }
+
+        assertThat(result.securityValues.other).doesNotContainKey(SecurityHelpers.AUTHORIZATION_SCOPES_KEY)
+        assertThat(result.securityValues.other).containsEntry("note", "keep")
+    }
 }
 
 

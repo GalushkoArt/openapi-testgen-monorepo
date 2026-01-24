@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.BeforeAll
+import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,6 +23,21 @@ class {{className}} {
         @BeforeAll
         fun setup() {
             RestAssured.baseURI = "http://localhost:8080/v1"
+        }
+    }
+
+    private fun assertExpectedBody(expectedBodyJson: String, responseBody: String) {
+        val expectedNode = objectMapper.readTree(expectedBodyJson)
+        val actualNode = try {
+            objectMapper.readTree(responseBody)
+        } catch (e: JsonProcessingException) {
+            null
+        }
+
+        when {
+            actualNode != null -> Assertions.assertEquals(expectedNode, actualNode)
+            expectedNode.isValueNode -> Assertions.assertEquals(expectedNode.asText(), responseBody)
+            else -> Assertions.fail("Response body is not valid JSON")
         }
     }
 

@@ -1,0 +1,152 @@
+#!/usr/bin/env node
+
+const { spawnSync } = require("child_process");
+const fs = require("fs");
+const path = require("path");
+
+/**
+ * Platform-specific native package mapping.
+ * Maps Node.js platform-arch to the corresponding npm package name.
+ */
+const PLATFORM_MAP = {
+  "linux-x64": "@openapi-testgen/cli-linux-x64",
+  "linux-arm64": "@openapi-testgen/cli-linux-arm64",
+  "darwin-arm64": "@openapi-testgen/cli-darwin-arm64",
+  "win32-x64": "@openapi-testgen/cli-win32-x64",
+};
+
+const platformKey = `${process.platform}-${process.arch}`;
+const nativePackage = PLATFORM_MAP[platformKey];
+
+/**
+ * Attempts to resolve the path to the native binary from an optional dependency.
+ * @param {string|undefined} pkgName - The npm package name containing the native binary
+ * @returns {string|null} - Path to the binary, or null if not found
+ */
+function resolveNativeBinary(pkgName) {
+  if (!pkgName) return null;
+
+  try {
+    const pkgJsonPath = require.resolve(`${pkgName}/package.json`);
+    const pkgDir = path.dirname(pkgJsonPath);
+    const binaryName =
+      process.platform === "win32" ? "openapi-testgen.exe" : "openapi-testgen";
+    const binaryPath = path.join(pkgDir, "bin", binaryName);
+
+    if (fs.existsSync(binaryPath)) {
+      return binaryPath;
+    }
+  } catch {
+    // Package not installed or not found
+  }
+
+  return null;
+}
+
+/**
+ * Executes the native binary with the given arguments.
+ * @param {string} binaryPath - Path to the native binary
+ * @returns {boolean} - false if execution failed, otherwise exits the process
+ */
+function runNative(binaryPath) {
+  const result = spawnSync(binaryPath, process.argv.slice(2), {
+    stdio: "inherit",
+  });
+
+  if (result.error) {
+    // Execution failed (e.g., binary not executable, missing dependencies)
+    return false;
+  }
+
+  process.exit(result.status ?? 1);
+}
+
+/**
+ * Detects the installed Java version.
+ * @returns {number} - Major version number, or 0 if Java not found
+ */
+function javaMajorVersion() {
+  try {
+    const result = spawnSync("java", ["-version"], {
+      encoding: "utf8",
+      stdio: ["pipe", "pipe", "pipe"],
+    });
+
+    const output = `${result.stderr || ""}${result.stdout || ""}`;
+    // Match patterns like: version "21.0.1", version "17", version "1.8.0"
+    const match = output.match(/version "(\d+)/);
+
+    if (match) {
+      return parseInt(match[1], 10);
+    }
+  } catch {
+    // Java not found or not executable
+  }
+
+  return 0;
+}
+
+/**
+ * Runs the JAR-based CLI with Java.
+ * @param {string} jarPath - Path to the JAR file
+ */
+function runJar(jarPath) {
+  const major = javaMajorVersion();
+
+  if (major < 21) {
+    if (major === 0) {
+      console.error("Error: Java not found in PATH.");
+      console.error(
+        "The CLI requires Java 21 or later. Please install Java or use a native package."
+      );
+    } else {
+      console.error(`Error: Java ${major} detected, but Java 21+ is required.`);
+      console.error(
+        "Please upgrade to Java 21 or later, or use a native package for your platform."
+      );
+    }
+    console.error("");
+    console.error("Native packages available:");
+    console.error("  - Linux x64:   npm install -g @openapi-testgen/cli-linux-x64");
+    console.error("  - Linux ARM64: npm install -g @openapi-testgen/cli-linux-arm64");
+    console.error("  - macOS ARM64: npm install -g @openapi-testgen/cli-darwin-arm64");
+    console.error("  - Windows x64: npm install -g @openapi-testgen/cli-win32-x64");
+    process.exit(1);
+  }
+
+  const result = spawnSync("java", ["-jar", jarPath, ...process.argv.slice(2)], {
+    stdio: "inherit",
+  });
+
+  process.exit(result.status ?? 1);
+}
+
+// Main execution flow
+
+// 1. Try native binary first (if available for this platform)
+const nativeBinary = resolveNativeBinary(nativePackage);
+if (nativeBinary) {
+  const success = runNative(nativeBinary);
+  // If runNative returns, it means execution failed
+  if (success !== false) {
+    // This shouldn't happen as runNative exits on success
+    process.exit(0);
+  }
+  // Fall through to JAR fallback
+  console.warn(
+    "Warning: Native binary failed to execute, falling back to JAR..."
+  );
+}
+
+// 2. Fall back to JAR
+const jarPath = path.join(__dirname, "..", "lib", "openapi-testgen.jar");
+
+if (!fs.existsSync(jarPath)) {
+  console.error(`Error: openapi-testgen.jar not found at ${jarPath}`);
+  console.error("The package may be corrupted. Try reinstalling:");
+  console.error("  npm uninstall -g @openapi-testgen/cli");
+  console.error("  npm install -g @openapi-testgen/cli");
+  process.exit(1);
+}
+
+runJar(jarPath);

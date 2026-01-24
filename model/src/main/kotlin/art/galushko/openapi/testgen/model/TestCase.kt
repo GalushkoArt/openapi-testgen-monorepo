@@ -45,6 +45,10 @@ public data class TestCase(
  * @property headers HTTP headers represented as a list of ordered key-value pairs.
  * @property cookie Cookies represented as a list of ordered key-value pairs.
  * @property other Additional security-related attributes for extensions.
+ *   Known keys:
+ *   - `authorizationScopes`: List of OAuth2/OpenID scope metadata when present.
+ *     Each entry contains: `name` (scheme name), `type` ("oauth2" or "openidconnect"),
+ *     and `scopes` (list of scope strings, may be empty).
  */
 public data class SecurityValues(
     val queryParams: Map<String, Any> = emptyMap(),

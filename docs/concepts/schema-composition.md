@@ -149,7 +149,7 @@ For optimal test generation with composed schemas:
 testGenerationSettings:
     ignoreTestCases:
         "/complex-endpoint":
-            "POST": [ "*" ]  # Skip tests for endpoints with complex compositions
+            "POST": "*"  # Skip tests for endpoints with complex compositions
 ```
 
 ## Related docs

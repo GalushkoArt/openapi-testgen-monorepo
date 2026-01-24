@@ -10,6 +10,7 @@ import art.galushko.openapi.testgen.model.error.ErrorContext
 import art.galushko.openapi.testgen.model.error.Outcome
 import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGenerator
 import art.galushko.openapi.testgen.example.openapi.SchemaMerger
+import art.galushko.openapi.testgen.example.response.ResponseExampleExtractor
 import art.galushko.openapi.testgen.example.util.CombinationBudget
 import art.galushko.openapi.testgen.testdata.BasicTestDataProvider
 import art.galushko.openapi.testgen.testdata.SecurityValueProvider
@@ -24,6 +25,7 @@ internal data class DefaultTestSuiteGeneratorComponents(
     val securityValueProvider: SecurityValueProvider,
     val basicTestDataProvider: BasicTestDataProvider,
     val schemaExampleValueGenerator: SchemaExampleValueGenerator,
+    val responseExampleExtractor: ResponseExampleExtractor,
     val schemaMerger: SchemaMerger,
 )
 
@@ -62,7 +64,15 @@ internal class DefaultTestSuiteGenerator(
         )
 
         // 1. Build valid case baseline
-        val validCaseBuilder = ValidCaseBuilder(path, method, operation, openAPI, components.securityValueProvider, components.schemaExampleValueGenerator)
+        val validCaseBuilder = ValidCaseBuilder(
+            path = path,
+            method = method,
+            operation = operation,
+            openAPI = openAPI,
+            securityValueProvider = components.securityValueProvider,
+            schemaExampleValueGenerator = components.schemaExampleValueGenerator,
+            responseExampleExtractor = components.responseExampleExtractor,
+        )
         val validTest = when (val validTestOutcome = validCaseBuilder.generateValidCase()) {
             is Outcome.Success -> validTestOutcome.value
             is Outcome.Failure -> return Outcome.Failure(validTestOutcome.errors)
@@ -77,6 +87,7 @@ internal class DefaultTestSuiteGenerator(
             basicTestData = components.basicTestDataProvider,
             securityValueProvider = components.securityValueProvider,
             schemaExampleValueGenerator = components.schemaExampleValueGenerator,
+            responseExampleExtractor = components.responseExampleExtractor,
             schemaMerger = components.schemaMerger,
             maxDepth = maxSchemaDepth,
             combinationBudget = combinationBudget,
@@ -99,7 +110,7 @@ internal class DefaultTestSuiteGenerator(
             method = method,
             operationName = operationName,
             aggregated = aggregated,
-            validCase = if (includeValidCase) validTest else null,
+            validCase = if (includeValidCase) validTest.copy(needToComplete = true) else null,
         )
     }
 }

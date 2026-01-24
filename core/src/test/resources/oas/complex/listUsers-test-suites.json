@@ -67,7 +67,12 @@
                     "other": {}
                 },
                 "body": null,
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.WrongUuidFormatSchemaValidationRule"
@@ -103,7 +108,12 @@
                     "other": {}
                 },
                 "body": null,
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
@@ -139,7 +149,12 @@
                     "other": {}
                 },
                 "body": null,
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
@@ -175,7 +190,12 @@
                     "other": {}
                 },
                 "body": null,
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.InvalidEnumValueSchemaValidationRule"
@@ -211,7 +231,12 @@
                     "other": {}
                 },
                 "body": null,
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumLengthStringSchemaValidationRule"
@@ -247,7 +272,12 @@
                     "other": {}
                 },
                 "body": null,
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
@@ -283,7 +313,12 @@
                     "other": {}
                 },
                 "body": null,
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
@@ -331,7 +366,12 @@
                     "other": {}
                 },
                 "body": null,
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.AboveMaxItemsArraySchemaValidationRule"
@@ -369,7 +409,12 @@
                     "other": {}
                 },
                 "body": null,
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ArrayItemSchemaValidationRule"
@@ -407,7 +452,12 @@
                     "other": {}
                 },
                 "body": null,
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ArrayItemSchemaValidationRule"
@@ -443,7 +493,12 @@
                     "other": {}
                 },
                 "body": null,
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.BelowMinItemsArraySchemaValidationRule"
@@ -482,7 +537,12 @@
                     "other": {}
                 },
                 "body": null,
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.NonUniqueItemsArraySchemaValidationRule"
@@ -554,7 +614,12 @@
                     "other": {}
                 },
                 "body": null,
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
@@ -583,6 +648,45 @@
                 "needToComplete": false,
                 "expectedStatusCode": 401,
                 "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "Test Valid Case",
+                "method": "GET",
+                "path": "/users",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key": "X-Request-ID",
+                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
             }
         ]
     }

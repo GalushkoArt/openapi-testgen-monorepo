@@ -275,7 +275,7 @@ internal class TestSuiteWriterTest {
         @ParameterizedTest(name = "{0}")
         @MethodSource("mergeFormatProvider")
         @DisplayName("should merge in MULTIPLE_FILES mode")
-        @Description("Verifies that MERGE mode works correctly with MULTIPLE_FILES output")
+        @Description("Verifies that MERGE mode merges cases in MULTIPLE_FILES output (case merge is independent of suite overwrite)")
         fun shouldMergeInMultipleFilesMode(
             scenario: String,
             format: OutputFormat,
@@ -314,14 +314,15 @@ internal class TestSuiteWriterTest {
                 }
             }
 
-            step("Verify suite was updated") {
+            step("Verify cases were merged (original kept, new added, sorted by name)") {
                 val producedFile = tempDir.resolve("tests-getUser.$extension").toFile()
                 assertThat(producedFile).exists()
 
                 val produced: TestSuite = mapper.readValue(producedFile, TestSuite::class.java)
-                assertThat(produced.testCases).hasSize(2)
-                assertThat(produced.testCases.map { it.name }).containsExactlyInAnyOrder(
+                assertThat(produced.testCases).hasSize(3)
+                assertThat(produced.testCases.map { it.name }).containsExactly(
                     "Invalid Path Param: userId Empty",
+                    "Original Case",
                     "Valid Case",
                 )
             }
@@ -418,12 +419,12 @@ internal class TestSuiteWriterTest {
 
     @Nested
     @Story("Case Level Merge")
-    @DisplayName("Case Level Merge (preventOverwriteSuites=true)")
+    @DisplayName("Case Level Merge")
     inner class CaseLevelMergeTests {
 
         @Test
         @DisplayName("should merge new test cases into existing suite")
-        @Description("When preventOverwriteSuites=true, new cases are added to existing suite")
+        @Description("When preventOverwriteSuites=false, new cases are added to existing suite")
         fun shouldMergeNewTestCasesIntoExistingSuite(@TempDir tempDir: Path) {
             val outputFileName = "test-suites.json"
             val outputFile = tempDir.resolve(outputFileName).toFile()
@@ -453,7 +454,7 @@ internal class TestSuiteWriterTest {
                 "outputMode" to "SINGLE_FILE",
                 "writeMode" to "MERGE",
                 "format" to "JSON",
-                "preventOverwriteSuites" to true,
+                "preventOverwriteSuites" to false,
                 "preventOverwriteCases" to false,
             )
 
@@ -505,7 +506,7 @@ internal class TestSuiteWriterTest {
                 "outputMode" to "SINGLE_FILE",
                 "writeMode" to "MERGE",
                 "format" to "JSON",
-                "preventOverwriteSuites" to true,
+                "preventOverwriteSuites" to false,
                 "preventOverwriteCases" to false,
             )
 
@@ -558,7 +559,7 @@ internal class TestSuiteWriterTest {
                 "outputMode" to "SINGLE_FILE",
                 "writeMode" to "MERGE",
                 "format" to "JSON",
-                "preventOverwriteSuites" to true,
+                "preventOverwriteSuites" to false,
                 "preventOverwriteCases" to true,
             )
 
@@ -579,7 +580,7 @@ internal class TestSuiteWriterTest {
 
         @Test
         @DisplayName("should merge with protected fields preserving only specified fields")
-        @Description("When protectedTestCaseFields is set, only those fields are preserved from existing case")
+        @Description("When protectedTestCaseFields is set, only those fields are preserved during overwrite")
         fun shouldMergeWithProtectedFieldsPreservingOnlySpecified(@TempDir tempDir: Path) {
             val outputFileName = "test-suites.json"
             val outputFile = tempDir.resolve(outputFileName).toFile()
@@ -613,8 +614,8 @@ internal class TestSuiteWriterTest {
                 "outputMode" to "SINGLE_FILE",
                 "writeMode" to "MERGE",
                 "format" to "JSON",
-                "preventOverwriteSuites" to true,
-                "preventOverwriteCases" to true,
+                "preventOverwriteSuites" to false,
+                "preventOverwriteCases" to false,
                 "protectedTestCaseFields" to "expectedStatusCode,body",
             )
 
@@ -689,8 +690,8 @@ internal class TestSuiteWriterTest {
                 "outputMode" to "SINGLE_FILE",
                 "writeMode" to "MERGE",
                 "format" to "JSON",
-                "preventOverwriteSuites" to true,
-                "preventOverwriteCases" to true,
+                "preventOverwriteSuites" to false,
+                "preventOverwriteCases" to false,
                 "protectedTestCaseFields" to listOf(
                     "method", "path", "queryParams", "pathParams", "headers",
                     "cookie", "body", "expectedBody", "needToComplete", "expectedStatusCode", "rule"
@@ -725,7 +726,7 @@ internal class TestSuiteWriterTest {
 
         @Test
         @DisplayName("should preserve order when preventOverwriteCases=true")
-        @Description("Existing case order is preserved when merging with preventOverwriteCases=true")
+        @Description("Existing case order is preserved when preventOverwriteCases=true")
         fun shouldPreserveOrderWhenPreventOverwriteCasesTrue(@TempDir tempDir: Path) {
             val outputFileName = "test-suites.json"
             val outputFile = tempDir.resolve(outputFileName).toFile()
@@ -754,7 +755,7 @@ internal class TestSuiteWriterTest {
                 "outputMode" to "SINGLE_FILE",
                 "writeMode" to "MERGE",
                 "format" to "JSON",
-                "preventOverwriteSuites" to true,
+                "preventOverwriteSuites" to false,
                 "preventOverwriteCases" to true,
             )
 
@@ -801,7 +802,7 @@ internal class TestSuiteWriterTest {
                 "outputMode" to "SINGLE_FILE",
                 "writeMode" to "MERGE",
                 "format" to "JSON",
-                "preventOverwriteSuites" to true,
+                "preventOverwriteSuites" to false,
                 "preventOverwriteCases" to false,
             )
 
@@ -844,7 +845,7 @@ internal class TestSuiteWriterTest {
                 "outputMode" to "SINGLE_FILE",
                 "writeMode" to "MERGE",
                 "format" to "JSON",
-                "preventOverwriteSuites" to true,
+                "preventOverwriteSuites" to false,
                 "preventOverwriteCases" to true,
             )
 
@@ -862,9 +863,59 @@ internal class TestSuiteWriterTest {
         }
 
         @Test
-        @DisplayName("should update suite metadata during merge")
-        @Description("Suite path/method/operationName are updated from incoming suite during merge")
-        fun shouldUpdateSuiteMetadataDuringMerge(@TempDir tempDir: Path) {
+        @DisplayName("should update suite metadata when preventOverwriteSuites=false")
+        @Description("Suite path/method/operationName are updated from incoming suite when overwrite is allowed")
+        fun shouldUpdateSuiteMetadataWhenPreventOverwriteSuitesFalse(@TempDir tempDir: Path) {
+            val outputFileName = "test-suites.json"
+            val outputFile = tempDir.resolve(outputFileName).toFile()
+
+            val existingSuite = TestSuite(
+                path = "/old-path",
+                method = "GET",
+                operationName = "testOp",
+                testCases = listOf(
+                    TestCase(name = "Case", method = "GET", path = "/test", expectedStatusCode = 200)
+                )
+            )
+
+            step("Write original suite") {
+                outputFile.writeText(jsonMapper.writeValueAsString(mapOf("testOp" to existingSuite)))
+            }
+
+            val incomingSuite = TestSuite(
+                path = "/new-path",
+                method = "POST",
+                operationName = "testOp",
+                testCases = listOf(
+                    TestCase(name = "New Case", method = "POST", path = "/new", expectedStatusCode = 201)
+                )
+            )
+
+            val options = mapOf(
+                "outputFileName" to outputFileName,
+                "outputMode" to "SINGLE_FILE",
+                "writeMode" to "MERGE",
+                "format" to "JSON",
+                "preventOverwriteSuites" to false,
+            )
+
+            step("Write incoming suite") {
+                TestSuiteWriter(tempDir.toFile(), options).also { writer ->
+                    writer.generateTests(incomingSuite)
+                }
+            }
+
+            step("Verify suite metadata is updated") {
+                val produced: Map<String, TestSuite> = readAggregatedFile(outputFile, OutputFormat.JSON)
+                assertThat(produced["testOp"]?.path).isEqualTo("/new-path")
+                assertThat(produced["testOp"]?.method).isEqualTo("POST")
+            }
+        }
+
+        @Test
+        @DisplayName("should preserve suite metadata when preventOverwriteSuites=true")
+        @Description("Suite path/method/operationName are preserved and cases are not added when overwrite is prevented")
+        fun shouldPreserveSuiteMetadataWhenPreventOverwriteSuitesTrue(@TempDir tempDir: Path) {
             val outputFileName = "test-suites.json"
             val outputFile = tempDir.resolve(outputFileName).toFile()
 
@@ -896,6 +947,7 @@ internal class TestSuiteWriterTest {
                 "writeMode" to "MERGE",
                 "format" to "JSON",
                 "preventOverwriteSuites" to true,
+                "preventOverwriteCases" to false,
             )
 
             step("Write incoming suite") {
@@ -904,10 +956,71 @@ internal class TestSuiteWriterTest {
                 }
             }
 
-            step("Verify suite metadata is updated") {
+            step("Verify suite metadata is preserved") {
                 val produced: Map<String, TestSuite> = readAggregatedFile(outputFile, OutputFormat.JSON)
-                assertThat(produced["testOp"]?.path).isEqualTo("/new-path")
-                assertThat(produced["testOp"]?.method).isEqualTo("POST")
+                assertThat(produced["testOp"]?.path).isEqualTo("/old-path")
+                assertThat(produced["testOp"]?.method).isEqualTo("GET")
+                assertThat(produced["testOp"]?.testCases).hasSize(1)
+                assertThat(produced["testOp"]?.testCases?.first()?.name).isEqualTo("Case")
+            }
+        }
+
+        @Test
+        @DisplayName("should preserve existing cases when preventOverwriteSuites=false and preventOverwriteCases=true")
+        @Description("Case-level protection works independently of suite-level protection")
+        fun shouldPreserveExistingCasesWhenPreventOverwriteSuitesFalse(@TempDir tempDir: Path) {
+            val outputFileName = "test-suites.json"
+            val outputFile = tempDir.resolve(outputFileName).toFile()
+
+            val existingCase = TestCase(
+                name = "Test Case",
+                method = "POST",
+                path = "/original",
+                expectedStatusCode = 200,
+                expectedBody = mapOf("result" to "original"),
+                body = mapOf("data" to "original"),
+            )
+            val existingSuite = createUserSuite.copy(testCases = listOf(existingCase))
+
+            step("Write original suite") {
+                outputFile.writeText(jsonMapper.writeValueAsString(mapOf("createUser" to existingSuite)))
+            }
+
+            val incomingCase = TestCase(
+                name = "Test Case",
+                method = "PUT",
+                path = "/updated",
+                expectedStatusCode = 400,
+                expectedBody = mapOf("result" to "updated"),
+                body = mapOf("data" to "updated"),
+            )
+            val incomingSuite = createUserSuite.copy(testCases = listOf(incomingCase))
+
+            val options = mapOf(
+                "outputFileName" to outputFileName,
+                "outputMode" to "SINGLE_FILE",
+                "writeMode" to "MERGE",
+                "format" to "JSON",
+                "preventOverwriteSuites" to false,
+                "preventOverwriteCases" to true,
+            )
+
+            step("Write suite with preventOverwriteSuites=false but preventOverwriteCases=true") {
+                TestSuiteWriter(tempDir.toFile(), options).also { writer ->
+                    writer.generateTests(incomingSuite)
+                }
+            }
+
+            step("Verify existing case is preserved despite suite overwrite being allowed") {
+                val produced: Map<String, TestSuite> = readAggregatedFile(outputFile, OutputFormat.JSON)
+                val resultCase = produced["createUser"]?.testCases?.first()
+
+                // Existing fields preserved
+                assertThat(resultCase?.expectedStatusCode).isEqualTo(200)
+                assertThat(resultCase?.expectedBody).isEqualTo(mapOf("result" to "original"))
+                assertThat(resultCase?.method).isEqualTo("POST")
+                assertThat(resultCase?.path).isEqualTo("/original")
+                assertThat(resultCase?.body).isEqualTo(mapOf("data" to "original"))
             }
         }
     }
@@ -1524,7 +1637,7 @@ internal class TestSuiteWriterTest {
             Arguments.of(
                 "Invalid boolean string 'yes'",
                 mapOf("outputFileName" to "test.json", "preventOverwriteSuites" to "yes"),
-                { opts: TestSuiteWriterOptions -> assertThat(opts.preventOverwriteSuites).isTrue() }
+                { opts: TestSuiteWriterOptions -> assertThat(opts.preventOverwriteSuites).isFalse() }
             ),
             Arguments.of(
                 "Invalid boolean string 'no'",
@@ -1534,7 +1647,7 @@ internal class TestSuiteWriterTest {
             Arguments.of(
                 "Null preventOverwriteSuites",
                 mapOf("outputFileName" to "test.json", "preventOverwriteSuites" to null),
-                { opts: TestSuiteWriterOptions -> assertThat(opts.preventOverwriteSuites).isTrue() }
+                { opts: TestSuiteWriterOptions -> assertThat(opts.preventOverwriteSuites).isFalse() }
             ),
             Arguments.of(
                 "Null preventOverwriteCases",

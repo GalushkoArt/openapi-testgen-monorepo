@@ -48,29 +48,54 @@ The order matters for deterministic output ordering in generated test suites.
 - `MissedRequiredParameterTestProvider`
   - Generates a case that omits a required query/header/cookie parameter.
   - Path parameters are excluded (always required by design).
+  - **Applies to Headers:** Required non-security header parameters (e.g., `X-Request-ID`, `X-Correlation-ID`)
+  - **Does NOT apply to:** Security scheme headers (handled by `AuthTestCaseProviderForOperation`)
+  - **Test Case Pattern:** `Missed Required {Location} Parameter {name}`
+  - **Expected Status Code:** 400
+  - **Example Output:**
+    ```json
+    {
+      "name": "Missed Required Header Parameter X-Request-ID",
+      "expectedStatusCode": 400,
+      "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
+    }
+    ```
+  - **See also:** [Query Parameter Validation Tests](../../how-to/negative-testing/query-parameters.md), [Header Parameter Validation Tests](../../how-to/negative-testing/header-parameters.md)
 
 - `ParameterSchemaValidationTestProvider`
   - Applies schema validation rules to parameter schemas (including composed schemas).
   - Supports query/path/header/cookie parameters.
+  - **See also:** [Path Parameter Validation Tests](../../how-to/negative-testing/path-parameters.md), [Query Parameter Validation Tests](../../how-to/negative-testing/query-parameters.md), [Header Parameter Validation Tests](../../how-to/negative-testing/header-parameters.md)
 
 ### Request body providers
 - `MissedRequiredRequestBodyTestProvider`
   - Generates a case with a missing required request body.
+  - **Test Case Name:** `Required Request Body is missing`
+  - **Expected Status Code:** 400
+  - **Applies When:** `requestBody.required: true`
+  - **See also:** [Request Body Schema Tests](../../how-to/negative-testing/request-body-schema.md)
 
 - `RequestBodySchemaValidationTestProvider`
   - Applies schema validation rules to the request body schema.
   - Uses the first supported media type from `Consts.supportedMediaTypes`
     (`application/json`, `application/xml`, `application/x-www-form-urlencoded`).
+  - **Test Case Pattern:** `Incorrect Request Body: {rule description}`
+  - **Expected Status Code:** 400
+  - **Applies When:** Request body has a supported media type and schema constraints
+  - **See also:** [Request Body Schema Tests](../../how-to/negative-testing/request-body-schema.md)
 
 ## Negative-case semantics and status codes
 - Parameter and request body providers generate invalid inputs with `expectedStatusCode = 400`.
 - Auth rules generate `expectedStatusCode = 401` or `403` depending on the rule:
   - 401 Unauthorized: missing/invalid security values.
   - 403 Forbidden: insufficient or incorrect OAuth2/OpenID scopes.
+For scenario-specific guides, see [negative testing](../../how-to/negative-testing/index.md).
 
 ## Ignore settings
 - `TestGenerationSettings.ignoreSchemaValidationRules` and `ignoreAuthValidationRules` filter the
   rule lists before providers run.
+- `TestGenerationSettings.includeOperations` filters paths/methods before generation via
+  `IncludeOperationsHandler` in `TestGenerationProcessor`.
 - `TestGenerationSettings.ignoreTestCases` filters test cases after suite assembly via
   `IgnoreConfigHandler` (path/method/test-case-level filters).
 

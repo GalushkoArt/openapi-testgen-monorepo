@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.BeforeAll;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +26,34 @@ public class ListUsersTest {
         RestAssured.baseURI = "http://localhost:8080/v1";
     }
 
+    private void assertExpectedBody(String expectedBodyJson, String responseBody) {
+        JsonNode expectedNode;
+        try {
+            expectedNode = objectMapper.readTree(expectedBodyJson);
+        } catch (JsonProcessingException e) {
+            Assertions.fail("Expected body is not valid JSON: " + e.getMessage());
+            return;
+        }
+
+        JsonNode actualNode;
+        try {
+            actualNode = objectMapper.readTree(responseBody);
+        } catch (JsonProcessingException ignored) {
+            actualNode = null;
+        }
+
+        if (actualNode != null) {
+            Assertions.assertEquals(expectedNode, actualNode);
+        } else if (expectedNode.isValueNode()) {
+            Assertions.assertEquals(expectedNode.asText(), responseBody);
+        } else {
+            Assertions.fail("Response body is not valid JSON");
+        }
+    }
+
     @Test
     @DisplayName("No security values provided")
-    public void noSecurityValuesProvided() throws com.fasterxml.jackson.core.JsonProcessingException {
+    public void noSecurityValuesProvided() {
         RequestSpecification requestSpec = RestAssured.given();
 
         Response response = requestSpec.get("/users");
@@ -34,14 +61,12 @@ public class ListUsersTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"unauthorized\",\"message\":\"API key required\"}";
-        java.util.Map<?, ?> expected = objectMapper.readValue(expectedBodyJson, java.util.Map.class);
-        java.util.Map<?, ?> actual = objectMapper.readValue(responseBody, java.util.Map.class);
-        Assertions.assertEquals(expected, actual);
+        assertExpectedBody(expectedBodyJson, responseBody);
     }
 
     @Test
     @DisplayName("Invalid X-API-Key API key security")
-    public void invalidXAPIKeyAPIKeySecurity() throws com.fasterxml.jackson.core.JsonProcessingException {
+    public void invalidXAPIKeyAPIKeySecurity() {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "new_invalid_api_key");
 
@@ -50,14 +75,12 @@ public class ListUsersTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"unauthorized\",\"message\":\"API key required\"}";
-        java.util.Map<?, ?> expected = objectMapper.readValue(expectedBodyJson, java.util.Map.class);
-        java.util.Map<?, ?> actual = objectMapper.readValue(responseBody, java.util.Map.class);
-        Assertions.assertEquals(expected, actual);
+        assertExpectedBody(expectedBodyJson, responseBody);
     }
 
     @Test
     @DisplayName("Invalid Query page parameter: Integer Breaking")
-    public void invalidQueryPageParameterIntegerBreaking() throws com.fasterxml.jackson.core.JsonProcessingException {
+    public void invalidQueryPageParameterIntegerBreaking() {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.queryParam("page", "1.5");
@@ -67,14 +90,12 @@ public class ListUsersTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        java.util.Map<?, ?> expected = objectMapper.readValue(expectedBodyJson, java.util.Map.class);
-        java.util.Map<?, ?> actual = objectMapper.readValue(responseBody, java.util.Map.class);
-        Assertions.assertEquals(expected, actual);
+        assertExpectedBody(expectedBodyJson, responseBody);
     }
 
     @Test
     @DisplayName("Invalid Query page parameter: Out Of Minimum Boundary Number")
-    public void invalidQueryPageParameterOutOfMinimumBoundaryNumber() throws com.fasterxml.jackson.core.JsonProcessingException {
+    public void invalidQueryPageParameterOutOfMinimumBoundaryNumber() {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.queryParam("page", "0");
@@ -84,14 +105,12 @@ public class ListUsersTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        java.util.Map<?, ?> expected = objectMapper.readValue(expectedBodyJson, java.util.Map.class);
-        java.util.Map<?, ?> actual = objectMapper.readValue(responseBody, java.util.Map.class);
-        Assertions.assertEquals(expected, actual);
+        assertExpectedBody(expectedBodyJson, responseBody);
     }
 
     @Test
     @DisplayName("Invalid Query pageSize parameter: Integer Breaking")
-    public void invalidQueryPageSizeParameterIntegerBreaking() throws com.fasterxml.jackson.core.JsonProcessingException {
+    public void invalidQueryPageSizeParameterIntegerBreaking() {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.queryParam("pageSize", "1.5");
@@ -101,14 +120,12 @@ public class ListUsersTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        java.util.Map<?, ?> expected = objectMapper.readValue(expectedBodyJson, java.util.Map.class);
-        java.util.Map<?, ?> actual = objectMapper.readValue(responseBody, java.util.Map.class);
-        Assertions.assertEquals(expected, actual);
+        assertExpectedBody(expectedBodyJson, responseBody);
     }
 
     @Test
     @DisplayName("Invalid Query pageSize parameter: Out Of Maximum Boundary Number")
-    public void invalidQueryPageSizeParameterOutOfMaximumBoundaryNumber() throws com.fasterxml.jackson.core.JsonProcessingException {
+    public void invalidQueryPageSizeParameterOutOfMaximumBoundaryNumber() {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.queryParam("pageSize", "101");
@@ -118,14 +135,12 @@ public class ListUsersTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        java.util.Map<?, ?> expected = objectMapper.readValue(expectedBodyJson, java.util.Map.class);
-        java.util.Map<?, ?> actual = objectMapper.readValue(responseBody, java.util.Map.class);
-        Assertions.assertEquals(expected, actual);
+        assertExpectedBody(expectedBodyJson, responseBody);
     }
 
     @Test
     @DisplayName("Invalid Query pageSize parameter: Out Of Minimum Boundary Number")
-    public void invalidQueryPageSizeParameterOutOfMinimumBoundaryNumber() throws com.fasterxml.jackson.core.JsonProcessingException {
+    public void invalidQueryPageSizeParameterOutOfMinimumBoundaryNumber() {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.queryParam("pageSize", "0");
@@ -135,14 +150,12 @@ public class ListUsersTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        java.util.Map<?, ?> expected = objectMapper.readValue(expectedBodyJson, java.util.Map.class);
-        java.util.Map<?, ?> actual = objectMapper.readValue(responseBody, java.util.Map.class);
-        Assertions.assertEquals(expected, actual);
+        assertExpectedBody(expectedBodyJson, responseBody);
     }
 
     @Test
     @DisplayName("Invalid Query q parameter: Out Of Maximum Length String")
-    public void invalidQueryQParameterOutOfMaximumLengthString() throws com.fasterxml.jackson.core.JsonProcessingException {
+    public void invalidQueryQParameterOutOfMaximumLengthString() {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.queryParam("q", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
@@ -152,9 +165,7 @@ public class ListUsersTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        java.util.Map<?, ?> expected = objectMapper.readValue(expectedBodyJson, java.util.Map.class);
-        java.util.Map<?, ?> actual = objectMapper.readValue(responseBody, java.util.Map.class);
-        Assertions.assertEquals(expected, actual);
+        assertExpectedBody(expectedBodyJson, responseBody);
     }
 
 }

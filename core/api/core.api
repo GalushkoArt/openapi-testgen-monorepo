@@ -33,6 +33,11 @@ public final class art/galushko/openapi/testgen/config/IgnoreConfigValidator {
 	public final fun validateIgnoreConfig (Ljava/util/Map;)V
 }
 
+public final class art/galushko/openapi/testgen/config/IncludeOperationsValidator {
+	public static final field INSTANCE Lart/galushko/openapi/testgen/config/IncludeOperationsValidator;
+	public final fun validate (Ljava/util/Map;)V
+}
+
 public final class art/galushko/openapi/testgen/config/ModuleSettings {
 	public static final field Companion Lart/galushko/openapi/testgen/config/ModuleSettings$Companion;
 	public static final synthetic fun box-impl (Ljava/util/Map;)Lart/galushko/openapi/testgen/config/ModuleSettings;
@@ -84,29 +89,31 @@ public final class art/galushko/openapi/testgen/config/TestGenerationModule$Defa
 public final class art/galushko/openapi/testgen/config/TestGenerationSettings {
 	public static final field Companion Lart/galushko/openapi/testgen/config/TestGenerationSettings$Companion;
 	public fun <init> ()V
-	public fun <init> (Ljava/util/Map;Ljava/util/Set;Ljava/util/Set;ILjava/util/Map;IIILjava/util/Map;Lart/galushko/openapi/testgen/model/error/ErrorMode;ZILart/galushko/openapi/testgen/example/config/ExampleValueSettings;)V
-	public synthetic fun <init> (Ljava/util/Map;Ljava/util/Set;Ljava/util/Set;ILjava/util/Map;IIILjava/util/Map;Lart/galushko/openapi/testgen/model/error/ErrorMode;ZILart/galushko/openapi/testgen/example/config/ExampleValueSettings;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/util/Map;Ljava/util/Map;Ljava/util/Set;Ljava/util/Set;ILjava/util/Map;IIILjava/util/Map;Lart/galushko/openapi/testgen/model/error/ErrorMode;ZILart/galushko/openapi/testgen/example/config/ExampleValueSettings;)V
+	public synthetic fun <init> (Ljava/util/Map;Ljava/util/Map;Ljava/util/Set;Ljava/util/Set;ILjava/util/Map;IIILjava/util/Map;Lart/galushko/openapi/testgen/model/error/ErrorMode;ZILart/galushko/openapi/testgen/example/config/ExampleValueSettings;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/util/Map;
-	public final fun component10 ()Lart/galushko/openapi/testgen/model/error/ErrorMode;
-	public final fun component11 ()Z
-	public final fun component12 ()I
-	public final fun component13 ()Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;
-	public final fun component2 ()Ljava/util/Set;
+	public final fun component10 ()Ljava/util/Map;
+	public final fun component11 ()Lart/galushko/openapi/testgen/model/error/ErrorMode;
+	public final fun component12 ()Z
+	public final fun component13 ()I
+	public final fun component14 ()Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;
+	public final fun component2 ()Ljava/util/Map;
 	public final fun component3 ()Ljava/util/Set;
-	public final fun component4 ()I
-	public final fun component5 ()Ljava/util/Map;
-	public final fun component6 ()I
+	public final fun component4 ()Ljava/util/Set;
+	public final fun component5 ()I
+	public final fun component6 ()Ljava/util/Map;
 	public final fun component7 ()I
 	public final fun component8 ()I
-	public final fun component9 ()Ljava/util/Map;
-	public final fun copy (Ljava/util/Map;Ljava/util/Set;Ljava/util/Set;ILjava/util/Map;IIILjava/util/Map;Lart/galushko/openapi/testgen/model/error/ErrorMode;ZILart/galushko/openapi/testgen/example/config/ExampleValueSettings;)Lart/galushko/openapi/testgen/config/TestGenerationSettings;
-	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/config/TestGenerationSettings;Ljava/util/Map;Ljava/util/Set;Ljava/util/Set;ILjava/util/Map;IIILjava/util/Map;Lart/galushko/openapi/testgen/model/error/ErrorMode;ZILart/galushko/openapi/testgen/example/config/ExampleValueSettings;ILjava/lang/Object;)Lart/galushko/openapi/testgen/config/TestGenerationSettings;
+	public final fun component9 ()I
+	public final fun copy (Ljava/util/Map;Ljava/util/Map;Ljava/util/Set;Ljava/util/Set;ILjava/util/Map;IIILjava/util/Map;Lart/galushko/openapi/testgen/model/error/ErrorMode;ZILart/galushko/openapi/testgen/example/config/ExampleValueSettings;)Lart/galushko/openapi/testgen/config/TestGenerationSettings;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/config/TestGenerationSettings;Ljava/util/Map;Ljava/util/Map;Ljava/util/Set;Ljava/util/Set;ILjava/util/Map;IIILjava/util/Map;Lart/galushko/openapi/testgen/model/error/ErrorMode;ZILart/galushko/openapi/testgen/example/config/ExampleValueSettings;ILjava/lang/Object;)Lart/galushko/openapi/testgen/config/TestGenerationSettings;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getErrorMode ()Lart/galushko/openapi/testgen/model/error/ErrorMode;
 	public final fun getExampleValues ()Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;
 	public final fun getIgnoreAuthValidationRules ()Ljava/util/Set;
 	public final fun getIgnoreSchemaValidationRules ()Ljava/util/Set;
 	public final fun getIgnoreTestCases ()Ljava/util/Map;
+	public final fun getIncludeOperations ()Ljava/util/Map;
 	public final fun getIncludeValidCase ()Z
 	public final fun getMaxErrors ()I
 	public final fun getMaxMergedSchemaDepth ()I
@@ -187,6 +194,7 @@ public abstract interface class art/galushko/openapi/testgen/generation/TestGene
 	public abstract fun getMaxDepth ()I
 	public abstract fun getOpenAPI ()Lio/swagger/v3/oas/models/OpenAPI;
 	public abstract fun getOperation ()Lio/swagger/v3/oas/models/Operation;
+	public abstract fun getResponseExampleExtractor ()Lart/galushko/openapi/testgen/example/response/ResponseExampleExtractor;
 	public abstract fun getSchemaExampleValueGenerator ()Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGenerator;
 	public abstract fun getSchemaMerger ()Lart/galushko/openapi/testgen/example/openapi/SchemaMerger;
 	public abstract fun getSchemaPath ()Ljava/util/List;
@@ -368,7 +376,8 @@ public final class art/galushko/openapi/testgen/testdata/BasicTestDataProvider {
 }
 
 public final class art/galushko/openapi/testgen/testdata/SchemaExampleValueGeneratorExtensionsKt {
-	public static final fun extractExpectedResponseExample (Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGenerator;Lart/galushko/openapi/testgen/generation/TestGenerationContext;I)Ljava/lang/Object;
+	public static final fun extractExpectedResponseExample (Lart/galushko/openapi/testgen/example/response/ResponseExampleExtractor;Lart/galushko/openapi/testgen/generation/TestGenerationContext;I)Ljava/lang/Object;
+	public static final fun extractExpectedResponseExample (Lart/galushko/openapi/testgen/example/response/ResponseExampleExtractor;Lart/galushko/openapi/testgen/generation/TestGenerationContext;ILjava/lang/String;)Ljava/lang/Object;
 	public static final fun tryGetExample (Lart/galushko/openapi/testgen/generation/TestGenerationContext;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/media/Schema;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
 }
 
@@ -381,8 +390,8 @@ public final class art/galushko/openapi/testgen/testdata/SecurityValueProvider {
 }
 
 public final class art/galushko/openapi/testgen/testdata/ValidCaseBuilder {
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lio/swagger/v3/oas/models/Operation;Lio/swagger/v3/oas/models/OpenAPI;Lart/galushko/openapi/testgen/testdata/SecurityValueProvider;Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGenerator;)V
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lio/swagger/v3/oas/models/Operation;Lio/swagger/v3/oas/models/OpenAPI;Lart/galushko/openapi/testgen/testdata/SecurityValueProvider;Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGenerator;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lio/swagger/v3/oas/models/Operation;Lio/swagger/v3/oas/models/OpenAPI;Lart/galushko/openapi/testgen/testdata/SecurityValueProvider;Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGenerator;Lart/galushko/openapi/testgen/example/response/ResponseExampleExtractor;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lio/swagger/v3/oas/models/Operation;Lio/swagger/v3/oas/models/OpenAPI;Lart/galushko/openapi/testgen/testdata/SecurityValueProvider;Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGenerator;Lart/galushko/openapi/testgen/example/response/ResponseExampleExtractor;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun generateValidCase ()Lart/galushko/openapi/testgen/model/error/Outcome;
 }
 

@@ -25,7 +25,7 @@ openapi-testgen --config-file open-api-test-generation-config.yaml
 
 ```kotlin
 plugins {
-    id("art.galushko.openapi-test-generator") version "0.8.0"
+    id("art.galushko.openapi-test-generator") version "0.9.0"
 }
 
 openApiTestGenerator {

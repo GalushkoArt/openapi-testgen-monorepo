@@ -1,6 +1,6 @@
 package art.galushko.openapi.testgen.testdata
 
-import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGenerator
+import art.galushko.openapi.testgen.example.response.ResponseExampleExtractor
 import art.galushko.openapi.testgen.generation.TestGenerationContext
 import io.swagger.v3.oas.models.Operation
 import io.swagger.v3.oas.models.media.Schema
@@ -9,12 +9,25 @@ import io.swagger.v3.oas.models.media.Schema
  * Extracts expected response example using TestGenerationContext.
  *
  * This extension provides a context-aware wrapper around the base
- * [SchemaExampleValueGenerator.extractExpectedResponseExample] method.
+ * [ResponseExampleExtractor.extractExpectedResponseExample] method.
  */
-public fun SchemaExampleValueGenerator.extractExpectedResponseExample(
+public fun ResponseExampleExtractor.extractExpectedResponseExample(
     context: TestGenerationContext,
     statusCode: Int,
 ): Any? = extractExpectedResponseExample(context.operation, context.openAPI, statusCode)
+
+/**
+ * Extracts expected response example using TestGenerationContext and a named example.
+ *
+ * @param context test generation context containing operation details
+ * @param statusCode HTTP status code to resolve
+ * @param exampleName optional example name to select from named examples
+ */
+public fun ResponseExampleExtractor.extractExpectedResponseExample(
+    context: TestGenerationContext,
+    statusCode: Int,
+    exampleName: String?,
+): Any? = extractExpectedResponseExample(context.operation, context.openAPI, statusCode, exampleName)
 
 /**
  * Attempts to generate an example value, throwing an exception if it fails.

@@ -20,7 +20,7 @@ For CLI and Gradle plugin usage, this module is an internal dependency. For cust
 
 ```kotlin
 dependencies {
-    implementation("art.galushko.openapi:testgen-distribution-bundle:0.8.0")
+    implementation("art.galushko.openapi:testgen-distribution-bundle:0.9.0")
 }
 ```
 

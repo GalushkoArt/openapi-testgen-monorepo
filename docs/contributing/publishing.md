@@ -70,11 +70,9 @@ Alternatively, add to `~/.gradle/gradle.properties`:
 # Maven Central Portal
 mavenCentralUsername=your-portal-username
 mavenCentralPassword=your-portal-password
-
 # GPG signing (use \n for newlines in the key)
 signingInMemoryKey=-----BEGIN PGP PRIVATE KEY BLOCK-----\n...\n-----END PGP PRIVATE KEY BLOCK-----
 signingInMemoryKeyPassword=your-gpg-passphrase
-
 # Gradle Plugin Portal
 gradle.publish.key=your-plugin-portal-key
 gradle.publish.secret=your-plugin-portal-secret
@@ -142,8 +140,8 @@ The project uses manual release mode (`automaticRelease = false`). After artifac
 4. Click **Publish** to release to Maven Central
 
 !!! note "Sync timing"
-    - Artifacts appear on [repo1.maven.org](https://repo1.maven.org/maven2/) within ~30 minutes
-    - Searchable on [search.maven.org](https://search.maven.org/) within ~2-4 hours
+- Artifacts appear on [repo1.maven.org](https://repo1.maven.org/maven2/) within ~30 minutes
+- Searchable on [search.maven.org](https://search.maven.org/) within ~2-4 hours
 
 ## Publish to Gradle Plugin Portal
 
@@ -155,18 +153,49 @@ The Gradle plugin is published separately:
 
 The plugin portal is separate from Maven Central; run both for a complete release.
 
+## Publish to npm Registry
+
+CLI packages are published to npm under the `@openapi-testgen` organization.
+
+### Prerequisites
+
+- npm account with access to `@openapi-testgen` organization
+- npm authentication: `npm login --scope=@openapi-testgen`
+
+### Packages
+
+| Package                             | Description                    |
+|-------------------------------------|--------------------------------|
+| `@openapi-testgen/cli`              | Main CLI with JAR and launcher |
+| `@openapi-testgen/cli-linux-x64`    | Native Linux binary            |
+| `@openapi-testgen/cli-linux-arm64`  | Native Linux ARM64 binary      |
+| `@openapi-testgen/cli-darwin-arm64` | Native macOS binary            |
+| `@openapi-testgen/cli-win32-x64`    | Native Windows binary          |
+
+### Quick Publish
+
+```bash
+# Build and prepare packages
+./npm/scripts/build-packages.sh
+
+# Publish main package
+cd cli/build/npm/cli && npm publish --access public
+```
+
+Native packages are built per-platform and typically published from CI artifacts. See [npm Publishing Guide](npm-publishing.md) for detailed steps.
+
 ## CI/CD publishing
 
 For GitHub Actions, configure repository secrets:
 
 ```yaml
 env:
-  ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-  ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
-  ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
-  ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
-  GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
-  GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
+    ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+    ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+    ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+    ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+    GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
+    GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
 ```
 
 ## Troubleshooting
@@ -193,11 +222,11 @@ env:
 
 Common validation errors in the Portal:
 
-| Error | Solution |
-|-------|----------|
+| Error               | Solution                                        |
+|---------------------|-------------------------------------------------|
 | Missing POM element | Ensure `description` is set in build.gradle.kts |
-| Invalid signature | Check GPG key and passphrase |
-| Missing javadoc JAR | Dokka task may have failed; check build logs |
+| Invalid signature   | Check GPG key and passphrase                    |
+| Missing javadoc JAR | Dokka task may have failed; check build logs    |
 
 ## Reference links
 

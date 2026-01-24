@@ -31,7 +31,12 @@
                 "body": {
                     "allOfAnyOf": {}
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -63,7 +68,12 @@
                 "body": {
                     "allOfAnyOf": {}
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -98,7 +108,12 @@
                         "optionB": 1.5
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -133,7 +148,12 @@
                         "timestamp": "2025-05-05T17:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -168,7 +188,12 @@
                         "timestamp": "2025-05-05T17:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -203,7 +228,12 @@
                         "timestamp": "2025-05-05T17:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -238,7 +268,12 @@
                         "timestamp": "2025-05-05T17:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -273,7 +308,12 @@
                         "successData": {}
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -308,7 +348,12 @@
                         "id": "a"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -344,7 +389,12 @@
                         "timestamp": "10917-07-21T17:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -380,7 +430,12 @@
                         "timestamp": "10917-07-21T17:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -416,7 +471,12 @@
                         "timestamp": "2017-07-21T17:60:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -452,7 +512,12 @@
                         "timestamp": "2017-07-21T17:60:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -488,7 +553,12 @@
                         "timestamp": "2017-07-21T17:32:61Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -524,7 +594,12 @@
                         "timestamp": "2017-07-21T17:32:61Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -560,7 +635,12 @@
                         "timestamp": "2017-13-21T17:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -596,7 +676,12 @@
                         "timestamp": "2017-13-21T17:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -632,7 +717,12 @@
                         "timestamp": "2017-07-32T17:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -668,7 +758,12 @@
                         "timestamp": "2017-07-32T17:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -704,7 +799,12 @@
                         "timestamp": "917-07-21T17:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -740,7 +840,12 @@
                         "timestamp": "917-07-21T17:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -776,7 +881,12 @@
                         "timestamp": "2017-07-21T24:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -812,7 +922,12 @@
                         "timestamp": "2017-07-21T24:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -848,7 +963,12 @@
                         "timestamp": "2017-07-00T17:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -884,7 +1004,12 @@
                         "timestamp": "2017-07-00T17:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -920,7 +1045,12 @@
                         "timestamp": "2017-00-21T17:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -956,7 +1086,12 @@
                         "timestamp": "2017-00-21T17:32:28Z"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -988,7 +1123,12 @@
                 "body": {
                     "oneOfAnyOf": {}
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -1020,7 +1160,12 @@
                 "body": {
                     "oneOfAnyOf": {}
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -1052,7 +1197,12 @@
                 "body": {
                     "oneOfAnyOf": {}
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -1084,7 +1234,12 @@
                 "body": {
                     "oneOfAnyOf": {}
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -1202,10 +1357,50 @@
                     "other": {}
                 },
                 "body": null,
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+            },
+            {
+                "name": "Test Valid Case",
+                "method": "POST",
+                "path": "/validation/complex-combinations",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {},
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
             }
         ]
     }

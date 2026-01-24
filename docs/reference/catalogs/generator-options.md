@@ -11,9 +11,9 @@ These options are parsed by `transformAndValidateWriterOptions`.
 - `format`: `JSON` (default) or `YAML`
 - `indent`: indentation string for JSON output (default: 4 spaces)
 - `writeMode`: `MERGE` (default) or `OVERWRITE`
-- `preventOverwriteSuites`: boolean (default: true)
-- `preventOverwriteCases`: boolean (default: true)
-- `protectedTestCaseFields`: list or comma-separated string (default: empty)
+- `preventOverwriteSuites`: boolean (default: false)
+- `preventOverwriteCases`: boolean (default: true; existing cases are preserved, new cases are added)
+- `protectedTestCaseFields`: list or comma-separated string (default: empty; used when overwriting cases)
 - `fileNamePrefix`: prefix used in `MULTIPLE_FILES` mode (default: empty)
 
 ## `template` options

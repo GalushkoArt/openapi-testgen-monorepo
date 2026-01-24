@@ -155,6 +155,36 @@
                 "needToComplete": false,
                 "expectedStatusCode": 401,
                 "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "Test Valid Case",
+                "method": "GET",
+                "path": "/apikey/cookie",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [
+                    {
+                        "key": "api_key",
+                        "value": "<valid_apiKeyCookie_api_key_placeholder>"
+                    }
+                ],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [
+                        {
+                            "key": "api_key",
+                            "value": "<valid_apiKeyCookie_api_key_placeholder>"
+                        }
+                    ],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
             }
         ]
     },
@@ -218,6 +248,36 @@
                 "needToComplete": false,
                 "expectedStatusCode": 401,
                 "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "Test Valid Case",
+                "method": "GET",
+                "path": "/apikey/header",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
             }
         ]
     },
@@ -350,6 +410,30 @@
                 "needToComplete": false,
                 "expectedStatusCode": 401,
                 "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "Test Valid Case",
+                "method": "GET",
+                "path": "/apikey/query",
+                "queryParams": {
+                    "api_key": "<valid_apiKeyQuery_api_key_placeholder>"
+                },
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {
+                        "api_key": "<valid_apiKeyQuery_api_key_placeholder>"
+                    },
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
             }
         ]
     },
@@ -509,6 +593,36 @@
                 "needToComplete": false,
                 "expectedStatusCode": 401,
                 "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "Test Valid Case",
+                "method": "GET",
+                "path": "/basic",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
             }
         ]
     },
@@ -668,6 +782,36 @@
                 "needToComplete": false,
                 "expectedStatusCode": 401,
                 "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "Test Valid Case",
+                "method": "GET",
+                "path": "/bearer",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_bearerAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_bearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
             }
         ]
     },
@@ -827,6 +971,36 @@
                 "needToComplete": false,
                 "expectedStatusCode": 401,
                 "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "Test Valid Case",
+                "method": "GET",
+                "path": "/default",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
             }
         ]
     },
@@ -857,7 +1031,15 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": []
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -892,7 +1074,15 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": []
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": null,
@@ -924,7 +1114,15 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": []
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": null,
@@ -956,7 +1154,15 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": []
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": null,
@@ -986,6 +1192,44 @@
                 "needToComplete": false,
                 "expectedStatusCode": 401,
                 "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "Test Valid Case",
+                "method": "GET",
+                "path": "/oauth2/access",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": []
+                            }
+                        ]
+                    }
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
             }
         ]
     },
@@ -1016,7 +1260,17 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -1051,7 +1305,17 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": null,
@@ -1083,7 +1347,17 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": null,
@@ -1115,7 +1389,17 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": null,
@@ -1145,7 +1429,15 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": []
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -1180,6 +1472,46 @@
                 "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
             },
             {
+                "name": "Test Valid Case",
+                "method": "GET",
+                "path": "/oauth2/resource",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[read]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[read]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
+            },
+            {
                 "name": "oauth2 security scheme has invalid scope",
                 "method": "GET",
                 "path": "/oauth2/resource",
@@ -1201,7 +1533,17 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "some_invalid_scope"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -1241,7 +1583,18 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "read",
+                                    "write"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -1276,7 +1629,18 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "read",
+                                    "write"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": null,
@@ -1308,7 +1672,18 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "read",
+                                    "write"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": null,
@@ -1340,7 +1715,18 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "read",
+                                    "write"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": null,
@@ -1370,7 +1756,15 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": []
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -1403,7 +1797,17 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "write"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -1436,7 +1840,17 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -1471,6 +1885,47 @@
                 "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
             },
             {
+                "name": "Test Valid Case",
+                "method": "GET",
+                "path": "/oauth2/write-read",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oauth2:[read,write]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oauth2:[read,write]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "read",
+                                    "write"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
+            },
+            {
                 "name": "oauth2 security scheme has invalid scope",
                 "method": "GET",
                 "path": "/oauth2/write-read",
@@ -1492,7 +1947,17 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "some_invalid_scope"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -1532,7 +1997,18 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": [
+                                    "openid",
+                                    "profile"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -1567,7 +2043,18 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": [
+                                    "openid",
+                                    "profile"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": null,
@@ -1599,7 +2086,18 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": [
+                                    "openid",
+                                    "profile"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": null,
@@ -1631,7 +2129,18 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": [
+                                    "openid",
+                                    "profile"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": null,
@@ -1661,7 +2170,15 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": []
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -1694,7 +2211,17 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": [
+                                    "profile"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -1727,7 +2254,17 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": [
+                                    "openid"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -1762,6 +2299,47 @@
                 "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
             },
             {
+                "name": "Test Valid Case",
+                "method": "GET",
+                "path": "/oidc/profile",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<oidc:[openid,profile]>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<oidc:[openid,profile]>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": [
+                                    "openid",
+                                    "profile"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
+            },
+            {
                 "name": "oidc security scheme has invalid scope",
                 "method": "GET",
                 "path": "/oidc/profile",
@@ -1783,7 +2361,17 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": [
+                                    "some_invalid_scope"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -1866,6 +2454,26 @@
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name": "Test Valid Case",
+                "method": "GET",
+                "path": "/public",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
             }
         ]
     },
@@ -2205,6 +2813,44 @@
                 "needToComplete": false,
                 "expectedStatusCode": 401,
                 "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name": "Test Valid Case",
+                "method": "GET",
+                "path": "/secure-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        },
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
             }
         ]
     },
@@ -2405,7 +3051,15 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": []
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -2440,6 +3094,36 @@
                 "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
             },
             {
+                "name": "Test Valid Case",
+                "method": "GET",
+                "path": "/secure-or",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
+            },
+            {
                 "name": "oauth2 security scheme has invalid scope",
                 "method": "GET",
                 "path": "/secure-or",
@@ -2461,7 +3145,17 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "some_invalid_scope"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -2550,7 +3244,17 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -2851,7 +3555,22 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "read"
+                                ]
+                            },
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": []
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -2884,7 +3603,24 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "read"
+                                ]
+                            },
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": [
+                                    "profile"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -2917,7 +3653,24 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "read"
+                                ]
+                            },
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": [
+                                    "openid"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -2950,7 +3703,20 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": []
+                            },
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": []
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -2983,7 +3749,22 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": []
+                            },
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": [
+                                    "profile"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -3016,7 +3797,22 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": []
+                            },
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": [
+                                    "openid"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -3049,7 +3845,23 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": []
+                            },
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": [
+                                    "openid",
+                                    "profile"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -3084,6 +3896,44 @@
                 "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
             },
             {
+                "name": "Test Valid Case",
+                "method": "GET",
+                "path": "/secure-or-and",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "<valid_basicAuth_placeholder>"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "X-API-Key",
+                            "value": "<valid_apiKeyHeader_api_key_placeholder>"
+                        },
+                        {
+                            "key": "authorization",
+                            "value": "<valid_basicAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": null,
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
+            },
+            {
                 "name": "oauth2 security scheme has invalid scope",
                 "method": "GET",
                 "path": "/secure-or-and",
@@ -3113,7 +3963,25 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "some_invalid_scope"
+                                ]
+                            },
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": [
+                                    "openid",
+                                    "profile"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {
@@ -3154,7 +4022,24 @@
                         }
                     ],
                     "cookie": [],
-                    "other": {}
+                    "other": {
+                        "authorizationScopes": [
+                            {
+                                "name": "oauth2",
+                                "type": "oauth2",
+                                "scopes": [
+                                    "read"
+                                ]
+                            },
+                            {
+                                "name": "oidc",
+                                "type": "openidconnect",
+                                "scopes": [
+                                    "some_invalid_scope"
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "body": null,
                 "expectedBody": {

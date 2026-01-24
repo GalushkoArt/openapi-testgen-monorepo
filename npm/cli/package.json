@@ -1,0 +1,49 @@
+{
+  "name": "@openapi-testgen/cli",
+  "version": "0.0.0",
+  "description": "Generate test cases from OpenAPI specifications",
+  "keywords": [
+    "openapi",
+    "swagger",
+    "testing",
+    "api",
+    "test-generation",
+    "rest-api",
+    "api-testing",
+    "contract-testing"
+  ],
+  "homepage": "https://github.com/GalushkoArt/openapi-testgen-monorepo",
+  "bugs": {
+    "url": "https://github.com/GalushkoArt/openapi-testgen-monorepo/issues"
+  },
+  "license": "MIT",
+  "author": "Artem Galushko",
+  "bin": {
+    "openapi-testgen": "./bin/openapi-testgen"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "scripts/"
+  ],
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "optionalDependencies": {
+    "@openapi-testgen/cli-linux-x64": "0.0.0",
+    "@openapi-testgen/cli-linux-arm64": "0.0.0",
+    "@openapi-testgen/cli-darwin-arm64": "0.0.0",
+    "@openapi-testgen/cli-win32-x64": "0.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GalushkoArt/openapi-testgen-monorepo.git",
+    "directory": "npm/cli"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

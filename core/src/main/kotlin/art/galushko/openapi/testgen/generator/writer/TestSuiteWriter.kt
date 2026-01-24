@@ -186,21 +186,20 @@ internal class TestSuiteWriter(
 
     private fun mergeSuite(name: String, incoming: TestSuite, allowOverwriteSuite: Boolean) {
         val existing = suites[name]
-        if (existing == null || allowOverwriteSuite) {
-            // Replace the whole suite, keep cases sorted for stability
+        if (existing == null) {
+            // No existing suite - just add, keep cases sorted for stability
             putSuite(name, incoming)
             return
         }
 
-        // Merge into existing
+        if (!allowOverwriteSuite) {
+            // Preserve existing suite as-is (no case changes)
+            return
+        }
+
+        // Merge cases when suite overwrite is allowed
         val mergedCases = mergeCases(existing.testCases, incoming.testCases)
-        val merged = existing.copy(
-            path = incoming.path,
-            method = incoming.method,
-            operationName = incoming.operationName ?: existing.operationName,
-            testCases = mergedCases
-        )
-        suites[name] = merged
+        suites[name] = incoming.copy(testCases = mergedCases)
     }
 
     // --- case merge
@@ -213,6 +212,8 @@ internal class TestSuiteWriter(
         existingCases.forEachIndexed { idx, c -> indexByName[c.name] = idx }
 
         val result = existingCases.toMutableList()
+        val overwriteCases = !options.preventOverwriteCases
+        val preserveFields = overwriteCases && options.protectedTestCaseFields.isNotEmpty()
 
         for (inc in incomingCases) {
             val idx = indexByName[inc.name]
@@ -220,9 +221,9 @@ internal class TestSuiteWriter(
                 // New identity -> append and track
                 result.add(inc)
                 indexByName[inc.name] = result.lastIndex
-            } else {
+            } else if (overwriteCases) {
                 // Existing identity -> replace or merge-in-place
-                val replacement = if (options.preventOverwriteCases) {
+                val replacement = if (preserveFields) {
                     mergeCasePreservingFields(result[idx], inc)
                 } else {
                     inc
@@ -231,8 +232,7 @@ internal class TestSuiteWriter(
             }
         }
 
-        val shouldSort = !options.preventOverwriteCases
-        return if (shouldSort) result.sortedBy { it.name } else result
+        return if (overwriteCases) result.sortedBy { it.name } else result
     }
 
     private fun mergeCasePreservingFields(existing: TestCase, incoming: TestCase): TestCase {

@@ -1,6 +1,6 @@
     @Test
     @DisplayName("{{testCaseName}}")
-    public void {{methodName}}() throws com.fasterxml.jackson.core.JsonProcessingException {
+    public void {{methodName}}() {
         RequestSpecification requestSpec = RestAssured.given();
 {{#headers}}
         requestSpec.header("{{key}}", "{{#escapeString}}{{value}}{{/escapeString}}");
@@ -25,8 +25,6 @@
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{{#escapeString}}{{{expectedResponseBody.rawBody}}}{{/escapeString}}";
-        java.util.Map<?, ?> expected = objectMapper.readValue(expectedBodyJson, java.util.Map.class);
-        java.util.Map<?, ?> actual = objectMapper.readValue(responseBody, java.util.Map.class);
-        Assertions.assertEquals(expected, actual);
+        assertExpectedBody(expectedBodyJson, responseBody);
 {{/expectedResponseBody}}
     }

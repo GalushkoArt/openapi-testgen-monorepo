@@ -26,6 +26,7 @@ public class art/galushko/openapi/testgen/plugin/TestGenerationSettingsExtension
 	public final fun getIgnoreAuthValidationRules ()Lorg/gradle/api/provider/SetProperty;
 	public final fun getIgnoreSchemaValidationRules ()Lorg/gradle/api/provider/SetProperty;
 	public final fun getIgnoreTestCases ()Lorg/gradle/api/provider/MapProperty;
+	public final fun getIncludeOperations ()Lorg/gradle/api/provider/MapProperty;
 	public final fun getIncludeValidCase ()Lorg/gradle/api/provider/Property;
 	public final fun getMaxErrors ()Lorg/gradle/api/provider/Property;
 	public final fun getMaxMergedSchemaDepth ()Lorg/gradle/api/provider/Property;

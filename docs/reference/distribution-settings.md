@@ -59,9 +59,9 @@ Core settings for test case generation behavior.
 
 ### Output options
 
-| Setting            | Type    | Default | Description                                                  |
-|--------------------|---------|---------|--------------------------------------------------------------|
-| `includeValidCase` | Boolean | `false` | Include the baseline valid case (2xx status) in test suites  |
+| Setting            | Type    | Default | Description                                                 |
+|--------------------|---------|---------|-------------------------------------------------------------|
+| `includeValidCase` | Boolean | `false` | Include the baseline valid case (2xx status) in test suites |
 
 When enabled, each test suite includes a "Test Valid Case" entry representing a valid request
 with all required parameters populated. The expected status code is the first 2xx response
@@ -89,11 +89,33 @@ testGenerationSettings:
         BearerAuth: "Bearer eyJ..."
 ```
 
+### Include configuration
+
+| Setting             | Type                                  | Default | Description                                          |
+|---------------------|---------------------------------------|---------|------------------------------------------------------|
+| `includeOperations` | Map&lt;String, List&lt;String&gt;&gt; | `{}`    | Path → list of HTTP methods to include (empty = all) |
+
+Notes:
+
+- Path keys are matched exactly (no globbing).
+- Method names are case-insensitive.
+- `*` path matches all paths; `*` method matches all methods for the path.
+
+Example:
+
+```yaml
+testGenerationSettings:
+    includeOperations:
+        "/users/{userId}": [ "GET" ]
+        "/orders": [ "POST" ]
+        "*": [ "OPTIONS" ]
+```
+
 ### Ignore configuration
 
 | Setting                       | Type              | Default | Description                                   |
 |-------------------------------|-------------------|---------|-----------------------------------------------|
-| `ignoreTestCases`             | Map               | `{}`    | Path/method/test case patterns to skip        |
+| `ignoreTestCases`             | Map               | `{}`    | Path/method/test case names to skip (exact)   |
 | `ignoreSchemaValidationRules` | Set&lt;String&gt; | `[]`    | Fully qualified rule class names to skip      |
 | `ignoreAuthValidationRules`   | Set&lt;String&gt; | `[]`    | Fully qualified auth rule class names to skip |
 
@@ -102,10 +124,12 @@ Example:
 ```yaml
 testGenerationSettings:
     ignoreTestCases:
-        "/internal/*":
-            "*": [ "*" ]  # Skip all tests for /internal/ paths
+        "/internal": "*"  # Skip all tests for /internal
         "/pets/{petId}":
-            "GET": [ "Invalid*" ]  # Skip "Invalid*" tests for GET
+            "GET":
+                - "Missing required path param: petId"
+        "*":
+            "OPTIONS": "*"
     ignoreSchemaValidationRules:
         - "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
 ```
@@ -120,10 +144,17 @@ testGenerationSettings:
 
 Configuration for schema-derived example value generation.
 
-| Setting           | Type               | Default   | Description                                    |
-|-------------------|--------------------|-----------|------------------------------------------------|
-| `providers`       | List&lt;String&gt; | See below | Ordered provider list; first match wins        |
-| `maxExampleDepth` | Integer            | 50        | Maximum recursion depth for example generation |
+| Setting                            | Type               | Default   | Description                                                             |
+|------------------------------------|--------------------|-----------|-------------------------------------------------------------------------|
+| `providers`                        | List&lt;String&gt; | See below | Ordered provider list; first match wins                                 |
+| `maxExampleDepth`                  | Integer            | 50        | Maximum recursion depth for example generation                          |
+| `includeOptionalExampleProperties` | Boolean            | false     | Include optional properties that define examples/defaults               |
+| `includeWriteOnly`                 | Boolean            | true      | Include `writeOnly` properties in generated examples                    |
+| `useSchemaExampleFallback`         | Boolean            | false     | Use `schema.examples`/`schema.default` when `schema.example` is missing |
+
+Note: These flags affect request/parameter example generation. Response `expectedBody` uses response defaults
+(`includeOptionalExampleProperties = true`, `includeWriteOnly = false`, `useSchemaExampleFallback = true`);
+`maxExampleDepth` still applies.
 
 Default provider order:
 
@@ -145,14 +176,14 @@ providers:
 
 #### uuid
 
-| Setting    | Type   | Default     | Description                                        |
-|------------|--------|-------------|----------------------------------------------------|
+| Setting    | Type   | Default                        | Description                                                      |
+|------------|--------|--------------------------------|------------------------------------------------------------------|
 | `template` | String | `"d5a5495b-cbdc-4237-a66e-%s"` | RFC 9562 UUID template with `%s` placeholder for variation index |
 
 #### email
 
-| Setting    | Type   | Default                 | Description                    |
-|------------|--------|-------------------------|--------------------------------|
+| Setting    | Type   | Default                | Description                    |
+|------------|--------|------------------------|--------------------------------|
 | `template` | String | `"test%s@example.com"` | Template with `%s` placeholder |
 
 #### date
@@ -163,10 +194,10 @@ providers:
 
 #### dateTime
 
-| Setting              | Type   | Default          | Description                                      |
-|----------------------|--------|------------------|--------------------------------------------------|
-| `startDate`          | String | `"2025-05-05"`   | Start date in ISO-8601 format                    |
-| `timeSuffixTemplate` | String | `"%sT17:32:28Z"` | RFC 3339 date-time template with `%s` for date   |
+| Setting              | Type   | Default          | Description                                    |
+|----------------------|--------|------------------|------------------------------------------------|
+| `startDate`          | String | `"2025-05-05"`   | Start date in ISO-8601 format                  |
+| `timeSuffixTemplate` | String | `"%sT17:32:28Z"` | RFC 3339 date-time template with `%s` for date |
 
 #### plainString
 
@@ -185,6 +216,9 @@ testGenerationSettings:
             - pattern
             - plain-string
         maxExampleDepth: 15
+        includeOptionalExampleProperties: true
+        includeWriteOnly: false
+        useSchemaExampleFallback: true
         uuid:
             template: "test-uuid-%s"
         email:
@@ -237,17 +271,17 @@ generatorOptions:
 
 ### test-suite-writer generator
 
-| Option                   | Type   | Default       | Description                                        |
-|--------------------------|--------|---------------|----------------------------------------------------|
-| `outputFileName`         | String | (required)    | Output file name (required for `SINGLE_FILE` mode) |
-| `format`                 | String | `json`        | Output format: `json` or `yaml`                    |
-| `writeMode`              | String | `MERGE`       | `MERGE` (default) or `OVERWRITE`                   |
-| `outputMode`             | String | `SINGLE_FILE` | `SINGLE_FILE` or `MULTIPLE_FILES`                  |
-| `preventOverwriteSuites` | Boolean | `true`       | Block suite-level replacement during merge         |
-| `preventOverwriteCases`  | Boolean | `true`       | Preserve existing test case fields during merge    |
-| `protectedTestCaseFields`| List   | `[]`          | Fields to preserve when merging cases              |
-| `indent`                 | String | 4 spaces      | Indentation string for JSON output                 |
-| `fileNamePrefix`         | String | (empty)       | Prefix for per-suite files in `MULTIPLE_FILES` mode |
+| Option                    | Type    | Default       | Description                                         |
+|---------------------------|---------|---------------|-----------------------------------------------------|
+| `outputFileName`          | String  | (required)    | Output file name (required for `SINGLE_FILE` mode)  |
+| `format`                  | String  | `json`        | Output format: `json` or `yaml`                     |
+| `writeMode`               | String  | `MERGE`       | `MERGE` (default) or `OVERWRITE`                    |
+| `outputMode`              | String  | `SINGLE_FILE` | `SINGLE_FILE` or `MULTIPLE_FILES`                   |
+| `preventOverwriteSuites`  | Boolean | `false`       | Keep existing suites unchanged during merge         |
+| `preventOverwriteCases`   | Boolean | `true`        | Keep existing cases unchanged; new cases are added  |
+| `protectedTestCaseFields` | List    | `[]`          | Fields to preserve when overwriting cases           |
+| `indent`                  | String  | 4 spaces      | Indentation string for JSON output                  |
+| `fileNamePrefix`          | String  | (empty)       | Prefix for per-suite files in `MULTIPLE_FILES` mode |
 
 Example:
 
@@ -293,8 +327,7 @@ testGenerationSettings:
 
     # Ignore configuration
     ignoreTestCases:
-        "/health":
-            "*": [ "*" ]
+        "/health": "*"
     ignoreSchemaValidationRules: [ ]
     ignoreAuthValidationRules: [ ]
 
@@ -328,4 +361,5 @@ logLevel: INFO
 - [Gradle plugin reference](gradle-plugin.md)
 - [Budget controls](../concepts/budget-controls.md)
 - [Ignore rules how-to](../how-to/configuration/ignore-rules.md)
+- [Include operations](../how-to/configuration/yaml-config.md#include-operations)
 - [Security values how-to](../how-to/configuration/security-values.md)

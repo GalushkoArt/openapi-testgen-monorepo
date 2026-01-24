@@ -34,7 +34,7 @@ openApiTestGenerator {
             "outputFileName" to "openapi-test-suites.json",
             "writeMode" to "MERGE",
             "preventOverwriteSuites" to "false",
-            "preventOverwriteCases" to "true",
+            "preventOverwriteCases" to "false",
             "protectedTestCaseFields" to "expectedStatusCode,expectedBody",
             "indent" to "    ",
         )
@@ -58,8 +58,8 @@ openApiTestGenerator {
 |--------|-------|-------------|
 | `outputFileName` | `openapi-test-suites.json` | Name of the output file |
 | `writeMode` | `MERGE` | Merge with existing file instead of overwriting |
-| `preventOverwriteCases` | `true` | Don't overwrite existing test cases |
-| `protectedTestCaseFields` | `expectedStatusCode,expectedBody` | Fields that won't be overwritten during merge |
+| `preventOverwriteCases` | `false` | Overwrite existing test cases |
+| `protectedTestCaseFields` | `expectedStatusCode,expectedBody` | Fields preserved when overwriting cases |
 | `indent` | `    ` | 4-space indentation for readability |
 
 ## Additional YAML generation
@@ -153,11 +153,11 @@ for (TestSuite suite : suites) {
 
 ## Merge behavior
 
-With `writeMode: MERGE`:
+With `writeMode: MERGE` (and overwrite enabled):
 
 1. **New test suites** are added to the file
-2. **Existing test suites** are updated with new test cases
-3. **Existing test cases** (matched by name) preserve their `protectedTestCaseFields`
+2. **Existing test suites** are updated with incoming suite metadata and cases
+3. **Existing test cases** (matched by name) overwrite fields except those listed in `protectedTestCaseFields`
 4. **Manual edits** to `expectedStatusCode` or `expectedBody` survive regeneration
 
 This allows you to:

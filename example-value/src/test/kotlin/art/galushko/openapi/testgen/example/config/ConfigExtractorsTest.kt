@@ -820,6 +820,172 @@ class ConfigExtractorsTest {
     }
 
     @Nested
+    @Story("String-List Map Extraction")
+    @DisplayName("extractStringListMap")
+    inner class StringListMapExtraction {
+
+        @Test
+        @DisplayName("should extract valid Map<String, List<String>>")
+        @Description("Properly extracts and removes a Map<String, List<String>> from the source map")
+        fun shouldExtractValidMap() {
+            val map = mutableMapOf<String, Any?>(
+                "test" to mapOf("/users" to listOf("GET", "POST"), "/orders" to listOf("DELETE"))
+            )
+
+            val result = ConfigExtractors.extractStringListMap("test", map)
+
+            assertThat(result).containsEntry("/users", listOf("GET", "POST"))
+            assertThat(result).containsEntry("/orders", listOf("DELETE"))
+            assertThat(map).isEmpty()
+        }
+
+        @Test
+        @DisplayName("should convert single string to single-element list")
+        @Description("String shorthand is converted to single-element list")
+        fun shouldConvertStringToSingleElementList() {
+            val map = mutableMapOf<String, Any?>(
+                "test" to mapOf("/users" to "GET", "/orders" to listOf("POST", "PUT"))
+            )
+
+            val result = ConfigExtractors.extractStringListMap("test", map)
+
+            assertThat(result).containsEntry("/users", listOf("GET"))
+            assertThat(result).containsEntry("/orders", listOf("POST", "PUT"))
+        }
+
+        @Test
+        @DisplayName("should return null for absent key")
+        fun shouldReturnNullForAbsentKey() {
+            val map = mutableMapOf<String, Any?>()
+
+            val result = ConfigExtractors.extractStringListMap("missing", map)
+
+            assertThat(result).isNull()
+        }
+
+        @Test
+        @DisplayName("should return null for null value")
+        fun shouldReturnNullForNullValue() {
+            val map = mutableMapOf<String, Any?>("test" to null)
+
+            val result = ConfigExtractors.extractStringListMap("test", map)
+
+            assertThat(result).isNull()
+            assertThat(map).isEmpty()
+        }
+
+        @Test
+        @DisplayName("should throw for non-map type")
+        fun shouldThrowForNonMap() {
+            val map = mutableMapOf<String, Any?>("test" to "not a map")
+
+            assertThatThrownBy {
+                ConfigExtractors.extractStringListMap("test", map)
+            }
+                .isInstanceOf(ConfigurationException::class.java)
+                .hasMessage("Configuration error for 'test': expected Map<String, List<String>>, got kotlin.String")
+        }
+
+        @Test
+        @DisplayName("should throw for non-string key")
+        fun shouldThrowForNonStringKey() {
+            val map = mutableMapOf<String, Any?>("test" to mapOf(123 to listOf("GET")))
+
+            assertThatThrownBy {
+                ConfigExtractors.extractStringListMap("test", map)
+            }
+                .isInstanceOf(ConfigurationException::class.java)
+                .hasMessage("Configuration error for 'test.keys': expected String, got kotlin.Int")
+        }
+
+        @Test
+        @DisplayName("should throw for null key in map")
+        @Suppress("UNCHECKED_CAST")
+        fun shouldThrowForNullKeyInMap() {
+            val innerMap = HashMap<Any?, Any?>()
+            innerMap[null] = listOf("GET")
+            val map = mutableMapOf<String, Any?>("test" to innerMap)
+
+            assertThatThrownBy {
+                ConfigExtractors.extractStringListMap("test", map)
+            }
+                .isInstanceOf(ConfigurationException::class.java)
+                .hasMessage("Configuration error for 'test.keys': expected String, got null")
+        }
+
+        @Test
+        @DisplayName("should throw for invalid value type (not String or Collection)")
+        fun shouldThrowForInvalidValueType() {
+            val map = mutableMapOf<String, Any?>("test" to mapOf("/users" to 123))
+
+            assertThatThrownBy {
+                ConfigExtractors.extractStringListMap("test", map)
+            }
+                .isInstanceOf(ConfigurationException::class.java)
+                .hasMessage("Configuration error for 'test[/users]': expected List<String> or String, got kotlin.Int")
+        }
+
+        @Test
+        @DisplayName("should throw for null value in map")
+        fun shouldThrowForNullValueInMap() {
+            val mapWithNullValue = HashMap<String, Any?>()
+            mapWithNullValue["/users"] = null
+            val map = mutableMapOf<String, Any?>("test" to mapWithNullValue)
+
+            assertThatThrownBy {
+                ConfigExtractors.extractStringListMap("test", map)
+            }
+                .isInstanceOf(ConfigurationException::class.java)
+                .hasMessage("Configuration error for 'test[/users]': expected List<String> or String, got null")
+        }
+
+        @Test
+        @DisplayName("should throw for non-string element in list")
+        fun shouldThrowForNonStringElementInList() {
+            val map = mutableMapOf<String, Any?>("test" to mapOf("/users" to listOf("GET", 123)))
+
+            assertThatThrownBy {
+                ConfigExtractors.extractStringListMap("test", map)
+            }
+                .isInstanceOf(ConfigurationException::class.java)
+                .hasMessage("Configuration error for 'test[/users][1]': expected String, got kotlin.Int")
+        }
+
+        @Test
+        @DisplayName("should throw for null element in list")
+        fun shouldThrowForNullElementInList() {
+            val map = mutableMapOf<String, Any?>("test" to mapOf("/users" to listOf("GET", null)))
+
+            assertThatThrownBy {
+                ConfigExtractors.extractStringListMap("test", map)
+            }
+                .isInstanceOf(ConfigurationException::class.java)
+                .hasMessage("Configuration error for 'test[/users][1]': expected String, got null")
+        }
+
+        @Test
+        @DisplayName("should handle empty list value")
+        fun shouldHandleEmptyListValue() {
+            val map = mutableMapOf<String, Any?>("test" to mapOf("/users" to emptyList<String>()))
+
+            val result = ConfigExtractors.extractStringListMap("test", map)
+
+            assertThat(result).containsEntry("/users", emptyList())
+        }
+
+        @Test
+        @DisplayName("should handle empty map")
+        fun shouldHandleEmptyMap() {
+            val map = mutableMapOf<String, Any?>("test" to emptyMap<String, List<String>>())
+
+            val result = ConfigExtractors.extractStringListMap("test", map)
+
+            assertThat(result).isEmpty()
+            assertThat(map).isEmpty()
+        }
+    }
+
+    @Nested
     @Story("String Extraction")
     @DisplayName("extractString")
     inner class StringExtraction {

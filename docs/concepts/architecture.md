@@ -13,7 +13,8 @@ generation, pattern-based values) injected explicitly by CLI/Gradle to avoid ref
 
 ## What This Tool Tests
 
-OpenAPI Test Generator validates **infrastructure-level behavior** - the contract compliance layer between API consumers and your controllers. This is distinct from business logic testing.
+OpenAPI Test Generator validates **infrastructure-level behavior** - the contract compliance layer between API consumers and your controllers. This is distinct
+from business logic testing.
 
 ### Infrastructure validation (what we test)
 
@@ -28,19 +29,21 @@ OpenAPI Test Generator validates **infrastructure-level behavior** - the contrac
 - Side effects (e.g., "creating an order should send a confirmation email")
 - State transitions (e.g., "orders can only be cancelled before shipping")
 
-The generated tests verify that your API **rejects invalid requests** with appropriate error codes (400, 401, 403) - they don't verify what happens when valid requests are processed.
+The generated tests verify that your API **rejects invalid requests** with appropriate error codes (400, 401, 403) - they don't verify what happens when valid
+requests are processed.
 
 ## Related docs
+
 - Documentation index: [docs home](../index.md)
 - Getting started: [Getting started](../getting-started/index.md)
 - How-to guides: [How-to](../how-to/index.md)
 - Development: [development setup](../contributing/development-setup.md)
 - Core module: [core](../modules/core.md)
 - Reference:
-  - [Distribution settings](../reference/distribution-settings.md)
-  - [Rules catalog](../reference/catalogs/rules-catalog.md)
-  - [Providers catalog](../reference/catalogs/providers-catalog.md)
-  - [API reference](../reference/api.md)
+    - [Distribution settings](../reference/distribution-settings.md)
+    - [Rules catalog](../reference/catalogs/rules-catalog.md)
+    - [Providers catalog](../reference/catalogs/providers-catalog.md)
+    - [API reference](../reference/api.md)
 
 ## Module Dependency Graph
 
@@ -114,17 +117,18 @@ This layering enables standalone use of `pattern-value` for regex-based string g
 
 ### Module Responsibilities
 
-| Module                  | Responsibility                         | Key Types                                                                   |
-|-------------------------|----------------------------------------|-----------------------------------------------------------------------------|
-| **model**               | Data classes, error types              | `TestCase`, `TestSuite`, `Outcome`, `GenerationError`                       |
-| **example-value**       | Schema value generation SPI + builtins | `SchemaValueProvider`, `SchemaExampleValueGenerator`, `SchemaMerger`        |
-| **core**                | Parsing, generation, orchestration     | `TestGenerationEngine`, providers, rules, `TestSuiteWriter`                 |
-| **pattern-value**       | Regex-based value generation           | `PatternGenerationOptions`, `PatternValueGenerator`, `PatternValueProvider` |
-| **pattern-support**     | Pattern integration module             | `PatternSupportModule`, `PatternModuleSettingsExtractor`                    |
-| **generator-template**  | Mustache-based code generation         | `TemplateGeneratorModule`, `TemplateArtifactGenerator`                      |
-| **distribution-bundle** | Bundles modules, execution wiring      | `TestGenerationRunner`, `TestGenerationReporter`, `DistributionDefaults`    |
-| **plugin**              | Gradle build integration               | `OpenApiTestGeneratorPlugin`, `OpenApiTestGeneratorTask`                    |
-| **cli**                 | Command-line interface + native        | `GenerateCommand`, Picocli wiring                                           |
+| Module                  | Responsibility                                  | Key Types                                                                   |
+|-------------------------|-------------------------------------------------|-----------------------------------------------------------------------------|
+| **build-logic**         | Convention plugins for centralized build config | `testgen.kotlin-base`, `testgen.quality`, `testgen.library`                 |
+| **model**               | Data classes, error types                       | `TestCase`, `TestSuite`, `Outcome`, `GenerationError`                       |
+| **example-value**       | Schema value generation SPI + builtins          | `SchemaValueProvider`, `SchemaExampleValueGenerator`, `SchemaMerger`        |
+| **core**                | Parsing, generation, orchestration              | `TestGenerationEngine`, providers, rules, `TestSuiteWriter`                 |
+| **pattern-value**       | Regex-based value generation                    | `PatternGenerationOptions`, `PatternValueGenerator`, `PatternValueProvider` |
+| **pattern-support**     | Pattern integration module                      | `PatternSupportModule`, `PatternModuleSettingsExtractor`                    |
+| **generator-template**  | Mustache-based code generation                  | `TemplateGeneratorModule`, `TemplateArtifactGenerator`                      |
+| **distribution-bundle** | Bundles modules, execution wiring               | `TestGenerationRunner`, `TestGenerationReporter`, `DistributionDefaults`    |
+| **plugin**              | Gradle build integration                        | `OpenApiTestGeneratorPlugin`, `OpenApiTestGeneratorTask`                    |
+| **cli**                 | Command-line interface + native                 | `GenerateCommand`, Picocli wiring                                           |
 
 ## Data Flow
 
@@ -192,7 +196,23 @@ Constructs the baseline valid `TestCase` for each operation:
 - Resolves required parameters (path, query, header, cookie) and populates with example values.
 - Handles request body with the first supported media type (JSON preferred).
 - Applies security requirements via `SecurityValueProvider` using configured `validSecurityValues`.
+- Adds structured OAuth2/OpenID scope metadata to `securityValues.other.authorizationScopes` when present.
 - Uses `SchemaExampleValueGenerator` to derive values from schema examples, defaults, or basic types.
+
+#### Response Example Resolution
+
+Response examples are resolved using the following rules:
+
+- Response lookup: exact status code -> range match (e.g., `2XX`) -> `default`.
+- Media type priority: JSON-like (`application/json`, `application/*+json`) -> `application/xml` -> other types (alphabetical).
+- Example selection: explicit examples are selected by media type priority (`MediaType.example` -> `MediaType.examples`); if none exist, schema-derived fallback
+  is applied for JSON-like media types only.
+- Schema-derived fallback: required properties plus optional properties that explicitly define examples or defaults; `writeOnly` properties are excluded and
+  `maxExampleDepth` is respected.
+
+!!! note "externalValue examples are not supported"
+Examples using `externalValue` (pointing to external documents) are skipped because they require fetching external resources at generation time. If you rely on
+external examples, define an inline `example` or `examples` entry as a fallback that the generator can use.
 
 #### TestGenerationContext
 
@@ -206,6 +226,7 @@ public interface TestGenerationContext {
     val basicTestData: BasicTestDataProvider   // Basic test values
     val securityValueProvider: SecurityValueProvider
     val schemaExampleValueGenerator: SchemaExampleValueGenerator
+    val responseExampleExtractor: ResponseExampleExtractor
     val schemaMerger: SchemaMerger             // Handles allOf/anyOf/oneOf
     val maxDepth: Int                          // Schema traversal limit
     val combinationBudget: CombinationBudget?  // Schema explosion control
@@ -443,9 +464,9 @@ Providers are tried in configured order until one produces a value:
 - Key types and roles: Build scripts show `openApiTestGenerator { ... }` and custom `OpenApiTestGeneratorTask` usage.
 - Extension points: Not applicable.
 - Docs:
-  - [Java Spring file writer sample](../samples/java-spring-file-writer.md)
-  - [Java Spring RestAssured sample](../samples/java-spring-rest-assured.md)
-  - [Kotlin Spring RestAssured sample](../samples/kotlin-spring-rest-assured.md)
+    - [Java Spring file writer sample](../samples/java-spring-file-writer.md)
+    - [Java Spring RestAssured sample](../samples/java-spring-rest-assured.md)
+    - [Kotlin Spring RestAssured sample](../samples/kotlin-spring-rest-assured.md)
 
 ## Cross-Cutting Concerns
 
@@ -453,15 +474,16 @@ Providers are tried in configured order until one produces a value:
 
 Test case and rule filtering is controlled via `TestGenerationSettings`:
 
-- **ignoreTestCases**: Map of path patterns to operation/test case filters. Supports wildcard matching.
+- **ignoreTestCases**: Map of exact paths to operation/test case filters. Supports wildcard path (`*`) and wildcard method (`*`); test case names are exact
+  matches.
 - **ignoreSchemaValidationRules**: Set of rule names to skip (e.g., `"OutOfMinimumLengthString"`).
 - **ignoreAuthValidationRules**: Set of auth rule names to skip.
 
 `IgnoreConfigHandler` applies filters during generation:
 
-1. Path matching: Filters operations by path pattern.
-2. Method matching: Filters by HTTP method within matched paths.
-3. Test case matching: Filters individual test cases by name pattern.
+1. Path matching: Filters operations by exact path or wildcard path.
+2. Method matching: Filters by HTTP method within matched paths (case-insensitive; wildcard supported).
+3. Test case matching: Filters individual test cases by exact name.
 
 Filtering is applied deterministically after test case generation to ensure stable output.
 

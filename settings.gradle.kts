@@ -1,20 +1,8 @@
+apply(from = "./gradle/settings-base.gradle.kts")
+
 rootProject.name = "openapi.testgen.monorepo"
 
-pluginManagement {
-    repositories {
-        mavenLocal()
-        gradlePluginPortal()
-        mavenCentral()
-    }
-}
-
-dependencyResolutionManagement {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-    }
-}
-
+includeBuild("build-logic")
 includeBuild("model")
 includeBuild("example-value")
 includeBuild("core")
@@ -30,12 +18,3 @@ include(
     "samples:java-spring-file-writer",
     "samples:kotlin-spring-rest-assured",
 )
-
-buildCache {
-    local {
-        isEnabled = true
-        directory = File(rootDir, ".gradle/build-cache")
-    }
-}
-
-

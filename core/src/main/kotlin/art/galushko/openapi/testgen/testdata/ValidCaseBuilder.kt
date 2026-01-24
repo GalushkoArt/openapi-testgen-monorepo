@@ -3,6 +3,7 @@ package art.galushko.openapi.testgen.testdata
 import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGenerator
 import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGeneratorFactory
 import art.galushko.openapi.testgen.example.openapi.SchemaTypeHelpers
+import art.galushko.openapi.testgen.example.response.ResponseExampleExtractor
 import art.galushko.openapi.testgen.model.KeyValuePair
 import art.galushko.openapi.testgen.model.SecurityValues
 import art.galushko.openapi.testgen.model.TestCase
@@ -40,6 +41,7 @@ import org.slf4j.LoggerFactory
  * @param securityValueProvider provider for security values used in authentication/authorization
  * @param schemaExampleValueGenerator generator for example values from schemas
  */
+@Suppress("LongParameterList")
 public class ValidCaseBuilder(
     private val path: String,
     private val method: String,
@@ -47,8 +49,9 @@ public class ValidCaseBuilder(
     private val openAPI: OpenAPI,
     private val securityValueProvider: SecurityValueProvider = SecurityValueProvider(),
     private val schemaExampleValueGenerator: SchemaExampleValueGenerator = SchemaExampleValueGeneratorFactory().create(),
+    private val responseExampleExtractor: ResponseExampleExtractor =
+        ResponseExampleExtractor(schemaExampleValueGenerator),
 ) {
-
     private val log = LoggerFactory.getLogger(ValidCaseBuilder::class.java)
     private val reference: String = operation.operationId ?: "${method.lowercase()} $path:"
     private val queryParams: MutableMap<String, Any> = linkedMapOf()
@@ -65,7 +68,7 @@ public class ValidCaseBuilder(
      * Behavior:
      * - Only required parameters are populated (path/query/header/cookie).
      * - Request body uses the first supported media type with a schema.
-     * - Success status code is the first response code starting with "2".
+     * - Success status code is the first 2xx response, then `2XX`, then `default` if present.
      * - Security uses the first security requirement object if multiple are defined.
      *
      * @return [Outcome.Success] with a [TestCase] representing a successful request,
@@ -110,7 +113,7 @@ public class ValidCaseBuilder(
                 cookie = cookie.toList(),
                 securityValues = securityValues,
                 body = body,
-                expectedBody = null,
+                expectedBody = responseExampleExtractor.extractExpectedResponseExample(operation, openAPI, successStatusCode),
                 expectedStatusCode = successStatusCode
             )
 
@@ -189,6 +192,9 @@ public class ValidCaseBuilder(
             queryParams = securityQueryParams.toMap(),
             headers = securityHeaders.toList(),
             cookie = securityCookies.toList(),
+            other = SecurityHelpers.buildAuthorizationScopes(securityRequirement)?.let {
+                mapOf(SecurityHelpers.AUTHORIZATION_SCOPES_KEY to it)
+            } ?: emptyMap(),
         )
     }
 
@@ -202,11 +208,11 @@ public class ValidCaseBuilder(
     }
 
     private fun getSuccessStatusCode(): Int {
-        val responses = operation.responses
-            ?: throw IllegalStateException("Operation responses are null")
-        val code = responses.keys.firstOrNull { it.startsWith("2") }
-            ?: throw IllegalStateException("$reference Success code for operation is not found")
-        return code.toInt()
+        return try {
+            SchemaTypeHelpers.findSuccessStatusCode(operation)
+        } catch (e: IllegalStateException) {
+            throw IllegalStateException("$reference ${e.message}", e)
+        }
     }
 }
 

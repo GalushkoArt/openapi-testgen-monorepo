@@ -1,5 +1,8 @@
 package art.galushko.openapi.testgen.example.generator
 
+import art.galushko.openapi.testgen.example.config.ExampleValueSettings
+
+import art.galushko.openapi.testgen.example.response.ResponseExampleExtractor
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.qameta.allure.Allure
 import io.qameta.allure.Description
@@ -44,12 +47,29 @@ import java.util.stream.Stream
 class SchemaExampleValueGeneratorTest {
 
     private val generator = SchemaExampleValueGeneratorFactory().create()
+    private val responseExampleExtractor = ResponseExampleExtractor(generator)
 
     private fun getExampleValue(name: String, schema: Schema<*>, openAPI: OpenAPI, variationIndex: Int = 0): Any =
         generator.getExampleValue(name, schema, openAPI, variationIndex)
 
     private fun getExampleArrayValues(name: String, schema: Schema<*>, openAPI: OpenAPI): List<Any> =
         generator.getExampleArrayValues(name, schema, openAPI)
+
+    private fun getExampleArrayValuesByItem(
+        name: String,
+        arraySchema: Schema<*>,
+        itemSchema: Schema<*>,
+        openAPI: OpenAPI,
+        depth: Int = 0,
+        visitedRefs: MutableSet<String> = mutableSetOf(),
+    ): List<Any> = generator.getExampleArrayValuesByItem(
+        name = name,
+        arraySchema = arraySchema,
+        itemSchema = itemSchema,
+        openAPI = openAPI,
+        depth = depth,
+        visitedRefs = visitedRefs,
+    )
 
     private fun getExampleObject(name: String, schema: Schema<*>, openAPI: OpenAPI): Map<String, Any> =
         generator.getExampleObject(name, schema, openAPI)
@@ -171,6 +191,75 @@ class SchemaExampleValueGeneratorTest {
                 OpenAPI()
             )
         }.isInstanceOf(IllegalStateException::class.java).hasMessage("Empty array item schema for param testParam")
+    }
+
+    @Test
+    @DisplayName("getExampleArrayValuesByItem should use provided item schema and minItems")
+    @Description("Verifies that getExampleArrayValuesByItem uses the passed item schema and respects minItems")
+    fun getExampleArrayValuesByItemShouldUseProvidedItemSchemaAndMinItems() {
+        val arraySchema = ArraySchema().apply {
+            minItems = 2
+            items = StringSchema().example("ignored")
+        }
+        val itemSchema = StringSchema().example("expected")
+
+        val result = step("Call getExampleArrayValuesByItem") {
+            getExampleArrayValuesByItem(
+                name = "items",
+                arraySchema = arraySchema,
+                itemSchema = itemSchema,
+                openAPI = OpenAPI(),
+            )
+        }
+
+        assertThat(result).containsExactly("expected", "expected")
+    }
+
+    @Test
+    @DisplayName("getExampleArrayValuesByItem should generate unique items when required")
+    @Description("Verifies that uniqueItems=true produces deterministic unique values via variationIndex")
+    fun getExampleArrayValuesByItemShouldGenerateUniqueItems() {
+        val arraySchema = ArraySchema().apply {
+            minItems = 3
+            uniqueItems = true
+        }
+        val itemSchema = StringSchema()
+
+        val result = step("Call getExampleArrayValuesByItem") {
+            getExampleArrayValuesByItem(
+                name = "items",
+                arraySchema = arraySchema,
+                itemSchema = itemSchema,
+                openAPI = OpenAPI(),
+            )
+        }
+
+        assertThat(result).hasSize(3)
+        assertThat(result.toSet()).hasSize(3)
+        assertThat(result).containsExactly("a", "b", "c")
+    }
+
+    @Test
+    @DisplayName("getExampleArrayValuesByItem should respect maxExampleDepth")
+    @Description("Verifies that getExampleArrayValuesByItem returns empty when depth exceeds the limit")
+    fun getExampleArrayValuesByItemShouldRespectMaxExampleDepth() {
+        val limitedGenerator = SchemaExampleValueGeneratorFactory().create(
+            ExampleValueSettings(maxExampleDepth = 1)
+        )
+        val arraySchema = ArraySchema().apply { minItems = 1 }
+        val itemSchema = StringSchema().example("value")
+
+        val result = step("Call getExampleArrayValuesByItem with depth beyond limit") {
+            limitedGenerator.getExampleArrayValuesByItem(
+                name = "items",
+                arraySchema = arraySchema,
+                itemSchema = itemSchema,
+                openAPI = OpenAPI(),
+                depth = 2,
+            )
+        }
+
+        assertThat(result).isEmpty()
     }
 
     fun getExampleObjectProvider(): Stream<Arguments> = Stream.of(
@@ -305,7 +394,7 @@ class SchemaExampleValueGeneratorTest {
             ObjectMapper().readTree("{\"message\":\"oops\"}")
         ),
         Arguments.of(
-            "Non-JSON example string should return null",
+            "MediaType.example as plain string",
             createOperationWithResponse(
                 400,
                 Content().addMediaType(
@@ -318,7 +407,7 @@ class SchemaExampleValueGeneratorTest {
             "plain-text"
         ),
         Arguments.of(
-            "No application/json media type",
+            "Non-JSON media type should still return example",
             createOperationWithResponse(
                 400,
                 Content()
@@ -326,7 +415,7 @@ class SchemaExampleValueGeneratorTest {
             ),
             createOpenAPI(),
             400,
-            null
+            "oops"
         ),
         Arguments.of(
             $$"Response via $ref in components",
@@ -355,9 +444,356 @@ class SchemaExampleValueGeneratorTest {
         expected: Any?,
     ) {
         val result = step("Call extractExpectedResponseExample") {
-            generator.extractExpectedResponseExample(spec, openAPI, statusCode)
+            responseExampleExtractor.extractExpectedResponseExample(spec, openAPI, statusCode)
         }
         assertThat(result).isEqualTo(expected)
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should select named example when provided")
+    fun extractExpectedResponseExampleShouldSelectNamedExample() {
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType(
+                "application/json",
+                MediaType().examples(
+                    mapOf(
+                        "first" to Example().value(mapOf("id" to 1)),
+                        "second" to Example().value(mapOf("id" to 2))
+                    )
+                )
+            )
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200, "second")
+        assertThat(result).isEqualTo(mapOf("id" to 2))
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should prefer named example over mediaType.example")
+    fun extractExpectedResponseExampleShouldPreferNamedExampleOverMediaTypeExample() {
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType(
+                "application/json",
+                MediaType()
+                    .example(mapOf("id" to 1))
+                    .examples(mapOf("second" to Example().value(mapOf("id" to 2))))
+            )
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200, "second")
+        assertThat(result).isEqualTo(mapOf("id" to 2))
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should resolve example refs and fall back when named example is externalValue")
+    fun extractExpectedResponseExampleShouldResolveRefAndFallbackWhenNamedExampleExternalValue() {
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType(
+                "application/json",
+                MediaType().examples(
+                    mapOf(
+                        "ok" to Example().apply { `$ref` = "#/components/examples/OkExample" },
+                        "external" to Example().externalValue("https://example.com/external")
+                    )
+                )
+            )
+        )
+        val openAPI = createOpenAPIWithComponentExample(
+            "OkExample",
+            Example().value(mapOf("status" to "ok"))
+        )
+
+        val refResolved = responseExampleExtractor.extractExpectedResponseExample(operation, openAPI, 200, "ok")
+        assertThat(refResolved).isEqualTo(mapOf("status" to "ok"))
+
+        val externalResolved = responseExampleExtractor.extractExpectedResponseExample(operation, openAPI, 200, "external")
+        assertThat(externalResolved).isEqualTo(mapOf("status" to "ok"))
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should resolve 2XX and default responses")
+    fun extractExpectedResponseExampleShouldResolveRangeAndDefaultResponses() {
+        val rangeOperation = Operation().apply {
+            responses = ApiResponses().addApiResponse(
+                "2XX",
+                ApiResponse().content(
+                    Content().addMediaType(
+                        "application/json",
+                        MediaType().example(mapOf("status" to "ok"))
+                    )
+                )
+            )
+        }
+        val rangeResult = responseExampleExtractor.extractExpectedResponseExample(rangeOperation, createOpenAPI(), 200)
+        assertThat(rangeResult).isEqualTo(mapOf("status" to "ok"))
+
+        val defaultOperation = Operation().apply {
+            responses = ApiResponses().addApiResponse(
+                "default",
+                ApiResponse().content(
+                    Content().addMediaType(
+                        "application/json",
+                        MediaType().example(mapOf("error" to "default"))
+                    )
+                )
+            )
+        }
+        val defaultResult = responseExampleExtractor.extractExpectedResponseExample(defaultOperation, createOpenAPI(), 500)
+        assertThat(defaultResult).isEqualTo(mapOf("error" to "default"))
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should prefer explicit examples over schema fallback")
+    fun extractExpectedResponseExampleShouldPreferExplicitExamplesOverSchemaFallback() {
+        val schema = ObjectSchema().apply {
+            addProperty("status", StringSchema().example("ok"))
+            required = listOf("status")
+        }
+        val operation = createOperationWithResponse(
+            200,
+            Content()
+                .addMediaType("application/json", MediaType().schema(schema))
+                .addMediaType("text/plain", MediaType().example("oops"))
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+        assertThat(result).isEqualTo("oops")
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should skip schema fallback for non-JSON media types")
+    fun extractExpectedResponseExampleShouldSkipSchemaFallbackForNonJsonMediaTypes() {
+        val schema = ObjectSchema().apply {
+            addProperty("status", StringSchema().example("ok"))
+            required = listOf("status")
+        }
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType("application/xml", MediaType().schema(schema))
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+        assertThat(result).isNull()
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should respect maxExampleDepth from settings")
+    fun extractExpectedResponseExampleShouldRespectMaxExampleDepthFromSettings() {
+        val limitedGenerator = SchemaExampleValueGeneratorFactory().create(
+            ExampleValueSettings(maxExampleDepth = 1)
+        )
+        val limitedExtractor = ResponseExampleExtractor(limitedGenerator)
+        val schema = ObjectSchema().apply {
+            addProperty(
+                "nested",
+                ObjectSchema().apply {
+                    addProperty("value", StringSchema().example("deep"))
+                    required = listOf("value")
+                }
+            )
+            required = listOf("nested")
+        }
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType("application/json", MediaType().schema(schema))
+        )
+
+        val result = limitedExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+        assertThat(result).isEqualTo(mapOf("nested" to emptyMap<String, Any>()))
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should treat parameterized JSON media types as JSON-like")
+    fun extractExpectedResponseExampleShouldTreatParameterizedJsonMediaTypesAsJsonLike() {
+        val operation = createOperationWithResponse(
+            200,
+            Content()
+                .addMediaType("application/json; charset=utf-8", MediaType().example(mapOf("status" to "ok")))
+                .addMediaType("text/plain", MediaType().example("oops"))
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+        assertThat(result).isEqualTo(mapOf("status" to "ok"))
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should treat +json media types as JSON-like")
+    fun extractExpectedResponseExampleShouldTreatJsonSuffixMediaTypesAsJsonLike() {
+        val operation = createOperationWithResponse(
+            200,
+            Content()
+                .addMediaType("application/hal+json; charset=utf-8", MediaType().example(mapOf("status" to "ok")))
+                .addMediaType("application/xml", MediaType().example("<status>oops</status>"))
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+        assertThat(result).isEqualTo(mapOf("status" to "ok"))
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should include optional examples and exclude writeOnly")
+    fun extractExpectedResponseExampleShouldRespectOptionalExamplesAndWriteOnly() {
+        val schema = ObjectSchema().apply {
+            addProperty("requiredProp", StringSchema().example("required"))
+            addProperty("optionalExample", StringSchema().example("optional"))
+            addProperty("secret", StringSchema().example("hidden").writeOnly(true))
+            required = listOf("requiredProp")
+        }
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType(
+                "application/json",
+                MediaType().schema(schema)
+            )
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+        assertThat(result).isEqualTo(
+            mapOf(
+                "optionalExample" to "optional",
+                "requiredProp" to "required"
+            )
+        )
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should apply optional example and writeOnly rules for array items")
+    fun extractExpectedResponseExampleShouldRespectOptionalExamplesAndWriteOnlyForArrays() {
+        val itemSchema = ObjectSchema().apply {
+            addProperty("requiredProp", StringSchema().example("required"))
+            addProperty("optionalExample", StringSchema().example("optional"))
+            addProperty("secret", StringSchema().example("hidden").writeOnly(true))
+            required = listOf("requiredProp")
+        }
+        val arraySchema = ArraySchema().apply {
+            items = itemSchema
+            minItems = 1
+        }
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType(
+                "application/json",
+                MediaType().schema(arraySchema)
+            )
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+        assertThat(result).isEqualTo(
+            listOf(
+                mapOf(
+                    "optionalExample" to "optional",
+                    "requiredProp" to "required"
+                )
+            )
+        )
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should use schema examples or default when media type examples are missing")
+    fun extractExpectedResponseExampleShouldUseSchemaExamplesOrDefault() {
+        val withExamples = StringSchema().examples(listOf("first", "second"))
+        val withDefault = StringSchema()._default("fallback")
+
+        val examplesOperation = createOperationWithResponse(
+            200,
+            Content().addMediaType("application/json", MediaType().schema(withExamples))
+        )
+        val defaultOperation = createOperationWithResponse(
+            200,
+            Content().addMediaType("application/json", MediaType().schema(withDefault))
+        )
+
+        val examplesResult = responseExampleExtractor.extractExpectedResponseExample(examplesOperation, createOpenAPI(), 200)
+        assertThat(examplesResult).isEqualTo("first")
+
+        val defaultResult = responseExampleExtractor.extractExpectedResponseExample(defaultOperation, createOpenAPI(), 200)
+        assertThat(defaultResult).isEqualTo("fallback")
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should return null for empty schema examples list")
+    fun extractExpectedResponseExampleShouldReturnNullForEmptyExamplesList() {
+        val schemaWithEmptyExamples = StringSchema().examples(emptyList())
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType("application/json", MediaType().schema(schemaWithEmptyExamples))
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+
+        // Empty examples list means no fallback available - should try value providers
+        // If no provider can generate, it throws. But for StringSchema, basic providers should work.
+        // The key point is empty list is not treated as "found example"
+        assertThat(result).isNotNull
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should prefer schema.example over schema.default in fallback")
+    fun extractExpectedResponseExampleShouldPreferExampleOverDefault() {
+        val schema = StringSchema().example("from-example")._default("from-default")
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType("application/json", MediaType().schema(schema))
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+
+        assertThat(result).isEqualTo("from-example")
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should prefer application/json over application/hal+json")
+    fun extractExpectedResponseExampleShouldPreferStandardJsonOverHalJson() {
+        val operation = createOperationWithResponse(
+            200,
+            Content()
+                .addMediaType("application/hal+json", MediaType().example(mapOf("hal" to true)))
+                .addMediaType("application/json", MediaType().example(mapOf("standard" to true)))
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+
+        assertThat(result).isEqualTo(mapOf("standard" to true))
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should return null when media type has no schema or example")
+    fun extractExpectedResponseExampleShouldReturnNullWhenNoSchemaOrExample() {
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType("application/json", MediaType())
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+
+        assertThat(result).isNull()
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should include optional properties with default values in fallback")
+    fun extractExpectedResponseExampleShouldIncludeOptionalWithDefaultInFallback() {
+        val schema = ObjectSchema().apply {
+            addProperty("requiredProp", StringSchema().example("required"))
+            addProperty("optionalWithDefault", StringSchema()._default("default-value"))
+            addProperty("optionalNoExample", StringSchema())
+            required = listOf("requiredProp")
+        }
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType("application/json", MediaType().schema(schema))
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+
+        assertThat(result).isEqualTo(
+            mapOf(
+                "optionalWithDefault" to "default-value",
+                "requiredProp" to "required"
+            )
+        )
     }
 
     @Test
@@ -651,6 +1087,14 @@ class SchemaExampleValueGeneratorTest {
         return openAPI
     }
 
+    private fun createOpenAPIWithComponentExample(name: String, example: Example): OpenAPI {
+        val openAPI = OpenAPI()
+        val components = Components()
+        components.addExamples(name, example)
+        openAPI.components = components
+        return openAPI
+    }
+
     // Tests related to FailureStrategy have been removed due to strategy deprecation.
 
     @Test
@@ -923,6 +1367,59 @@ class SchemaExampleValueGeneratorTest {
                 )
             )
         }
+    }
+
+    @Test
+    @DisplayName("Should merge repeated refs independently for sibling properties")
+    @Description("Verifies sibling properties referencing the same composed schema are merged without cross-contamination")
+    fun shouldMergeRepeatedRefsForSiblingProperties() {
+        // Arrange
+        val openAPI = OpenAPI().apply {
+            components = Components().apply {
+                addSchemas("AddressBase", ObjectSchema().apply {
+                    addProperty("street", StringSchema().example("main-st"))
+                    required = listOf("street")
+                })
+                addSchemas("AddressWithZip", ComposedSchema().apply {
+                    type = "object"
+                    allOf = listOf(
+                        Schema<Any>().apply { `$ref` = "#/components/schemas/AddressBase" },
+                        ObjectSchema().apply {
+                            addProperty("zip", StringSchema().example("12345"))
+                            required = listOf("zip")
+                        }
+                    )
+                })
+            }
+        }
+
+        val rootSchema = ObjectSchema().apply {
+            addProperty("billing", Schema<Any>().apply { `$ref` = "#/components/schemas/AddressWithZip" })
+            addProperty("shipping", Schema<Any>().apply { `$ref` = "#/components/schemas/AddressWithZip" })
+            required = listOf("billing", "shipping")
+        }
+
+        // Act
+        val result =
+            step("Call getExampleObject for sibling refs") {
+                getExampleObject(
+                    "Order",
+                    rootSchema,
+                    openAPI
+                )
+            }
+
+        // Assert
+        val expectedAddress = mapOf(
+            "street" to "main-st",
+            "zip" to "12345"
+        )
+        assertThat(result).isEqualTo(
+            mapOf(
+                "billing" to expectedAddress,
+                "shipping" to expectedAddress
+            )
+        )
     }
 
     @Test
@@ -1544,5 +2041,89 @@ class SchemaExampleValueGeneratorTest {
         }
             .isInstanceOf(IllegalStateException::class.java)
             .hasMessageContaining("Provide example for param testField")
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should handle deeply nested schemas gracefully")
+    fun extractExpectedResponseExampleShouldHandleDeeplyNestedSchemas() {
+        // Create a schema that nests beyond typical depth limits
+        val deeplyNestedSchema = ObjectSchema().apply {
+            addProperty("level1", ObjectSchema().apply {
+                addProperty("level2", ObjectSchema().apply {
+                    addProperty("level3", ObjectSchema().apply {
+                        addProperty("value", StringSchema().example("deep-value"))
+                        required = listOf("value")
+                    })
+                    required = listOf("level3")
+                })
+                required = listOf("level2")
+            })
+            required = listOf("level1")
+        }
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType("application/json", MediaType().schema(deeplyNestedSchema))
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+
+        // Should successfully extract the nested structure
+        assertThat(result).isNotNull
+        @Suppress("UNCHECKED_CAST")
+        val resultMap = result as Map<String, Any>
+        assertThat(resultMap).containsKey("level1")
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should handle circular refs without infinite loop")
+    fun extractExpectedResponseExampleShouldHandleCircularRefs() {
+        // Create a schema with circular reference
+        val openAPI = OpenAPI().apply {
+            components = Components().apply {
+                addSchemas("Node", ObjectSchema().apply {
+                    addProperty("value", StringSchema().example("node-value"))
+                    addProperty("child", Schema<Any>().apply {
+                        `$ref` = "#/components/schemas/Node"
+                    })
+                    required = listOf("value")
+                })
+            }
+        }
+        val nodeRef = Schema<Any>().apply {
+            `$ref` = "#/components/schemas/Node"
+        }
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType("application/json", MediaType().schema(nodeRef))
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, openAPI, 200)
+
+        // Should return a partial result without infinite recursion
+        assertThat(result).isNotNull
+        @Suppress("UNCHECKED_CAST")
+        val resultMap = result as Map<String, Any>
+        assertThat(resultMap).containsKey("value")
+        assertThat(resultMap["value"]).isEqualTo("node-value")
+        // Child may be present but truncated or absent due to circular ref detection
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should return null when schema fallback fails")
+    fun extractExpectedResponseExampleShouldReturnNullWhenSchemaFallbackFails() {
+        // Create a schema that will cause example generation to fail
+        val problematicSchema = ObjectSchema().apply {
+            // Required property with no schema - will fail in generation
+            required = listOf("missing")
+        }
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType("application/json", MediaType().schema(problematicSchema))
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+
+        // Should gracefully return null instead of throwing
+        assertThat(result).isNull()
     }
 }

@@ -8,7 +8,7 @@ The plugin is published to the [Gradle Plugin Portal](https://plugins.gradle.org
 
 ```kotlin
 plugins {
-    id("art.galushko.openapi-test-generator") version "0.8.0"
+    id("art.galushko.openapi-test-generator") version "0.9.0"
 }
 ```
 

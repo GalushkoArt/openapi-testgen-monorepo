@@ -2,6 +2,7 @@ package art.galushko.openapi.testgen.generation.orchestration
 
 import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGeneratorFactory
 import art.galushko.openapi.testgen.example.openapi.SchemaMerger
+import art.galushko.openapi.testgen.example.response.ResponseExampleExtractor
 import art.galushko.openapi.testgen.generation.DefaultTestGenerationContext
 import art.galushko.openapi.testgen.generation.TestGenerationContext
 import art.galushko.openapi.testgen.model.TestCase
@@ -31,6 +32,7 @@ class ProviderOrchestratorTest {
         basicTestData = BasicTestDataProvider(),
         securityValueProvider = SecurityValueProvider(emptyMap()),
         schemaExampleValueGenerator = SchemaExampleValueGeneratorFactory().create(),
+        responseExampleExtractor = ResponseExampleExtractor(SchemaExampleValueGeneratorFactory().create()),
         schemaMerger = SchemaMerger(),
         maxDepth = 10,
         combinationBudget = null,

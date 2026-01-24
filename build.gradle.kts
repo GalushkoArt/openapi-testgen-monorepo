@@ -4,6 +4,7 @@ import java.time.LocalDate.now
 
 plugins {
     alias(libs.plugins.dokka)
+    alias(libs.plugins.dependency.versions)
 }
 
 // Force consistent Jackson version across all buildscript dependencies

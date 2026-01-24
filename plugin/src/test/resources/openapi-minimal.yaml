@@ -1,0 +1,43 @@
+openapi: 3.1.0
+info:
+    title: Minimal Test API
+    version: 1.0.0
+    description: Minimal spec for integration testing
+servers:
+    - url: https://api.test/v1
+
+paths:
+    /users:
+        get:
+            summary: List users
+            operationId: listUsers
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                      type: integer
+                      minimum: 1
+            responses:
+                '200':
+                    description: Users list
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/User'
+                '400':
+                    description: Bad request
+
+components:
+    schemas:
+        User:
+            type: object
+            required: [id, name]
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                    minLength: 1
+                    maxLength: 100

@@ -1,6 +1,7 @@
 package art.galushko.openapi.testgen.config
 
 import art.galushko.openapi.testgen.filtering.IgnoreConfigHandler
+import art.galushko.openapi.testgen.filtering.IncludeOperationsHandler
 import art.galushko.openapi.testgen.generation.TestGenerationProcessor
 import art.galushko.openapi.testgen.generation.TestGeneratorConfigurer.createTestGenerationProcessor
 import art.galushko.openapi.testgen.generation.TestGeneratorConfigurer.createTestSuiteGenerator
@@ -81,9 +82,10 @@ public object TestGenerationEngine {
             schemaMerger = schemaMerger,
             ruleRegistry = ruleRegistry,
         )
+        val includeOperationsHandler = IncludeOperationsHandler(options.testGenerationSettings.includeOperations)
         val ignoreConfigHandler = IgnoreConfigHandler(options.testGenerationSettings.ignoreTestCases)
 
-        return createTestGenerationProcessor(testSuiteGenerator, ignoreConfigHandler)
+        return createTestGenerationProcessor(testSuiteGenerator, includeOperationsHandler, ignoreConfigHandler)
     }
 
     /**

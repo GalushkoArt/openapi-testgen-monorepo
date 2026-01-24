@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.BeforeAll
+import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,6 +26,21 @@ class ListUsersTest {
         }
     }
 
+    private fun assertExpectedBody(expectedBodyJson: String, responseBody: String) {
+        val expectedNode = objectMapper.readTree(expectedBodyJson)
+        val actualNode = try {
+            objectMapper.readTree(responseBody)
+        } catch (e: JsonProcessingException) {
+            null
+        }
+
+        when {
+            actualNode != null -> Assertions.assertEquals(expectedNode, actualNode)
+            expectedNode.isValueNode -> Assertions.assertEquals(expectedNode.asText(), responseBody)
+            else -> Assertions.fail("Response body is not valid JSON")
+        }
+    }
+
     @Test
     @DisplayName("No security values provided")
     fun noSecurityValuesProvided() {
@@ -34,9 +50,7 @@ class ListUsersTest {
         response.then().statusCode(401)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"unauthorized\",\"message\":\"API key required\"}"
-        val expected = objectMapper.readValue(expectedBodyJson, java.util.Map::class.java)
-        val actual = objectMapper.readValue(responseBody, java.util.Map::class.java)
-        Assertions.assertEquals(expected, actual)
+        assertExpectedBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -49,9 +63,7 @@ class ListUsersTest {
         response.then().statusCode(401)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"unauthorized\",\"message\":\"API key required\"}"
-        val expected = objectMapper.readValue(expectedBodyJson, java.util.Map::class.java)
-        val actual = objectMapper.readValue(responseBody, java.util.Map::class.java)
-        Assertions.assertEquals(expected, actual)
+        assertExpectedBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -65,9 +77,7 @@ class ListUsersTest {
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        val expected = objectMapper.readValue(expectedBodyJson, java.util.Map::class.java)
-        val actual = objectMapper.readValue(responseBody, java.util.Map::class.java)
-        Assertions.assertEquals(expected, actual)
+        assertExpectedBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -81,9 +91,7 @@ class ListUsersTest {
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        val expected = objectMapper.readValue(expectedBodyJson, java.util.Map::class.java)
-        val actual = objectMapper.readValue(responseBody, java.util.Map::class.java)
-        Assertions.assertEquals(expected, actual)
+        assertExpectedBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -97,9 +105,7 @@ class ListUsersTest {
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        val expected = objectMapper.readValue(expectedBodyJson, java.util.Map::class.java)
-        val actual = objectMapper.readValue(responseBody, java.util.Map::class.java)
-        Assertions.assertEquals(expected, actual)
+        assertExpectedBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -113,9 +119,7 @@ class ListUsersTest {
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        val expected = objectMapper.readValue(expectedBodyJson, java.util.Map::class.java)
-        val actual = objectMapper.readValue(responseBody, java.util.Map::class.java)
-        Assertions.assertEquals(expected, actual)
+        assertExpectedBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -129,9 +133,7 @@ class ListUsersTest {
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        val expected = objectMapper.readValue(expectedBodyJson, java.util.Map::class.java)
-        val actual = objectMapper.readValue(responseBody, java.util.Map::class.java)
-        Assertions.assertEquals(expected, actual)
+        assertExpectedBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -145,9 +147,7 @@ class ListUsersTest {
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        val expected = objectMapper.readValue(expectedBodyJson, java.util.Map::class.java)
-        val actual = objectMapper.readValue(responseBody, java.util.Map::class.java)
-        Assertions.assertEquals(expected, actual)
+        assertExpectedBody(expectedBodyJson, responseBody)
     }
 
 }

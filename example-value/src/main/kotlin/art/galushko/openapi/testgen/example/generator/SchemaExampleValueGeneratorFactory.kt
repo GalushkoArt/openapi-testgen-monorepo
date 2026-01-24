@@ -36,6 +36,9 @@ public class SchemaExampleValueGeneratorFactory(
     public fun create(settings: ExampleValueSettings = ExampleValueSettings()): SchemaExampleValueGenerator {
         val options = SchemaExampleValueGeneratorOptions(
             maxExampleDepth = settings.maxExampleDepth,
+            includeOptionalExampleProperties = settings.includeOptionalExampleProperties,
+            includeWriteOnly = settings.includeWriteOnly,
+            useSchemaExampleFallback = settings.useSchemaExampleFallback,
         )
         val providers = buildProviders(settings)
         return SchemaExampleValueGenerator(

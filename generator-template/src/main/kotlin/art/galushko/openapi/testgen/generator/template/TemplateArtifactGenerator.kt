@@ -185,12 +185,12 @@ internal class TemplateArtifactGenerator(
 
 @Suppress("ComplexCondition")
 private fun camelCaseName(input: String?, capitalizeFirst: Boolean): String {
-    if (input == null || input.isEmpty()) return "test"
+    if (input.isNullOrEmpty()) return "test"
     val result = StringBuilder()
     var capitalizeNext = capitalizeFirst
 
     for (c in input.toCharArray()) {
-        if (c == '_' || c == '-' || c == ' ' || c == ':') {
+        if (!c.isLetterOrDigit()) {
             capitalizeNext = true
         } else if (capitalizeNext) {
             result.append(c.uppercaseChar())

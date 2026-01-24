@@ -43,7 +43,7 @@ internal class DateTimeSchemaValidationRule(
     override fun apply(schema: Schema<*>, context: TestGenerationContext): Sequence<RuleValue> {
         val s = tryGetSchemaFromRef(schema, context.openAPI)
         return if (isApplicable(s)) {
-            sequenceOf(RuleValue(ruleName, valueProvider(context.basicTestData)))
+            listOf(RuleValue(ruleName, valueProvider(context.basicTestData))).asSequence()
         } else {
             emptySequence()
         }

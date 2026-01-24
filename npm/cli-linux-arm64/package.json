@@ -1,0 +1,30 @@
+{
+  "name": "@openapi-testgen/cli-linux-arm64",
+  "version": "0.0.0",
+  "description": "Native Linux arm64 binary for @openapi-testgen/cli",
+  "license": "MIT",
+  "author": "Artem Galushko",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "libc": [
+    "glibc"
+  ],
+  "bin": {
+    "openapi-testgen": "./bin/openapi-testgen"
+  },
+  "files": [
+    "bin/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GalushkoArt/openapi-testgen-monorepo.git",
+    "directory": "npm/cli-linux-arm64"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

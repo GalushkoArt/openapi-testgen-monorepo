@@ -14,6 +14,8 @@ The rule system is described in [architecture](../../concepts/architecture.md) a
 For core entry points and extension context, see the [core module](../../modules/core.md).
 For rule interfaces and extension points, see the [Validation rules SPI](../spi/validation-rules.md).
 For user-facing configuration (ignore rules), see [ignore rules](../../how-to/configuration/ignore-rules.md).
+To target a subset of operations before generation, use [include operations](../../how-to/configuration/yaml-config.md#include-operations).
+For scenario-specific guides, see [negative testing](../../how-to/negative-testing/index.md).
 
 ## RuleValue contract
 `RuleValue` carries a description stack and a value. `buildDescription()` concatenates the
@@ -48,7 +50,8 @@ Rules interact with settings through the `TestGenerationContext`:
 
 Array constraints:
 - `art.galushko.openapi.testgen.rules.schema.BelowMinItemsArraySchemaValidationRule` - arrays with
-  fewer items than `minItems`.
+  fewer items than `minItems`. See [Request Body Schema Tests](../../how-to/negative-testing/request-body-schema.md)
+  for an example with `minItems: 1`.
 - `art.galushko.openapi.testgen.rules.schema.AboveMaxItemsArraySchemaValidationRule` - arrays with
   more items than `maxItems`.
 - `art.galushko.openapi.testgen.rules.schema.NonUniqueItemsArraySchemaValidationRule` - duplicate
@@ -82,11 +85,13 @@ String constraints:
 - `art.galushko.openapi.testgen.rules.schema.WrongEmailFormatSchemaValidationRule` - invalid email
   for `format = email`.
 - `art.galushko.openapi.testgen.rules.schema.WrongUuidFormatSchemaValidationRule` - invalid UUID for
-  `format = uuid`.
+  `format = uuid`. See [Path Parameter Validation Tests](../../how-to/negative-testing/path-parameters.md)
+  for an example.
 
 Object constraints:
 - `art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule` -
-  objects with one required property omitted.
+  objects with one required property omitted. See [Request Body Schema Tests](../../how-to/negative-testing/request-body-schema.md)
+  for request body examples.
 
 Date format constraints (parameterized, all share a class):
 - `art.galushko.openapi.testgen.rules.schema.DateSchemaValidationRule`
@@ -105,6 +110,9 @@ Composed schema rules:
 - `art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule` - applies all schema
   rules to object properties and wraps the result in an object value.
 
+See [Request Body Schema Tests](../../how-to/negative-testing/request-body-schema.md) for examples
+of nested object and array validation in request bodies.
+
 ## Pattern module rules
 
 The `pattern-support` module contributes additional rules when enabled (enabled by default in
@@ -113,6 +121,8 @@ The `pattern-support` module contributes additional rules when enabled (enabled 
 - `art.galushko.openapi.testgen.pattern.support.InvalidPatternSchemaValidationRule` - generates a
   string that does NOT match the schema `pattern` regex. Applies to string schemas with a `pattern`
   constraint. Rule name: "Invalid Pattern".
+  - **Example:** Path parameter with `pattern: '^[a-z0-9_]+$'` generates a test case with value `"AE."`.
+  - **See also:** [Path Parameter Validation Tests](../../how-to/negative-testing/path-parameters.md)
 
 !!! note "Library limitations"
     The regexp-gen library has some limitations:
@@ -127,17 +137,55 @@ The `pattern-support` module contributes additional rules when enabled (enabled 
 See [pattern-support module](../../modules/pattern-support.md) for configuration options.
 
 ## Built-in auth rules
-Auth rules return full `TestCase` objects and set expected status codes directly:
-- `art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule` - removes all
-  security values, expects 401.
-- `art.galushko.openapi.testgen.rules.auth.MissingSecurityValuesAuthValidationRule` - omits one or
-  more schemes from a multi-scheme requirement, expects 401.
-- `art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule` - supplies
-  invalid auth values, expects 401.
-- `art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule` - removes scopes
-  from OAuth2/OpenID requirements, expects 403.
-- `art.galushko.openapi.testgen.rules.auth.IncorrectScopesAuthValidationRule` - uses invalid scopes,
-  expects 403.
+
+Auth rules return full `TestCase` objects and set expected status codes directly. These rules
+handle security headers (e.g., `Authorization`, `X-API-Key`) defined in `securitySchemes`.
+
+!!! note "Security vs Non-Security Headers"
+    Security headers are defined in `components.securitySchemes` and handled by auth rules.
+    Non-security headers defined in operation `parameters` are handled by parameter providers.
+    See [Header Parameter Validation Tests](../../how-to/negative-testing/header-parameters.md).
+
+### AllSecurityMissedAuthValidationRule
+
+Removes all security values from the request.
+
+- **Test Case Name:** `No security values provided`
+- **Expected Status Code:** 401
+- **See also:** [Header Parameter Validation Tests](../../how-to/negative-testing/header-parameters.md)
+
+### MissingSecurityValuesAuthValidationRule
+
+Omits one or more schemes from a multi-scheme requirement (AND security).
+
+- **Test Case Pattern:** `Missing {scheme} header security` or `Missing {name} API key security`
+- **Expected Status Code:** 401
+- **Applies When:** Multiple security schemes are required together
+- **See also:** [Header Parameter Validation Tests](../../how-to/negative-testing/header-parameters.md)
+
+### InvalidSecurityValuesAuthValidationRule
+
+Supplies invalid auth values for each security scheme.
+
+- **Test Case Pattern:** `Invalid {scheme} header security` or `Invalid {name} API key security`
+- **Expected Status Code:** 401
+- **See also:** [Header Parameter Validation Tests](../../how-to/negative-testing/header-parameters.md)
+
+### InsufficientScopesAuthValidationRule
+
+Removes scopes from OAuth2/OpenID requirements.
+
+- **Test Case Pattern:** `Insufficient scopes for {scheme}`
+- **Expected Status Code:** 403
+- **Applies When:** OAuth2 or OpenID Connect scopes are required
+
+### IncorrectScopesAuthValidationRule
+
+Uses invalid scopes for OAuth2/OpenID requirements.
+
+- **Test Case Pattern:** `Incorrect scopes for {scheme}`
+- **Expected Status Code:** 403
+- **Applies When:** OAuth2 or OpenID Connect scopes are required
 
 ## Extension points
 - Implement `SimpleSchemaValidationRule` or `AuthValidationRule` and return them from

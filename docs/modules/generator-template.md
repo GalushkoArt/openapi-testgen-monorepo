@@ -48,6 +48,7 @@ via `TemplateArtifactGeneratorFactory`.
 `TemplateArtifactGenerator`:
 
 - Renders test classes and methods from Mustache templates.
+- Derives `className` from `operationName` (operationId) or from HTTP method + path when missing, then normalizes it into a valid identifier.
 - Writes output files using `outputFileNamePattern`.
 - Supports custom template directories via `customTemplateDir`.
 - Uses `templateVariables` to pass user-defined values into templates.

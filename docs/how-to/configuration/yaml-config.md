@@ -74,9 +74,10 @@ See [Distribution settings](../../reference/distribution-settings.md) for defaul
 | `maxErrors` | Integer | 100 | Max errors before stopping |
 | `errorMode` | String | `COLLECT_ALL` | `FAIL_FAST` or `COLLECT_ALL` |
 | `includeValidCase` | Boolean | `false` | Include baseline valid case (2xx status) in test suites |
+| `includeOperations` | Map | `{}` | Path → list of HTTP methods to include (empty = all) |
 | `validSecurityValues` | Map | `{}` | Security scheme name to value mapping |
 | `overrideBasicTestData` | Map | `{}` | Override values for basic test data provider |
-| `ignoreTestCases` | Map | `{}` | Path/method/name patterns to skip |
+| `ignoreTestCases` | Map | `{}` | Path/method/test case names to skip (exact match) |
 | `ignoreSchemaValidationRules` | List | `[]` | Rule class names to skip |
 | `ignoreAuthValidationRules` | List | `[]` | Auth rule class names to skip |
 | `exampleValues` | Object | (defaults) | Example value generation settings |
@@ -88,6 +89,9 @@ See [Distribution settings](../../reference/distribution-settings.md) for defaul
 |---------|------|---------|-------------|
 | `providers` | List | See defaults | Ordered provider list (first match wins) |
 | `maxExampleDepth` | Integer | 50 | Maximum recursion depth for example generation |
+| `includeOptionalExampleProperties` | Boolean | false | Include optional properties that define examples/defaults |
+| `includeWriteOnly` | Boolean | true | Include `writeOnly` properties in generated examples |
+| `useSchemaExampleFallback` | Boolean | false | Use `schema.examples`/`schema.default` when `schema.example` is missing |
 
 Provider-specific settings (e.g., `uuid.template`, `email.template`, `date.startDate`) are documented in [Distribution settings](../../reference/distribution-settings.md#testgenerationsettingsexamplevalues).
 
@@ -114,6 +118,31 @@ Provider-specific settings (e.g., `uuid.template`, `email.template`, `date.start
 | `outputFileName` | Output file name (required for default `SINGLE_FILE` mode) |
 | `format` | Output format: `json` or `yaml` (default: `json`) |
 | `writeMode` | `MERGE` (default) or `OVERWRITE` |
+
+## Include operations
+
+Use `testGenerationSettings.includeOperations` to generate tests only for selected paths and HTTP methods.
+
+Rules:
+- Path keys are matched exactly (no globbing).
+- Method names are case-insensitive.
+- Empty or missing `includeOperations` means include all operations (default).
+- Wildcards: path `*` matches all paths; method `*` matches all methods for a path.
+- Exact path entries take precedence over the wildcard path.
+
+Example:
+
+```yaml
+testGenerationSettings:
+  includeOperations:
+    "/users/{userId}": [ "GET" ]
+    "/orders": [ "POST" ]
+    "*": [ "OPTIONS" ]
+```
+
+CLI and Gradle examples are available in the reference docs:
+- [CLI reference](../../reference/cli.md)
+- [Gradle plugin reference](../../reference/gradle-plugin.md)
 
 ## Related docs
 

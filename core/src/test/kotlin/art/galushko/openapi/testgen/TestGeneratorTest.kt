@@ -28,24 +28,36 @@ import java.io.File
 class TestGeneratorTest {
     private val objectMapper: ObjectMapper = jacksonObjectMapper()
 
+    private data class TestGenerationSpec(
+        val specFileName: String,
+        val outputFileName: String,
+        val testName: String,
+        val ignoreSettings: Map<String, Any> = emptyMap(),
+        val numberOfNotTestedOperations: Int = 0,
+        val includeValidCase: Boolean = false,
+    )
+
     @Test
     @DisplayName("Generate Tests (JSON): should process OpenAPI spec and write suites JSON by operation name")
     @Description("Verifies that generateTests processes each path/operation and produces a JSON map keyed by operationName matching the expected content")
     fun generateTestsShouldWriteTestSuitesJsonAggregatedByName() {
         testGenerationForOpenApiSchema(
-            specFileName = "oas/openapi.yaml",
-            outputFileName = "oas/openapi-generated-test-suites.json",
-            testName = "general-openapi",
-            ignoreSettings = mapOf(
-                "/fake" to "*",
-                "*" to mapOf(
-                    "head" to "*",
-                    "*" to "*", // should be ignored
+            TestGenerationSpec(
+                specFileName = "oas/openapi.yaml",
+                outputFileName = "oas/openapi-generated-test-suites.json",
+                testName = "general-openapi",
+                ignoreSettings = mapOf(
+                    "/fake" to "*",
+                    "*" to mapOf(
+                        "head" to "*",
+                        "*" to "*", // should be ignored
+                    ),
+                    "/projects/{projectId}" to mapOf("delete" to "*"),
+                    "/users" to mapOf("get" to listOf("Invalid Query role parameter: Array Item Invalid Enum Value")),
                 ),
-                "/projects/{projectId}" to mapOf("delete" to "*"),
-                "/users" to mapOf("get" to listOf("Invalid Query role parameter: Array Item Invalid Enum Value")),
-            ),
-            numberOfNotTestedOperations = 1,
+                numberOfNotTestedOperations = 1,
+                includeValidCase = false,
+            )
         )
     }
 
@@ -54,9 +66,26 @@ class TestGeneratorTest {
     @Description("Verifies that generateTests processes security schemes and auth requirements, producing test suites with authentication test cases")
     fun generateSecurityTestsShouldWriteTestSuitesJsonAggregatedByName() {
         testGenerationForOpenApiSchema(
-            specFileName = "oas/security.openapi.yaml",
-            outputFileName = "oas/security-generated-test-suites.json",
-            testName = "security-openapi",
+            TestGenerationSpec(
+                specFileName = "oas/security.openapi.yaml",
+                outputFileName = "oas/security-generated-test-suites.json",
+                testName = "security-openapi",
+                includeValidCase = true,
+            )
+        )
+    }
+
+    @Test
+    @DisplayName("Generate Response Body Examples (JSON): should resolve expected bodies from spec")
+    @Description("Verifies that response examples and schema fallbacks are used to populate expectedBody")
+    fun generateResponseBodyExamplesShouldResolveExpectedBodies() {
+        testGenerationForOpenApiSchema(
+            TestGenerationSpec(
+                specFileName = "oas/response-body.openapi.yaml",
+                outputFileName = "oas/response-body-generated-test-suites.json",
+                testName = "response-body-openapi",
+                includeValidCase = true,
+            )
         )
     }
 
@@ -72,9 +101,12 @@ class TestGeneratorTest {
     )
     fun shouldHandleCircularReferencesWithoutStackOverflow() {
         testGenerationForOpenApiSchema(
-            specFileName = "oas/circular.openapi.yaml",
-            outputFileName = "oas/circular-generated-test-suites-by-name.json",
-            testName = "circular-openapi",
+            TestGenerationSpec(
+                specFileName = "oas/circular.openapi.yaml",
+                outputFileName = "oas/circular-generated-test-suites-by-name.json",
+                testName = "circular-openapi",
+                includeValidCase = true,
+            )
         )
     }
 
@@ -88,9 +120,12 @@ class TestGeneratorTest {
         @Description("Verifies test generation for allOf schema merging combined with anyOf for flexible contact information and metadata types")
         fun shouldHandleCreateUserWithAllOfAndAnyOf() {
             testGenerationForOpenApiSchema(
-                specFileName = "oas/complex/createUser.openapi.yaml",
-                outputFileName = "oas/complex/createUser-test-suites.json",
-                testName = "complex-createUser"
+                TestGenerationSpec(
+                    specFileName = "oas/complex/createUser.openapi.yaml",
+                    outputFileName = "oas/complex/createUser-test-suites.json",
+                    testName = "complex-createUser",
+                    includeValidCase = true,
+                )
             )
         }
 
@@ -99,9 +134,12 @@ class TestGeneratorTest {
         @Description("Verifies test generation for discriminated union (Cat or Dog) using oneOf with discriminator property")
         fun shouldHandleCreatePetWithDiscriminator() {
             testGenerationForOpenApiSchema(
-                specFileName = "oas/complex/createPet.openapi.yaml",
-                outputFileName = "oas/complex/createPet-test-suites.json",
-                testName = "complex-createPet"
+                TestGenerationSpec(
+                    specFileName = "oas/complex/createPet.openapi.yaml",
+                    outputFileName = "oas/complex/createPet-test-suites.json",
+                    testName = "complex-createPet",
+                    includeValidCase = true,
+                )
             )
         }
 
@@ -110,9 +148,12 @@ class TestGeneratorTest {
         @Description("Verifies test generation for oneOf with object on the same level")
         fun shouldHandleCreateProduct() {
             testGenerationForOpenApiSchema(
-                specFileName = "oas/complex/createProduct.openapi.yaml",
-                outputFileName = "oas/complex/createProduct-test-suites.json",
-                testName = "complex-createProduct"
+                TestGenerationSpec(
+                    specFileName = "oas/complex/createProduct.openapi.yaml",
+                    outputFileName = "oas/complex/createProduct-test-suites.json",
+                    testName = "complex-createProduct",
+                    includeValidCase = true,
+                )
             )
         }
 
@@ -121,9 +162,12 @@ class TestGeneratorTest {
         @Description("Verifies test generation for complex string, integer, and array types, integer or string alternative types, anyOf with contradiction types")
         fun shouldHandleListUsers() {
             testGenerationForOpenApiSchema(
-                specFileName = "oas/complex/listUsers.openapi.yaml",
-                outputFileName = "oas/complex/listUsers-test-suites.json",
-                testName = "complex-listUsers"
+                TestGenerationSpec(
+                    specFileName = "oas/complex/listUsers.openapi.yaml",
+                    outputFileName = "oas/complex/listUsers-test-suites.json",
+                    testName = "complex-listUsers",
+                    includeValidCase = true,
+                )
             )
         }
 
@@ -132,9 +176,12 @@ class TestGeneratorTest {
         @Description("Verifies test generation for complex properties of the object with the discriminator")
         fun shouldHandleProcessPaymentWithDiscriminator() {
             testGenerationForOpenApiSchema(
-                specFileName = "oas/complex/processPayment.openapi.yaml",
-                outputFileName = "oas/complex/processPayment-test-suites.json",
-                testName = "complex-processPayment"
+                TestGenerationSpec(
+                    specFileName = "oas/complex/processPayment.openapi.yaml",
+                    outputFileName = "oas/complex/processPayment-test-suites.json",
+                    testName = "complex-processPayment",
+                    includeValidCase = true,
+                )
             )
         }
 
@@ -143,9 +190,12 @@ class TestGeneratorTest {
         @Description("Verifies test generation for object with requirements in anyOf")
         fun shouldHandleUpdateUser() {
             testGenerationForOpenApiSchema(
-                specFileName = "oas/complex/updateUser.openapi.yaml",
-                outputFileName = "oas/complex/updateUser-test-suites.json",
-                testName = "complex-updateUser"
+                TestGenerationSpec(
+                    specFileName = "oas/complex/updateUser.openapi.yaml",
+                    outputFileName = "oas/complex/updateUser-test-suites.json",
+                    testName = "complex-updateUser",
+                    includeValidCase = true,
+                )
             )
         }
 
@@ -154,9 +204,12 @@ class TestGeneratorTest {
         @Description("Verifies test generation for complex array structures including oneOf for homogeneous types, anyOf with constraints, and contains validation")
         fun shouldHandleValidateArrays() {
             testGenerationForOpenApiSchema(
-                specFileName = "oas/complex/validateArrays.openapi.yaml",
-                outputFileName = "oas/complex/validateArrays-test-suites.json",
-                testName = "complex-validateArrays"
+                TestGenerationSpec(
+                    specFileName = "oas/complex/validateArrays.openapi.yaml",
+                    outputFileName = "oas/complex/validateArrays-test-suites.json",
+                    testName = "complex-validateArrays",
+                    includeValidCase = true,
+                )
             )
         }
 
@@ -165,9 +218,12 @@ class TestGeneratorTest {
         @Description("Verifies test generation for advanced schema combinations including oneOf within anyOf, allOf within anyOf, and anyOf within allOf")
         fun shouldHandleValidateComplexCombinations() {
             testGenerationForOpenApiSchema(
-                specFileName = "oas/complex/validateComplexCombinations.openapi.yaml",
-                outputFileName = "oas/complex/validateComplexCombinations-test-suites.json",
-                testName = "complex-validateComplexCombinations"
+                TestGenerationSpec(
+                    specFileName = "oas/complex/validateComplexCombinations.openapi.yaml",
+                    outputFileName = "oas/complex/validateComplexCombinations-test-suites.json",
+                    testName = "complex-validateComplexCombinations",
+                    includeValidCase = true,
+                )
             )
         }
 
@@ -176,61 +232,62 @@ class TestGeneratorTest {
         @Description("Verifies test generation for nullable string handling using both nullable property attribute and oneOf with explicit null type")
         fun shouldHandleValidateNullables() {
             testGenerationForOpenApiSchema(
-                specFileName = "oas/complex/validateNullables.openapi.yaml",
-                outputFileName = "oas/complex/validateNullables-test-suites.json",
-                testName = "complex-validateNullables"
+                TestGenerationSpec(
+                    specFileName = "oas/complex/validateNullables.openapi.yaml",
+                    outputFileName = "oas/complex/validateNullables-test-suites.json",
+                    testName = "complex-validateNullables",
+                    includeValidCase = true,
+                )
             )
         }
     }
 
-    private fun testGenerationForOpenApiSchema(
-        specFileName: String,
-        outputFileName: String,
-        testName: String,
-        ignoreSettings: Map<String, Any> = emptyMap(),
-        numberOfNotTestedOperations: Int = 0,
-    ) {
+    private fun testGenerationForOpenApiSchema(spec: TestGenerationSpec) {
         val outputDir = "build/tmp/json-generator-test"
         val generatorOptions = mapOf(
-            "outputFileName" to outputFileName,
+            "outputFileName" to spec.outputFileName,
             "writeMode" to "OVERWRITE",
             "preventOverwriteSuites" to false,
             "preventOverwriteCases" to false,
         )
         val options = TestGeneratorExecutionOptionsFactory.fromConfig(
             GeneratorConfig(
-                specFile = specFileName,
+                specFile = spec.specFileName,
                 outputDir = outputDir,
                 generator = "test-suite-writer",
                 generatorOptions = generatorOptions,
-                testGenerationSettings = mapOf("ignoreTestCases" to ignoreSettings),
+                testGenerationSettings = mapOf(
+                    "ignoreTestCases" to spec.ignoreSettings,
+                    "includeValidCase" to spec.includeValidCase,
+                ),
             )
         )
 
         val writer = createArtifactGenerator(options)
 
-        val report = step("Generate tests for $testName") {
+        val report = step("Generate tests for ${spec.testName}") {
             generateReport(options)
         }
 
-        step("Write generated test suites for $testName") {
+        step("Write generated test suites for ${spec.testName}") {
             writer.generateTests(report.successfulSuites)
         }
 
-        step("Verify generated test suites for $testName") {
+        step("Verify generated test suites for ${spec.testName}") {
             assertSoftly { assertions ->
                 assertions.assertThat(report.hasErrors).isFalse
                 assertions.assertThat(report.errors).hasSize(report.summary.totalErrors)
                 assertions.assertThat(report.summary.partialOperations).hasSize(0)
                 assertions.assertThat(report.summary.failedOperations).hasSize(0)
-                assertions.assertThat(report.summary.notTestedOperations).hasSize(numberOfNotTestedOperations)
+                assertions.assertThat(report.summary.notTestedOperations).hasSize(spec.numberOfNotTestedOperations)
 
-                val producedFile = File(outputDir, outputFileName)
+                val producedFile = File(outputDir, spec.outputFileName)
                 require(producedFile.exists()) { "Produced JSON file not found: ${producedFile.absolutePath}" }
 
                 val produced: Map<String, TestSuite> = objectMapper.readValue(producedFile)
 
-                val expected: Map<String, TestSuite> = this::class.java.classLoader.getResourceAsStream(outputFileName).use {
+                // objectMapper.writeValueAsString(produced)
+                val expected: Map<String, TestSuite> = this::class.java.classLoader.getResourceAsStream(spec.outputFileName).use {
                     objectMapper.readValue(requireNotNull(it))
                 }
 

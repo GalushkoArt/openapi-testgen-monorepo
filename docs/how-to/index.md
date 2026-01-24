@@ -8,6 +8,8 @@ Goal-oriented guides for common tasks and integrations.
   - [YAML config](configuration/yaml-config.md)
   - [Ignore rules](configuration/ignore-rules.md)
   - [Security values](configuration/security-values.md)
+- Negative testing
+  - [Overview](negative-testing/index.md)
 - Generators
   - [Template generator](generators/template-generator.md)
   - [Custom templates](generators/custom-templates.md)

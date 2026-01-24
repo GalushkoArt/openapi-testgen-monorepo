@@ -1,13 +1,12 @@
 package art.galushko.openapi.testgen.example.generator
 
+import art.galushko.openapi.testgen.example.generator.internal.ExampleGenerationContext
 import art.galushko.openapi.testgen.example.openapi.SchemaMerger
 import art.galushko.openapi.testgen.example.openapi.SchemaTypeHelpers.isArray
 import art.galushko.openapi.testgen.example.openapi.SchemaTypeHelpers.isObject
-import art.galushko.openapi.testgen.example.openapi.SchemaTypeHelpers.tryGetResponseFromRef
 import art.galushko.openapi.testgen.example.openapi.SchemaTypeHelpers.tryGetSchemaFromRef
 import art.galushko.openapi.testgen.example.spi.SchemaValueProvider
 import io.swagger.v3.oas.models.OpenAPI
-import io.swagger.v3.oas.models.Operation
 import io.swagger.v3.oas.models.media.Schema
 
 /**
@@ -19,7 +18,6 @@ import io.swagger.v3.oas.models.media.Schema
  * @property schemaMerger merges composed schemas before generating values
  * @property options configuration options controlling generation behavior
  */
-@Suppress("ReturnCount", "TooManyFunctions", "MagicNumber")
 public class SchemaExampleValueGenerator(
     private val valueProviders: List<SchemaValueProvider>,
     private val schemaMerger: SchemaMerger = SchemaMerger(),
@@ -41,43 +39,41 @@ public class SchemaExampleValueGenerator(
      * @throws IllegalStateException if no provider can generate a value
      */
     public fun getExampleValue(name: String, schema: Schema<*>, openAPI: OpenAPI, variationIndex: Int = 0): Any {
-        return getExampleValueInternal(name, schema, openAPI, 0, mutableSetOf(), variationIndex)
+        val ctx = ExampleGenerationContext(name, openAPI, options, variationIndex = variationIndex)
+        return generateExampleValue(schema, ctx)
     }
 
-    private fun isDepthAllowed(depth: Int, schema: Schema<*>, visitedRefs: MutableSet<String>): Boolean =
-        depth <= options.maxExampleDepth || schema.`$ref`?.let { !visitedRefs.contains(it) } ?: true
-
-    @Suppress("CyclomaticComplexMethod", "LongParameterList")
-    private fun getExampleValueInternal(
+    /**
+     * Retrieves the example value with custom options for per-call customization.
+     *
+     * This method allows overriding the default options for specific use cases,
+     * such as generating response examples with different behavior than request examples.
+     *
+     * @param name parameter name (used in error messages)
+     * @param schema parameter schema (may be a $ref)
+     * @param openAPI OpenAPI model used to resolve references
+     * @param options custom options for this specific call
+     * @param variationIndex index used to generate varied values
+     * @return example value matching the schema
+     * @throws IllegalStateException if no provider can generate a value
+     */
+    public fun getExampleValueWithOptions(
         name: String,
         schema: Schema<*>,
         openAPI: OpenAPI,
-        depth: Int,
-        visitedRefs: MutableSet<String>,
+        options: SchemaExampleValueGeneratorOptions,
         variationIndex: Int = 0,
     ): Any {
-        schema.`$ref`?.let { visitedRefs.add(it) }
-        val dereferenced = tryGetSchemaFromRef(schema, openAPI)
+        val ctx = ExampleGenerationContext(name, openAPI, options, variationIndex = variationIndex)
+        return generateExampleValue(schema, ctx)
+    }
 
-        if (variationIndex == 0) {
-            dereferenced.example?.let { return it }
-        }
-
-        val mergedSchema = schemaMerger.mergeWithSubSchemas(dereferenced, depth, visitedRefs) {
-            tryGetSchemaFromRef(it, openAPI)
-        }
-
-        if (isDepthAllowed(depth + 1, schema, visitedRefs)) {
-            if (isArray(mergedSchema)) {
-                return getExampleArrayValuesInternal(name, mergedSchema, openAPI, depth + 1, visitedRefs)
-            }
-            if (isObject(mergedSchema)) {
-                return getExampleObjectInternal(name, mergedSchema, openAPI, depth + 1, visitedRefs, variationIndex)
-            }
-        }
-
-        return valueProviders.firstNotNullOfOrNull { it.provide(mergedSchema, variationIndex) }
-            ?: throw IllegalStateException("Provide example for param $name")
+    internal fun responseOptions(): SchemaExampleValueGeneratorOptions {
+        return options.copy(
+            includeOptionalExampleProperties = true,
+            includeWriteOnly = false,
+            useSchemaExampleFallback = true,
+        )
     }
 
     /**
@@ -90,27 +86,21 @@ public class SchemaExampleValueGenerator(
      * @throws IllegalStateException if item schema is missing
      */
     public fun getExampleArrayValues(name: String, schema: Schema<*>, openAPI: OpenAPI): List<Any> {
-        return getExampleArrayValuesInternal(name, schema, openAPI, 0, mutableSetOf())
+        val ctx = ExampleGenerationContext(name, openAPI, options)
+        return generateArrayValues(schema, ctx)
     }
 
-    private fun getExampleArrayValuesInternal(
-        name: String,
-        schema: Schema<*>,
-        openAPI: OpenAPI,
-        depth: Int,
-        visitedRefs: MutableSet<String>,
-    ): List<Any> {
-        val mergedSchema = schemaMerger.mergeWithSubSchemas(schema, depth, visitedRefs) {
-            tryGetSchemaFromRef(it, openAPI)
-        }
-        val items = mergedSchema.items ?: throw IllegalStateException("Empty array item schema for param $name")
-        val mergedItems = schemaMerger.mergeWithSubSchemas(items, depth, visitedRefs) {
-            tryGetSchemaFromRef(it, openAPI)
-        }
-        return getExampleArrayValuesByItem(name, mergedSchema, mergedItems, openAPI, depth, visitedRefs)
-    }
-
-    @Suppress("LongParameterList")
+    /**
+     * Produces an example array value from explicit array and item schemas.
+     *
+     * @param name parameter name (used in error messages)
+     * @param arraySchema array schema containing constraints (minItems, uniqueItems)
+     * @param itemSchema schema for array items
+     * @param openAPI OpenAPI model used to resolve references
+     * @param depth current traversal depth
+     * @param visitedRefs set of visited $ref paths for circular reference detection
+     * @return list of example items
+     */
     public fun getExampleArrayValuesByItem(
         name: String,
         arraySchema: Schema<*>,
@@ -119,26 +109,14 @@ public class SchemaExampleValueGenerator(
         depth: Int = 0,
         visitedRefs: MutableSet<String> = mutableSetOf(),
     ): List<Any> {
-        val result = ArrayList<Any>()
-        if (!isDepthAllowed(depth + 1, itemSchema, visitedRefs)) {
-            return emptyList()
-        }
-        val minimumSize = arraySchema.minItems ?: 0
-        val requiresUniqueItems = arraySchema.uniqueItems == true
-        var variationIndex = 0
-        while (result.size < minimumSize) {
-            val item = getExampleValueInternal(
-                name,
-                itemSchema,
-                openAPI,
-                depth + 1,
-                visitedRefs.toMutableSet(),
-                if (requiresUniqueItems) variationIndex else 0,
-            )
-            result.add(item)
-            variationIndex++
-        }
-        return result
+        val ctx = ExampleGenerationContext(
+            name = name,
+            openAPI = openAPI,
+            options = options,
+            depth = depth,
+            visitedRefs = visitedRefs,
+        )
+        return generateArrayValuesByItem(arraySchema, itemSchema, ctx)
     }
 
     /**
@@ -153,70 +131,153 @@ public class SchemaExampleValueGenerator(
      * @throws IllegalStateException if schema is invalid for an object
      */
     public fun getExampleObject(name: String, schema: Schema<*>, openAPI: OpenAPI): Map<String, Any> {
-        return getExampleObjectInternal(name, schema, openAPI, 0, mutableSetOf())
+        val ctx = ExampleGenerationContext(name, openAPI, options)
+        return generateObject(schema, ctx)
     }
 
-    @Suppress("CyclomaticComplexMethod", "NestedBlockDepth", "LongParameterList")
-    private fun getExampleObjectInternal(
-        name: String,
-        schema: Schema<*>,
-        openAPI: OpenAPI,
-        depth: Int,
-        visitedRefs: MutableSet<String>,
-        variationIndex: Int = 0,
-    ): Map<String, Any> {
-        if (depth > options.maxExampleDepth || schema.`$ref`?.let { !visitedRefs.add(it) } ?: false) {
+    @Suppress("ReturnCount")
+    private fun generateExampleValue(schema: Schema<*>, ctx: ExampleGenerationContext): Any {
+        ctx.registerVisited(schema.`$ref`)
+        val dereferenced = tryGetSchemaFromRef(schema, ctx.openAPI)
+
+        if (ctx.variationIndex == 0) {
+            dereferenced.example?.let { return it }
+            if (ctx.options.useSchemaExampleFallback) {
+                dereferenced.examples?.firstOrNull()?.let { return it }
+                dereferenced.default?.let { return it }
+            }
+        }
+
+        val mergedSchema = schemaMerger.mergeWithSubSchemas(dereferenced, ctx.depth, ctx.visitedRefs) {
+            tryGetSchemaFromRef(it, ctx.openAPI)
+        }
+
+        if (isArray(mergedSchema)) {
+            if (!ctx.isDepthAllowed()) return emptyList<Any>()
+            return generateArrayValues(mergedSchema, ctx)
+        }
+        if (isObject(mergedSchema)) {
+            if (!ctx.isDepthAllowed()) return emptyMap<String, Any>()
+            return generateObject(mergedSchema, ctx)
+        }
+
+        return valueProviders.firstNotNullOfOrNull { it.provide(mergedSchema, ctx.variationIndex) }
+            ?: throw IllegalStateException("Provide example for param ${ctx.name}")
+    }
+
+    private fun generateArrayValues(schema: Schema<*>, ctx: ExampleGenerationContext): List<Any> {
+        val mergedSchema = schemaMerger.mergeWithSubSchemas(schema, ctx.depth, ctx.visitedRefs) {
+            tryGetSchemaFromRef(it, ctx.openAPI)
+        }
+        val items = mergedSchema.items
+            ?: throw IllegalStateException("Empty array item schema for param ${ctx.name}")
+        val mergedItems = schemaMerger.mergeWithSubSchemas(items, ctx.depth, ctx.visitedRefs) {
+            tryGetSchemaFromRef(it, ctx.openAPI)
+        }
+        return generateArrayValuesByItem(mergedSchema, mergedItems, ctx)
+    }
+
+    private fun generateArrayValuesByItem(
+        arraySchema: Schema<*>,
+        itemSchema: Schema<*>,
+        ctx: ExampleGenerationContext,
+    ): List<Any> {
+        val descendedCtx = ctx.descend()
+        if (!descendedCtx.isDepthAllowed()) {
+            return emptyList()
+        }
+
+        val result = ArrayList<Any>()
+        val minimumSize = arraySchema.minItems ?: 0
+        val requiresUniqueItems = arraySchema.uniqueItems == true
+        var variationIndex = 0
+
+        while (result.size < minimumSize) {
+            val itemCtx = if (requiresUniqueItems) {
+                descendedCtx.copyVisitedRefs().withVariation(variationIndex)
+            } else {
+                descendedCtx.copyVisitedRefs().withVariation(0)
+            }
+            val item = generateExampleValue(itemSchema, itemCtx)
+            result.add(item)
+            variationIndex++
+        }
+        return result
+    }
+
+    private fun generateObject(schema: Schema<*>, ctx: ExampleGenerationContext): Map<String, Any> {
+        if (!isDepthAllowedForObject(schema, ctx)) {
             return emptyMap()
         }
 
-        val dereferenced = tryGetSchemaFromRef(schema, openAPI)
-
-        val mergedSchema = schemaMerger.mergeWithSubSchemas(dereferenced, depth, visitedRefs) {
-            tryGetSchemaFromRef(it, openAPI)
+        val dereferenced = tryGetSchemaFromRef(schema, ctx.openAPI)
+        val mergedSchema = schemaMerger.mergeWithSubSchemas(dereferenced, ctx.depth, ctx.visitedRefs) {
+            tryGetSchemaFromRef(it, ctx.openAPI)
         }
+
         val result = LinkedHashMap<String, Any>()
-        val required = mergedSchema.required ?: return result
-        val properties = mergedSchema.properties ?: throw IllegalStateException("No properties in object schema $name")
-        for (propertyName in required.sorted()) {
-            val property = properties[propertyName] ?: throw IllegalStateException("Required property schema not found $name")
-            if (isDepthAllowed(depth + 1, property, visitedRefs)) {
-                result[propertyName] = getExampleValueInternal(
-                    name = propertyName,
-                    schema = property,
-                    openAPI = openAPI,
-                    depth = depth + 1,
-                    visitedRefs = visitedRefs,
-                    variationIndex = variationIndex,
-                )
+        val required = mergedSchema.required?.toSet() ?: emptySet()
+        val properties = mergedSchema.properties
+
+        if (properties == null) {
+            if (required.isNotEmpty()) {
+                throw IllegalStateException("No properties in object schema ${ctx.name}")
+            }
+            return result
+        }
+
+        val propertyNames = collectPropertyNames(required, properties, ctx)
+        for (propertyName in propertyNames.sorted()) {
+            val property = properties[propertyName]
+                ?: throw IllegalStateException("Required property schema not found ${ctx.name}")
+
+            if (!ctx.options.includeWriteOnly && property.writeOnly == true) {
+                continue
+            }
+
+            val descendedCtx = ctx.copyVisitedRefs().descend(propertyName)
+            if (descendedCtx.isDepthAllowed()) {
+                result[propertyName] = generateExampleValue(property, descendedCtx)
             }
         }
         return result
     }
 
-    /**
-     * Extracts expected response example from an operation for the given status code.
-     *
-     * Only `application/json` content is considered. The method returns the first available
-     * response example when present.
-     *
-     * @param operation the OpenAPI operation
-     * @param openAPI the OpenAPI specification
-     * @param statusCode the HTTP status code to look for
-     * @return the example value if found, null otherwise
-     */
-    public fun extractExpectedResponseExample(operation: Operation, openAPI: OpenAPI, statusCode: Int): Any? {
-        val resp = tryGetResponseFromRef(operation, openAPI, statusCode) ?: return null
-        val content = resp.content ?: return null
-
-        // Prefer JSON examples only
-        val mediaType = content["application/json"] ?: return null
-
-        mediaType.example?.let { return it }
-        val examples = mediaType.examples
-        if (examples != null && examples.isNotEmpty()) {
-            val first = examples.values.firstOrNull { ex -> ex.value != null }
-            if (first?.value != null) return first.value
+    private fun isDepthAllowedForObject(schema: Schema<*>, ctx: ExampleGenerationContext): Boolean {
+        val ref = schema.`$ref`
+        if (ctx.depth > ctx.options.maxExampleDepth) {
+            return false
         }
-        return null
+        if (ref != null && !ctx.visitedRefs.add(ref)) {
+            return false
+        }
+        return true
+    }
+
+    private fun collectPropertyNames(
+        required: Set<String>,
+        properties: Map<String, Schema<*>>,
+        ctx: ExampleGenerationContext,
+    ): Set<String> {
+        val propertyNames = LinkedHashSet<String>()
+        propertyNames.addAll(required)
+
+        if (ctx.options.includeOptionalExampleProperties) {
+            properties.filterKeys { it !in required }
+                .filter { (_, propSchema) ->
+                    hasExplicitExample(propSchema, ctx.openAPI, ctx.options.useSchemaExampleFallback)
+                }
+                .keys
+                .forEach { propertyNames.add(it) }
+        }
+        return propertyNames
+    }
+
+    private fun hasExplicitExample(schema: Schema<*>, openAPI: OpenAPI, includeDefault: Boolean): Boolean {
+        val deref = tryGetSchemaFromRef(schema, openAPI)
+        if (deref.example != null) return true
+        if (deref.examples?.isNotEmpty() == true) return true
+        if (includeDefault && deref.default != null) return true
+        return false
     }
 }

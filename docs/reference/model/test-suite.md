@@ -27,6 +27,8 @@ the suite.
 `SecurityValues` stores security-only values (query/header/cookie) derived from OpenAPI security
 requirements. It helps auth rules reason about security material separately from general
 parameters.
+For OAuth2/OpenID Connect, `securityValues.other` can include structured scope metadata; see
+[TestCase](test-case.md) for `authorizationScopes`.
 
 ### KeyValuePair
 

@@ -17,12 +17,30 @@ This module depends only on `model` (and the OpenAPI parser types it needs) and 
 
 ### SchemaExampleValueGenerator
 
-Generates example values for parameters, request bodies, and responses:
+Generates example values for parameters and request bodies. Response examples are handled by `ResponseExampleExtractor`, which uses schema-derived fallback when explicit examples are missing:
 
 - Uses `schema.example` when present (variationIndex = 0).
 - Merges composed schemas via `SchemaMerger` before generating values.
 - Handles arrays/objects by recursing into item/property schemas.
 - Stops recursion based on `maxExampleDepth`.
+
+### ResponseExampleExtractor
+
+Resolves expected response examples from OpenAPI operations:
+
+- Response lookup: exact status code -> range (e.g., `2XX`) -> `default`.
+- Media type priority: JSON-like (`application/json`, `application/*+json`) -> `application/xml` -> other types (alphabetical).
+- Example selection: `MediaType.example` -> `MediaType.examples`; schema-derived fallback is applied only for JSON-like media types.
+
+Response fallback uses response-specific defaults regardless of `ExampleValueSettings` flags:
+
+- `includeOptionalExampleProperties = true`
+- `includeWriteOnly = false`
+- `useSchemaExampleFallback = true`
+
+`maxExampleDepth` from `ExampleValueSettings` still applies.
+
+This replaces the removed `SchemaExampleValueGenerator.extractExpectedResponseExample` method.
 
 ### SchemaExampleValueGeneratorFactory
 
@@ -59,6 +77,9 @@ Key fields:
 
 - `providers`: ordered list of provider ids (first provider that returns a value wins).
 - `maxExampleDepth`: max recursion depth for schema traversal.
+- `includeOptionalExampleProperties`: include optional properties that define examples/defaults.
+- `includeWriteOnly`: include `writeOnly` properties in generated examples.
+- `useSchemaExampleFallback`: use `schema.examples`/`schema.default` when `schema.example` is missing.
 - `uuid.template`: template string for UUIDs (must include `%s`).
 - `email.template`: template string for emails (must include `%s`).
 - `date.startDate`: start date (`YYYY-MM-DD`).
@@ -82,6 +103,9 @@ testGenerationSettings:
       - number
       - boolean
     maxExampleDepth: 50
+    includeOptionalExampleProperties: false
+    includeWriteOnly: true
+    useSchemaExampleFallback: false
     uuid:
       template: "d5a5495b-cbdc-4237-a66e-%s"
     email:

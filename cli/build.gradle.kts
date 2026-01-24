@@ -1,42 +1,21 @@
-import com.vanniktech.maven.publish.JavadocJar
-import com.vanniktech.maven.publish.KotlinJvm
-import com.vanniktech.maven.publish.SonatypeHost
 import org.gradle.kotlin.dsl.support.serviceOf
 import org.gradle.process.ExecOperations
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_2
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.dokka)
+    id("testgen.library-with-allure")
     application
     alias(libs.plugins.graalvm.native)
     alias(libs.plugins.shadow)
-    alias(libs.plugins.detekt)
-    alias(libs.plugins.kover)
-    alias(libs.plugins.binary.compatibility)
-    alias(libs.plugins.dependency.versions)
-    alias(libs.plugins.dependency.analysis)
-    alias(libs.plugins.maven.publish)
 }
 
-group = "art.galushko.openapi.testgen"
-version = libs.versions.openapi.testgen.get()
 description = "Command-line interface for OpenAPI Test Generator."
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
-
-kotlin {
-    explicitApiWarning()
+testgenQuality {
+    koverMinCoverage = 80
+    koverDisabledForTestTasks = listOf("testFatJar", "testNative", "testDistributions", "nativeTest")
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
     implementation(libs.testgen.distribution.bundle)
 
     implementation(libs.picocli)
@@ -45,76 +24,9 @@ dependencies {
     implementation(libs.logback.classic)
     implementation(libs.slf4j.api)
 
-    testImplementation(platform(libs.junit.bom))
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.platform.launcher)
     testImplementation(libs.jackson.kotlin)
-
-    // Detekt formatting rules (wraps ktlint) — must match detekt plugin version
-    detektPlugins(libs.detekt.formatting)
 }
 
-tasks.withType<KotlinCompile> {
-    compilerOptions {
-        apiVersion.set(KOTLIN_2_2)
-        jvmTarget.set(JvmTarget.JVM_21)
-        freeCompilerArgs.add("-Xjsr305=strict")
-    }
-}
-
-// Maven Central Publishing
-mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = false)
-    signAllPublications()
-    configure(KotlinJvm(javadocJar = JavadocJar.Dokka("dokkaGeneratePublicationHtml")))
-
-    coordinates(
-        groupId = project.group.toString(),
-        artifactId = project.name,
-        version = project.version.toString()
-    )
-
-    pom {
-        name.set(project.name)
-        description.set(project.description)
-        url.set("https://docs.galushko.art/openapi-test-generator/")
-
-        licenses {
-            license {
-                name.set("MIT License")
-                url.set("https://opensource.org/licenses/MIT")
-            }
-        }
-
-        scm {
-            url.set("https://github.com/GalushkoArt/openapi-testgen-monorepo")
-            connection.set("scm:git:https://github.com/GalushkoArt/openapi-testgen-monorepo.git")
-            developerConnection.set("scm:git:ssh://git@github.com/GalushkoArt/openapi-testgen-monorepo.git")
-        }
-
-        developers {
-            developer {
-                id.set("GalushkoArt")
-                name.set("Artem Galushko")
-            }
-        }
-    }
-}
-
-// Detekt configuration
-detekt {
-    config.setFrom(files("$projectDir/config/detekt.yml"))
-    buildUponDefaultConfig = true
-    baseline = file("$projectDir/config/detekt-baseline.xml")
-    parallel = true
-    autoCorrect = false
-}
-
-// Binary compatibility validator
-apiValidation {
-    // single-module; keep defaults
-}
 
 application {
     applicationName = "openapi-testgen"
@@ -125,7 +37,6 @@ tasks.test {
     useJUnitPlatform {
         excludeTags("native-binary", "fat-jar")
     }
-    finalizedBy("koverXmlReport", "koverHtmlReport")
 }
 
 graalvmNative {
@@ -348,67 +259,5 @@ tasks.register("regenerateNativeImageConfig") {
         }
         println("\nReview the generated configs and commit the changes.")
         println("Note: native-image.properties is manually maintained and not overwritten.")
-    }
-}
-
-// Kover configuration
-kover {
-    currentProject {
-        instrumentation {
-            disabledForTestTasks.addAll("testFatJar", "testNative", "testDistributions", "nativeTest")
-        }
-    }
-    reports {
-        total {
-            verify {
-                rule {
-                    bound {
-                        minValue = 80
-                    }
-                }
-            }
-        }
-    }
-}
-
-// Wire checks into the standard lifecycle
-tasks.named("check") {
-    dependsOn("detekt", "apiCheck", "projectHealth", "koverVerify")
-}
-
-val dokkaModuleId: String = project.projectDir.name
-
-dokka {
-    moduleName.set(dokkaModuleId)
-    moduleVersion.set(project.version.toString())
-
-
-    pluginsConfiguration {
-        html {
-            customStyleSheets.from(layout.projectDirectory.file("../docs/dokka/hide-platform-filters.css"))
-        }
-    }
-
-    dokkaPublications.named("html") {
-        outputDirectory.set(layout.projectDirectory.dir("../docs/api/$dokkaModuleId"))
-        failOnWarning.set(false)
-    }
-
-    dokkaSourceSets.configureEach {
-        reportUndocumented.set(false)
-        skipEmptyPackages.set(true)
-        perPackageOption {
-            matchingRegex.set(".*\\.internal.*")
-            suppress.set(true)
-        }
-
-        val sourceBaseUrl = providers.gradleProperty("dokkaSourceBaseUrl").orNull
-        if (!sourceBaseUrl.isNullOrBlank()) {
-            sourceLink {
-                localDirectory.set(projectDir.resolve("src/main/kotlin"))
-                remoteUrl.set(uri("$sourceBaseUrl/tree/master/$dokkaModuleId/src/main/kotlin"))
-                remoteLineSuffix.set("#L")
-            }
-        }
     }
 }

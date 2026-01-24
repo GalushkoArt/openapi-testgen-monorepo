@@ -41,7 +41,12 @@
                         "method": "credit_card"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
@@ -83,7 +88,12 @@
                         "method": "credit_card"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
@@ -120,7 +130,12 @@
                     "amount": 0.01,
                     "currency": "USD"
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
@@ -163,7 +178,12 @@
                         "method": "credit_card"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -206,7 +226,12 @@
                         "method": "credit_card"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -247,7 +272,12 @@
                         "routingNumber": "a"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -289,7 +319,12 @@
                         "method": "credit_card"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -330,7 +365,12 @@
                         "walletAddress": "a"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -372,7 +412,12 @@
                         "method": "credit_card"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -414,7 +459,12 @@
                         "method": "credit_card"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -456,7 +506,12 @@
                         "expiryDate": "a"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -497,7 +552,12 @@
                         "routingNumber": "a"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -538,7 +598,12 @@
                         "walletAddress": "a"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -579,7 +644,12 @@
                         "method": "bank_transfer"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -620,7 +690,12 @@
                         "method": "crypto"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -662,7 +737,12 @@
                         "walletAddress": "a"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -748,7 +828,12 @@
                         "method": "credit_card"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.WrongUuidFormatSchemaValidationRule"
@@ -838,7 +923,12 @@
                         "method": "credit_card"
                     }
                 },
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
@@ -906,10 +996,63 @@
                     "other": {}
                 },
                 "body": null,
-                "expectedBody": null,
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+            },
+            {
+                "name": "Test Valid Case",
+                "method": "POST",
+                "path": "/payments",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [
+                    {
+                        "key": "authorization",
+                        "value": "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key": "X-Idempotency-Key",
+                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                    }
+                ],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [
+                        {
+                            "key": "authorization",
+                            "value": "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "amount": 0.01,
+                    "currency": "USD",
+                    "paymentMethod": {
+                        "cardNumber": "a",
+                        "cvv": "a",
+                        "expiryDate": "a",
+                        "method": "credit_card"
+                    }
+                },
+                "expectedBody": {
+                    "data": {},
+                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status": "success",
+                    "timestamp": "2025-05-05T17:32:28Z"
+                },
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
             }
         ]
     }

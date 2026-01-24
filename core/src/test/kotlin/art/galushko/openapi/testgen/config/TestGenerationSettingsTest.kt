@@ -88,6 +88,48 @@ class TestGenerationSettingsTest {
                 .isInstanceOf(IllegalArgumentException::class.java)
                 .hasMessage("Value for path '/path' must be \"*\" or Map<String, ...>, was kotlin.Int")
         }
+
+        @Test
+        @DisplayName("should validate includeOperations configuration - blank path")
+        fun shouldValidateIncludeOperationsBlankPath() {
+            val invalidConfig = mapOf("" to listOf("GET"))
+
+            assertThatThrownBy { TestGenerationSettings(includeOperations = invalidConfig) }
+                .isInstanceOf(IllegalArgumentException::class.java)
+                .hasMessage("includeOperations path cannot be blank")
+        }
+
+        @Test
+        @DisplayName("should validate includeOperations configuration - empty methods")
+        fun shouldValidateIncludeOperationsEmptyMethods() {
+            val invalidConfig = mapOf("/users" to emptyList<String>())
+
+            assertThatThrownBy { TestGenerationSettings(includeOperations = invalidConfig) }
+                .isInstanceOf(IllegalArgumentException::class.java)
+                .hasMessage("includeOperations methods list cannot be empty for path '/users'")
+        }
+
+        @Test
+        @DisplayName("should validate includeOperations configuration - invalid method")
+        fun shouldValidateIncludeOperationsInvalidMethod() {
+            val invalidConfig = mapOf("/users" to listOf("INVALID"))
+
+            assertThatThrownBy { TestGenerationSettings(includeOperations = invalidConfig) }
+                .isInstanceOf(IllegalArgumentException::class.java)
+                .hasMessageContaining("Invalid HTTP method 'INVALID' for path '/users'")
+        }
+
+        @Test
+        @DisplayName("should accept valid includeOperations configuration")
+        fun shouldAcceptValidIncludeOperations() {
+            val validConfig = mapOf(
+                "/users/{userId}" to listOf("GET", "DELETE"),
+                "/orders" to listOf("*"),
+                "*" to listOf("OPTIONS")
+            )
+
+            assertThatCode { TestGenerationSettings(includeOperations = validConfig) }.doesNotThrowAnyException()
+        }
     }
 
     @Nested
@@ -140,6 +182,7 @@ class TestGenerationSettingsTest {
         @DisplayName("should parse all supported fields")
         fun shouldParseAllFields() {
             val map = mapOf(
+                "includeOperations" to mapOf("/users" to listOf("GET", "POST")),
                 "ignoreTestCases" to mapOf("/api" to "*"),
                 "ignoreSchemaValidationRules" to listOf("Rule1"),
                 "ignoreAuthValidationRules" to listOf("AuthRule1"),
@@ -155,6 +198,7 @@ class TestGenerationSettingsTest {
 
             val settings = TestGenerationSettings.fromMap(map)
 
+            assertThat(settings.includeOperations).isEqualTo(mapOf("/users" to listOf("GET", "POST")))
             assertThat(settings.ignoreTestCases).isEqualTo(mapOf("/api" to "*"))
             assertThat(settings.ignoreSchemaValidationRules).containsExactly("Rule1")
             assertThat(settings.ignoreAuthValidationRules).containsExactly("AuthRule1")
@@ -166,6 +210,60 @@ class TestGenerationSettingsTest {
             assertThat(settings.errorMode).isEqualTo(ErrorMode.FAIL_FAST)
             assertThat(settings.includeValidCase).isTrue()
             assertThat(settings.maxErrors).isEqualTo(50)
+        }
+
+        @Test
+        @DisplayName("should parse includeOperations with single method as shorthand")
+        fun shouldParseIncludeOperationsWithSingleMethodShorthand() {
+            val map = mapOf(
+                "includeOperations" to mapOf("/users" to "GET")
+            )
+
+            val settings = TestGenerationSettings.fromMap(map)
+
+            assertThat(settings.includeOperations).isEqualTo(mapOf("/users" to listOf("GET")))
+        }
+
+        @Test
+        @DisplayName("should parse includeOperations with wildcard path and method")
+        fun shouldParseIncludeOperationsWithWildcards() {
+            val map = mapOf(
+                "includeOperations" to mapOf(
+                    "/users/{userId}" to listOf("GET", "DELETE"),
+                    "/orders" to listOf("*"),
+                    "*" to listOf("OPTIONS")
+                )
+            )
+
+            val settings = TestGenerationSettings.fromMap(map)
+
+            assertThat(settings.includeOperations).isEqualTo(
+                mapOf(
+                    "/users/{userId}" to listOf("GET", "DELETE"),
+                    "/orders" to listOf("*"),
+                    "*" to listOf("OPTIONS")
+                )
+            )
+        }
+
+        @Test
+        @DisplayName("should throw ConfigurationException for invalid includeOperations type")
+        fun shouldThrowForInvalidIncludeOperationsType() {
+            val map = mapOf("includeOperations" to "not-a-map")
+
+            assertThatThrownBy { TestGenerationSettings.fromMap(map) }
+                .isInstanceOf(ConfigurationException::class.java)
+                .hasMessage("Configuration error for 'includeOperations': expected Map<String, List<String>>, got kotlin.String")
+        }
+
+        @Test
+        @DisplayName("should throw ConfigurationException for invalid includeOperations method type")
+        fun shouldThrowForInvalidIncludeOperationsMethodType() {
+            val map = mapOf("includeOperations" to mapOf("/users" to 123))
+
+            assertThatThrownBy { TestGenerationSettings.fromMap(map) }
+                .isInstanceOf(ConfigurationException::class.java)
+                .hasMessage("Configuration error for 'includeOperations[/users]': expected List<String> or String, got kotlin.Int")
         }
 
         @Test
@@ -435,6 +533,18 @@ class TestGenerationSettingsTest {
             val settings = TestGenerationSettings.fromMap(emptyMap(), customDefaults)
 
             assertThat(settings.ignoreTestCases).isEqualTo(mapOf("/api/v1" to "*"))
+        }
+
+        @Test
+        @DisplayName("should preserve default includeOperations when not in map")
+        fun shouldPreserveDefaultIncludeOperations() {
+            val customDefaults = TestGenerationSettings(
+                includeOperations = mapOf("/users" to listOf("GET", "POST")),
+            )
+
+            val settings = TestGenerationSettings.fromMap(emptyMap(), customDefaults)
+
+            assertThat(settings.includeOperations).isEqualTo(mapOf("/users" to listOf("GET", "POST")))
         }
     }
 }

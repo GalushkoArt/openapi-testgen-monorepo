@@ -25,18 +25,31 @@ Add the plugin to your `build.gradle.kts`:
 
 ```kotlin
 plugins {
-    id("art.galushko.openapi-test-generator") version "0.8.0"
+    id("art.galushko.openapi-test-generator") version "0.9.0"
 }
 ```
 
 [View on Gradle Plugin Portal](https://plugins.gradle.org/plugin/art.galushko.openapi-test-generator)
 
-### CLI
+### CLI (npm)
 
-Download the latest release from [GitHub Releases](https://github.com/ArtGalushko/openapi-test-generator/releases):
+The easiest way to install the CLI:
 
-- **Native binary** (fastest, no JVM required): `openapi-testgen-<version>-<platform>`
-- **Fat JAR** (portable): `openapi-testgen-<version>-all.jar`
+```bash
+npm install -g @openapi-testgen/cli
+openapi-testgen --help
+```
+
+Native binaries are automatically used when available. Falls back to JAR (requires Java 21+) on unsupported platforms.
+
+Also available via pnpm, yarn, or bun. See [npm Installation](https://docs.galushko.art/openapi-test-generator/getting-started/npm-installation/) for details.
+
+### CLI (Manual)
+
+Download from [GitHub Releases](https://github.com/GalushkoArt/openapi-testgen-monorepo/releases):
+
+- **Native binary** (fastest, no JVM required): `openapi-testgen-<version>-<platform>.zip`
+- **Fat JAR** (portable): `openapi-testgen-<version>.jar`
 
 Or build from source:
 

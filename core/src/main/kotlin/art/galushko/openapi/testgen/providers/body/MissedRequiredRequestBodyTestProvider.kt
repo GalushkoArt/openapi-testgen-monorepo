@@ -43,7 +43,7 @@ internal class MissedRequiredRequestBodyTestProvider : TestCaseProvider<RequestB
             rule = MissedRequiredRequestBodyTestProvider::class.java.name,
             body = null,
             expectedStatusCode = BAD_REQUEST_CODE,
-            expectedBody = context.schemaExampleValueGenerator.extractExpectedResponseExample(context, BAD_REQUEST_CODE),
+            expectedBody = context.responseExampleExtractor.extractExpectedResponseExample(context, BAD_REQUEST_CODE),
         )
     }
 

@@ -58,6 +58,7 @@ plugins:
   - git-revision-date-localized:
       enable_creation_date: true
       type: timeago
+      enable_parallel_processing: false
 
 markdown_extensions:
   - abbr
@@ -104,6 +105,7 @@ nav:
   - Getting started:
       - Overview: getting-started/index.md
       - Installation: getting-started/installation.md
+      - npm Installation: getting-started/npm-installation.md
       - First test suite (CLI): getting-started/first-test-suite.md
       - Gradle integration: getting-started/gradle-integration.md
       - Understanding output: getting-started/understanding-output.md
@@ -116,9 +118,16 @@ nav:
       - Overview: how-to/index.md
       - Configuration:
           - YAML config: how-to/configuration/yaml-config.md
+          - Include operations: how-to/configuration/include-operations.md
           - Ignore rules: how-to/configuration/ignore-rules.md
           - Security values: how-to/configuration/security-values.md
           - Positive testing: how-to/configuration/positive-testing.md
+      - Negative testing:
+          - Overview: how-to/negative-testing/index.md
+          - Path parameters: how-to/negative-testing/path-parameters.md
+          - Query parameters: how-to/negative-testing/query-parameters.md
+          - Header parameters: how-to/negative-testing/header-parameters.md
+          - Request body schema: how-to/negative-testing/request-body-schema.md
       - Generators:
           - Template generator: how-to/generators/template-generator.md
           - Custom templates: how-to/generators/custom-templates.md
@@ -181,5 +190,6 @@ nav:
       - Testing guide: contributing/testing-guide.md
       - Documentation guide: contributing/documentation-guide.md
       - Publishing artifacts: contributing/publishing.md
+      - npm Publishing: contributing/npm-publishing.md
       - Release process: contributing/release-process.md
   - Changelog: changelog/CHANGELOG.md

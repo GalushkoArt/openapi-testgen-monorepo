@@ -101,13 +101,19 @@ class IncorrectScopesAuthValidationRuleTest {
         val testCases = step("Call apply") { rule.apply(createTestContext(validCase, operation, openApi)).toList() }
 
         val expectedAuthorization = AUTHORIZATION_HEADER with "<oauth:[some_invalid_scope]>"
+        val expectedAuthorizationScopes = listOf(
+            mapOf("name" to "oauth", "type" to "oauth2", "scopes" to listOf("some_invalid_scope"))
+        )
         assertThat(testCases).hasSize(1).first()
             .isEqualTo(
                 validCase.copy(
                     expectedStatusCode = 403,
                     rule = IncorrectScopesAuthValidationRule::class.java.name,
                     name = "oauth security scheme has invalid scope",
-                    securityValues = SecurityValues(headers = listOf(expectedAuthorization)),
+                    securityValues = SecurityValues(
+                        headers = listOf(expectedAuthorization),
+                        other = mapOf("authorizationScopes" to expectedAuthorizationScopes),
+                    ),
                     headers = listOf(expectedAuthorization),
                 )
             )
@@ -141,6 +147,9 @@ class IncorrectScopesAuthValidationRuleTest {
         }
 
         val expectedAuthorization = AUTHORIZATION_HEADER with "<oauth:[some_invalid_scope]>"
+        val expectedAuthorizationScopes = listOf(
+            mapOf("name" to "oauth", "type" to "oauth2", "scopes" to listOf("some_invalid_scope"))
+        )
         assertThat(testCases).hasSize(1).first()
             .isEqualTo(
                 validCase.copy(
@@ -148,7 +157,11 @@ class IncorrectScopesAuthValidationRuleTest {
                     rule = IncorrectScopesAuthValidationRule::class.java.name,
                     name = "oauth security scheme has invalid scope",
                     queryParams = mapOf(apiKeyEntry),
-                    securityValues = SecurityValues(headers = listOf(expectedAuthorization), queryParams = mapOf(apiKeyEntry)),
+                    securityValues = SecurityValues(
+                        headers = listOf(expectedAuthorization),
+                        queryParams = mapOf(apiKeyEntry),
+                        other = mapOf("authorizationScopes" to expectedAuthorizationScopes),
+                    ),
                     headers = listOf(expectedAuthorization),
                 )
             )
@@ -197,14 +210,30 @@ class IncorrectScopesAuthValidationRuleTest {
                 expectedStatusCode = 403,
                 rule = IncorrectScopesAuthValidationRule::class.java.name,
                 name = "oauth security scheme has invalid scope",
-                securityValues = SecurityValues(headers = listOf(AUTHORIZATION_HEADER with "<oauth:[some_invalid_scope]&openid:[profile]>")),
+                securityValues = SecurityValues(
+                    headers = listOf(AUTHORIZATION_HEADER with "<oauth:[some_invalid_scope]&openid:[profile]>"),
+                    other = mapOf(
+                        "authorizationScopes" to listOf(
+                            mapOf("name" to "oauth", "type" to "oauth2", "scopes" to listOf("some_invalid_scope")),
+                            mapOf("name" to "openid", "type" to "openidconnect", "scopes" to listOf("profile")),
+                        )
+                    ),
+                ),
                 headers = listOf(AUTHORIZATION_HEADER with "<oauth:[some_invalid_scope]&openid:[profile]>"),
             ),
             validCase.copy(
                 expectedStatusCode = 403,
                 rule = IncorrectScopesAuthValidationRule::class.java.name,
                 name = "openid security scheme has invalid scope",
-                securityValues = SecurityValues(headers = listOf(AUTHORIZATION_HEADER with "<oauth:[read,write]&openid:[some_invalid_scope]>")),
+                securityValues = SecurityValues(
+                    headers = listOf(AUTHORIZATION_HEADER with "<oauth:[read,write]&openid:[some_invalid_scope]>"),
+                    other = mapOf(
+                        "authorizationScopes" to listOf(
+                            mapOf("name" to "oauth", "type" to "oauth2", "scopes" to listOf("read", "write")),
+                            mapOf("name" to "openid", "type" to "openidconnect", "scopes" to listOf("some_invalid_scope")),
+                        )
+                    ),
+                ),
                 headers = listOf(AUTHORIZATION_HEADER with "<oauth:[read,write]&openid:[some_invalid_scope]>"),
             ),
         )
@@ -230,13 +259,19 @@ class IncorrectScopesAuthValidationRuleTest {
         }
 
         val expectedAuthorization = AUTHORIZATION_HEADER with "<openid:[some_invalid_scope]>"
+        val expectedAuthorizationScopes = listOf(
+            mapOf("name" to "openid", "type" to "openidconnect", "scopes" to listOf("some_invalid_scope"))
+        )
         assertThat(testCases).hasSize(1).first()
             .isEqualTo(
                 validCase.copy(
                     expectedStatusCode = 403,
                     rule = IncorrectScopesAuthValidationRule::class.java.name,
                     name = "openid security scheme has invalid scope",
-                    securityValues = SecurityValues(headers = listOf(expectedAuthorization)),
+                    securityValues = SecurityValues(
+                        headers = listOf(expectedAuthorization),
+                        other = mapOf("authorizationScopes" to expectedAuthorizationScopes),
+                    ),
                     headers = listOf(expectedAuthorization),
                 )
             )

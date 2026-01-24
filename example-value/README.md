@@ -22,7 +22,7 @@ This module can be used standalone or as part of the full test generation pipeli
 
 ```kotlin
 dependencies {
-    implementation("art.galushko.openapi:testgen-example-value:0.8.0")
+    implementation("art.galushko.openapi:testgen-example-value:0.9.0")
 }
 ```
 

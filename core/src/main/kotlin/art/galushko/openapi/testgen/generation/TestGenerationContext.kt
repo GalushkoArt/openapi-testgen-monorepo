@@ -1,9 +1,10 @@
 package art.galushko.openapi.testgen.generation
 
-import art.galushko.openapi.testgen.model.TestCase
 import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGenerator
 import art.galushko.openapi.testgen.example.openapi.SchemaMerger
+import art.galushko.openapi.testgen.example.response.ResponseExampleExtractor
 import art.galushko.openapi.testgen.example.util.CombinationBudget
+import art.galushko.openapi.testgen.model.TestCase
 import art.galushko.openapi.testgen.openapi.SchemaStructureHasher
 import art.galushko.openapi.testgen.openapi.SkipReason
 import art.galushko.openapi.testgen.testdata.BasicTestDataProvider
@@ -38,6 +39,9 @@ public interface TestGenerationContext {
 
     /** Generator for deriving example values from schemas. */
     public val schemaExampleValueGenerator: SchemaExampleValueGenerator
+
+    /** Extractor for response examples from operations. */
+    public val responseExampleExtractor: ResponseExampleExtractor
 
     /** Merger for composed schemas (allOf/anyOf/oneOf). */
     public val schemaMerger: SchemaMerger
@@ -82,6 +86,7 @@ internal data class DefaultTestGenerationContext(
     override val basicTestData: BasicTestDataProvider,
     override val securityValueProvider: SecurityValueProvider,
     override val schemaExampleValueGenerator: SchemaExampleValueGenerator,
+    override val responseExampleExtractor: ResponseExampleExtractor,
     override val schemaMerger: SchemaMerger,
     override val maxDepth: Int,
     override val combinationBudget: CombinationBudget?,

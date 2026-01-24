@@ -2,6 +2,7 @@ package art.galushko.openapi.testgen.generation
 
 import art.galushko.openapi.testgen.config.TestGenerationSettings
 import art.galushko.openapi.testgen.filtering.IgnoreConfigHandler
+import art.galushko.openapi.testgen.filtering.IncludeOperationsHandler
 import art.galushko.openapi.testgen.generation.budget.TestCaseBudgetValidator
 import art.galushko.openapi.testgen.generation.orchestration.OutcomeAggregator
 import art.galushko.openapi.testgen.generation.orchestration.ProviderOrchestrator
@@ -24,6 +25,7 @@ import art.galushko.openapi.testgen.spi.SimpleSchemaValidationRule
 import art.galushko.openapi.testgen.spi.TestCaseProvider
 import art.galushko.openapi.testgen.testdata.BasicTestDataProvider
 import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGenerator
+import art.galushko.openapi.testgen.example.response.ResponseExampleExtractor
 import art.galushko.openapi.testgen.testdata.SecurityValueProvider
 import io.swagger.v3.oas.models.Operation
 
@@ -38,14 +40,16 @@ internal object TestGeneratorConfigurer {
      * Creates a [TestGenerationProcessor] instance.
      *
      * @param testSuiteGenerator configured [TestSuiteGenerator] instance
-     * @param ignoreConfigHandler configured [IgnoreConfigHandler] instance
+     * @param includeOperationsHandler configured [IncludeOperationsHandler] instance for inclusion filtering
+     * @param ignoreConfigHandler configured [IgnoreConfigHandler] instance for exclusion filtering
      * @return configured [TestGenerationProcessor]
      */
     public fun createTestGenerationProcessor(
         testSuiteGenerator: TestSuiteGenerator,
+        includeOperationsHandler: IncludeOperationsHandler,
         ignoreConfigHandler: IgnoreConfigHandler,
     ): TestGenerationProcessor {
-        return TestGenerationProcessor(testSuiteGenerator, ignoreConfigHandler)
+        return TestGenerationProcessor(testSuiteGenerator, includeOperationsHandler, ignoreConfigHandler)
     }
 
     /**
@@ -83,6 +87,7 @@ internal object TestGeneratorConfigurer {
             securityValueProvider = SecurityValueProvider(testGenerationSettings.validSecurityValues),
             basicTestDataProvider = BasicTestDataProvider(testGenerationSettings.overrideBasicTestData),
             schemaExampleValueGenerator = schemaExampleValueGenerator,
+            responseExampleExtractor = ResponseExampleExtractor(schemaExampleValueGenerator),
             schemaMerger = schemaMerger,
         )
 

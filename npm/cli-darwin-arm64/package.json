@@ -1,0 +1,27 @@
+{
+  "name": "@openapi-testgen/cli-darwin-arm64",
+  "version": "0.0.0",
+  "description": "Native macOS ARM64 binary for @openapi-testgen/cli",
+  "license": "MIT",
+  "author": "Artem Galushko",
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "bin": {
+    "openapi-testgen": "./bin/openapi-testgen"
+  },
+  "files": [
+    "bin/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GalushkoArt/openapi-testgen-monorepo.git",
+    "directory": "npm/cli-darwin-arm64"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

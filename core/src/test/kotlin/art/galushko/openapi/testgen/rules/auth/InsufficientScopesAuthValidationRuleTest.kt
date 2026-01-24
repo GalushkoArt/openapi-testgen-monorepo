@@ -156,30 +156,58 @@ class InsufficientScopesAuthValidationRuleTest {
             basicTestCase.copyWithHeaders(
                 "Missing [email] scopes of openid in security",
                 listOf(expectedApiKey, AUTHORIZATION_HEADER with "<oauth:[read,write]&openid:[]>"),
+                listOf(
+                    mapOf("name" to "oauth", "type" to "oauth2", "scopes" to listOf("read", "write")),
+                    mapOf("name" to "openid", "type" to "openidconnect", "scopes" to emptyList<String>()),
+                ),
             ),
             basicTestCase.copyWithHeaders(
                 "Missing [write] scopes of oauth and [email] scopes of openid in security",
                 listOf(expectedApiKey, AUTHORIZATION_HEADER with "<oauth:[read]&openid:[]>"),
+                listOf(
+                    mapOf("name" to "oauth", "type" to "oauth2", "scopes" to listOf("read")),
+                    mapOf("name" to "openid", "type" to "openidconnect", "scopes" to emptyList<String>()),
+                ),
             ),
             basicTestCase.copyWithHeaders(
                 "Missing [read] scopes of oauth and [email] scopes of openid in security",
                 listOf(expectedApiKey, AUTHORIZATION_HEADER with "<oauth:[write]&openid:[]>"),
+                listOf(
+                    mapOf("name" to "oauth", "type" to "oauth2", "scopes" to listOf("write")),
+                    mapOf("name" to "openid", "type" to "openidconnect", "scopes" to emptyList<String>()),
+                ),
             ),
             basicTestCase.copyWithHeaders(
                 "Missing [read,write] scopes of oauth and [email] scopes of openid in security",
                 listOf(expectedApiKey, AUTHORIZATION_HEADER with "<oauth:[]&openid:[]>"),
+                listOf(
+                    mapOf("name" to "oauth", "type" to "oauth2", "scopes" to emptyList<String>()),
+                    mapOf("name" to "openid", "type" to "openidconnect", "scopes" to emptyList<String>()),
+                ),
             ),
             basicTestCase.copyWithHeaders(
                 "Missing [read,write] scopes of oauth in security",
                 listOf(expectedApiKey, AUTHORIZATION_HEADER with "<oauth:[]&openid:[email]>"),
+                listOf(
+                    mapOf("name" to "oauth", "type" to "oauth2", "scopes" to emptyList<String>()),
+                    mapOf("name" to "openid", "type" to "openidconnect", "scopes" to listOf("email")),
+                ),
             ),
             basicTestCase.copyWithHeaders(
                 "Missing [write] scopes of oauth in security",
                 listOf(expectedApiKey, AUTHORIZATION_HEADER with "<oauth:[read]&openid:[email]>"),
+                listOf(
+                    mapOf("name" to "oauth", "type" to "oauth2", "scopes" to listOf("read")),
+                    mapOf("name" to "openid", "type" to "openidconnect", "scopes" to listOf("email")),
+                ),
             ),
             basicTestCase.copyWithHeaders(
                 "Missing [read] scopes of oauth in security",
                 listOf(expectedApiKey, AUTHORIZATION_HEADER with "<oauth:[write]&openid:[email]>"),
+                listOf(
+                    mapOf("name" to "oauth", "type" to "oauth2", "scopes" to listOf("write")),
+                    mapOf("name" to "openid", "type" to "openidconnect", "scopes" to listOf("email")),
+                ),
             ),
         )
 

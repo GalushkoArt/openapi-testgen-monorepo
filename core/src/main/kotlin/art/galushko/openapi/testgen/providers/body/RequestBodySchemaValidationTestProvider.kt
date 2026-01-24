@@ -61,7 +61,7 @@ internal class RequestBodySchemaValidationTestProvider(private val rules: List<S
                             rule = rule::class.java.name,
                             body = invalidValue.value,
                             expectedStatusCode = BAD_REQUEST_CODE,
-                            expectedBody = context.schemaExampleValueGenerator.extractExpectedResponseExample(context, BAD_REQUEST_CODE),
+                            expectedBody = context.responseExampleExtractor.extractExpectedResponseExample(context, BAD_REQUEST_CODE),
                         )
                     }.toList()
             }

@@ -24,8 +24,6 @@
 {{#expectedResponseBody}}
         val responseBody = response.body.asString()
         val expectedBodyJson = "{{#escapeString}}{{{expectedResponseBody.rawBody}}}{{/escapeString}}"
-        val expected = objectMapper.readValue(expectedBodyJson, java.util.Map::class.java)
-        val actual = objectMapper.readValue(responseBody, java.util.Map::class.java)
-        Assertions.assertEquals(expected, actual)
+        assertExpectedBody(expectedBodyJson, responseBody)
 {{/expectedResponseBody}}
     }

@@ -369,6 +369,29 @@
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+            },
+            {
+                "name": "Test Valid Case",
+                "method": "POST",
+                "path": "/linked-list",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "priority": 1,
+                    "value": "aa"
+                },
+                "expectedBody": null,
+                "needToComplete": true,
+                "expectedStatusCode": 201,
+                "rule": null
             }
         ]
     },
@@ -542,6 +565,28 @@
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+            },
+            {
+                "name": "Test Valid Case",
+                "method": "POST",
+                "path": "/tree",
+                "queryParams": {},
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": {
+                    "value": "aa"
+                },
+                "expectedBody": null,
+                "needToComplete": true,
+                "expectedStatusCode": 201,
+                "rule": null
             }
         ]
     },
@@ -1114,6 +1159,31 @@
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
+            },
+            {
+                "name": "Test Valid Case",
+                "method": "GET",
+                "path": "/persons",
+                "queryParams": {
+                    "person": {
+                        "age": 0,
+                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                    }
+                },
+                "pathParams": {},
+                "headers": [],
+                "cookie": [],
+                "securityValues": {
+                    "queryParams": {},
+                    "headers": [],
+                    "cookie": [],
+                    "other": {}
+                },
+                "body": null,
+                "expectedBody": [],
+                "needToComplete": true,
+                "expectedStatusCode": 200,
+                "rule": null
             }
         ]
     }

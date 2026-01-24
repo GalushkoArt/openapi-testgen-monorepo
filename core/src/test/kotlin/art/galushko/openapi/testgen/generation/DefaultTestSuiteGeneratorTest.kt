@@ -2,6 +2,7 @@ package art.galushko.openapi.testgen.generation
 
 import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGeneratorFactory
 import art.galushko.openapi.testgen.example.openapi.SchemaMerger
+import art.galushko.openapi.testgen.example.response.ResponseExampleExtractor
 import art.galushko.openapi.testgen.generation.budget.TestCaseBudgetValidator
 import art.galushko.openapi.testgen.generation.orchestration.OutcomeAggregator
 import art.galushko.openapi.testgen.generation.orchestration.ProviderOrchestrator
@@ -70,6 +71,7 @@ class DefaultTestSuiteGeneratorTest {
             method = method,
             path = path,
             expectedStatusCode = 200,
+            needToComplete = true,
         )
         val expectedSuite = TestSuite(
             path = path,
@@ -129,6 +131,7 @@ class DefaultTestSuiteGeneratorTest {
             method = "POST",
             path = path,
             expectedStatusCode = 201,
+            needToComplete = true,
         )
         val expectedSuite = TestSuite(
             path = path,
@@ -200,7 +203,7 @@ class DefaultTestSuiteGeneratorTest {
         assertThat(outcome).isInstanceOf(Outcome.Failure::class.java)
         val failure = outcome as Outcome.Failure
         assertThat(failure.errors).hasSize(1)
-        assertThat(failure.errors[0].message).contains("Unexpected error: Operation responses are null")
+        assertThat(failure.errors[0].message).contains("Operation responses are null")
     }
 
     @Test
@@ -219,7 +222,7 @@ class DefaultTestSuiteGeneratorTest {
         assertThat(outcome).isInstanceOf(Outcome.Failure::class.java)
         val failure = outcome as Outcome.Failure
         assertThat(failure.errors).hasSize(1)
-        assertThat(failure.errors[0].message).contains("Success code for operation is not found")
+        assertThat(failure.errors[0].message).contains("Success status code not found")
     }
 
     private fun constantOutcomeProvider(outcome: Outcome<List<TestCase>>): TestCaseProvider<Operation> =
@@ -239,6 +242,7 @@ class DefaultTestSuiteGeneratorTest {
             securityValueProvider = SecurityValueProvider(emptyMap()),
             basicTestDataProvider = BasicTestDataProvider(),
             schemaExampleValueGenerator = schemaExampleValueGenerator,
+            responseExampleExtractor = ResponseExampleExtractor(schemaExampleValueGenerator),
             schemaMerger = SchemaMerger(),
         )
         return DefaultTestSuiteGenerator(

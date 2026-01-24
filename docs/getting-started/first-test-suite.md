@@ -4,18 +4,28 @@ This tutorial generates tests from an OpenAPI spec using the CLI.
 
 ## 1) Get the CLI
 
-Download from [GitHub Releases](https://github.com/GalushkoArt/openapi-testgen-monorepo/releases) or build from source:
+=== "npm (recommended)"
 
-```bash
-# Option A: Download native binary (no Java required)
-curl -LO https://github.com/GalushkoArt/openapi-testgen-monorepo/releases/download/0.8.0/openapi-testgen-0.8.0-linux-amd64.zip
-unzip openapi-testgen-0.8.0-linux-amd64.zip
-chmod +x openapi-testgen
+    ```bash
+    npm install -g @openapi-testgen/cli
+    ```
 
-# Option B: Build from source
-./gradlew :cli:installDist
-alias openapi-testgen='./cli/build/install/openapi-testgen/bin/openapi-testgen'
-```
+=== "Download binary"
+
+    ```bash
+    # Download native binary (no Java required)
+    curl -LO https://github.com/GalushkoArt/openapi-testgen-monorepo/releases/download/0.9.0/openapi-testgen-0.9.0-linux-amd64.zip
+    unzip openapi-testgen-0.9.0-linux-amd64.zip
+    cd openapi-testgen-0.9.0-linux-amd64
+    chmod +x openapi-testgen
+    ```
+
+=== "Build from source"
+
+    ```bash
+    ./gradlew :cli:installDist
+    alias openapi-testgen='./cli/build/install/openapi-testgen/bin/openapi-testgen'
+    ```
 
 Verify installation:
 

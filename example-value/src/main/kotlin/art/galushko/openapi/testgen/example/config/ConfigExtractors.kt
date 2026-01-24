@@ -264,4 +264,47 @@ public object ConfigExtractors {
                 actual = "'$value'",
             )
     }
+
+    /**
+     * Extracts and validates a Map<String, List<String>> value.
+     *
+     * Supports flexible input formats:
+     * - Map values can be List<String> (standard format)
+     * - Map values can be String (converted to single-element list)
+     *
+     * This is useful for configurations like `includeOperations` where:
+     * - `"/path": ["GET", "POST"]` is the standard form
+     * - `"/path": "GET"` is shorthand for single method
+     */
+    public fun extractStringListMap(field: String, map: MutableMap<String, Any?>): Map<String, List<String>>? {
+        val value = map.remove(field) ?: return null
+
+        if (value !is Map<*, *>) {
+            throw ConfigurationException(field, "Map<String, List<String>>", value::class.qualifiedName ?: "unknown")
+        }
+
+        return value.entries.associate { (k, v) ->
+            val key = requireStringKey(field, k)
+            val methods = extractMethodList(field, key, v)
+            key to methods
+        }
+    }
+
+    private fun requireStringKey(field: String, key: Any?): String {
+        if (key !is String) {
+            throw ConfigurationException("$field.keys", "String", key?.let { it::class.qualifiedName } ?: "null")
+        }
+        return key
+    }
+
+    private fun extractMethodList(field: String, key: String, value: Any?): List<String> = when (value) {
+        is String -> listOf(value)
+        is Collection<*> -> value.mapIndexed { index, item ->
+            if (item !is String) {
+                throw ConfigurationException("$field[$key][$index]", "String", item?.let { it::class.qualifiedName } ?: "null")
+            }
+            item
+        }
+        else -> throw ConfigurationException("$field[$key]", "List<String> or String", value?.let { it::class.qualifiedName } ?: "null")
+    }
 }

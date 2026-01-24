@@ -6,14 +6,15 @@ Command-line interface for generating API tests from OpenAPI specifications.
 
 ### Download Release
 
-Download from [GitHub Releases](https://github.com/ArtGalushko/openapi-test-generator/releases):
+Download from [GitHub Releases](https://github.com/GalushkoArt/openapi-testgen-monorepo/releases):
 
-| Format | File | Use Case |
-|--------|------|----------|
-| Native | `openapi-testgen-<version>-linux-amd64` | Fastest startup, no JVM |
-| Native | `openapi-testgen-<version>-macos-arm64` | macOS native binary |
-| Native | `openapi-testgen-<version>-windows-amd64.exe` | Windows native binary |
-| Fat JAR | `openapi-testgen-<version>-all.jar` | Portable, requires JVM |
+| Format  | File                                          | Use Case                    |
+|---------|-----------------------------------------------|-----------------------------|
+| Native  | `openapi-testgen-<version>-linux-amd64.zip`   | Fastest startup, no JVM     |
+| Native  | `openapi-testgen-<version>-linux-arm64.zip`   | Linux native binary for ARM |
+| Native  | `openapi-testgen-<version>-macos-arm64.zip`   | macOS native binary         |
+| Native  | `openapi-testgen-<version>-windows-amd64.zip` | Windows native binary       |
+| Fat JAR | `openapi-testgen-<version>.zip`               | Portable, requires JVM      |
 
 ### Build from Source
 
@@ -56,18 +57,18 @@ openapi-testgen \
 
 ## Options
 
-| Option | Description |
-|--------|-------------|
-| `--spec-file` | Path to OpenAPI spec (required unless in config) |
-| `--output-dir` | Output directory (required unless in config) |
-| `--generator` | Generator: `template` or `test-suite-writer` |
-| `--generator-option` | Generator option (repeatable): `key=value` |
-| `--config-file` | YAML configuration file |
-| `--setting` | Test generation setting (repeatable): `key=value` |
-| `--always-write-test` | Write output even on errors |
-| `--log-level` | TRACE, DEBUG, INFO, WARN, ERROR, OFF |
-| `--help` | Show help |
-| `--version` | Show version |
+| Option                | Description                                       |
+|-----------------------|---------------------------------------------------|
+| `--spec-file`         | Path to OpenAPI spec (required unless in config)  |
+| `--output-dir`        | Output directory (required unless in config)      |
+| `--generator`         | Generator: `template` or `test-suite-writer`      |
+| `--generator-option`  | Generator option (repeatable): `key=value`        |
+| `--config-file`       | YAML configuration file                           |
+| `--setting`           | Test generation setting (repeatable): `key=value` |
+| `--always-write-test` | Write output even on errors                       |
+| `--log-level`         | TRACE, DEBUG, INFO, WARN, ERROR, OFF              |
+| `--help`              | Show help                                         |
+| `--version`           | Show version                                      |
 
 ## Configuration File
 
@@ -76,14 +77,14 @@ specFile: "openapi.yaml"
 outputDir: "./generated"
 generator: "template"
 generatorOptions:
-  templateSet: "restassured-java"
-  templateVariables:
-    package: "com.example.tests"
-    baseUrl: "http://localhost:8080"
+    templateSet: "restassured-java"
+    templateVariables:
+        package: "com.example.tests"
+        baseUrl: "http://localhost:8080"
 testGenerationSettings:
-  maxTestCasesPerOperation: 500
-  validSecurityValues:
-    ApiKeyAuth: "test-key"
+    maxTestCasesPerOperation: 500
+    validSecurityValues:
+        ApiKeyAuth: "test-key"
 ```
 
 ```bash
@@ -134,6 +135,7 @@ openapi-testgen \
 Template sets: `restassured-java`, `restassured-kotlin`
 
 For custom templates:
+
 ```bash
 --generator-option customTemplateDir=./templates \
 --generator-option classTemplatePath=my-template.mustache
@@ -155,7 +157,7 @@ Output formats: `.json`, `.yaml` (determined by filename)
 ## Native Image
 
 The native binary provides instant startup and requires no JVM. Pre-built binaries are available
-in [GitHub Releases](https://github.com/ArtGalushko/openapi-test-generator/releases).
+in [GitHub Releases](https://github.com/GalushkoArt/openapi-testgen-monorepo/releases).
 
 Build locally (requires GraalVM with `native-image`):
 

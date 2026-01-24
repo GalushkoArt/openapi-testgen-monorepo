@@ -1,6 +1,5 @@
 package art.galushko.openapi.testgen.generator.template
 
-import art.galushko.openapi.testgen.generation.step
 import art.galushko.openapi.testgen.model.KeyValuePair
 import art.galushko.openapi.testgen.model.TestCase
 import art.galushko.openapi.testgen.model.TestSuite
@@ -52,6 +51,17 @@ class TemplateArtifactGeneratorTest {
                 TestSuite(path = "/users", method = "POST", operationName = "createUser", testCases = emptyList()),
                 emptyMap<String, Any?>(),
                 "CreateUserTest"
+            ),
+            Arguments.of(
+                "From fallback operationName (method + path)",
+                TestSuite(
+                    path = "/users/{userId}/orders",
+                    method = "GET",
+                    operationName = "get /users/{userId}/orders",
+                    testCases = emptyList()
+                ),
+                emptyMap<String, Any?>(),
+                "GetUsersUserIdOrdersTest"
             ),
             Arguments.of(
                 "From path when no operationName",

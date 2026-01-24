@@ -5,6 +5,7 @@ import art.galushko.openapi.testgen.model.TestCase
 import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGenerator
 import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGeneratorFactory
 import art.galushko.openapi.testgen.example.openapi.SchemaMerger
+import art.galushko.openapi.testgen.example.response.ResponseExampleExtractor
 import art.galushko.openapi.testgen.example.util.CombinationBudget
 import art.galushko.openapi.testgen.testdata.BasicTestDataProvider
 import art.galushko.openapi.testgen.testdata.SecurityValueProvider
@@ -60,6 +61,7 @@ fun createTestContext(
     basicTestData: BasicTestDataProvider = BasicTestDataProvider(),
     securityValueProvider: SecurityValueProvider = SecurityValueProvider(),
     schemaExampleValueGenerator: SchemaExampleValueGenerator = SchemaExampleValueGeneratorFactory().create(),
+    responseExampleExtractor: ResponseExampleExtractor = ResponseExampleExtractor(schemaExampleValueGenerator),
     schemaMerger: SchemaMerger = SchemaMerger(),
     maxDepth: Int = 50,
     combinationBudget: CombinationBudget? = null,
@@ -70,6 +72,7 @@ fun createTestContext(
     basicTestData = basicTestData,
     securityValueProvider = securityValueProvider,
     schemaExampleValueGenerator = schemaExampleValueGenerator,
+    responseExampleExtractor = responseExampleExtractor,
     schemaMerger = schemaMerger,
     maxDepth = maxDepth,
     combinationBudget = combinationBudget,
@@ -82,6 +85,7 @@ private data class TestOnlyTestGenerationContext(
     override val basicTestData: BasicTestDataProvider,
     override val securityValueProvider: SecurityValueProvider,
     override val schemaExampleValueGenerator: SchemaExampleValueGenerator,
+    override val responseExampleExtractor: ResponseExampleExtractor,
     override val schemaMerger: SchemaMerger,
     override val maxDepth: Int,
     override val combinationBudget: CombinationBudget?,

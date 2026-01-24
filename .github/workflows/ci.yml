@@ -2,133 +2,296 @@ name: CI
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   pull_request:
+
+env:
+  JAVA_VERSION: '21'
+  NODE_VERSION: '20'
 
 jobs:
   validate-wrapper:
+    name: Validate Gradle Wrapper
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: gradle/actions/wrapper-validation@v5
 
   build:
+    name: Build & Test
     needs: validate-wrapper
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Setup Java 21
-        uses: actions/setup-java@v5
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: '21'
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
-      - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
-      - name: Build and Test
-        run: ./gradlew :model:check :plugin:check :cli:check :core:check :pattern-value:check :pattern-support:check :generator-template:check :example-value:check :distribution-bundle:check :samples:java-spring-file-writer:build :samples:java-spring-rest-assured:build :samples:kotlin-spring-rest-assured:build --scan
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: gradle/actions/setup-gradle@v5
+      - run: chmod +x ./gradlew
+      - name: Build and Test All Modules
+        run: |
+          ./gradlew \
+            :model:check \
+            :example-value:check \
+            :core:check \
+            :pattern-value:check \
+            :pattern-support:check \
+            :generator-template:check \
+            :distribution-bundle:check \
+            :plugin:check \
+            :cli:check \
+            :samples:java-spring-file-writer:build \
+            :samples:java-spring-rest-assured:build \
+            :samples:kotlin-spring-rest-assured:build \
+            --scan
 
   build-fat-jar:
+    name: Build Fat JAR
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Setup Java 21
-        uses: actions/setup-java@v5
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: '21'
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
-      - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
-      - name: Build Fat JAR
-        run: ./gradlew :cli:shadowJar --build-cache
-      - name: Test Fat JAR
-        run: ./gradlew :cli:testFatJar --build-cache
-      - name: Upload Fat JAR
-        uses: actions/upload-artifact@v4
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: gradle/actions/setup-gradle@v5
+      - run: chmod +x ./gradlew
+      - run: ./gradlew :cli:shadowJar --build-cache
+      - run: ./gradlew :cli:testFatJar --build-cache
+      - uses: actions/upload-artifact@v4
         with:
-          name: openapi-testgen-fatjar
+          name: native-fatjar
           path: cli/build/libs/openapi-testgen-*-all.jar
           retention-days: 7
 
-  build-native-linux:
+  build-native:
+    name: Build Native (${{ matrix.target }})
     needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: linux-x64
+            os: ubuntu-latest
+            artifact: openapi-testgen
+          - target: linux-arm64
+            os: ubuntu-24.04-arm
+            artifact: openapi-testgen
+          - target: darwin-arm64
+            os: macos-latest
+            artifact: openapi-testgen
+          - target: win32-x64
+            os: windows-latest
+            artifact: openapi-testgen.exe
+    steps:
+      - uses: actions/checkout@v5
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: graalvm
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          native-image-job-reports: ${{ matrix.os != 'windows-latest' && matrix.os != 'macos-latest' }}
+      - uses: gradle/actions/setup-gradle@v5
+      - run: chmod +x ./gradlew
+        if: runner.os != 'Windows'
+
+      # Windows workaround: https://github.com/graalvm/native-build-tools/issues/754
+      - name: Create temp directory (Windows)
+        if: runner.os == 'Windows'
+        run: New-Item -ItemType Directory -Force -Path D:\Temp
+
+      - name: Build and Test Native Image
+        run: ${{ runner.os == 'Windows' && '.\gradlew.bat' || './gradlew' }} :cli:testNative --build-cache
+        env:
+          GRADLE_OPTS: ${{ runner.os == 'Windows' && '-Djava.io.tmpdir=D:\Temp' || '' }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-${{ matrix.target }}
+          path: cli/build/native/nativeCompile/${{ matrix.artifact }}
+          retention-days: 7
+
+  prepare-npm-packages:
+    name: Prepare npm Packages
+    needs: [build-fat-jar, build-native]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Setup GraalVM
-        uses: graalvm/setup-graalvm@v1
+      - uses: actions/setup-node@v5
         with:
-          java-version: '21'
-          distribution: 'graalvm'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          native-image-job-reports: 'true'
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
-      - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
-      - name: Build and Test Native Image
-        run: ./gradlew :cli:testDistributions --build-cache
-      - name: Upload Native Binary
-        uses: actions/upload-artifact@v4
+          node-version: ${{ env.NODE_VERSION }}
+      - run: sudo apt-get install -y jq
+
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
         with:
-          name: openapi-testgen-native-linux
-          path: cli/build/native/nativeCompile/openapi-testgen
+          path: artifacts
+          pattern: native-*
+
+      - name: Prepare npm packages
+        run: |
+          chmod +x ./npm/scripts/build-packages.sh
+          FAT_JAR_DIR="artifacts/native-fatjar" NATIVE_DIR="artifacts" ./npm/scripts/build-packages.sh
+
+      - name: Verify package structures
+        run: |
+          chmod +x ./npm/scripts/verify-packages.sh
+          ./npm/scripts/verify-packages.sh
+
+      - name: Create tarballs
+        run: |
+          NPM_OUT="$GITHUB_WORKSPACE/cli/build/npm"
+          TARBALLS="$GITHUB_WORKSPACE/cli/build/npm-tarballs"
+          mkdir -p "$TARBALLS"
+
+          npm pack "$NPM_OUT/cli" --pack-destination "$TARBALLS"
+          for platform in linux-x64 linux-arm64 darwin-arm64 win32-x64; do
+            [[ -d "$NPM_OUT/cli-$platform" ]] && npm pack "$NPM_OUT/cli-$platform" --pack-destination "$TARBALLS"
+          done
+
+          echo "Created tarballs:"
+          ls -la "$TARBALLS"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: npm-packages
+          path: cli/build/npm/
           retention-days: 7
 
-  build-native-macos:
-    needs: build
-    runs-on: macos-latest
+      - uses: actions/upload-artifact@v4
+        with:
+          name: npm-tarballs
+          path: cli/build/npm-tarballs/
+          retention-days: 7
+
+  test-npm-install:
+    name: Test npm (${{ matrix.os }}, Node ${{ matrix.node }})
+    needs: prepare-npm-packages
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, windows-latest]
+        node: ['18', '20', '22']
+    steps:
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: npm-tarballs
+          path: tarballs
+
+      - name: Install main CLI package
+        shell: bash
+        run: |
+          cd tarballs
+          npm install -g openapi-testgen-cli-[0-9]*.tgz
+          openapi-testgen --version
+          openapi-testgen --help
+
+      - name: Install and test native package
+        shell: bash
+        run: |
+          cd tarballs
+
+          case "${{ matrix.os }}" in
+            ubuntu-latest)     PKG=$(ls openapi-testgen-cli-linux-x64-*.tgz 2>/dev/null || true) ;;
+            ubuntu-24.04-arm)  PKG=$(ls openapi-testgen-cli-linux-arm64-*.tgz 2>/dev/null || true) ;;
+            macos-latest)      PKG=$(ls openapi-testgen-cli-darwin-arm64-*.tgz 2>/dev/null || true) ;;
+            windows-latest)    PKG=$(ls openapi-testgen-cli-win32-x64-*.tgz 2>/dev/null || true) ;;
+          esac
+
+          if [[ -n "$PKG" && -f "$PKG" ]]; then
+            echo "Installing native package: $PKG"
+            npm uninstall -g @openapi-testgen/cli || true
+            npm install -g "$PKG"
+            openapi-testgen --version
+          else
+            echo "Native package not found for this platform, skipping"
+          fi
+
+  test-verdaccio:
+    name: Test ${{ matrix.pm }} (Verdaccio)
+    needs: prepare-npm-packages
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        pm: [npm, pnpm, yarn, bun]
     steps:
       - uses: actions/checkout@v5
-      - name: Setup GraalVM
-        uses: graalvm/setup-graalvm@v1
+      - uses: actions/setup-node@v5
         with:
-          java-version: '21'
-          distribution: 'graalvm'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
-      - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
-      - name: Build and Test Native Image
-        run: ./gradlew :cli:testNative --build-cache
-      - name: Upload Native Binary
-        uses: actions/upload-artifact@v4
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: actions/setup-java@v5
         with:
-          name: openapi-testgen-native-macos
-          path: cli/build/native/nativeCompile/openapi-testgen
-          retention-days: 7
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: oven-sh/setup-bun@v2
+        if: matrix.pm == 'bun'
+      - uses: actions/download-artifact@v4
+        with:
+          name: npm-tarballs
+          path: tarballs
 
-  build-native-windows:
-    needs: build
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: Setup GraalVM
-        uses: graalvm/setup-graalvm@v1
-        with:
-          java-version: '21'
-          distribution: 'graalvm'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
-      # Workaround for https://github.com/graalvm/native-build-tools/issues/754
-      # native-build-tools fails when project (D:) and temp dir (C:) are on different drives
-      - name: Create temp directory on same drive
-        run: New-Item -ItemType Directory -Force -Path D:\Temp
-      - name: Build and Test Native Image
-        run: .\gradlew.bat :cli:testNative --build-cache
-        env:
-          GRADLE_OPTS: -Djava.io.tmpdir=D:\Temp
-      - name: Upload Native Binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: openapi-testgen-native-windows
-          path: cli/build/native/nativeCompile/openapi-testgen.exe
-          retention-days: 7
+      - name: Setup package manager
+        run: |
+          case "${{ matrix.pm }}" in
+            pnpm|yarn) npm install -g ${{ matrix.pm }} ;;
+          esac
 
+      - name: Start Verdaccio
+        run: |
+          docker run -d -p 4873:4873 --name verdaccio \
+            -v "$GITHUB_WORKSPACE/.github/verdaccio/config.yaml:/verdaccio/conf/config.yaml" \
+            verdaccio/verdaccio
+          for i in {1..30}; do
+            curl -fsS http://localhost:4873/-/ping > /dev/null && echo "Verdaccio ready" && break
+            sleep 1
+          done
 
+      - name: Publish packages to Verdaccio
+        run: |
+          cd tarballs
+          npm config set registry http://localhost:4873
+          npm config set //localhost:4873/:_authToken "test-token"
+          for pkg in openapi-testgen-cli-{linux-x64,linux-arm64,darwin-arm64,win32-x64}-*.tgz; do
+            [[ -f "$pkg" ]] && npm publish "$pkg" --access public
+          done
+          npm publish openapi-testgen-cli-[0-9]*.tgz --access public
+
+      - name: Install and test
+        run: |
+          case "${{ matrix.pm }}" in
+            npm)
+              npm install -g @openapi-testgen/cli --registry http://localhost:4873
+              ;;
+            pnpm)
+              PNPM_HOME="$HOME/.local/share/pnpm"
+              mkdir -p "$PNPM_HOME"
+              export PNPM_HOME PATH="$PNPM_HOME:$PATH"
+              pnpm config set global-bin-dir "$PNPM_HOME"
+              pnpm add -g @openapi-testgen/cli --registry http://localhost:4873
+              ;;
+            yarn)
+              yarn config set registry http://localhost:4873
+              yarn global add @openapi-testgen/cli
+              ;;
+            bun)
+              bun add -g @openapi-testgen/cli --registry http://localhost:4873
+              ;;
+          esac
+          openapi-testgen --version
+          openapi-testgen --help
+
+      - name: Cleanup
+        if: always()
+        run: docker stop verdaccio || true

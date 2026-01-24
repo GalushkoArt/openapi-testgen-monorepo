@@ -79,7 +79,7 @@
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
   "queryAllDeclaredMethods":true,
-  "methods":[{"name":"getKey","parameterTypes":[] }, {"name":"getValue","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Object","java.lang.Object"] }, {"name":"getKey","parameterTypes":[] }, {"name":"getValue","parameterTypes":[] }]
 },
 {
   "name":"art.galushko.openapi.testgen.model.SecurityValues",
@@ -87,7 +87,7 @@
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
   "queryAllDeclaredMethods":true,
-  "methods":[{"name":"getCookie","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getOther","parameterTypes":[] }, {"name":"getQueryParams","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.util.Map","java.util.List","java.util.List","java.util.Map"] }, {"name":"getCookie","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getOther","parameterTypes":[] }, {"name":"getQueryParams","parameterTypes":[] }]
 },
 {
   "name":"art.galushko.openapi.testgen.model.TestCase",
@@ -95,7 +95,7 @@
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
   "queryAllDeclaredMethods":true,
-  "methods":[{"name":"getBody","parameterTypes":[] }, {"name":"getCookie","parameterTypes":[] }, {"name":"getExpectedBody","parameterTypes":[] }, {"name":"getExpectedStatusCode","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getMethod","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getNeedToComplete","parameterTypes":[] }, {"name":"getPath","parameterTypes":[] }, {"name":"getPathParams","parameterTypes":[] }, {"name":"getQueryParams","parameterTypes":[] }, {"name":"getRule","parameterTypes":[] }, {"name":"getSecurityValues","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.lang.String","java.util.Map","java.util.Map","java.util.List","java.util.List","art.galushko.openapi.testgen.model.SecurityValues","java.lang.Object","java.lang.Object","boolean","int","java.lang.String"] }, {"name":"getBody","parameterTypes":[] }, {"name":"getCookie","parameterTypes":[] }, {"name":"getExpectedBody","parameterTypes":[] }, {"name":"getExpectedStatusCode","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getMethod","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getNeedToComplete","parameterTypes":[] }, {"name":"getPath","parameterTypes":[] }, {"name":"getPathParams","parameterTypes":[] }, {"name":"getQueryParams","parameterTypes":[] }, {"name":"getRule","parameterTypes":[] }, {"name":"getSecurityValues","parameterTypes":[] }]
 },
 {
   "name":"art.galushko.openapi.testgen.model.TestSuite",
@@ -103,7 +103,7 @@
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
   "queryAllDeclaredMethods":true,
-  "methods":[{"name":"getMethod","parameterTypes":[] }, {"name":"getOperationName","parameterTypes":[] }, {"name":"getPath","parameterTypes":[] }, {"name":"getTestCases","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.lang.String","java.util.List"] }, {"name":"getMethod","parameterTypes":[] }, {"name":"getOperationName","parameterTypes":[] }, {"name":"getPath","parameterTypes":[] }, {"name":"getTestCases","parameterTypes":[] }]
 },
 {
   "name":"ch.qos.logback.classic.encoder.PatternLayoutEncoder",

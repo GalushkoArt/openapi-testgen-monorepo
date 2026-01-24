@@ -60,7 +60,7 @@ internal fun transformAndValidateWriterOptions(map: Map<String, Any?>): TestSuit
 
     val preventOverwriteSuites = when (val v = map["preventOverwriteSuites"]) {
         is Boolean -> v
-        is String? -> v?.toBooleanStrictOrNull() ?: true
+        is String? -> v?.toBooleanStrictOrNull() ?: false
         else -> throw IllegalArgumentException("Invalid 'preventOverwriteSuites' option: '$v'. Expected boolean or string.")
     }
 

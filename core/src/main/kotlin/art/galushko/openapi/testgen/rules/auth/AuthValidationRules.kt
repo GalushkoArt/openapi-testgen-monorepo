@@ -106,7 +106,7 @@ internal class InvalidSecurityValuesAuthValidationRule : AuthValidationRule {
                         name = "Invalid ${describeSecurityRequirements(providedSecurityRequirement)} security",
                         rule = InvalidSecurityValuesAuthValidationRule::class.java.name,
                         expectedStatusCode = UNAUTHORIZED_CODE,
-                        expectedBody = context.schemaExampleValueGenerator.extractExpectedResponseExample(context, UNAUTHORIZED_CODE),
+                        expectedBody = context.responseExampleExtractor.extractExpectedResponseExample(context, UNAUTHORIZED_CODE),
                     )
                 }
             }
@@ -150,7 +150,7 @@ internal class InsufficientScopesAuthValidationRule : AuthValidationRule {
                     context.securityValueProvider::getAuthorizationSchemaValue,
                 ).copy(
                     expectedStatusCode = FORBIDDEN_CODE,
-                    expectedBody = context.schemaExampleValueGenerator.extractExpectedResponseExample(context, FORBIDDEN_CODE),
+                    expectedBody = context.responseExampleExtractor.extractExpectedResponseExample(context, FORBIDDEN_CODE),
                     rule = InsufficientScopesAuthValidationRule::class.java.name,
                     name = name,
                 )
@@ -246,7 +246,7 @@ internal class IncorrectScopesAuthValidationRule : AuthValidationRule {
                     context.securityValueProvider::getAuthorizationSchemaValue,
                 ).copy(
                     expectedStatusCode = FORBIDDEN_CODE,
-                    expectedBody = context.schemaExampleValueGenerator.extractExpectedResponseExample(context, FORBIDDEN_CODE),
+                    expectedBody = context.responseExampleExtractor.extractExpectedResponseExample(context, FORBIDDEN_CODE),
                     rule = IncorrectScopesAuthValidationRule::class.java.name,
                     name = "${security.name} security scheme has invalid scope",
                 )

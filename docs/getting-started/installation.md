@@ -59,7 +59,7 @@ For detailed options (native binaries, project dependencies, troubleshooting), s
 
 Download the latest release from the [GitHub Releases page](https://github.com/GalushkoArt/openapi-testgen-monorepo/releases):
 
-- **JVM distribution** (`openapi-testgen-<version>.zip`): Cross-platform, requires Java 21+
+- **JVM distribution** (`openapi-testgen-<version>.zip`): Fat JAR, cross-platform, requires Java 21+
 - **Native binary** (`openapi-testgen-<version>-<platform>`): Standalone executable, no Java required
     - `linux-amd64`: Linux x86_64
     - `linux-arm64`: Linux arm_64
@@ -70,19 +70,18 @@ Download the latest release from the [GitHub Releases page](https://github.com/G
 
 ```bash
 # Download and extract
-unzip openapi-testgen-0.9.0.zip
-cd openapi-testgen-0.9.0
+unzip openapi-testgen-0.9.1.zip
 
-# Run
-./openapi-testgen --help
+# Run (requires Java 21+)
+java -jar openapi-testgen-0.9.1-all.jar --help
 ```
 
 #### Native binary
 
 ```bash
 # Download and make executable (Linux/macOS)
-unzip openapi-testgen-0.9.0-linux-amd64.zip
-cd openapi-testgen-0.9.0-linux-amd64
+unzip openapi-testgen-0.9.1-linux-amd64.zip
+cd openapi-testgen-0.9.1-linux-amd64
 chmod +x openapi-testgen
 ./openapi-testgen --help
 ```
@@ -113,7 +112,7 @@ Using the plugins DSL (recommended):
 
 ```kotlin
 plugins {
-    id("art.galushko.openapi-test-generator") version "0.9.0"
+    id("art.galushko.openapi-test-generator") version "0.9.1"
 }
 ```
 
@@ -125,7 +124,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath("art.galushko.openapi.testgen:plugin:0.9.0")
+        classpath("art.galushko.openapi.testgen:plugin:0.9.1")
     }
 }
 

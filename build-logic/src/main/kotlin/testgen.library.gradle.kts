@@ -1,5 +1,3 @@
-import com.vanniktech.maven.publish.JavadocJar
-import com.vanniktech.maven.publish.KotlinJvm
 import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
@@ -8,14 +6,10 @@ plugins {
     id("com.vanniktech.maven.publish")
 }
 
-val testgenLibrary = extensions.create<TestgenLibraryExtension>("testgenLibrary")
-testgenLibrary.platformPublishing.convention(KotlinJvm(javadocJar = JavadocJar.Dokka("dokkaGeneratePublicationHtml")))
-
 // Maven Central Publishing for Kotlin JVM libraries
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = false)
     signAllPublications()
-    configure(testgenLibrary.platformPublishing.get())
 
     coordinates(
         groupId = project.group.toString(),

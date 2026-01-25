@@ -44,6 +44,21 @@ function getJavaVersion() {
   }
 }
 
+/**
+ * Check if the system uses glibc (vs musl or other libc).
+ * Returns true if glibc is detected, false otherwise.
+ */
+function hasGlibc() {
+  if (process.platform !== "linux") return false;
+  try {
+    // ldd --version outputs "ldd (GNU libc)" or similar for glibc systems
+    const output = execSync("ldd --version 2>&1", { encoding: "utf8" });
+    return /glibc|gnu libc/i.test(output);
+  } catch {
+    return false;
+  }
+}
+
 // Main postinstall logic
 try {
   console.log("");
@@ -53,8 +68,21 @@ try {
   // Check for native binary
   if (nativePackage) {
     if (isNativePackageInstalled(nativePackage)) {
-      console.log(`  Using native binary from ${nativePackage}`);
-      console.log("  No Java required.");
+      // Check glibc presence for Linux ARM64 (native binary requires glibc, not musl)
+      if (platform === "linux-arm64" && !hasGlibc()) {
+        console.log(`  Native binary installed from ${nativePackage}`);
+        console.warn("  Warning: glibc not detected (musl or other libc).");
+        console.warn("  The native binary may not work. Will fall back to JAR at runtime.");
+        const javaVersion = getJavaVersion();
+        if (javaVersion >= 21) {
+          console.log(`  Java ${javaVersion} detected - JAR fallback available.`);
+        } else {
+          console.warn("  Please install Java 21+ for the JAR fallback to work.");
+        }
+      } else {
+        console.log(`  Using native binary from ${nativePackage}`);
+        console.log("  No Java required.");
+      }
     } else {
       // Native package not installed - check Java fallback
       const javaVersion = getJavaVersion();

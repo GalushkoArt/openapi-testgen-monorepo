@@ -1,5 +1,6 @@
 import com.vanniktech.maven.publish.GradlePlugin
 import com.vanniktech.maven.publish.JavadocJar
+import org.gradle.plugins.signing.Sign
 
 plugins {
     id("testgen.library")
@@ -24,10 +25,10 @@ testgenQuality {
     koverMinCoverage = 88
 }
 
-testgenLibrary {
-    // Use None() to completely skip javadoc jar handling by vanniktech
-    // java-gradle-plugin already adds its own javadoc jar
-    platformPublishing = GradlePlugin(javadocJar = JavadocJar.None())
+// Configure vanniktech maven-publish for Gradle plugin artifacts
+// Use None() to skip javadoc jar - java-gradle-plugin already adds its own
+mavenPublishing {
+    configure(GradlePlugin(javadocJar = JavadocJar.None()))
 }
 
 gradlePlugin {
@@ -42,4 +43,9 @@ gradlePlugin {
             tags.set(listOf("openapi", "testing", "generator", "api"))
         }
     }
+}
+
+// java-gradle-plugin creates a pluginMaven publication that needs explicit signing task dependency
+tasks.withType<PublishToMavenRepository>().configureEach {
+    dependsOn(tasks.withType<Sign>())
 }

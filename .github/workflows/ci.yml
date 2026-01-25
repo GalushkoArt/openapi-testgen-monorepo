@@ -74,18 +74,25 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # Linux x64: statically linked with musl for maximum portability (no GLIBC dependency)
           - target: linux-x64
             os: ubuntu-latest
             artifact: openapi-testgen
+            static: true
+          # Linux ARM64: dynamic linking on Ubuntu 22.04 for broader glibc compatibility (2.35+)
+          # musl toolchain not available for ARM64 in setup-graalvm, so we use the oldest available runner
           - target: linux-arm64
-            os: ubuntu-24.04-arm
+            os: ubuntu-22.04-arm
             artifact: openapi-testgen
+            static: false
           - target: darwin-arm64
             os: macos-latest
             artifact: openapi-testgen
+            static: false
           - target: win32-x64
             os: windows-latest
             artifact: openapi-testgen.exe
+            static: false
     steps:
       - uses: actions/checkout@v5
       - uses: graalvm/setup-graalvm@v1
@@ -94,6 +101,7 @@ jobs:
           distribution: graalvm
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: ${{ matrix.os != 'windows-latest' && matrix.os != 'macos-latest' }}
+          native-image-musl: ${{ matrix.static }}
       - uses: gradle/actions/setup-gradle@v5
       - run: chmod +x ./gradlew
         if: runner.os != 'Windows'
@@ -104,7 +112,7 @@ jobs:
         run: New-Item -ItemType Directory -Force -Path D:\Temp
 
       - name: Build and Test Native Image
-        run: ${{ runner.os == 'Windows' && '.\gradlew.bat' || './gradlew' }} :cli:testNative --build-cache
+        run: ${{ runner.os == 'Windows' && '.\gradlew.bat' || './gradlew' }} :cli:testNative --build-cache ${{ matrix.static && '-Pstatic-linux' || '' }}
         env:
           GRADLE_OPTS: ${{ runner.os == 'Windows' && '-Djava.io.tmpdir=D:\Temp' || '' }}
 

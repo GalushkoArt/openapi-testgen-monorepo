@@ -3,6 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Maven Central](https://img.shields.io/maven-central/v/art.galushko.openapi.testgen/core)](https://central.sonatype.com/artifact/art.galushko.openapi.testgen/core)
 [![Gradle Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/art.galushko.openapi-test-generator)](https://plugins.gradle.org/plugin/art.galushko.openapi-test-generator)
+[![npm](https://img.shields.io/npm/v/@openapi-testgen/cli)](https://www.npmjs.com/package/@openapi-testgen/cli)
 
 Automatically generate test cases from your OpenAPI specifications to validate **API contract compliance**. The generator creates negative test cases that verify your controllers properly enforce parameter validation, request body constraints, and authentication as defined in your OpenAPI spec. These tests validate infrastructure-level behavior (input validation, schema enforcement, security) - not business logic.
 
@@ -25,7 +26,7 @@ Add the plugin to your `build.gradle.kts`:
 
 ```kotlin
 plugins {
-    id("art.galushko.openapi-test-generator") version "0.9.0"
+    id("art.galushko.openapi-test-generator") version "0.9.1"
 }
 ```
 

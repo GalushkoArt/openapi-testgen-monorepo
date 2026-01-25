@@ -23,12 +23,12 @@ The package supports two execution modes:
 
 Native binaries are automatically used when available for your platform:
 
-| Platform    | Package                             |
-|-------------|-------------------------------------|
-| Linux x64   | `@openapi-testgen/cli-linux-x64`    |
-| Linux ARM64 | `@openapi-testgen/cli-linux-arm64`  |
-| macOS ARM64 | `@openapi-testgen/cli-darwin-arm64` |
-| Windows x64 | `@openapi-testgen/cli-win32-x64`    |
+| Platform    | Package                             | Requirements                                  |
+|-------------|-------------------------------------|-----------------------------------------------|
+| Linux x64   | `@openapi-testgen/cli-linux-x64`    | Any Linux (static binary)                     |
+| Linux ARM64 | `@openapi-testgen/cli-linux-arm64`  | glibc-based Linux; auto JAR fallback on musl   |
+| macOS ARM64 | `@openapi-testgen/cli-darwin-arm64` | macOS 11+                                     |
+| Windows x64 | `@openapi-testgen/cli-win32-x64`    | Windows 10+                                   |
 
 Native packages are installed as optional dependencies. No Java required.
 

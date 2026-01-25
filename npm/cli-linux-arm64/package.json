@@ -1,7 +1,22 @@
 {
   "name": "@openapi-testgen/cli-linux-arm64",
   "version": "0.0.0",
-  "description": "Native Linux arm64 binary for @openapi-testgen/cli",
+  "description": "Native Linux ARM64 binary for @openapi-testgen/cli",
+  "keywords": [
+    "openapi",
+    "swagger",
+    "testing",
+    "api",
+    "test-generation",
+    "cli",
+    "native",
+    "linux",
+    "arm64"
+  ],
+  "homepage": "https://docs.galushko.art/openapi-test-generator/",
+  "bugs": {
+    "url": "https://github.com/GalushkoArt/openapi-testgen-monorepo/issues"
+  },
   "license": "MIT",
   "author": "Artem Galushko",
   "os": [
@@ -13,6 +28,9 @@
   "libc": [
     "glibc"
   ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "bin": {
     "openapi-testgen": "./bin/openapi-testgen"
   },

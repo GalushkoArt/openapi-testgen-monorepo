@@ -14,9 +14,9 @@ This tutorial generates tests from an OpenAPI spec using the CLI.
 
     ```bash
     # Download native binary (no Java required)
-    curl -LO https://github.com/GalushkoArt/openapi-testgen-monorepo/releases/download/0.9.0/openapi-testgen-0.9.0-linux-amd64.zip
-    unzip openapi-testgen-0.9.0-linux-amd64.zip
-    cd openapi-testgen-0.9.0-linux-amd64
+    curl -LO https://github.com/GalushkoArt/openapi-testgen-monorepo/releases/download/0.9.1/openapi-testgen-0.9.1-linux-amd64.zip
+    unzip openapi-testgen-0.9.1-linux-amd64.zip
+    cd openapi-testgen-0.9.1-linux-amd64
     chmod +x openapi-testgen
     ```
 

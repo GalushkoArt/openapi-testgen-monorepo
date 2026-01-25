@@ -32,7 +32,7 @@ modules and provides a simplified API.
 
 ```kotlin
 dependencies {
-    implementation("art.galushko.openapi:testgen-core:0.9.0")
+    implementation("art.galushko.openapi:testgen-core:0.9.1")
 }
 ```
 

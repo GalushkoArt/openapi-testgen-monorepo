@@ -49,15 +49,29 @@ function resolveNativeBinary(pkgName) {
  * @returns {boolean} - false if execution failed, otherwise exits the process
  */
 function runNative(binaryPath) {
+  // Capture stderr to detect glibc compatibility errors
   const result = spawnSync(binaryPath, process.argv.slice(2), {
-    stdio: "inherit",
+    stdio: ["inherit", "inherit", "pipe"],
   });
 
   if (result.error) {
-    // Execution failed (e.g., binary not executable, missing dependencies)
+    // Execution failed (e.g., binary not executable, ENOENT, permissions)
     return false;
   }
 
+  const stderr = result.stderr?.toString() || "";
+
+  // Detect glibc incompatibility (e.g., "GLIBC_2.34' not found")
+  if (result.status !== 0 && /GLIBC_[\d.]+.*not found/i.test(stderr)) {
+    return false;
+  }
+
+  // Show stderr for other cases (normal CLI output or errors)
+  if (stderr) {
+    process.stderr.write(stderr);
+  }
+
+  // Binary executed - exit with its status code
   process.exit(result.status ?? 1);
 }
 
@@ -134,8 +148,10 @@ if (nativeBinary) {
   }
   // Fall through to JAR fallback
   console.warn(
-    "Warning: Native binary failed to execute, falling back to JAR..."
+    "Warning: Native binary is not compatible with this system (likely glibc version mismatch)."
   );
+  console.warn("Falling back to JAR-based CLI (requires Java 21+)...");
+  console.warn("");
 }
 
 // 2. Fall back to JAR

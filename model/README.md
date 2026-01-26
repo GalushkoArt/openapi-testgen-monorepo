@@ -21,7 +21,7 @@ need to depend on it directly unless building custom tooling.
 
 ```kotlin
 dependencies {
-    implementation("art.galushko.openapi:testgen-model:0.9.0")
+    implementation("art.galushko.openapi:testgen-model:0.9.1")
 }
 ```
 

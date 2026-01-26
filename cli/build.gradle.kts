@@ -44,9 +44,21 @@ graalvmNative {
         named("main") {
             imageName.set("openapi-testgen")
             mainClass.set("art.galushko.openapi.testgen.cli.MainKt")
+
+            // Enable static linking with musl on Linux for maximum portability
+            // This eliminates GLIBC dependency, allowing the binary to run on any Linux distro
+            // Controlled via -Pstatic-linux (set by CI for Linux builds)
+            if (project.hasProperty("static-linux")) {
+                buildArgs.addAll(
+                    "--static",
+                    "--libc=musl",
+                )
+            }
         }
     }
-    toolchainDetection.set(true)
+    // Disable toolchain detection for static builds - we need the GraalVM from setup-graalvm action
+    // which has the musl toolchain configured. With detection enabled, Gradle may find a different GraalVM.
+    toolchainDetection.set(!project.hasProperty("static-linux"))
 }
 
 val testSourceSet: SourceSet = the<SourceSetContainer>()["test"]

@@ -4,6 +4,20 @@ Command-line interface for generating API tests from OpenAPI specifications.
 
 ## Installation
 
+### npm (Recommended)
+
+```bash
+# Global installation
+npm install -g @openapi-testgen/cli
+
+# Run directly with npx
+npx @openapi-testgen/cli --help
+```
+
+Native binaries are automatically used when available for your platform (Linux x64/ARM64, macOS ARM64, Windows x64). Falls back to JAR if Java 21+ is installed.
+
+See [npm Installation Guide](https://docs.galushko.art/openapi-test-generator/getting-started/npm-installation/) for details.
+
 ### Download Release
 
 Download from [GitHub Releases](https://github.com/GalushkoArt/openapi-testgen-monorepo/releases):

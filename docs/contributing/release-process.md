@@ -57,8 +57,8 @@ All checks must pass before proceeding.
 
 ```bash
 git add -A
-git commit -m "Release v0.9.0"
-git tag -a v0.9.0 -m "Release v0.9.0"
+git commit -m "Release 0.9.0"
+git tag -a 0.9.0 -m "Release 0.9.0"
 git push origin master --tags
 ```
 
@@ -83,7 +83,7 @@ After upload completes:
 ### 5. Publish to Gradle Plugin Portal
 
 ```bash
-./gradlew -p plugin publishPlugins
+./gradlew :plugin:publishPlugins
 ```
 
 The plugin appears on [plugins.gradle.org](https://plugins.gradle.org/plugin/art.galushko.openapi-test-generator) within minutes.
@@ -108,7 +108,7 @@ For urgent fixes on a released version:
 
 ```bash
 # Create hotfix branch from tag
-git checkout -b hotfix/0.9.1 v0.9.0
+git checkout -b hotfix/0.9.1 0.9.0
 
 # Apply fixes, then follow normal release process
 # with version 0.9.1

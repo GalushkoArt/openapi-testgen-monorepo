@@ -23,7 +23,7 @@ For custom wiring without `distribution-bundle`:
 
 ```kotlin
 dependencies {
-    implementation("art.galushko.openapi:testgen-pattern-support:0.9.0")
+    implementation("art.galushko.openapi:testgen-pattern-support:0.9.1")
 }
 ```
 

@@ -9,6 +9,11 @@ uplinks:
     url: https://registry.npmjs.org/
 
 packages:
+  # Local-only for testing: don't proxy to npm so we can publish any version
+  "@openapi-testgen/*":
+    access: $all
+    publish: $all
+  # All other scoped packages proxy to npm
   "@*/*":
     access: $all
     publish: $all

@@ -10,7 +10,7 @@ Implementation class: `art.galushko.openapi.testgen.plugin.OpenApiTestGeneratorP
 
 ```kotlin
 plugins {
-    id("art.galushko.openapi-test-generator") version "0.9.0"
+    id("art.galushko.openapi-test-generator") version "0.9.1"
 }
 ```
 
@@ -57,7 +57,7 @@ Apply and configure:
 
 ```kotlin
 plugins {
-    id("art.galushko.openapi-test-generator") version "0.9.0"
+    id("art.galushko.openapi-test-generator") version "0.9.1"
 }
 
 openApiTestGenerator {

@@ -64,12 +64,12 @@ The npm package supports two execution modes:
 
 Native binaries are automatically used when available for your platform:
 
-| Platform    | Package                             | Java Required |
-|-------------|-------------------------------------|---------------|
-| Linux x64   | `@openapi-testgen/cli-linux-x64`    | No            |
-| Linux ARM64 | `@openapi-testgen/cli-linux-arm64`  | No            |
-| macOS ARM64 | `@openapi-testgen/cli-darwin-arm64` | No            |
-| Windows x64 | `@openapi-testgen/cli-win32-x64`    | No            |
+| Platform    | Package                             | Requirements                                   |
+|-------------|-------------------------------------|------------------------------------------------|
+| Linux x64   | `@openapi-testgen/cli-linux-x64`    | Any Linux (statically linked)                  |
+| Linux ARM64 | `@openapi-testgen/cli-linux-arm64`  | glibc-based Linux (Ubuntu, Debian, RHEL, etc.) |
+| macOS ARM64 | `@openapi-testgen/cli-darwin-arm64` | macOS 11+ (Apple Silicon)                      |
+| Windows x64 | `@openapi-testgen/cli-win32-x64`    | Windows 10+                                    |
 
 Native packages are installed as optional dependencies and provide:
 
@@ -77,12 +77,22 @@ Native packages are installed as optional dependencies and provide:
 - Smaller memory footprint
 - No Java requirement
 
+!!! note "Linux ARM64 Compatibility"
+The Linux ARM64 binary requires glibc and may not work on older distributions or musl-based systems (Alpine Linux). If incompatibility is detected, the CLI
+automatically falls back to the JAR version.
+
 ### JAR Fallback
 
-If no native binary is available for your platform, the CLI falls back to the JAR-based distribution:
+If no native binary is available or compatible, the CLI automatically falls back to the JAR-based distribution:
 
 - **Requires**: Java 21 or later
-- **Works on**: Any platform with Java support (macOS x64, Linux ARMv7, etc.)
+- **Works on**: Any platform with Java support (macOS x64, Linux ARMv7, Alpine, etc.)
+
+The fallback happens automatically in these cases:
+
+1. **No native package** for your platform (e.g., macOS x64, Linux ARMv7)
+2. **musl-based systems** like Alpine Linux (the `libc` field in package.json prevents installation)
+3. **glibc version mismatch** on Linux ARM64 (detected at runtime)
 
 ## Installation Options
 
@@ -260,15 +270,48 @@ npm install -g @openapi-testgen/cli-win32-x64
 
 ### Alpine Linux / musl Systems
 
-The native Linux binaries require glibc. On Alpine Linux or other musl-based systems, use the JAR fallback:
+The native Linux binaries require glibc. On Alpine Linux or other musl-based systems, the native package won't be installed and the CLI uses the JAR fallback
+automatically:
 
 ```bash
-# Install with Java fallback
-npm install -g @openapi-testgen/cli --omit=optional
+# Install (native package is skipped automatically on musl)
+npm install -g @openapi-testgen/cli
 
 # Ensure Java 21+ is installed
 apk add openjdk21
 ```
+
+If you want to explicitly skip native packages:
+
+```bash
+npm install -g @openapi-testgen/cli --omit=optional
+```
+
+### glibc Version Mismatch (Linux ARM64)
+
+On Linux ARM64, if you see a warning like this when running the CLI:
+
+```
+Warning: Native binary is not compatible with this system (likely glibc version mismatch).
+Falling back to JAR-based CLI (requires Java 21+)...
+```
+
+This means your system's glibc version is older than what the native binary was built against. The CLI will automatically use the JAR fallback. To ensure it
+works:
+
+```bash
+# Install Java 21+
+# Ubuntu/Debian
+sudo apt install openjdk-21-jre
+
+# RHEL/CentOS/Fedora
+sudo dnf install java-21-openjdk
+
+# Verify Java version
+java -version
+```
+
+Alternatively, upgrade your Linux distribution to get a newer glibc version.
 
 ### Package Manager Issues
 

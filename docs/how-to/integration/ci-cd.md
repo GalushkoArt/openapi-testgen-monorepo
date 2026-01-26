@@ -41,9 +41,9 @@ Use the CLI when:
 
     ```bash
     # Linux
-    curl -LO https://github.com/GalushkoArt/openapi-testgen-monorepo/releases/download/0.9.0/openapi-testgen-0.9.0-linux-amd64.zip
-    unzip openapi-testgen-0.9.0-linux-amd64.zip
-    cd openapi-testgen-0.9.0-linux-amd64
+    curl -LO https://github.com/GalushkoArt/openapi-testgen-monorepo/releases/download/0.9.1/openapi-testgen-0.9.1-linux-amd64.zip
+    unzip openapi-testgen-0.9.1-linux-amd64.zip
+    cd openapi-testgen-0.9.1-linux-amd64
     chmod +x openapi-testgen
     ```
 
@@ -57,7 +57,7 @@ See [npm Installation](../../getting-started/npm-installation.md) for detailed p
 
 ```kotlin
 plugins {
-    id("art.galushko.openapi-test-generator") version "0.9.0"
+    id("art.galushko.openapi-test-generator") version "0.9.1"
 }
 ```
 

@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.9.1
+
+A minor release focused on improving Linux binary compatibility across distributions.
+
+### Changed
+
+- **Linux x64 native binary**: Statically linked with musl libc for maximum portability (works on any Linux distribution without glibc dependency)
+- **Linux ARM64 native binary**: Now built on Ubuntu 22.04 (glibc 2.35) for broader compatibility with older distributions
+
+### Added
+
+- **Automatic JAR fallback**: CLI now detects glibc incompatibility at runtime and automatically falls back to JAR-based execution
+- **Installation-time warnings**: postinstall script warns Linux ARM64 users on non-glibc systems (musl/Alpine) about JAR fallback requirement
+- **Improved error messages**: Clear guidance when native binary fails due to glibc version mismatch
+
+### Documentation
+
+- Added platform compatibility details to npm installation guide
+- Added troubleshooting section for glibc and native binary issues
+
 ## 0.9.0
 
 ### Added

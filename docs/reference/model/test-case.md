@@ -1,3 +1,7 @@
+---
+description: Reference documentation for the TestCase data class, which represents a single generated test scenario including request inputs, security values, and expected outcomes.
+---
+
 # TestCase
 
 `TestCase` represents a single generated test scenario.

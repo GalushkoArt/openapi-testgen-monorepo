@@ -1,9 +1,31 @@
+---
+description: Release history documenting notable changes, new features, breaking changes, and fixes for each version following Semantic Versioning.
+---
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## 0.9.2
+
+### Added
+
+- **`--prefer-jar` flag** (npm): Force JAR execution, bypassing native binary detection for troubleshooting or consistency
+
+### Fixed
+
+- **TestSuiteWriter merge logic**: Correctly returns updated test case when no protected fields are configured (previously returned existing case unchanged)
+- **securityValues field protection**: Added `securityValues` to the list of mergeable fields in TestSuiteWriter
+- **protectedTestCaseFields validation**: Invalid field names now produce a helpful error message instead of being silently ignored
+
+### Documentation
+
+- Added README files for platform-specific native binary npm packages
+- Expanded troubleshooting with `--prefer-jar` usage
+- Improved generator options documentation
 
 ## 0.9.1
 

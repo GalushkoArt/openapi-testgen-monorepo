@@ -54,14 +54,15 @@ The system uses a **provider-rule architecture**: `TestCaseProvider` implementat
   --output-dir ./generated \
   --generator template \
   --generator-option templateSet=restassured-java \
-  --generator-option package=com.example.generated
+  --generator-option templateVariables.package=com.example.generated
 
 # Generate JSON test suites (test-suite-writer generator)
 ./cli/build/install/openapi-testgen/bin/openapi-testgen \
   --spec-file path/to/openapi.yaml \
   --output-dir ./generated \
   --generator test-suite-writer \
-  --generator-option format=json
+  --generator-option format=json \
+  --generator-option outputFileName=test-suites.json
 
 # Using a YAML config file
 ./cli/build/install/openapi-testgen/bin/openapi-testgen \
@@ -74,7 +75,7 @@ The system uses a **provider-rule architecture**: `TestCaseProvider` implementat
   --output-dir ./generated \
   --generator template \
   --setting maxSchemaDepth=15 \
-  --setting validSecurityValues.X-API-Key=test-key
+  --setting validSecurityValues.ApiKeyAuth=test-key
 ```
 
 ### Build native image (GraalVM required)
@@ -341,7 +342,12 @@ assertThat(capturedSuites).usingRecursiveComparison().isEqualTo(expected)
 
 ## Documentation
 
-Documentation lives under `docs/` and is built with MkDocs (Material theme). See `.cursor/rules/13-documentation.mdc` for full authoring guidance.
+Documentation lives under `docs/` and is built with MkDocs (Material theme). Use the `/project-docs` skill for guided documentation workflows.
+
+**Key files:**
+- `mkdocs.yml` - Site navigation configuration (source of truth)
+- `DOCS_MAP.md` - Documentation inventory generated from `mkdocs.yml` + page frontmatter descriptions
+- `docs/concepts/glossary.md` - Terminology definitions
 
 ### Structure (Diataxis Framework)
 
@@ -360,7 +366,7 @@ Documentation lives under `docs/` and is built with MkDocs (Material theme). See
 
 ```bash
 # Install Python dependencies
-python -m pip install -r docs/requirements.txt
+python -m pip install -r requirements.txt
 
 # Preview with regenerated Dokka API docs
 ./gradlew docsServe
@@ -372,7 +378,7 @@ mkdocs serve
 ### Key Conventions
 
 - **File naming**: Lowercase with hyphens (`my-page.md`)
-- **No frontmatter**: Start directly with `# Page Title`
+- **Frontmatter**: Include YAML frontmatter with `description` field, then `# Page Title`
 - **Active voice**: "Configure X" not "X can be configured"
 - **Code blocks**: Always specify language (` ```kotlin `, ` ```yaml `)
 - **Admonitions**: Use `!!! note`, `!!! warning`, `!!! tip` for callouts
@@ -383,14 +389,26 @@ mkdocs serve
 
 1. Create or edit markdown files under `docs/`
 2. Add new pages to `mkdocs.yml` under `nav:`
-3. Run `mkdocs serve` to verify rendering and links
-4. Update code and docs in the same PR
+3. Ensure every nav-listed page has frontmatter `description`, then run the sync script to update `DOCS_MAP.md`
+4. Run `mkdocs serve` to verify rendering and links
+5. Update code and docs in the same PR
+
+### Sync DOCS_MAP with mkdocs.yml
+
+```bash
+# Check if DOCS_MAP.md is in sync
+python3 skills/project-docs/scripts/sync_docs_map.py --check
+
+# Update DOCS_MAP.md structure from mkdocs.yml
+python3 skills/project-docs/scripts/sync_docs_map.py
+```
 
 ### Docs Acceptance Criteria
 
 - Examples are runnable and realistic (no `foo`/`bar` placeholders)
 - Links resolve (`mkdocs serve` shows no broken links)
 - New pages appear in `mkdocs.yml` navigation
+- `DOCS_MAP.md` updated with page summary
 - Consistent terminology with `docs/concepts/glossary.md`
 - Reference catalogs updated when adding rules/providers/generators
 

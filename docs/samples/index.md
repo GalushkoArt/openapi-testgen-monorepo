@@ -1,3 +1,7 @@
+---
+description: Overview of sample projects demonstrating OpenAPI Test Generator integration with different generators, languages, and configurations including Spring Boot, RestAssured, and data-driven testing approaches.
+---
+
 # Samples
 
 The repository includes runnable sample projects demonstrating how to integrate OpenAPI Test Generator with different generators and configurations.
@@ -49,7 +53,7 @@ Each sample follows this structure:
 ```
 samples/<sample-name>/
 ├── build.gradle.kts              # Plugin configuration
-├── open-api-test-generation-config.yaml  # Optional YAML config
+├── open-api-test-generation-config.yaml  # Optional YAML config (filename is arbitrary)
 ├── src/
 │   ├── main/kotlin|java/         # Spring Boot application
 │   └── test/
@@ -90,7 +94,7 @@ testGenerationSettings {
 Samples show how to register additional generation tasks:
 
 ```kotlin
-// Additional task with YAML config
+// Additional task with YAML config (filename is arbitrary)
 tasks.register<OpenApiTestGeneratorTask>("generateOpenApiTestsYaml") {
     configFile.set("open-api-test-generation-config.yaml")
 }

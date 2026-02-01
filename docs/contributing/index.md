@@ -1,3 +1,7 @@
+---
+description: Index of contributor guides covering development setup, code style, testing, documentation, publishing, and release process for the OpenAPI Test Generator project.
+---
+
 # Contributing
 
 Guides for contributors working on the OpenAPI Test Generator codebase and docs.

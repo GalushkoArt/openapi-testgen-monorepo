@@ -1,19 +1,17 @@
+---
+description: Command-line interface reference for openapi-testgen. Covers options, nested flag syntax, usage examples, and CI integration patterns.
+---
+
 # CLI reference
 
 Command: `openapi-testgen`
 
 ## Installation
 
-### npm (Recommended)
+See:
 
-```bash
-npm install -g @openapi-testgen/cli
-openapi-testgen --help
-```
-
-### Download Binary
-
-See [Installation Guide](../getting-started/installation.md) for all options including native binaries and building from source.
+- [Installation](../getting-started/installation.md) - all supported install methods (npm, native binaries, build from source)
+- [npm Installation](../getting-started/npm-installation.md) - npm/pnpm/yarn/bun details and troubleshooting
 
 ## Usage
 
@@ -21,7 +19,7 @@ See [Installation Guide](../getting-started/installation.md) for all options inc
 openapi-testgen [options]
 ```
 
-## Options
+## Core options {#core-options}
 
 - `--help`, `-h`: show help
 - `--version`, `-V`: show version
@@ -29,10 +27,22 @@ openapi-testgen [options]
 - `--spec-file <path>`: path to OpenAPI spec file (YAML/JSON)
 - `--output-dir <path>`: output directory for generated files
 - `--generator <id>`: generator id (e.g. `template`, `test-suite-writer`)
-- `--generator-option <key=value>`: generator option (repeatable). Supports dot notation for nested maps and `[]` for lists.
-- `--setting <key.nested.path=value>`: test generation setting (repeatable). Supports dot notation for nested maps and `[]` for lists.
 - `--always-write-test`: write artifacts even if generation fails (default: false)
 - `--log-level <level>`: log level for generator logs (ALL, TRACE, DEBUG, INFO, WARN, ERROR, OFF; default: INFO)
+
+## npm wrapper options {#npm-options}
+
+When installed via npm, the wrapper script provides additional options:
+
+- `--prefer-jar`: Force JAR execution, skipping native binary detection (requires Java 21+)
+
+## Generator options {#generator-options}
+
+- `--generator-option <key=value>`: generator option (repeatable). Supports dot notation for nested maps and `[]` for lists.
+
+## Settings {#settings}
+
+- `--setting <key.nested.path=value>`: test generation setting (repeatable). Supports dot notation for nested maps and `[]` for lists.
 
 ## Nested option examples
 
@@ -81,116 +91,9 @@ openapi-testgen \
   --setting 'includeOperations./users/{userId}[]=GET'
 ```
 
-## Example: Generate tests for a single operation
+## Worked example: target a single operation
 
-This walkthrough generates tests for only `GET /users/{userId}` using the sample spec.
-
-### Step 1: Create config file
-
-```yaml
-# openapi-testgen.yaml
-specFile: "samples/openapi.yaml"
-outputDir: "./build/test-single-operation"
-generator: "test-suite-writer"
-generatorOptions:
-  format: "json"
-  outputFileName: "test-suites.json"
-
-testGenerationSettings:
-  validSecurityValues:
-    ApiKeyAuth: "test-api-key-123"
-  includeOperations:
-    "/users/{userId}": ["GET"]
-```
-
-### Step 2: Build and run CLI
-
-```bash
-# Build CLI distribution
-./gradlew :cli:installDist
-
-# Run with config file
-./cli/build/install/openapi-testgen/bin/openapi-testgen \
-  --config-file ./openapi-testgen.yaml
-```
-
-### Step 3: Verify output
-
-The output file is at `./build/test-single-operation/test-suites.json`.
-
-Expected content (excerpt; only `getUser` operation). Fields like `queryParams`, `cookie`,
-`securityValues`, `expectedBody`, and `needToComplete` are omitted for brevity.
-See [Test-suite-writer](../how-to/generators/test-suite-writer.md) for full output details.
-
-```json
-{
-  "getUser": {
-    "path": "/users/{userId}",
-    "method": "GET",
-    "operationName": "getUser",
-    "testCases": [
-      {
-        "name": "Invalid Path userId parameter: Invalid Pattern",
-        "method": "GET",
-        "path": "/users/{userId}",
-        "pathParams": {
-          "userId": "AE."
-        },
-        "headers": [
-          {
-            "key": "X-API-Key",
-            "value": "test-api-key-123"
-          }
-        ],
-        "expectedStatusCode": 400,
-        "rule": "art.galushko.openapi.testgen.pattern.support.InvalidPatternSchemaValidationRule"
-      },
-      {
-        "name": "Invalid X-API-Key API key security",
-        "method": "GET",
-        "path": "/users/{userId}",
-        "pathParams": {
-          "userId": "wha_262laxjwhyaz8"
-        },
-        "headers": [
-          {
-            "key": "X-API-Key",
-            "value": "unrealistic_key"
-          }
-        ],
-        "expectedStatusCode": 401,
-        "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
-      },
-      {
-        "name": "No security values provided",
-        "method": "GET",
-        "path": "/users/{userId}",
-        "pathParams": {
-          "userId": "wha_262laxjwhyaz8"
-        },
-        "headers": [],
-        "expectedStatusCode": 401,
-        "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
-      }
-    ]
-  }
-}
-```
-
-### Alternative: CLI flags only (no config file)
-
-```bash
-./cli/build/install/openapi-testgen/bin/openapi-testgen \
-  --spec-file samples/openapi.yaml \
-  --output-dir ./build/test-single-operation \
-  --generator test-suite-writer \
-  --generator-option format=json \
-  --generator-option outputFileName=test-suites.json \
-  --setting 'validSecurityValues.ApiKeyAuth=test-api-key-123' \
-  --setting 'includeOperations./users/{userId}[]=GET'
-```
-
-For more details on targeting operations, see [Include operations](../how-to/configuration/include-operations.md).
+See [Include operations](../how-to/configuration/include-operations.md) for a full walkthrough (YAML + CLI + expected output excerpt).
 
 ## CI integration
 
@@ -203,7 +106,8 @@ set -e
 openapi-testgen \
   --spec-file openapi.yaml \
   --output-dir ./generated \
-  --generator test-suite-writer
+  --generator test-suite-writer \
+  --generator-option outputFileName=test-suites.json
 ```
 
 ### Environment variables
@@ -224,6 +128,7 @@ openapi-testgen \
   --spec-file openapi.yaml \
   --output-dir ./generated \
   --generator test-suite-writer \
+  --generator-option outputFileName=test-suites.json \
   --setting "validSecurityValues.ApiKeyAuth=${API_TEST_KEY:-default-key}"
 ```
 
@@ -234,6 +139,8 @@ openapi-testgen \
 
 ## See also
 
+- [First test suite tutorial](../getting-started/first-test-suite.md) - Get started with generating tests
+- [End-to-end workflow](../getting-started/end-to-end-workflow.md) - Complete workflow from spec to tests
 - [Include operations](../how-to/configuration/include-operations.md) - Target specific operations
 - [Ignore rules](../how-to/configuration/ignore-rules.md) - Filter by exclusion
 - [CI/CD integration](../how-to/integration/ci-cd.md) - CI job wiring patterns

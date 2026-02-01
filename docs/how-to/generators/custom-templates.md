@@ -1,3 +1,7 @@
+---
+description: Create custom Mustache templates for the template generator to support different test frameworks, languages, or code styles. Includes template directory structure, available variables, and example templates.
+---
+
 # Custom Mustache templates
 
 The template generator can load templates from a custom directory, giving you full control over the generated test code.
@@ -236,19 +240,7 @@ class ListUsersTest {
 
 ## Template customization options
 
-| Option                  | Type   | Default                 | Description                           |
-|-------------------------|--------|-------------------------|---------------------------------------|
-| `templateSet`           | String | `restassured-java`      | Base template set id                  |
-| `customTemplateDir`     | String | (none)                  | Directory containing custom templates |
-| `classTemplatePath`     | String | (from templateSet)      | Path to class template                |
-| `outputFileExtension`   | String | (from templateSet)      | File extension (`java`, `kt`)         |
-| `outputFileNamePattern` | String | `{{className}}.{{outputFileExtension}}` | Output file name pattern              |
-| `writeMode`             | String | `OVERWRITE`             | `OVERWRITE` or `SKIP_IF_EXISTS`       |
-| `fileHeaderComment`     | String | (none)                  | Optional header for generated files   |
-| `templateVariables`     | Map    | `{}`                    | Custom variables for templates        |
-| `templateVariables.classSuffix`  | String | `Test`       | Suffix appended to generated class names |
-| `templateVariables.methodPrefix` | String | (none)       | Prefix for test method names          |
-| `templateVariables.methodSuffix` | String | (none)       | Suffix for test method names          |
+For the complete list of generator options and defaults, see [Generator options](../../reference/catalogs/generator-options.md#template-options).
 
 ## Mustache syntax reference
 

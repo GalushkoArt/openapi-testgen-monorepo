@@ -1,3 +1,7 @@
+---
+description: Publish CLI packages to npm including the main JAR-based package and platform-specific native binaries. Covers build scripts, version management, and CI integration.
+---
+
 # npm Publishing
 
 This guide covers publishing CLI packages to npm.

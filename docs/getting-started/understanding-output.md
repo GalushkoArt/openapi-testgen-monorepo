@@ -1,3 +1,7 @@
+---
+description: Explains the output formats produced by OpenAPI Test Generator. Covers template generator output (Java/Kotlin source files), test-suite-writer output (JSON/YAML), and the includeValidCase setting for positive test cases.
+---
+
 # Understanding output
 
 The output depends on the selected generator (`template` or `test-suite-writer`).
@@ -12,7 +16,7 @@ The output depends on the selected generator (`template` or `test-suite-writer`)
 
 See: [Template generator](../how-to/generators/template-generator.md)
 
-## Test suite writer (`test-suite-writer`)
+## Test-suite-writer generator (`test-suite-writer`)
 
 - Produces JSON or YAML containing `TestSuite` and `TestCase` structures.
 - By default, aggregates all suites into a single file (`outputMode=SINGLE_FILE`).
@@ -24,18 +28,7 @@ See:
 
 ## Valid case inclusion
 
-By default, only negative test cases (expecting 4xx responses) are generated.
-To include a positive test case that validates successful requests, enable the
-`includeValidCase` setting:
+By default, suites include only negative test cases (expecting 4xx responses).
+To include a baseline positive test per operation, enable `testGenerationSettings.includeValidCase`.
 
-```yaml
-testGenerationSettings:
-    includeValidCase: true
-```
-
-The valid case will:
-- Be named "Test Valid Case"
-- Have `expectedStatusCode` set to the first 2xx response defined in the spec (200, 201, 204, etc.)
-- Include only required parameters with valid example values
-- Appear in each test suite's test case list (order may be normalized by writers)
-
+See: [Include positive test cases](../how-to/configuration/positive-testing.md) and [Distribution settings → Output options](../reference/distribution-settings.md#output-options)

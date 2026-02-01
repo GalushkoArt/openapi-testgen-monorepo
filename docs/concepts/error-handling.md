@@ -1,3 +1,7 @@
+---
+description: Describes the error handling strategy using explicit result types (Outcome, GenerationReport) to support best-effort behavior without hiding failures. Covers error modes, error aggregation, and the alwaysWriteTests option.
+---
+
 # Error handling
 
 Generation uses explicit result types to support best-effort behavior without hiding failures.

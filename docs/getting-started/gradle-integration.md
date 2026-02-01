@@ -1,3 +1,7 @@
+---
+description: Tutorial for integrating OpenAPI test generation into Gradle builds. Shows how to apply the plugin, configure the extension, run generation, and optionally use manualOnly mode.
+---
+
 # Gradle integration
 
 This tutorial integrates test generation into a Gradle project using the plugin.
@@ -8,13 +12,12 @@ The plugin is published to the [Gradle Plugin Portal](https://plugins.gradle.org
 
 ```kotlin
 plugins {
-    id("art.galushko.openapi-test-generator") version "0.9.1"
+    id("art.galushko.openapi-test-generator") version "<version>"
 }
 ```
 
 !!! tip "Finding the latest version"
-    Check the [Gradle Plugin Portal](https://plugins.gradle.org/plugin/art.galushko.openapi-test-generator)
-    or [GitHub Releases](https://github.com/galushkoart/openapi-testgen-monorepo/releases) for the latest version.
+    See [Version placeholders](installation.md#version-placeholders) for where to look up `<version>`.
 
 ## 2) Configure the extension
 

@@ -1,3 +1,7 @@
+---
+description: Publish library modules to Maven Central and the Gradle plugin to the Plugin Portal. Covers account setup, credential configuration, signing, and troubleshooting upload issues.
+---
+
 # Publishing artifacts
 
 This project publishes library modules to Maven Central and the Gradle plugin to the Gradle Plugin Portal.

@@ -1,3 +1,7 @@
+---
+description: Filter out unwanted test cases by path, HTTP method, or test case name using the ignore configuration. Useful for skipping internal endpoints, deprecated operations, or specific validation scenarios.
+---
+
 # Ignore rules
 
 Filter generated test cases by path, HTTP method, or test case name using the ignore configuration.
@@ -19,6 +23,7 @@ The ignore configuration uses a hierarchical pattern:
 Notes:
 - Path keys are matched exactly (no globbing). Use `*` as the wildcard path for all paths.
 - Test case names are exact matches (no wildcards or regex).
+- For the authoritative wildcard/merge behavior and warnings, see [Distribution settings](../../reference/distribution-settings.md#ignore-configuration).
 
 ## Examples
 
@@ -73,26 +78,18 @@ testGenerationSettings:
       "DELETE": "*"
 ```
 
-## Runtime behavior
-
-- Path keys are matched as-is; missing paths are logged as warnings.
-- Method keys are uppercased; matching is case-insensitive.
-- The wildcard path (`*`) merges with path-specific rules; wildcard method entries override path-specific entries on key collisions.
-- `*:*:*` (path `*`, method `*`, value `*`) is ignored and logged as a warning.
-- Filtering happens after suite assembly; if all cases are filtered, the operation is recorded as "not tested".
-
 ## Alternative: target by exclusion
 
 If `includeOperations` is not suitable (for example, you need to keep an existing config and only
 exclude a few paths or tests), you can use `ignoreTestCases` to remove everything else.
 
 !!! warning "Performance note"
-    `ignoreTestCases` filters **after** generation. It does not reduce generation time.
-    Prefer `includeOperations` for faster, pre-generation filtering.
+    Path-level and method-level ignores can skip work before generation, but ignoring specific test case names happens after suite generation.
+    Prefer `includeOperations` for inclusion-based targeting on large specs.
 
 Notes:
 - Test case name matching is exact only (no wildcards or regex).
-- CLI list values use `[]` when ignoring specific test names.
+- CLI list values use `[]` when ignoring specific test names (see [CLI reference - Settings](../../reference/cli.md#settings)).
 
 Example: keep only GET `/users/{userId}` by ignoring other paths:
 
@@ -120,4 +117,6 @@ Recommended approach for targeting operations:
 
 - [YAML config](yaml-config.md)
 - [Include operations](include-operations.md)
-- [Distribution settings](../../reference/distribution-settings.md)
+- [Distribution settings](../../reference/distribution-settings.md#ignore-configuration) - Ignore configuration semantics
+- [CLI reference](../../reference/cli.md#settings) - CLI settings syntax
+- [Gradle plugin reference](../../reference/gradle-plugin.md#test-generation-settings) - Gradle testGenerationSettings DSL

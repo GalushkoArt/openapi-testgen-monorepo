@@ -1,3 +1,7 @@
+---
+description: The pattern-support module integrates pattern-value into core as an optional feature module. It contributes a schema value provider for pattern-based values, a validation rule for pattern violations, and a settings extractor for pattern generation configuration.
+---
+
 # Module: `pattern-support`
 
 `pattern-support` integrates `pattern-value` into `core` as an **optional feature module**. It contributes:
@@ -25,20 +29,18 @@
 
 `patternGeneration` is a **module setting** (not a field on `TestGenerationSettings`). It is provided as a raw map under `testGenerationSettings.patternGeneration` and extracted before core settings parsing.
 
-See: [YAML config](../how-to/configuration/yaml-config.md).
+See:
+
+- Reference: [Distribution settings](../reference/distribution-settings.md#testgenerationsettingspatterngeneration)
+- How-to: [Configure generation via YAML](../how-to/configuration/yaml-config.md)
 
 ## Related docs
 
 - Concepts: [Architecture](../concepts/architecture.md)
-- Modules: [pattern-value](pattern-value.md)
+- Modules: [pattern-value](pattern-value.md), [example-value](example-value.md)
+- Reference: [Rules catalog](../reference/catalogs/rules-catalog.md)
 
-# Pattern-Support Module
-
-This document is non-normative and targets contributors. For core entry points, see
-the [core module](core.md).
-For user-facing configuration, see [YAML config](../how-to/configuration/yaml-config.md).
-
-## Scope and responsibilities
+## Scope and responsibilities (contributors)
 
 `pattern-support` integrates regex-based pattern generation into core by:
 
@@ -51,12 +53,6 @@ It depends on `core` and `pattern-value`.
 ## Configuration
 
 Module settings key: `patternGeneration`.
-
-Supported fields:
-
-- `defaultMinLength`
-- `spaceChars`
-- `anyPrintableChars`
 
 Example YAML:
 
@@ -81,9 +77,3 @@ distribution that inserts it into the default provider order.
 ## API reference
 
 - Dokka API reference: [`docs/api/pattern-support/index.html`](../api/pattern-support/index.html)
-
-## Related docs
-
-- Pattern-value module: [pattern-value](pattern-value.md)
-- Example-value module: [example-value](example-value.md)
-- Rules catalog: [rules](../reference/catalogs/rules-catalog.md)

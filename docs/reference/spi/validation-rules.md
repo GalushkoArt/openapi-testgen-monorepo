@@ -1,3 +1,7 @@
+---
+description: Reference documentation for the validation rules SPI, including SchemaValidationRule, SimpleSchemaValidationRule, and AuthValidationRule interfaces. Explains how to implement custom rules that generate negative test cases.
+---
+
 # Validation rules SPI
 
 Validation rules are the primary extension point for generating new negative test cases.

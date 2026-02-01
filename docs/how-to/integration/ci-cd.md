@@ -1,6 +1,116 @@
+---
+description: Add OpenAPI Test Generator to your CI/CD pipeline using the Gradle plugin or CLI. Covers job patterns for splitting generation and tests, caching, environment-specific configuration, and troubleshooting.
+---
+
 # Integrating test generation into CI test jobs
 
 This guide is CI-system agnostic. It focuses on how to add OpenAPI Test Generator to your build and test jobs that run on every commit, and how to fail the pipeline before deployment if generation or tests fail.
+
+## TL;DR
+
+### Gradle projects (recommended)
+
+This snippet assumes your project already applies the plugin (see [Gradle integration](../../getting-started/gradle-integration.md)).
+
+```kotlin
+val generatedSuitesDir = layout.buildDirectory.dir("generated/openapi-tests")
+
+openApiTestGenerator {
+    specFile.set("src/main/resources/openapi.yaml")
+    outputDir.set(generatedSuitesDir)
+    generator.set("template")
+    generatorOptions.putAll(
+        mapOf(
+            "templateSet" to "restassured-java",
+            "templateVariables" to mapOf(
+                "package" to "com.example.generated.tests",
+                "baseUrl" to "http://localhost:8080"
+            )
+        )
+    )
+}
+```
+
+If you're using the Gradle plugin with the `template` generator, generation is wired into `test` by default:
+
+```bash
+./gradlew test
+```
+
+### CLI (generate suites in CI)
+
+```bash
+# Recommended for CI: run via npx (no global install)
+npx @openapi-testgen/cli \
+  --spec-file ./openapi.yaml \
+  --output-dir ./generated \
+  --generator test-suite-writer \
+  --generator-option format=json \
+  --generator-option outputFileName=test-suites.json
+```
+
+For other installation options (global install, native binaries), see [Installation](../../getting-started/installation.md) and [npm Installation](../../getting-started/npm-installation.md).
+
+## Verify Locally Before CI
+
+Before pushing to CI, run the same commands locally to catch issues early.
+
+### Gradle projects
+
+```bash
+# Step 1: Generate tests
+./gradlew generateOpenApiTests
+
+# Step 2: Verify generated files exist
+ls build/generated/openapi-tests/
+# Expected: Java/Kotlin test files or JSON suites depending on generator
+
+# Step 3: Run tests (compile + execute)
+./gradlew test
+
+# Step 4: Check exit code (0 = success, non-zero = failure)
+echo "Exit code: $?"
+```
+
+If any step fails, fix the issue before pushing. The same commands run in CI.
+
+### CLI projects
+
+```bash
+# Step 1: Generate test suites
+npx @openapi-testgen/cli \
+  --spec-file ./openapi.yaml \
+  --output-dir ./generated \
+  --generator test-suite-writer \
+  --generator-option format=json \
+  --generator-option outputFileName=test-suites.json
+
+# Step 2: Verify output exists
+test -f ./generated/test-suites.json && echo "Generated successfully" || echo "Generation failed"
+
+# Step 3: Inspect generated test cases (optional)
+jq 'to_entries | map({operation: .key, tests: (.value.testCases | length)})' ./generated/test-suites.json
+
+# Step 4: Run your test framework against generated suites
+./gradlew test  # or: pytest, jest, etc.
+```
+
+## Failure Handling
+
+!!! warning "Gate deployments on test failures"
+    Both `./gradlew test` and `openapi-testgen` return non-zero exit codes on failure.
+    CI runners (GitHub Actions, Jenkins, GitLab CI) automatically fail the job when commands
+    return non-zero, blocking deployment.
+
+**Artifacts to preserve on failure** (for debugging):
+
+| Artifact | Purpose |
+|----------|---------|
+| `build/generated/openapi-tests/` | Generated test code or JSON suites |
+| `build/reports/tests/` | HTML test reports |
+| `build/test-results/test/*.xml` | JUnit XML for CI parsing |
+
+See [Exit codes](#exit-codes) and [Caching and artifacts](#caching-and-artifacts) below for details.
 
 ## Choose your integration method
 
@@ -23,71 +133,29 @@ Use the CLI when:
 
 #### Installing the CLI in CI
 
-=== "npm (recommended)"
+Recommended (no global install):
 
-    ```bash
-    npm install -g @openapi-testgen/cli
-    openapi-testgen --version
-    ```
+```bash
+npx @openapi-testgen/cli --help
+```
 
-=== "pnpm"
+Or install globally:
 
-    ```bash
-    pnpm add -g @openapi-testgen/cli
-    openapi-testgen --version
-    ```
+```bash
+npm install -g @openapi-testgen/cli
+openapi-testgen --version
+```
 
-=== "Download binary"
-
-    ```bash
-    # Linux
-    curl -LO https://github.com/GalushkoArt/openapi-testgen-monorepo/releases/download/0.9.1/openapi-testgen-0.9.1-linux-amd64.zip
-    unzip openapi-testgen-0.9.1-linux-amd64.zip
-    cd openapi-testgen-0.9.1-linux-amd64
-    chmod +x openapi-testgen
-    ```
-
-See [npm Installation](../../getting-started/npm-installation.md) for detailed package manager options.
+See [Installation](../../getting-started/installation.md) and [npm Installation](../../getting-started/npm-installation.md) for native binaries, platform notes, and troubleshooting.
 
 ## Gradle plugin integration
 
-### Add to an existing project
+Prerequisite: your project already applies and configures the plugin.
 
-1) Apply the plugin:
+See:
 
-```kotlin
-plugins {
-    id("art.galushko.openapi-test-generator") version "0.9.1"
-}
-```
-
-2) Configure the generator:
-
-```kotlin
-openApiTestGenerator {
-    specFile.set("src/main/resources/openapi.yaml")
-    outputDir.set(layout.buildDirectory.dir("generated/openapi-tests"))
-    generator.set("template")
-    generatorOptions.putAll(
-        mapOf(
-            "templateSet" to "restassured-java",
-            "templateVariables" to mapOf(
-                "package" to "com.example.generated.tests",
-                "baseUrl" to "http://localhost:8080"
-            )
-        )
-    )
-}
-```
-
-3) Add test dependencies for generated tests:
-
-```kotlin
-dependencies {
-    testImplementation("io.rest-assured:rest-assured:5.5.0")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
-}
-```
+- Tutorial: [Gradle integration](../../getting-started/gradle-integration.md)
+- Reference: [Gradle plugin reference](../../reference/gradle-plugin.md)
 
 ### How the plugin wires into test jobs
 
@@ -141,6 +209,12 @@ openApiTestGenerator {
     outputDir.set(generatedSuitesDir)
     manualOnly.set(true)
     generator.set("test-suite-writer")
+    generatorOptions.putAll(
+        mapOf(
+            "format" to "json",
+            "outputFileName" to "test-suites.json"
+        )
+    )
 }
 
 sourceSets.named("test") {
@@ -293,6 +367,9 @@ Archive these artifacts when you split generation and tests:
 
 ## Related documentation
 
+- [Template generator](../generators/template-generator.md)
+- [Custom templates](../generators/custom-templates.md)
+- [Test suite writer](../generators/test-suite-writer.md)
 - [Gradle plugin reference](../../reference/gradle-plugin.md)
 - [CLI reference](../../reference/cli.md)
 - [YAML configuration](../configuration/yaml-config.md)

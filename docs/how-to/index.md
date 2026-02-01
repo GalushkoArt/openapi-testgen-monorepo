@@ -1,3 +1,7 @@
+---
+description: Goal-oriented guides for common tasks including configuration, negative testing, generators, extension points, and integration with CI/CD and testing frameworks.
+---
+
 # How-to guides
 
 Goal-oriented guides for common tasks and integrations.

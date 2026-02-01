@@ -1,8 +1,13 @@
+---
+description: Reference documentation for error handling types in the model module, including Outcome, GenerationError, ErrorContext, GenerationReport, and BudgetExceededException.
+---
+
 # Model Error Types
 
-This document is non-normative and targets contributors. For generation flow, see
-the [core module](../../modules/core.md). For distribution defaults, see
-the [distribution settings](../distribution-settings.md).
+This page is the schema reference for error payloads (`Outcome`, `GenerationError`, `ErrorContext`, `GenerationReport`, and budget exceptions) produced during generation.
+It is also useful to contributors when debugging providers/rules and understanding how failures are reported.
+
+See also: [Error handling](../../concepts/error-handling.md), the [core module](../../modules/core.md), and [distribution settings](../distribution-settings.md).
 
 ## Outcome
 

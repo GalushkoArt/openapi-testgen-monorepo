@@ -1,4 +1,13 @@
+---
+description: Understand how to create custom test case providers that orchestrate negative test generation for OpenAPI operations. Covers the provider contract, wiring into generation, and when to prefer rules over providers.
+---
+
 # Custom providers
+
+!!! warning "Contributor workflow"
+    Adding a new `TestCaseProvider` currently requires changing `core` wiring (it cannot be contributed via `TestGenerationModule`).
+    Rules and generators *can* be contributed via `TestGenerationModule`, so prefer those extension points when possible.
+    See [Development setup](../../contributing/development-setup.md) if you plan to change `core`.
 
 Providers turn rules (and other logic) into generated `TestCase` objects. In `core`, providers are orchestrated in a fixed order per operation:
 
@@ -8,11 +17,18 @@ Providers turn rules (and other logic) into generated `TestCase` objects. In `co
 
 ## Current limitation (important)
 
-At the moment, `TestGenerationModule` **does not contribute providers**. Adding a new provider is a **contributor workflow**: it requires changing `core` wiring.
+At the moment, `TestGenerationModule` **does not contribute providers**. Adding a new provider requires changing `core` wiring.
+See [Development setup](../../contributing/development-setup.md) if you plan to contribute this change.
+
+## When to add a provider (vs a rule)
+
+Add a provider when you want a new class of negative cases that is not naturally represented as a schema/auth rule.
+
+If you only need additional schema cases, prefer adding a rule instead (see [Custom rules](custom-rules.md)).
 
 ## 1) Implement a provider
 
-Implement `TestCaseProvider<T>` (typically `T = Operation`) and keep it pure/deterministic:
+Implement `TestCaseProvider<T>` (typically `T = Operation`). Providers return `Outcome<List<TestCase>>` and should be pure/deterministic:
 
 - Do not mutate inputs (`validCase`, `OpenAPI`, `Operation`)
 - Return stable ordering
@@ -40,32 +56,4 @@ Add focused tests under `core/src/test/kotlin/.../providers/` and assert:
 
 - Concepts: [Provider-rule model](../../concepts/provider-rule-model.md)
 - Reference: [Test providers SPI](../../reference/spi/test-providers.md)
-
-# Add custom providers
-
-Providers orchestrate negative test case generation for an OpenAPI operation (auth, parameters, request body).
-
-## When to add a provider
-
-Add a provider when you want a new class of negative cases that is not naturally represented as a schema/auth rule.
-
-## Provider contract
-
-Providers implement `TestCaseProvider<T>` and return `Outcome<List<TestCase>>`.
-
-Guidelines:
-
-- Be pure: do not mutate the valid case or OpenAPI models.
-- Be deterministic: preserve stable ordering and stable naming.
-- Use `runProviderSafely` (providers are expected to surface failures as `Outcome.Failure`).
-
-## Wiring providers
-
-The default provider order is fixed in core wiring. To add/reorder providers:
-
-- Provide a custom wiring layer (custom `TestSuiteGenerator`), or
-- Wrap engine creation to supply a different `TestGeneratorConfigurer` / orchestrator.
-
-If you only need additional schema cases, prefer adding a rule instead.
-See: [Custom rules](custom-rules.md)
 

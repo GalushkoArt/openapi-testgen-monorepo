@@ -1,3 +1,7 @@
+---
+description: Demonstrates the template generator with Kotlin and custom Mustache templates for full control over generated test code. Includes three generation tasks with different configurations.
+---
+
 # Kotlin Spring RestAssured sample
 
 This sample demonstrates the `template` generator with Kotlin, including custom Mustache templates for complete control over generated test code.
@@ -55,6 +59,8 @@ openApiTestGenerator {
 ```
 
 ### Generation to source directory (YAML config)
+
+Note: this sample uses `open-api-test-generation-config.yaml`, but the filename is arbitrary.
 
 ```kotlin
 tasks.register<OpenApiTestGeneratorTask>("generateOpenApiTestsToSrc") {

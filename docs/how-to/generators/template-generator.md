@@ -1,3 +1,7 @@
+---
+description: Configure the template generator to render Mustache-based Java or Kotlin tests from OpenAPI specifications. Covers generator options, template variables, and output control settings.
+---
+
 # Template generator (`template`)
 
 The `template` generator renders tests from Mustache templates.
@@ -13,6 +17,8 @@ Use the template generator when you want source-code tests (Java/Kotlin) that ca
 ## Generator options
 
 Options are provided via `generatorOptions`.
+
+For the complete list of options and defaults, see [Generator options](../../reference/catalogs/generator-options.md#template-options).
 
 ### `templateSet`
 
@@ -62,10 +68,9 @@ openApiTestGenerator {
 
 ### Output control
 
-- `outputFileExtension`: file extension (inferred from `templateSet` if not set)
-- `outputFileNamePattern`: defaults to `{{className}}.{{outputFileExtension}}`
-- `writeMode`: `OVERWRITE` or `SKIP_IF_EXISTS`
-- `fileHeaderComment`: optional header emitted by templates
+Output naming and write behavior are controlled by template generator options (for example, `outputFileNamePattern`, `writeMode`, `fileHeaderComment`).
+
+See [Generator options](../../reference/catalogs/generator-options.md#template-options) for the authoritative list, defaults, and behavior.
 
 Note: `className` is derived from `operationName` (operationId). When operationId is missing, the generator uses HTTP method + path and normalizes the result into a valid identifier by treating non-alphanumeric characters as word separators.
 
@@ -97,5 +102,6 @@ public void incorrectRequestBodyMissedRequiredObjectPropertiesItems()  {
 
 ## Related documentation
 
-- Modules: [`generator-template`](../../modules/generator-template.md)
+- Modules: [generator-template](../../modules/generator-template.md)
+- [Custom templates](./custom-templates.md)
 

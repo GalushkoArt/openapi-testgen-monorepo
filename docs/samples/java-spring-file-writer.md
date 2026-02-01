@@ -1,3 +1,7 @@
+---
+description: Demonstrates the test-suite-writer generator for outputting test suites as JSON or YAML files. Shows MERGE mode for preserving manual edits and protected fields when regenerating.
+---
+
 # Java Spring file writer sample
 
 This sample demonstrates the `test-suite-writer` generator, which outputs test suites as JSON or YAML files instead of executable code. This is useful for data-driven testing frameworks or when you need to process test cases programmatically.
@@ -33,8 +37,8 @@ openApiTestGenerator {
         mapOf(
             "outputFileName" to "openapi-test-suites.json",
             "writeMode" to "MERGE",
-            "preventOverwriteSuites" to "false",
-            "preventOverwriteCases" to "false",
+            "preventOverwriteSuites" to false,
+            "preventOverwriteCases" to false,
             "protectedTestCaseFields" to "expectedStatusCode,expectedBody",
             "indent" to "    ",
         )
@@ -66,6 +70,8 @@ openApiTestGenerator {
 
 The sample also registers a second task that generates YAML format using a config file:
 
+Note: this sample uses `open-api-test-generation-config.yaml`, but the filename is arbitrary.
+
 ```kotlin
 tasks.register<OpenApiTestGeneratorTask>("generateOpenApiTestsYaml") {
     configFile.set("open-api-test-generation-config.yaml")
@@ -79,38 +85,30 @@ See [`open-api-test-generation-config.yaml`](https://github.com/GalushkoArt/open
 
 ## Output structure
 
-The generated JSON file contains an array of test suites:
+In `SINGLE_FILE` mode (default), the generated JSON file is a map keyed by `operationName`:
 
 ```json
-[
-  {
-    "operationPath": "/users",
+{
+  "listUsers": {
+    "path": "/users",
+    "method": "GET",
     "operationName": "listUsers",
-    "httpMethod": "GET",
     "testCases": [
       {
-        "name": "Valid request",
-        "description": "Valid request for listUsers",
-        "expectedStatusCode": 200,
-        "headers": [
-          { "key": "X-API-Key", "value": "test-api-key-123" }
-        ],
-        "queryParams": [],
-        "pathParams": [],
-        "cookies": [],
-        "body": null
-      },
-      {
-        "name": "Missing security: AllSecurityMissed",
-        "description": "Test case without any security credentials",
-        "expectedStatusCode": 401,
-        "headers": [],
-        ...
+        "name": "No security values provided",
+        "method": "GET",
+        "path": "/users",
+        "expectedStatusCode": 401
       }
     ]
   }
-]
+}
 ```
+
+For field definitions and the canonical schema, see:
+
+- Reference: [TestSuite](../reference/model/test-suite.md)
+- Reference: [TestCase](../reference/model/test-case.md)
 
 ## Running the tests
 
@@ -139,12 +137,13 @@ dependencies {
 
 ```java
 ObjectMapper mapper = new ObjectMapper();
-List<TestSuite> suites = mapper.readValue(
+Map<String, TestSuite> suites = mapper.readValue(
     new File("src/test/resources/openapi-test-suites.json"),
-    new TypeReference<List<TestSuite>>() {}
+    new TypeReference<Map<String, TestSuite>>() {}
 );
 
-for (TestSuite suite : suites) {
+for (Map.Entry<String, TestSuite> entry : suites.entrySet()) {
+    TestSuite suite = entry.getValue();
     for (TestCase testCase : suite.getTestCases()) {
         // Execute test case with your HTTP client
     }
@@ -153,18 +152,8 @@ for (TestSuite suite : suites) {
 
 ## Merge behavior
 
-With `writeMode: MERGE` (and overwrite enabled):
-
-1. **New test suites** are added to the file
-2. **Existing test suites** are updated with incoming suite metadata and cases
-3. **Existing test cases** (matched by name) overwrite fields except those listed in `protectedTestCaseFields`
-4. **Manual edits** to `expectedStatusCode` or `expectedBody` survive regeneration
-
-This allows you to:
-
-- Generate initial test cases automatically
-- Manually adjust expected values for your specific implementation
-- Regenerate when the OpenAPI spec changes without losing manual edits
+With `writeMode: MERGE`, the writer can preserve existing suites/cases and protect manual edits via `preventOverwrite*` flags and `protectedTestCaseFields`.
+For the canonical merge semantics and edge cases, see [Generator options](../reference/catalogs/generator-options.md#test-suite-writer-options).
 
 ## Related docs
 

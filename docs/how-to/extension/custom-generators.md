@@ -1,3 +1,7 @@
+---
+description: Create custom artifact generators that emit source code, JSON, YAML, or other outputs from generated test suites. Covers implementing ArtifactGenerator and ArtifactGeneratorFactory interfaces and registering them via modules.
+---
+
 # Custom generators
 
 Generators emit artifacts from generated `TestSuite`s (source code, JSON/YAML, etc.).
@@ -48,32 +52,15 @@ public class MyGeneratorModule : TestGenerationModule {
 - **Embedding**: add the module when executing (see [distribution-bundle](../../modules/distribution-bundle.md)).
 - **CLI / Gradle plugin**: currently use `DistributionDefaults.modules(...)`. To make a new generator available there, it must be added to the distribution (contributor change).
 
+## Option validation and determinism
+
+- Validate generator options early and fail with actionable error messages.
+- Keep output deterministic (stable ordering, no timestamps, no randomness).
+  - Sort keys and class lists when serializing maps/sets.
+  - Avoid filesystem-dependent ordering.
+
 ## Related docs
 
 - Reference: [Generators SPI](../../reference/spi/generators.md)
 - Catalog: [Generator options](../../reference/catalogs/generator-options.md)
-
-# Add custom generators
-
-Generators emit artifacts from generated suites (source files, JSON/YAML, etc.).
-
-## Implement a generator
-
-1. Implement `ArtifactGenerator` to write output files.
-2. Implement `ArtifactGeneratorFactory` with a stable id and option validation.
-
-## Register the generator
-
-Register custom factories via a `TestGenerationModule` implementation.
-
-See: [Custom modules](custom-modules.md)
-
-## Option validation
-
-Validate options up-front and fail fast with actionable messages.
-
-Keep output deterministic:
-
-- Sort keys and class lists when serializing maps/sets.
-- Avoid timestamps and random values in generated output.
 

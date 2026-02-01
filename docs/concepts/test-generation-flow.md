@@ -1,3 +1,7 @@
+---
+description: Step-by-step walkthrough of the test generation pipeline, from parsing the OpenAPI spec through provider execution to artifact output. Covers the high-level stages and output types.
+---
+
 # Test generation flow
 
 At a high level, generation follows a fixed pipeline per OpenAPI operation.

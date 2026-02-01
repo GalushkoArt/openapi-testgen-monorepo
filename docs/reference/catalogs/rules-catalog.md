@@ -1,6 +1,10 @@
+---
+description: Complete catalog of built-in validation rules for OpenAPI test generation, including schema rules (array, boundary, enum, type, string, object, date), pattern module rules, and authentication rules. Covers rule registration, ordering, settings, and extension points.
+---
+
 # Rules
 
-## Overview
+## What rules generate
 Rules encode OpenAPI constraints and produce negative test inputs. The generator uses two kinds of
 rules:
 - `SchemaValidationRule` (and `SimpleSchemaValidationRule`): return `RuleValue` instances that
@@ -14,14 +18,12 @@ The rule system is described in [architecture](../../concepts/architecture.md) a
 For core entry points and extension context, see the [core module](../../modules/core.md).
 For rule interfaces and extension points, see the [Validation rules SPI](../spi/validation-rules.md).
 For user-facing configuration (ignore rules), see [ignore rules](../../how-to/configuration/ignore-rules.md).
-To target a subset of operations before generation, use [include operations](../../how-to/configuration/yaml-config.md#include-operations).
+To target a subset of operations before generation, use [include operations](../../how-to/configuration/include-operations.md).
 For scenario-specific guides, see [negative testing](../../how-to/negative-testing/index.md).
 
 ## RuleValue contract
-`RuleValue` carries a description stack and a value. `buildDescription()` concatenates the
-stack to form the final description used in test case names. Composed rules use `grow()` to
-prepend a prefix (for example, "Array Item " or "Object Property <name> ") to nested rule
-values.
+`RuleValue` is the output format for schema validation rules and is used to build test case names and invalid substitution values.
+For the canonical contract and helper methods (`buildDescription`, `grow`), see [Validation rules SPI → RuleValue](../spi/validation-rules.md#rulevalue).
 
 ## Registration and ordering
 - `ManualRuleRegistry` returns built-in rules plus any extra rules from `TestGenerationModule`.

@@ -1,3 +1,7 @@
+---
+description: Setup guide for contributors including project structure, convention plugins, build commands, working with rules/providers/generators, and native image considerations.
+---
+
 # Development Guide
 
 This guide targets contributors and maintainers. For a system-level view, see

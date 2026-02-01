@@ -1,3 +1,7 @@
+---
+description: The distribution-bundle module is the shared product layer used by CLI and Gradle plugin. It bundles core, pattern-support, and generator-template modules, providing TestGenerationRunner as a high-level API for test generation execution.
+---
+
 # Module: `distribution-bundle`
 
 `distribution-bundle` is the shared "product layer" used by both the **CLI** and the **Gradle plugin**. It bundles feature modules and exposes a stable execution entry point.
@@ -26,6 +30,46 @@ Runs a generation end-to-end with configurable modules and reporting:
 5. Writes artifacts when generation succeeds or `alwaysWriteTests` is set
 
 Use `withDefaults(reporter)` for standard wiring or the builder for customization.
+
+#### Programmatic invocation (Kotlin)
+
+This snippet runs generation using the same defaults as the CLI/Gradle plugin (`withDefaults`) and passes inputs via `TestGeneratorOverrides`.
+
+```kotlin
+import art.galushko.openapi.testgen.config.TestGeneratorOverrides
+import art.galushko.openapi.testgen.distribution.Slf4jReporter
+import art.galushko.openapi.testgen.distribution.TestGenerationRunner
+import org.slf4j.LoggerFactory
+import java.nio.file.Path
+
+fun main() {
+    val runner = TestGenerationRunner.withDefaults(
+        reporter = Slf4jReporter(LoggerFactory.getLogger("openapi-testgen"))
+    )
+
+    val overrides = TestGeneratorOverrides(
+        specFile = "openapi.yaml",
+        outputDir = Path.of("build/generated"),
+        generatorId = "test-suite-writer",
+        generatorOptions = mapOf(
+            "format" to "json",
+            "outputFileName" to "test-suites.json",
+        ),
+    )
+
+    runner.execute(config = null, overrides = overrides)
+}
+```
+
+Add dependency:
+
+```kotlin
+dependencies {
+    implementation("art.galushko.openapi.testgen:distribution-bundle:<version>")
+}
+```
+
+See [Version placeholders](../getting-started/installation.md#version-placeholders) for how to choose `<version>`.
 
 ### TestGenerationReporter
 

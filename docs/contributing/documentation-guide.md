@@ -1,6 +1,34 @@
+---
+description: Guide for writing and maintaining project documentation using MkDocs. Covers frontmatter requirements, Diataxis structure, local preview, style guidelines, and contribution workflow.
+---
+
 # Documentation guide
 
 Documentation lives under `docs/` and is built with MkDocs.
+
+## Frontmatter requirements
+
+All documentation pages that are part of the MkDocs site (listed in `mkdocs.yml` under `nav:`) must include YAML frontmatter with a `description` field.
+The description is used to populate `DOCS_MAP.md` and helps readers understand the page's purpose.
+
+Markdown snippets under `docs/includes/` are auto-included via `pymdownx.snippets` and should not have frontmatter (for example, `docs/includes/abbreviations.md`).
+
+```yaml
+---
+description: Concise description of page content and purpose. Can be up to 4 sentences providing context for what the reader will learn.
+---
+
+# Page Title
+
+Content starts here...
+```
+
+The `sync_docs_map.py` script extracts descriptions from frontmatter to populate `DOCS_MAP.md`. Pages without descriptions show `[Description needed]`.
+
+```bash
+python3 skills/project-docs/scripts/sync_docs_map.py --check
+python3 skills/project-docs/scripts/sync_docs_map.py
+```
 
 ## Principles
 
@@ -14,7 +42,7 @@ Documentation lives under `docs/` and is built with MkDocs.
 Install Python deps:
 
 ```bash
-python -m pip install -r docs/requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 Run locally:

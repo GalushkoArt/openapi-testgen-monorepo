@@ -1,3 +1,7 @@
+---
+description: The example-value module is a standalone library for generating deterministic example values from OpenAPI schemas. It provides the SchemaValueProvider SPI and built-in providers for enums, UUIDs, emails, dates, and other common types.
+---
+
 # Module: `example-value`
 
 `example-value` is a **standalone library** for generating deterministic example values from OpenAPI schemas. It provides the **`SchemaValueProvider` SPI** and the `SchemaExampleValueGenerator` orchestration used by `core` to build valid baselines and schema-derived values.
@@ -67,57 +71,9 @@ The `pattern` provider is contributed by the `pattern-support` module and is ins
 
 ## Configuration (ExampleValueSettings)
 
-Location in config:
-
-- YAML: `testGenerationSettings.exampleValues`
-- Gradle plugin: `openApiTestGenerator { testGenerationSettings { exampleValues.putAll(...) } }`
-- CLI: `--setting exampleValues.*=...`
-
-Key fields:
-
-- `providers`: ordered list of provider ids (first provider that returns a value wins).
-- `maxExampleDepth`: max recursion depth for schema traversal.
-- `includeOptionalExampleProperties`: include optional properties that define examples/defaults.
-- `includeWriteOnly`: include `writeOnly` properties in generated examples.
-- `useSchemaExampleFallback`: use `schema.examples`/`schema.default` when `schema.example` is missing.
-- `uuid.template`: template string for UUIDs (must include `%s`).
-- `email.template`: template string for emails (must include `%s`).
-- `date.startDate`: start date (`YYYY-MM-DD`).
-- `dateTime.startDate`: start date (`YYYY-MM-DD`).
-- `dateTime.timeSuffixTemplate`: time suffix template (must include `%s`).
-- `plainString.validChars`: characters used for plain string generation (must be non-empty).
-
-Example configuration:
-
-```yaml
-testGenerationSettings:
-  exampleValues:
-    providers:
-      - enum
-      - const
-      - uuid
-      - email
-      - date
-      - date-time
-      - plain-string
-      - number
-      - boolean
-    maxExampleDepth: 50
-    includeOptionalExampleProperties: false
-    includeWriteOnly: true
-    useSchemaExampleFallback: false
-    uuid:
-      template: "d5a5495b-cbdc-4237-a66e-%s"
-    email:
-      template: "test%s@example.com"
-    date:
-      startDate: "2025-05-05"
-    dateTime:
-      startDate: "2025-05-05"
-      timeSuffixTemplate: "%sT17:32:28Z"
-    plainString:
-      validChars: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-```
+Example value generation is configured via `testGenerationSettings.exampleValues` (YAML/Gradle) or `--setting exampleValues.*` (CLI).
+The canonical key list, defaults, and examples live in [Distribution settings → testGenerationSettings.exampleValues](../reference/distribution-settings.md#testgenerationsettingsexamplevalues).
+This module page focuses on behavior and the `SchemaValueProvider` SPI.
 
 ## SPI contract (SchemaValueProvider)
 

@@ -1,3 +1,7 @@
+---
+description: Demonstrates the template generator with RestAssured to produce executable Java test classes. Shows automatic build integration, template variables, and multiple generation tasks.
+---
+
 # Java Spring RestAssured sample
 
 This sample demonstrates the `template` generator with RestAssured, producing executable Java test classes that can be compiled and run directly.
@@ -108,6 +112,8 @@ public class ListUsersTest {
 ## Additional generation with YAML config
 
 The sample registers a second task that uses a YAML configuration file:
+
+Note: this sample uses `open-api-test-generation-config.yaml`, but the filename is arbitrary.
 
 ```kotlin
 tasks.register<OpenApiTestGeneratorTask>("generateOpenApiTestsToSrc") {

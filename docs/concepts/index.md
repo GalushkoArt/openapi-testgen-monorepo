@@ -1,3 +1,7 @@
+---
+description: Overview of conceptual documentation explaining the design rationale and internal workings of the OpenAPI Test Generator.
+---
+
 # Concepts
 
 Explanation-oriented docs to help you understand *why* the system behaves the way it does.

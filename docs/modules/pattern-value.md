@@ -1,3 +1,7 @@
+---
+description: The pattern-value module provides standalone regex-based value generation. It wraps a regex generator to produce deterministic strings that match or violate schema patterns, implementing the example-value SPI without depending on core.
+---
+
 # Module: `pattern-value`
 
 `pattern-value` is a **standalone regex-based value generation** module. It wraps a regex generator to produce deterministic strings that match (or intentionally do not match) `schema.pattern`.
@@ -12,28 +16,19 @@ Important: it has **no `core` dependency**. It implements the `example-value` SP
 
 - `pattern-support`
 
-## Key types
-
-- `PatternValueGenerator`: low-level regex string generation (deterministic variations)
-- `PatternValueProvider`: `SchemaValueProvider` implementation for pattern-based values
-- `PatternGenerationOptions`: configuration for pattern generation (space chars, printable chars, defaults)
-
 ## Related docs
 
-- Modules: [pattern-support](pattern-support.md)
+- Modules: [pattern-support](pattern-support.md), [example-value](example-value.md)
 - Reference: [Value providers SPI](../reference/spi/value-providers.md)
 
-# Pattern-Value Module
-
-This document is non-normative and targets contributors. For system context, see
-[architecture](../concepts/architecture.md).
-
-## Scope and responsibilities
+## Scope and responsibilities (contributors)
 
 `pattern-value` provides regex-based value generation for `schema.pattern`. It implements the
 `SchemaValueProvider` SPI from `example-value` and has no dependency on `core`.
 
 ## Key types
+
+This module centers around `PatternGenerationOptions`, `PatternValueGenerator`, and `PatternValueProvider`.
 
 ### PatternGenerationOptions
 
@@ -74,8 +69,3 @@ Core integration is provided by the `pattern-support` module.
 ## API reference
 
 - Dokka API reference: [`docs/api/pattern-value/index.html`](../api/pattern-value/index.html)
-
-## Related docs
-
-- Pattern support module: [pattern-support](pattern-support.md)
-- Example-value module: [example-value](example-value.md)

@@ -1,3 +1,7 @@
+---
+description: Comprehensive guide for installing the OpenAPI Test Generator CLI via npm, pnpm, yarn, or bun. Covers native binary support, JAR fallback, platform-specific options, and troubleshooting common issues.
+---
+
 # npm Installation
 
 Install the OpenAPI Test Generator CLI via npm for easy integration with JavaScript/TypeScript projects.
@@ -163,7 +167,7 @@ Use in `package.json` scripts:
 ```json
 {
     "scripts": {
-        "generate-suites": "openapi-testgen --spec-file api.yaml --output-dir test-data --generator test-suite-writer"
+        "generate-suites": "openapi-testgen --spec-file api.yaml --output-dir test-data --generator test-suite-writer --generator-option outputFileName=test-suites.json"
     }
 }
 ```
@@ -175,25 +179,41 @@ Run without installing:
 === "npm"
 
     ```bash
-    npx @openapi-testgen/cli --spec-file api.yaml --output-dir tests
+    npx @openapi-testgen/cli \
+      --spec-file api.yaml \
+      --output-dir tests \
+      --generator test-suite-writer \
+      --generator-option outputFileName=test-suites.json
     ```
 
 === "pnpm"
 
     ```bash
-    pnpm dlx @openapi-testgen/cli --spec-file api.yaml --output-dir tests
+    pnpm dlx @openapi-testgen/cli \
+      --spec-file api.yaml \
+      --output-dir tests \
+      --generator test-suite-writer \
+      --generator-option outputFileName=test-suites.json
     ```
 
 === "yarn"
 
     ```bash
-    yarn dlx @openapi-testgen/cli --spec-file api.yaml --output-dir tests
+    yarn dlx @openapi-testgen/cli \
+      --spec-file api.yaml \
+      --output-dir tests \
+      --generator test-suite-writer \
+      --generator-option outputFileName=test-suites.json
     ```
 
 === "bun"
 
     ```bash
-    bunx @openapi-testgen/cli --spec-file api.yaml --output-dir tests
+    bunx @openapi-testgen/cli \
+      --spec-file api.yaml \
+      --output-dir tests \
+      --generator test-suite-writer \
+      --generator-option outputFileName=test-suites.json
     ```
 
 ## Platform-Specific Installation
@@ -313,6 +333,20 @@ java -version
 
 Alternatively, upgrade your Linux distribution to get a newer glibc version.
 
+### Force JAR Execution
+
+If you experience issues with the native binary, use `--prefer-jar` to bypass it:
+
+```bash
+openapi-testgen --prefer-jar --spec-file api.yaml --output-dir tests --generator test-suite-writer
+```
+
+This is useful when:
+
+- Native binary crashes or behaves unexpectedly
+- You need consistent behavior across different environments
+- Debugging platform-specific issues
+
 ### Package Manager Issues
 
 If you encounter issues with a specific package manager:
@@ -336,7 +370,11 @@ openapi-testgen --version
 openapi-testgen --help
 
 # Test with a spec file
-openapi-testgen --spec-file petstore.yaml --output-dir ./tests --generator test-suite-writer
+openapi-testgen \
+  --spec-file petstore.yaml \
+  --output-dir ./tests \
+  --generator test-suite-writer \
+  --generator-option outputFileName=test-suites.json
 ```
 
 ## Updating

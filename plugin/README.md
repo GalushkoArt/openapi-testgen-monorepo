@@ -8,7 +8,7 @@ Gradle plugin for generating API tests from OpenAPI specifications.
 
 ```kotlin
 plugins {
-    id("art.galushko.openapi-test-generator") version "0.9.1"
+    id("art.galushko.openapi-test-generator") version "0.9.2"
 }
 ```
 

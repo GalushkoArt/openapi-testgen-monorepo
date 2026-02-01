@@ -1,3 +1,7 @@
+---
+description: Configure OpenAPI Test Generator to produce RestAssured-based tests using the built-in Java and Kotlin template sets. Includes a Gradle example and links to the canonical generator reference.
+---
+
 # RestAssured integration
 
 The built-in Mustache templates include RestAssured-based template sets:
@@ -24,17 +28,7 @@ openApiTestGenerator {
 }
 ```
 
-## CLI example
-
-```bash
-openapi-testgen \
-  --spec-file ./openapi.yaml \
-  --output-dir ./build/generated-tests \
-  --generator template \
-  --generator-option templateSet=restassured-java \
-  --generator-option templateVariables.package=com.example.generated \
-  --generator-option templateVariables.baseUrl=http://localhost:8080
-```
+For CLI usage, see [Template generator](../generators/template-generator.md) and [CLI reference](../../reference/cli.md).
 
 ## Configure base URL
 

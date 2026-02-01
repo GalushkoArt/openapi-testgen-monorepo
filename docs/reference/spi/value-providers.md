@@ -1,3 +1,7 @@
+---
+description: Reference documentation for the SchemaValueProvider SPI in the example-value module. Value providers generate schema-derived example values for test data.
+---
+
 # Value providers SPI
 
 Schema-derived example values are generated via the `example-value` module.

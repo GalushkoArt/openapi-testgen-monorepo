@@ -1,3 +1,7 @@
+---
+description: Enable positive test case generation to verify that valid requests return 2xx responses. By default, only negative test cases (4xx) are generated.
+---
+
 # Include positive test cases
 
 By default, the generator produces only negative test cases that validate error handling (4xx responses).
@@ -27,24 +31,7 @@ openApiTestGenerator {
 
 ## What you get
 
-Each test suite will include a "Test Valid Case" entry with a 2xx expected status:
+Enabling `includeValidCase` adds a single baseline positive test case (named "Test Valid Case") to each generated suite.
+The expected status code is derived from the first 2xx response defined in the OpenAPI spec for the operation.
 
-```json
-{
-  "name": "Test Valid Case",
-  "method": "POST",
-  "path": "/pets",
-  "body": { "name": "example", "tag": "example" },
-  "expectedStatusCode": 201
-}
-```
-
-This test verifies that:
-- The API accepts valid input
-- Required parameters are documented correctly
-- The success response code (2xx) matches the spec
-
-!!! note
-    This test is not included in the default test suites.
-
-    Also, generating a set of valid test cases for different request parameters is not in the scope of this project because these cases are tighly coupled to the business logic.
+See: [Distribution settings → Output options](../../reference/distribution-settings.md#output-options)

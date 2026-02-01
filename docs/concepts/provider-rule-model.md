@@ -1,3 +1,7 @@
+---
+description: Explains the provider-rule architecture that separates concerns between what to test (providers) and how to generate invalid values (rules). Covers the valid case baseline, provider responsibilities, and deterministic composition.
+---
+
 # Provider-rule model
 
 The generator is built around a provider-rule model that keeps responsibilities separated and makes output deterministic.
@@ -16,7 +20,7 @@ Providers decide **what to vary** for a given operation:
 - Parameter provider: derives parameter-negative cases (missing required params, schema violations).
 - Request body provider: derives request-body-negative cases (missing body, schema violations).
 
-Providers return `Outcome<List<TestCase>>` and must be pure (no mutation of inputs).
+Providers return an [`Outcome`](glossary.md#outcome) (`Outcome<List<TestCase>>`) and must be pure (no mutation of inputs).
 
 ## Rules
 

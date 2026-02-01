@@ -1,3 +1,7 @@
+---
+description: The model module contains the canonical data structures used across all modules, including TestSuite, TestCase, Outcome, and error reporting types. It has no dependencies and is the foundation of the module hierarchy.
+---
+
 # Module: `model`
 
 The `model` module contains the **canonical data structures** produced by generation and consumed by generators (codegen, test-suite writer, reporting).
@@ -27,25 +31,7 @@ The `model` module contains the **canonical data structures** produced by genera
 - Concepts:
   - [Error handling](../concepts/error-handling.md)
 
-# Model module
-
-## Overview
-
-`model` contains the shared data model types used across all modules (core, generators, CLI, and Gradle plugin).
-
-## Key types
-
-- `TestSuite`: a suite of `TestCase` objects produced per OpenAPI operation.
-- `TestCase`: a single test scenario including request data and expected outcome.
-- Error model types used for reporting generation failures and partial successes.
-
 ## API reference
 
 - Dokka API reference: [`docs/api/model/index.html`](../api/model/index.html)
-
-## Related documentation
-
-- Reference: [TestSuite](../reference/model/test-suite.md)
-- Reference: [TestCase](../reference/model/test-case.md)
-- Reference: [errors](../reference/model/errors.md)
 

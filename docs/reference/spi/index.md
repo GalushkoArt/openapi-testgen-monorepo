@@ -1,3 +1,7 @@
+---
+description: Overview of the core SPI (Service Provider Interface) for extending the OpenAPI Test Generator with custom validation rules, test providers, generators, and value providers.
+---
+
 # Core SPI (Extension Interfaces)
 
 This document is non-normative and targets contributors building custom rules, providers, or
@@ -21,57 +25,41 @@ generation pipeline.
 
 ## Rules
 
+Rule interfaces and registration are canonical in [Validation rules SPI](validation-rules.md).
+
 ### SchemaValidationRule
 
-- Inputs: a schema node and `TestGenerationContext`.
-- Output: `Sequence<RuleValue>`; return an empty sequence when not applicable.
-- Determinism: preserve output order for identical inputs.
-- Errors: avoid throwing; providers convert exceptions to `Outcome.Failure` via `runProviderSafely`.
+See [SchemaValidationRule](validation-rules.md#schemavalidationrule).
 
 ### SimpleSchemaValidationRule
 
-Marker interface for rules that operate on a single schema node. Composed rules (array/object item)
-are wired separately and may delegate to this set.
+See [SimpleSchemaValidationRule](validation-rules.md#simpleschemavalidationrule).
 
 ### AuthValidationRule
 
-- Inputs: `TestGenerationContext` (valid case + OpenAPI model).
-- Output: `Sequence<TestCase>` because auth scenarios span headers, cookies, and query params.
-- `decide(...)` controls applicability; `apply(...)` builds full test cases.
-- Built-in rules set `expectedStatusCode` to 401/403; custom rules should set explicit status codes.
+See [AuthValidationRule](validation-rules.md#authvalidationrule).
 
 ## RuleValue and composed rules
 
-`RuleValue` carries a description stack and a value. `buildDescription()` concatenates the stack
-into a test case description. Composed rules (array/object item rules) use `grow(prefix, newValue)`
-to prepend a contextual prefix while preserving nested descriptions.
-
-`RuleContainer` exposes the full rule list so composed rules can re-apply all rules to nested
-schemas. Ordering should match registry output to keep descriptions and outputs deterministic.
+See [RuleValue](validation-rules.md#rulevalue) for how rule-generated invalid values are represented.
 
 ## RuleRegistry
 
-`RuleRegistry` returns rule instances for a requested type, applying ignore filters and stable
-ordering. The default implementation is `ManualRuleRegistry`, which sorts by fully qualified class
-name and logs unknown ignore entries.
+`RuleRegistry` assembles deterministically ordered rule lists and applies ignore filters (default: `ManualRuleRegistry`).
+Most extensions should register additional rules via `TestGenerationModule` rather than implement a custom registry.
 
 ## TestCaseProvider
 
-Providers implement `TestCaseProvider<T>` and return `Outcome<List<TestCase>>`. Providers should:
-
-- Use `runProviderSafely(...)` to convert exceptions into `Outcome.Failure`.
-- Preserve input order and provider order.
-- Avoid mutating `TestGenerationContext` or input OpenAPI models.
+Test provider interfaces and wiring notes are canonical in [Test providers SPI](test-providers.md).
 
 ## ArtifactGenerator
 
-`ArtifactGenerator` writes artifacts for a `TestSuite`. The default `generateTests(List)` helper
-just iterates and delegates to `generateTests(TestSuite)`.
+Generator interfaces and wiring notes are canonical in [Generators SPI](generators.md).
 
 ## SecuritySchemeToScope
 
-`SecuritySchemeToScope` pairs a resolved OpenAPI `SecurityScheme` with its name and scopes. Auth
-rules and `SecurityValueProvider` use this model when deriving valid or invalid security values.
+`SecuritySchemeToScope` pairs a resolved OpenAPI `SecurityScheme` with its name and scopes.
+Auth rules and `SecurityValueProvider` use this model when deriving valid or invalid security values.
 
 ## Implementation checklist
 

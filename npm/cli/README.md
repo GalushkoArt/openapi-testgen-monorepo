@@ -67,7 +67,7 @@ openapi-testgen \
 ```json
 {
     "scripts": {
-        "generate-tests": "openapi-testgen --spec-file api.yaml --output-dir tests"
+        "generate-tests": "openapi-testgen --spec-file api.yaml --output-dir tests --generator test-suite-writer --generator-option outputFileName=test-suites.json"
     }
 }
 ```
@@ -84,6 +84,7 @@ openapi-testgen \
 | `--setting`           | Test generation setting (repeatable): `key=value` |
 | `--always-write-test` | Write output even on errors                       |
 | `--log-level`         | TRACE, DEBUG, INFO, WARN, ERROR, OFF              |
+| `--prefer-jar`        | Force JAR execution (skip native binary)          |
 | `--help`              | Show help                                         |
 | `--version`           | Show version                                      |
 

@@ -1,3 +1,7 @@
+---
+description: Install the OpenAPI Test Generator CLI or Gradle plugin. Covers npm installation, GitHub release downloads, native binaries, building from source, and Gradle plugin portal setup.
+---
+
 # Installation
 
 This project supports two primary entry points:
@@ -21,46 +25,35 @@ This project supports two primary entry points:
 - Java 21
 - Kotlin 2.2.x
 
+## Version placeholders
+
+This documentation uses placeholders like `<version>` in examples.
+
+Where to find a version:
+
+- **CLI releases**: use the release tag / filename from [GitHub Releases](https://github.com/GalushkoArt/openapi-testgen-monorepo/releases).
+- **Gradle plugin**: use the version shown in the [Gradle Plugin Portal](https://plugins.gradle.org/plugin/art.galushko.openapi-test-generator).
+- **Maven dependencies**: use the version published to Maven Central for the artifact you depend on (for example, `distribution-bundle`).
+
 ## CLI
 
 ### npm (Recommended)
 
-The easiest way to install the CLI:
+```bash
+npm install -g @openapi-testgen/cli
+openapi-testgen --help
+```
 
-=== "npm"
+The npm package uses a native binary when available and falls back to a Java 21+ JAR on unsupported platforms.
 
-    ```bash
-    npm install -g @openapi-testgen/cli
-    ```
-
-=== "pnpm"
-
-    ```bash
-    pnpm add -g @openapi-testgen/cli
-    ```
-
-=== "yarn"
-
-    ```bash
-    yarn global add @openapi-testgen/cli
-    ```
-
-=== "bun"
-
-    ```bash
-    bun add -g @openapi-testgen/cli
-    ```
-
-Native binaries are automatically used when available. Falls back to JAR (requires Java 21+) on unsupported platforms.
-
-For detailed options (native binaries, project dependencies, troubleshooting), see [npm Installation](npm-installation.md).
+For pnpm/yarn/bun commands, project dependency setup, and troubleshooting, see [npm Installation](npm-installation.md).
 
 ### Download from GitHub
 
 Download the latest release from the [GitHub Releases page](https://github.com/GalushkoArt/openapi-testgen-monorepo/releases):
 
 - **JVM distribution** (`openapi-testgen-<version>.zip`): Fat JAR, cross-platform, requires Java 21+
-- **Native binary** (`openapi-testgen-<version>-<platform>`): Standalone executable, no Java required
+- **Native binary** (`openapi-testgen-<version>-<platform>.zip`): Standalone executable, no Java required
     - `linux-amd64`: Linux x86_64
     - `linux-arm64`: Linux arm_64
     - `macos-arm64`: macOS Apple Silicon
@@ -70,18 +63,18 @@ Download the latest release from the [GitHub Releases page](https://github.com/G
 
 ```bash
 # Download and extract
-unzip openapi-testgen-0.9.1.zip
+unzip openapi-testgen-<version>.zip
 
 # Run (requires Java 21+)
-java -jar openapi-testgen-0.9.1-all.jar --help
+java -jar openapi-testgen-<version>-all.jar --help
 ```
 
 #### Native binary
 
 ```bash
 # Download and make executable (Linux/macOS)
-unzip openapi-testgen-0.9.1-linux-amd64.zip
-cd openapi-testgen-0.9.1-linux-amd64
+unzip openapi-testgen-<version>-linux-amd64.zip
+cd openapi-testgen-<version>-linux-amd64
 chmod +x openapi-testgen
 ./openapi-testgen --help
 ```
@@ -112,7 +105,7 @@ Using the plugins DSL (recommended):
 
 ```kotlin
 plugins {
-    id("art.galushko.openapi-test-generator") version "0.9.1"
+    id("art.galushko.openapi-test-generator") version "<version>"
 }
 ```
 
@@ -124,7 +117,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath("art.galushko.openapi.testgen:plugin:0.9.1")
+        classpath("art.galushko.openapi.testgen:plugin:<version>")
     }
 }
 

@@ -1,3 +1,7 @@
+---
+description: Definitions of key terms and concepts used throughout the OpenAPI Test Generator documentation, including providers, rules, outcomes, budgets, and core data types.
+---
+
 # Glossary
 
 ## Artifact generator

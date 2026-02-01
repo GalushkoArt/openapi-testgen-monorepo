@@ -1,3 +1,7 @@
+---
+description: Catalog of test case providers that generate negative test cases for OpenAPI operations. Includes operation-level providers for auth, parameters, and request bodies, along with their execution order, expected status codes, and extension points.
+---
+
 # Providers
 
 ## Overview

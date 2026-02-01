@@ -1,3 +1,7 @@
+---
+description: Explains the determinism guarantees of the generator, ensuring stable and reproducible output for the same inputs. Covers ordering rules for providers, rules, modules, and writers.
+---
+
 # Determinism
 
 The generator is designed to produce stable outputs for the same inputs.

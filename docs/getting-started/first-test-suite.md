@@ -1,31 +1,26 @@
+---
+description: Step-by-step tutorial for generating your first test suite using the CLI. Demonstrates both template-based test generation (RestAssured Java) and JSON/YAML test suite output.
+---
+
 # Generate your first test suite (CLI)
 
 This tutorial generates tests from an OpenAPI spec using the CLI.
 
 ## 1) Get the CLI
 
-=== "npm (recommended)"
+Install via npm (recommended):
 
-    ```bash
-    npm install -g @openapi-testgen/cli
-    ```
+```bash
+npm install -g @openapi-testgen/cli
+```
 
-=== "Download binary"
+Or run without installing:
 
-    ```bash
-    # Download native binary (no Java required)
-    curl -LO https://github.com/GalushkoArt/openapi-testgen-monorepo/releases/download/0.9.1/openapi-testgen-0.9.1-linux-amd64.zip
-    unzip openapi-testgen-0.9.1-linux-amd64.zip
-    cd openapi-testgen-0.9.1-linux-amd64
-    chmod +x openapi-testgen
-    ```
+```bash
+npx @openapi-testgen/cli --help
+```
 
-=== "Build from source"
-
-    ```bash
-    ./gradlew :cli:installDist
-    alias openapi-testgen='./cli/build/install/openapi-testgen/bin/openapi-testgen'
-    ```
+For native binaries and building from source, see [Installation](installation.md).
 
 Verify installation:
 

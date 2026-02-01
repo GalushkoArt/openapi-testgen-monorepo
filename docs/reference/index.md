@@ -1,3 +1,7 @@
+---
+description: Index of reference documentation including catalogs, CLI flags, Gradle DSL, distribution settings, and SPI interfaces.
+---
+
 # Reference
 
 Information-oriented docs: catalogs, CLI flags, Gradle DSL reference, distribution wiring, and SPI interfaces.

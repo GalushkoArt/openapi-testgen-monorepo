@@ -1,3 +1,7 @@
+---
+description: Enable Spring Boot test annotations in generated tests by setting the springBootTest template variable. Works with the built-in RestAssured templates.
+---
+
 # Spring Boot integration
 
 If you want generated tests to run as Spring Boot tests, use the `template` generator and enable the template variable `springBootTest`.

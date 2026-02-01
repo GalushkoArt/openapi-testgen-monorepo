@@ -1,3 +1,7 @@
+---
+description: Complete release workflow checklist covering version bumps, verification checks, Maven Central and Gradle Plugin Portal publishing, GitHub releases, and hotfix procedures.
+---
+
 # Release process
 
 This guide covers the complete release workflow for OpenAPI Test Generator.

@@ -36,6 +36,26 @@ internal enum class OutputMode {
     MULTIPLE_FILES,
 }
 
+/**
+ * Valid field names for [TestSuiteWriterOptions.protectedTestCaseFields].
+ * These correspond to fields in [art.galushko.openapi.testgen.model.TestCase].
+ */
+internal val VALID_TEST_CASE_FIELDS: Set<String> = setOf(
+    "name",
+    "method",
+    "path",
+    "queryParams",
+    "pathParams",
+    "headers",
+    "cookie",
+    "securityValues",
+    "body",
+    "expectedBody",
+    "needToComplete",
+    "expectedStatusCode",
+    "rule",
+)
+
 @Suppress("ThrowsCount", "CyclomaticComplexMethod")
 internal fun transformAndValidateWriterOptions(map: Map<String, Any?>): TestSuiteWriterOptions {
     val outputMode = when (val m = map["outputMode"]) {
@@ -74,6 +94,14 @@ internal fun transformAndValidateWriterOptions(map: Map<String, Any?>): TestSuit
         is Collection<*> -> raw.filterIsInstance<String>().flatMap { it.split(',') }.map { it.trim() }.filter { it.isNotEmpty() }.toSet()
         is String? -> raw?.split(',')?.map { it.trim() }?.filter { it.isNotEmpty() }?.toSet() ?: emptySet()
         else -> throw IllegalArgumentException("Invalid 'protectedTestCaseFields' option: '$raw'. Expected list or comma-separated string.")
+    }
+
+    val invalidFields = protectedTestCaseFields - VALID_TEST_CASE_FIELDS
+    if (invalidFields.isNotEmpty()) {
+        throw IllegalArgumentException(
+            "Invalid field name(s) in 'protectedTestCaseFields': ${invalidFields.sorted()}. " +
+                "Valid fields are: ${VALID_TEST_CASE_FIELDS.sorted()}."
+        )
     }
 
     val format = when (val f = map["format"]) {

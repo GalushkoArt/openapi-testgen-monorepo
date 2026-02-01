@@ -1,3 +1,7 @@
+---
+description: Comprehensive settings reference shared by CLI and Gradle plugin. Covers budget controls, security configuration, include/ignore filters, example value providers, and module settings.
+---
+
 # Distribution settings (CLI + Gradle plugin)
 
 Both the CLI and Gradle plugin ship the same "distribution" wiring from `distribution-bundle`.
@@ -38,7 +42,7 @@ is available when modules are created.
 | Spec file          | `--spec-file`         | `specFile`         | String  | Yes      | OpenAPI specification file path                           |
 | Output dir         | `--output-dir`        | `outputDir`        | String  | Yes      | Output directory for generated artifacts                  |
 | Generator id       | `--generator`         | `generator`        | String  | Yes      | Generator: `template` or `test-suite-writer`              |
-| Generator options  | `--generator-option`  | `generatorOptions` | Map     | No       | Generator-specific options                                |
+| Generator options  | `--generator-option`  | `generatorOptions` | Map     | No       | Generator-specific options (see [Generator options](catalogs/generator-options.md)) |
 | Always write tests | `--always-write-test` | `alwaysWriteTests` | Boolean | No       | Write artifacts even on errors (default: `false`)         |
 | Log level          | `--log-level`         | `logLevel`         | String  | No       | `ALL`, `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`, `OFF`   |
 
@@ -66,6 +70,8 @@ Core settings for test case generation behavior.
 When enabled, each test suite includes a "Test Valid Case" entry representing a valid request
 with all required parameters populated. The expected status code is the first 2xx response
 defined in the OpenAPI spec (e.g., 200, 201, 204).
+
+This is a baseline positive check (one valid case per operation), not a generator for multiple valid permutations.
 
 Example:
 
@@ -95,11 +101,20 @@ testGenerationSettings:
 |---------------------|---------------------------------------|---------|------------------------------------------------------|
 | `includeOperations` | Map&lt;String, List&lt;String&gt;&gt; | `{}`    | Path → list of HTTP methods to include (empty = all) |
 
-Notes:
+Accepted shapes:
 
-- Path keys are matched exactly (no globbing).
-- Method names are case-insensitive.
-- `*` path matches all paths; `*` method matches all methods for the path.
+- `"/path": ["GET", "POST"]` (explicit list)
+- `"/path": "GET"` (single method shorthand)
+
+Behavior:
+
+- Empty config → all operations are included (no filtering).
+- Path keys match **exactly** (no globbing). Use `*` as a wildcard path to match all paths.
+- Method matching is case-insensitive (methods are normalized to uppercase).
+- Use `*` as a wildcard method to match all methods for a path.
+- Exact path entries take precedence over the wildcard path:
+  - When `"/users": ["GET"]` exists, wildcard path methods (like `"*": ["POST"]`) are **not** additive for `"/users"`.
+- Paths that are not present in the OpenAPI spec are ignored and logged as warnings.
 
 Example:
 
@@ -118,6 +133,26 @@ testGenerationSettings:
 | `ignoreTestCases`             | Map               | `{}`    | Path/method/test case names to skip (exact)   |
 | `ignoreSchemaValidationRules` | Set&lt;String&gt; | `[]`    | Fully qualified rule class names to skip      |
 | `ignoreAuthValidationRules`   | Set&lt;String&gt; | `[]`    | Fully qualified auth rule class names to skip |
+
+`ignoreTestCases` is hierarchical:
+
+- Path level: `"/internal": "*"` ignores all operations under that path.
+- Operation level: `"/users": { "DELETE": "*" }` ignores all test cases for that method.
+- Test-case level: `"/users": { "GET": ["Missed Required Query Parameter page"] }` ignores exact test case names only.
+
+Wildcards and matching:
+
+- Path keys match **exactly** (no globbing). Use `*` as a wildcard path to apply rules to all paths.
+- Method keys are case-insensitive (methods are normalized to uppercase).
+- Wildcard path rules merge with path-specific rules; wildcard method entries win on key collisions.
+- The `*:*:*` pattern is forbidden, ignored, and logged as a warning.
+- If all test cases for an operation are filtered out, the operation is recorded as "not tested" in the generation report summary.
+
+Performance:
+
+- Path-level (`"/path": "*"`) and operation-level (`"/path": { "GET": "*" }`) ignores are applied **before** generation.
+- Test-case-name ignores (`"/path": { "GET": ["..."] }`) are applied **after** suite generation.
+- Use `includeOperations` when you want inclusion-based targeting and predictable performance on large specs.
 
 Example:
 
@@ -248,50 +283,13 @@ testGenerationSettings:
 
 ## Generator options
 
-### template generator
+Generator options are generator-specific and live under the top-level `generatorOptions` key (YAML) / `generatorOptions` property (Gradle) / `--generator-option` (CLI).
 
-| Option                      | Type   | Description                                                     |
-|-----------------------------|--------|-----------------------------------------------------------------|
-| `templateSet`               | String | Built-in template set: `restassured-java`, `restassured-kotlin` |
-| `customTemplateDir`         | String | Path to custom Mustache templates                               |
-| `templateVariables`         | Map    | Variables passed to templates                                   |
-| `templateVariables.package` | String | Package name for generated classes                              |
-| `templateVariables.baseUrl` | String | Base URL for API requests                                       |
+See:
 
-Example:
-
-```yaml
-generator: template
-generatorOptions:
-    templateSet: restassured-java
-    templateVariables:
-        package: com.example.generated
-        baseUrl: http://localhost:8080
-```
-
-### test-suite-writer generator
-
-| Option                    | Type    | Default       | Description                                         |
-|---------------------------|---------|---------------|-----------------------------------------------------|
-| `outputFileName`          | String  | (required)    | Output file name (required for `SINGLE_FILE` mode)  |
-| `format`                  | String  | `json`        | Output format: `json` or `yaml`                     |
-| `writeMode`               | String  | `MERGE`       | `MERGE` (default) or `OVERWRITE`                    |
-| `outputMode`              | String  | `SINGLE_FILE` | `SINGLE_FILE` or `MULTIPLE_FILES`                   |
-| `preventOverwriteSuites`  | Boolean | `false`       | Keep existing suites unchanged during merge         |
-| `preventOverwriteCases`   | Boolean | `true`        | Keep existing cases unchanged; new cases are added  |
-| `protectedTestCaseFields` | List    | `[]`          | Fields to preserve when overwriting cases           |
-| `indent`                  | String  | 4 spaces      | Indentation string for JSON output                  |
-| `fileNamePrefix`          | String  | (empty)       | Prefix for per-suite files in `MULTIPLE_FILES` mode |
-
-Example:
-
-```yaml
-generator: test-suite-writer
-generatorOptions:
-    format: json
-    writeMode: MERGE
-    outputFileName: test-suites.json
-```
+- Reference: [Generator options](catalogs/generator-options.md)
+- How-to: [Template generator](../how-to/generators/template-generator.md)
+- How-to: [Test-suite-writer](../how-to/generators/test-suite-writer.md)
 
 ## Gradle-only settings
 
@@ -361,5 +359,5 @@ logLevel: INFO
 - [Gradle plugin reference](gradle-plugin.md)
 - [Budget controls](../concepts/budget-controls.md)
 - [Ignore rules how-to](../how-to/configuration/ignore-rules.md)
-- [Include operations](../how-to/configuration/yaml-config.md#include-operations)
+- [Include operations](../how-to/configuration/include-operations.md)
 - [Security values how-to](../how-to/configuration/security-values.md)

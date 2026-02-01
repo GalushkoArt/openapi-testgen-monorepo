@@ -1,3 +1,7 @@
+---
+description: Kotlin coding conventions for the project including naming, null safety, immutability, formatting with Detekt, and SLF4J logging patterns.
+---
+
 # Code style
 
 This repo is Kotlin-first and relies on automated checks to enforce consistency.

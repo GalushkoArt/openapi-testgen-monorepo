@@ -1,3 +1,7 @@
+---
+description: The core module is the generation engine that parses OpenAPI specifications, builds test suites using providers and rules, enforces budget controls, and produces artifacts through generators. It provides the TestGenerationEngine facade and built-in test-suite-writer generator.
+---
+
 # Module: `core`
 
 `core` is the **generation engine**: it parses OpenAPI, builds per-operation test suites using providers and rules, applies budgets/filters, and emits artifacts through generators.

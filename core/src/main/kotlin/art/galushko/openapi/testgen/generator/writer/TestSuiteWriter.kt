@@ -236,7 +236,7 @@ internal class TestSuiteWriter(
     }
 
     private fun mergeCasePreservingFields(existing: TestCase, incoming: TestCase): TestCase {
-        if (options.protectedTestCaseFields.isEmpty()) return existing
+        if (options.protectedTestCaseFields.isEmpty()) return incoming
 
         fun <T> pick(field: String, cur: T, next: T): T =
             if (field in options.protectedTestCaseFields) cur else next
@@ -254,6 +254,7 @@ internal class TestSuiteWriter(
             needToComplete = pick("needToComplete", existing.needToComplete, incoming.needToComplete),
             expectedStatusCode = pick("expectedStatusCode", existing.expectedStatusCode, incoming.expectedStatusCode),
             rule = pick("rule", existing.rule, incoming.rule),
+            securityValues = pick("securityValues", existing.securityValues, incoming.securityValues),
         )
     }
 

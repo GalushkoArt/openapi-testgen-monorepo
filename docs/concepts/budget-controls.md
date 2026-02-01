@@ -1,16 +1,22 @@
+---
+description: Documents the budget limits that prevent runaway generation from complex or deeply nested schemas. Covers maxSchemaDepth, maxSchemaCombinations, maxTestCasesPerOperation, and how to tune them.
+---
+
 # Budget controls
 
 OpenAPI schemas can be deeply nested or contain combinatorial compositions (`allOf`/`anyOf`/`oneOf`). Budget controls cap worst-case behavior and keep generation tractable.
 
 ## Key budgets
 
-| Budget | Default | Description |
-|--------|---------|-------------|
-| `maxSchemaDepth` | 50 | Recursion limit when traversing schemas for validation |
-| `maxMergedSchemaDepth` | 50 | Recursion limit when merging composed schemas into a flattened view |
-| `maxSchemaCombinations` | 100 | Cap on composed-schema combinations (prevents `anyOf`/`oneOf` explosion) |
-| `maxTestCasesPerOperation` | 1000 | Maximum test cases generated for a single operation |
-| `maxErrors` | 100 | Cap on collected errors when using `COLLECT_ALL` mode |
+| Budget | Description |
+|--------|-------------|
+| `maxSchemaDepth` | Recursion limit when traversing schemas for validation |
+| `maxMergedSchemaDepth` | Recursion limit when merging composed schemas into a flattened view |
+| `maxSchemaCombinations` | Cap on composed-schema combinations (prevents `anyOf`/`oneOf` explosion) |
+| `maxTestCasesPerOperation` | Maximum test cases generated for a single operation |
+| `maxErrors` | Cap on collected errors when using `COLLECT_ALL` mode |
+
+Defaults and types are documented in [Distribution settings](../reference/distribution-settings.md#budget-controls).
 
 ## What happens when a budget is exceeded
 
@@ -28,29 +34,7 @@ When a budget is exceeded, the error includes:
 - **Decrease budgets** in CI when you prefer faster feedback.
 - Consider using [ignore rules](../how-to/configuration/ignore-rules.md) for problematic operations instead of globally increasing limits.
 
-### Configuration examples
+For configuration keys, defaults, and where to set them (YAML vs CLI vs Gradle), see:
 
-**CLI**:
-```bash
-openapi-testgen \
-  --setting maxSchemaDepth=100 \
-  --setting maxTestCasesPerOperation=500 \
-  --spec-file openapi.yaml
-```
-
-**Gradle**:
-```kotlin
-openApiTestGenerator {
-    testGenerationSettings {
-        maxSchemaDepth.set(100)
-        maxTestCasesPerOperation.set(500)
-    }
-}
-```
-
-**YAML config**:
-```yaml
-testGenerationSettings:
-  maxSchemaDepth: 100
-  maxTestCasesPerOperation: 500
-```
+- Reference: [Distribution settings](../reference/distribution-settings.md#budget-controls)
+- How-to: [Configure generation via YAML](../how-to/configuration/yaml-config.md)

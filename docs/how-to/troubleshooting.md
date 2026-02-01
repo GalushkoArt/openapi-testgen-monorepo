@@ -1,3 +1,7 @@
+---
+description: Solutions for common issues including missing test output, budget exceeded errors, CLI/npm problems, and platform-specific compatibility.
+---
+
 # Troubleshooting
 
 ## No tests generated
@@ -25,6 +29,22 @@ By default, artifacts are written only on success.
 - YAML/Gradle: set `alwaysWriteTests: true` / `alwaysWriteTests.set(true)`
 
 ## CLI / npm issues
+
+### Force JAR execution
+
+If you experience issues with the native binary, use `--prefer-jar` to bypass it and run the JAR directly:
+
+```bash
+openapi-testgen --prefer-jar --spec-file api.yaml --output-dir tests --generator test-suite-writer
+```
+
+This is useful when:
+
+- Native binary crashes or behaves unexpectedly
+- You need consistent behavior across different environments
+- Debugging platform-specific issues
+
+Requires Java 21+.
 
 ### Native binary not working on Linux
 

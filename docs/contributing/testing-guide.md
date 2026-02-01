@@ -1,3 +1,7 @@
+---
+description: Testing conventions using JUnit 5, AssertJ, and Allure. Covers determinism requirements, fixture usage, and common test commands.
+---
+
 # Testing guide
 
 Tests should be deterministic, fast, and isolated.

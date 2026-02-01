@@ -44,13 +44,21 @@ function resolveNativeBinary(pkgName) {
 }
 
 /**
+ * Filters out npm wrapper-specific flags from arguments.
+ * @returns {string[]} - Arguments to pass to the underlying CLI
+ */
+function getCliArgs() {
+  return process.argv.slice(2).filter((arg) => arg !== "--prefer-jar");
+}
+
+/**
  * Executes the native binary with the given arguments.
  * @param {string} binaryPath - Path to the native binary
  * @returns {boolean} - false if execution failed, otherwise exits the process
  */
 function runNative(binaryPath) {
   // Capture stderr to detect glibc compatibility errors
-  const result = spawnSync(binaryPath, process.argv.slice(2), {
+  const result = spawnSync(binaryPath, getCliArgs(), {
     stdio: ["inherit", "inherit", "pipe"],
   });
 
@@ -128,7 +136,7 @@ function runJar(jarPath) {
     process.exit(1);
   }
 
-  const result = spawnSync("java", ["-jar", jarPath, ...process.argv.slice(2)], {
+  const result = spawnSync("java", ["-jar", jarPath, ...getCliArgs()], {
     stdio: "inherit",
   });
 
@@ -137,21 +145,26 @@ function runJar(jarPath) {
 
 // Main execution flow
 
-// 1. Try native binary first (if available for this platform)
-const nativeBinary = resolveNativeBinary(nativePackage);
-if (nativeBinary) {
-  const success = runNative(nativeBinary);
-  // If runNative returns, it means execution failed
-  if (success !== false) {
-    // This shouldn't happen as runNative exits on success
-    process.exit(0);
+// Check for --prefer-jar flag (npm wrapper-specific option)
+const preferJar = process.argv.includes("--prefer-jar");
+
+// 1. Try native binary first (if available for this platform and not bypassed)
+if (!preferJar) {
+  const nativeBinary = resolveNativeBinary(nativePackage);
+  if (nativeBinary) {
+    const success = runNative(nativeBinary);
+    // If runNative returns, it means execution failed
+    if (success !== false) {
+      // This shouldn't happen as runNative exits on success
+      process.exit(0);
+    }
+    // Fall through to JAR fallback
+    console.warn(
+      "Warning: Native binary is not compatible with this system (likely glibc version mismatch)."
+    );
+    console.warn("Falling back to JAR-based CLI (requires Java 21+)...");
+    console.warn("");
   }
-  // Fall through to JAR fallback
-  console.warn(
-    "Warning: Native binary is not compatible with this system (likely glibc version mismatch)."
-  );
-  console.warn("Falling back to JAR-based CLI (requires Java 21+)...");
-  console.warn("");
 }
 
 // 2. Fall back to JAR

@@ -1,3 +1,7 @@
+---
+description: Learn how to create custom validation rules that generate negative test cases for domain-specific constraints, custom string formats, or OpenAPI extension properties not covered by built-in rules.
+---
+
 # Custom validation rules
 
 This guide shows how to create a custom validation rule that generates additional negative test cases for your OpenAPI specifications.
@@ -192,48 +196,8 @@ class SuffixValidationModule : TestGenerationModule {
 
 ### Step 4: Use with `TestGenerationRunner`
 
-For embedded usage, add your module to the runner:
-
-```kotlin
-import art.galushko.openapi.testgen.config.TestGeneratorOverrides
-import art.galushko.openapi.testgen.distribution.DistributionDefaults
-import art.galushko.openapi.testgen.distribution.Slf4jReporter
-import art.galushko.openapi.testgen.distribution.TestGenerationResult
-import art.galushko.openapi.testgen.distribution.TestGenerationRunner
-import art.galushko.openapi.testgen.pattern.support.PatternModuleSettingsExtractor
-import art.galushko.openapi.testgen.pattern.value.PatternGenerationOptions
-import com.example.rules.SuffixValidationModule
-import org.slf4j.LoggerFactory
-import java.nio.file.Path
-
-fun main() {
-    val runner = TestGenerationRunner.builder()
-        .reporter(Slf4jReporter(LoggerFactory.getLogger("openapi-testgen")))
-        .moduleExtractors(DistributionDefaults.extractors())
-        .defaultSettings(DistributionDefaults.settings())
-        .moduleFactory { options ->
-            val patternOptions = options.moduleSettings
-                .get<PatternGenerationOptions>(PatternModuleSettingsExtractor.SETTINGS_KEY)
-                ?: PatternGenerationOptions()
-            DistributionDefaults.modules(patternOptions) + SuffixValidationModule()
-        }
-        .build()
-
-    val overrides = TestGeneratorOverrides(
-        specFile = "openapi.yaml",
-        outputDir = Path.of("generated"),
-        generatorId = "test-suite-writer",
-        generatorOptions = mapOf("format" to "json"),
-    )
-
-    val result = runner.execute(config = null, overrides = overrides)
-
-    when (result) {
-        is TestGenerationResult.Success -> println("Generated ${result.report.summary.totalTestCases} test cases")
-        is TestGenerationResult.Failure -> System.err.println("Failed: ${result.message}")
-    }
-}
-```
+To run generation from Kotlin code, use `distribution-bundle`'s `TestGenerationRunner` API.
+Start with the canonical embedding example in [Module: `distribution-bundle`](../../modules/distribution-bundle.md#programmatic-invocation-kotlin), then add your `TestGenerationModule` to the runner wiring (see [Custom modules](custom-modules.md)).
 
 ## Debugging custom rules
 
@@ -242,13 +206,21 @@ fun main() {
 Use `--log-level DEBUG` with the CLI to see rule application details:
 
 ```bash
-./cli/build/install/openapi-testgen/bin/openapi-testgen \
+openapi-testgen \
   --spec-file openapi.yaml \
   --output-dir ./generated \
   --generator test-suite-writer \
   --generator-option outputFileName=test-suites.json \
   --log-level DEBUG
 ```
+
+??? note "Building from source (contributors)"
+    If you're contributing to the project or need to test local changes:
+
+    ```bash
+    ./gradlew :cli:installDist
+    ./cli/build/install/openapi-testgen/bin/openapi-testgen --help
+    ```
 
 ### Inspect output by rule
 

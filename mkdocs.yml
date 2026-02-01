@@ -59,6 +59,7 @@ plugins:
       enable_creation_date: true
       type: timeago
       enable_parallel_processing: false
+      strict: false
 
 markdown_extensions:
   - abbr
@@ -108,6 +109,7 @@ nav:
       - npm Installation: getting-started/npm-installation.md
       - First test suite (CLI): getting-started/first-test-suite.md
       - Gradle integration: getting-started/gradle-integration.md
+      - End-to-end workflow: getting-started/end-to-end-workflow.md
       - Understanding output: getting-started/understanding-output.md
   - Samples:
       - Overview: samples/index.md
@@ -124,6 +126,7 @@ nav:
           - Positive testing: how-to/configuration/positive-testing.md
       - Negative testing:
           - Overview: how-to/negative-testing/index.md
+          - Generating: how-to/negative-testing/generating.md
           - Path parameters: how-to/negative-testing/path-parameters.md
           - Query parameters: how-to/negative-testing/query-parameters.md
           - Header parameters: how-to/negative-testing/header-parameters.md

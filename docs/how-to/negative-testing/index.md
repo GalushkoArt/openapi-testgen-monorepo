@@ -1,11 +1,20 @@
+---
+description: Overview of negative testing guides for OpenAPI Test Generator. Links to scenario-focused documentation for generating tests that validate parameter constraints, request body schemas, and authentication requirements.
+---
+
 # Negative Testing
 
 Scenario-focused guides for generating negative test cases from OpenAPI specs.
 
-Each guide includes:
+Start here:
+
+- [Generating negative tests](generating.md) - CLI + Gradle workflows and verification tips
+- [YAML config](../configuration/yaml-config.md) - Shareable configuration
+
+Each scenario guide includes:
 
 - A minimal OpenAPI snippet for the scenario
-- CLI and Gradle examples that run against existing samples
+- Inspected test case output
 - Fixture-backed output excerpts (real test case names)
 - Expected status code explanation
 
@@ -27,4 +36,4 @@ paths and methods.
 ## Related Configuration
 
 - [Ignore Rules](../configuration/ignore-rules.md) - Exclude specific rules or test cases
-- [YAML Config](../configuration/yaml-config.md) - Full configuration reference
+- [YAML Config](../configuration/yaml-config.md) - Config file structure and precedence

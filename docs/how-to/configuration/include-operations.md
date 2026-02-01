@@ -1,6 +1,27 @@
+---
+description: Generate tests for specific API operations using includeOperations. Filter by path and HTTP method to target individual endpoints, improving generation speed for large OpenAPI specifications.
+---
+
 # Include operations
 
 Use `includeOperations` to generate tests only for selected paths and HTTP methods. This is the recommended approach when you need to target specific API operations.
+
+## TL;DR - Target specific path and method
+
+Generate tests for only specific operations:
+
+```bash
+# Generate tests for GET /users/{userId} only
+openapi-testgen \
+  --spec-file ./openapi.yaml \
+  --output-dir ./generated \
+  --generator test-suite-writer \
+  --generator-option format=json \
+  --generator-option outputFileName=test-suites.json \
+  --setting 'includeOperations./users/{userId}[]=GET'
+```
+
+If you don’t have the CLI installed yet, see [Installation](../../getting-started/installation.md) (or run via `npx` from [npm Installation](../../getting-started/npm-installation.md)).
 
 ## When to use
 
@@ -11,9 +32,8 @@ Use `includeOperations` to generate tests only for selected paths and HTTP metho
 ## Performance benefit
 
 !!! tip "Filtering happens before generation"
-    Unlike `ignoreTestCases` which filters **after** test case generation, `includeOperations`
-    filters **before** generation. For large OpenAPI specifications, this significantly
-    reduces generation time when targeting specific operations.
+    `includeOperations` filters operations **before** generation. This is typically faster than
+    filtering by test case names via `ignoreTestCases` (which happens after suite generation).
 
 ## Configuration
 
@@ -21,8 +41,8 @@ Use `includeOperations` to generate tests only for selected paths and HTTP metho
 
 ```yaml
 # openapi-testgen.yaml
-specFile: "samples/openapi.yaml"
-outputDir: "./build/generated"
+specFile: "./openapi.yaml"
+outputDir: "./generated"
 generator: "test-suite-writer"
 generatorOptions:
   format: "json"
@@ -40,18 +60,15 @@ testGenerationSettings:
 Using a config file:
 
 ```bash
-./gradlew :cli:installDist
-
-./cli/build/install/openapi-testgen/bin/openapi-testgen \
-  --config-file ./openapi-testgen.yaml
+openapi-testgen --config-file ./openapi-testgen.yaml
 ```
 
 Using `--setting` flags (no config file):
 
 ```bash
-./cli/build/install/openapi-testgen/bin/openapi-testgen \
-  --spec-file samples/openapi.yaml \
-  --output-dir ./build/generated \
+openapi-testgen \
+  --spec-file ./openapi.yaml \
+  --output-dir ./generated \
   --generator test-suite-writer \
   --generator-option format=json \
   --generator-option outputFileName=test-suites.json \
@@ -60,15 +77,16 @@ Using `--setting` flags (no config file):
 ```
 
 !!! note "CLI list syntax"
-    Use `key[]=value` to append to list values. Each `--setting 'includeOperations./path[]=METHOD'`
-    adds a method to the list for that path.
+    Use `key[]=value` to append to list values. Each `--setting 'includeOperations./path[]=METHOD'` adds a method to the list for that path.
+
+    For the canonical nested-key and list syntax, see [CLI reference - Settings](../../reference/cli.md#settings).
 
 Wildcard path example:
 
 ```bash
-./cli/build/install/openapi-testgen/bin/openapi-testgen \
-  --spec-file samples/openapi.yaml \
-  --output-dir ./build/generated \
+openapi-testgen \
+  --spec-file ./openapi.yaml \
+  --output-dir ./generated \
   --generator test-suite-writer \
   --generator-option format=json \
   --generator-option outputFileName=test-suites.json \
@@ -79,7 +97,7 @@ Wildcard path example:
 
 ```kotlin
 openApiTestGenerator {
-    specFile.set(file("samples/openapi.yaml"))
+    specFile.set(file("openapi.yaml"))
     outputDir.set(file("build/generated-tests"))
     generator.set("test-suite-writer")
     generatorOptions.putAll(
@@ -100,17 +118,9 @@ openApiTestGenerator {
 }
 ```
 
-## Configuration rules
+## Configuration rules (reference)
 
-| Rule | Description |
-|------|-------------|
-| Empty config | Generate tests for all operations (default) |
-| Path matching | Exact match only (no globbing) |
-| Method matching | Case-insensitive (`get`, `GET`, `Get` all match) |
-| Method list | Must be non-empty; use a single string for shorthand (e.g., `"/users": "GET"`) |
-| Wildcard path | Use `"*"` to match all paths |
-| Wildcard method | Use `["*"]` to match all methods for a path |
-| Precedence | Exact path entries take precedence over wildcard path |
+See [Distribution settings](../../reference/distribution-settings.md#include-configuration) for the authoritative semantics: accepted shapes, wildcards, and precedence rules.
 
 ## Examples
 
@@ -226,7 +236,7 @@ Running the CLI with `includeOperations` set to `"/users/{userId}": ["GET"]` pro
 }
 ```
 
-Output location: `./build/generated/test-suites.json` (or the path specified in `outputDir`/`outputFileName`)
+Output location: `./generated/test-suites.json` (or the path specified in `outputDir`/`outputFileName`)
 
 ## Interaction with ignoreTestCases
 
@@ -248,10 +258,75 @@ testGenerationSettings:
         - "No security values provided"
 ```
 
+## Before vs After Verification
+
+Verify that `includeOperations` filters to only the targeted operation.
+
+### Without filtering (all operations)
+
+```bash
+npx @openapi-testgen/cli \
+  --spec-file openapi.yaml \
+  --output-dir ./generated-all \
+  --generator test-suite-writer \
+  --generator-option format=json \
+  --generator-option outputFileName=test-suites.json
+
+# List generated operations
+jq -c 'keys' ./generated-all/test-suites.json
+```
+
+Output (all operations):
+
+```json
+["createOrder","createUser","getUser","listOrders","listUsers"]
+```
+
+### With filtering (targeted operation)
+
+```bash
+npx @openapi-testgen/cli \
+  --spec-file openapi.yaml \
+  --output-dir ./generated-targeted \
+  --generator test-suite-writer \
+  --generator-option format=json \
+  --generator-option outputFileName=test-suites.json \
+  --setting 'includeOperations./users/{userId}[]=GET'
+
+# Verify only getUser is generated
+jq -c 'keys' ./generated-targeted/test-suites.json
+```
+
+Output (only targeted operation):
+
+```json
+["getUser"]
+```
+
+### Verify test case names
+
+```bash
+jq '.getUser.testCases[].name' ./generated-targeted/test-suites.json
+```
+
+Output:
+
+```json
+"Invalid Path userId parameter: Invalid Pattern"
+"Invalid X-API-Key API key security"
+"No security values provided"
+```
+
+## Programmatic Invocation (Kotlin)
+
+Programmatic invocation uses `TestGenerationRunner.withDefaults(...)` with `TestGeneratorOverrides` so you can pass `includeOperations` dynamically.
+The canonical runnable example (including dependency coordinates) lives in [Module: `distribution-bundle`](../../modules/distribution-bundle.md#programmatic-invocation-kotlin).
+Use `TestGenerationRunner.builder()` when you need custom modules, extractors, or settings.
+
 ## Related docs
 
-- [YAML config](yaml-config.md) - Full configuration reference
+- [YAML config](yaml-config.md) - Config file structure and precedence
 - [Ignore rules](ignore-rules.md) - Filter by exclusion
 - [Distribution settings](../../reference/distribution-settings.md) - Default values
-- [CLI reference](../../reference/cli.md) - Command-line options
-- [Gradle plugin reference](../../reference/gradle-plugin.md) - Plugin DSL
+- [CLI reference](../../reference/cli.md#settings) - CLI settings syntax
+- [Gradle plugin reference](../../reference/gradle-plugin.md#test-generation-settings) - Gradle testGenerationSettings DSL

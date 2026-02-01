@@ -1,7 +1,9 @@
 package art.galushko.openapi.testgen.generator.writer
+
 import art.galushko.openapi.testgen.generation.step
 
 import art.galushko.openapi.testgen.model.KeyValuePair
+import art.galushko.openapi.testgen.model.SecurityValues
 import art.galushko.openapi.testgen.model.TestCase
 import art.galushko.openapi.testgen.model.TestSuite
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -420,6 +422,7 @@ internal class TestSuiteWriterTest {
     @Nested
     @Story("Case Level Merge")
     @DisplayName("Case Level Merge")
+    @Suppress("LargeClass")
     inner class CaseLevelMergeTests {
 
         @Test
@@ -649,6 +652,12 @@ internal class TestSuiteWriterTest {
             val outputFileName = "test-suites.json"
             val outputFile = tempDir.resolve(outputFileName).toFile()
 
+            val existingSecurityValues = SecurityValues(
+                queryParams = mapOf("apiKey" to "original-key"),
+                headers = listOf(KeyValuePair("Authorization", "Bearer original-token")),
+                cookie = listOf(KeyValuePair("auth", "original-cookie")),
+                other = mapOf("scope" to "original-scope"),
+            )
             val existingCase = TestCase(
                 name = "Test Case",
                 method = "POST",
@@ -657,6 +666,7 @@ internal class TestSuiteWriterTest {
                 pathParams = mapOf("id" to "original"),
                 headers = listOf(KeyValuePair("X-Header", "original")),
                 cookie = listOf(KeyValuePair("session", "original")),
+                securityValues = existingSecurityValues,
                 body = mapOf("field" to "original"),
                 expectedBody = mapOf("result" to "original"),
                 needToComplete = true,
@@ -669,6 +679,12 @@ internal class TestSuiteWriterTest {
                 outputFile.writeText(jsonMapper.writeValueAsString(mapOf("createUser" to existingSuite)))
             }
 
+            val incomingSecurityValues = SecurityValues(
+                queryParams = mapOf("apiKey" to "updated-key"),
+                headers = listOf(KeyValuePair("Authorization", "Bearer updated-token")),
+                cookie = listOf(KeyValuePair("auth", "updated-cookie")),
+                other = mapOf("scope" to "updated-scope"),
+            )
             val incomingCase = TestCase(
                 name = "Test Case",
                 method = "PUT",
@@ -677,6 +693,7 @@ internal class TestSuiteWriterTest {
                 pathParams = mapOf("id" to "updated"),
                 headers = listOf(KeyValuePair("X-Header", "updated")),
                 cookie = listOf(KeyValuePair("session", "updated")),
+                securityValues = incomingSecurityValues,
                 body = mapOf("field" to "updated"),
                 expectedBody = mapOf("result" to "updated"),
                 needToComplete = false,
@@ -693,8 +710,9 @@ internal class TestSuiteWriterTest {
                 "preventOverwriteSuites" to false,
                 "preventOverwriteCases" to false,
                 "protectedTestCaseFields" to listOf(
-                    "method", "path", "queryParams", "pathParams", "headers",
-                    "cookie", "body", "expectedBody", "needToComplete", "expectedStatusCode", "rule"
+                    "name", "method", "path", "queryParams", "pathParams", "headers",
+                    "cookie", "securityValues", "body", "expectedBody", "needToComplete",
+                    "expectedStatusCode", "rule"
                 ),
             )
 
@@ -708,6 +726,7 @@ internal class TestSuiteWriterTest {
                 val produced: Map<String, TestSuite> = readAggregatedFile(outputFile, OutputFormat.JSON)
                 val resultCase = produced["createUser"]?.testCases?.first()
 
+                assertThat(resultCase?.name).isEqualTo("Test Case")
                 assertThat(resultCase?.method).isEqualTo("POST")
                 assertThat(resultCase?.path).isEqualTo("/original")
                 assertThat(resultCase?.queryParams).isEqualTo(mapOf("q" to "original"))
@@ -716,6 +735,8 @@ internal class TestSuiteWriterTest {
                     .isEqualTo(listOf(KeyValuePair("X-Header", "original")))
                 assertThat(resultCase?.cookie).usingRecursiveComparison()
                     .isEqualTo(listOf(KeyValuePair("session", "original")))
+                assertThat(resultCase?.securityValues).usingRecursiveComparison()
+                    .isEqualTo(existingSecurityValues)
                 assertThat(resultCase?.body).isEqualTo(mapOf("field" to "original"))
                 assertThat(resultCase?.expectedBody).isEqualTo(mapOf("result" to "original"))
                 assertThat(resultCase?.needToComplete).isTrue()
@@ -1023,6 +1044,78 @@ internal class TestSuiteWriterTest {
                 assertThat(resultCase?.body).isEqualTo(mapOf("data" to "original"))
             }
         }
+
+        @Test
+        @DisplayName("should preserve securityValues when protected")
+        @Description("Verifies that securityValues field can be protected independently during merge")
+        fun shouldPreserveSecurityValuesWhenProtected(@TempDir tempDir: Path) {
+            val outputFileName = "test-suites.json"
+            val outputFile = tempDir.resolve(outputFileName).toFile()
+
+            val existingSecurityValues = SecurityValues(
+                queryParams = mapOf("apiKey" to "existing-key"),
+                headers = listOf(KeyValuePair("Authorization", "Bearer existing-token")),
+                cookie = listOf(KeyValuePair("auth", "existing-cookie")),
+                other = mapOf("scope" to "read:users"),
+            )
+            val existingCase = TestCase(
+                name = "Test Case",
+                method = "POST",
+                path = "/original",
+                securityValues = existingSecurityValues,
+                expectedStatusCode = 200,
+            )
+            val existingSuite = createUserSuite.copy(testCases = listOf(existingCase))
+
+            step("Write original suite with securityValues") {
+                outputFile.writeText(jsonMapper.writeValueAsString(mapOf("createUser" to existingSuite)))
+            }
+
+            val incomingSecurityValues = SecurityValues(
+                queryParams = mapOf("apiKey" to "updated-key"),
+                headers = listOf(KeyValuePair("Authorization", "Bearer updated-token")),
+                cookie = listOf(KeyValuePair("auth", "updated-cookie")),
+                other = mapOf("scope" to "write:users"),
+            )
+            val incomingCase = TestCase(
+                name = "Test Case",
+                method = "PUT",
+                path = "/updated",
+                securityValues = incomingSecurityValues,
+                expectedStatusCode = 400,
+            )
+            val incomingSuite = createUserSuite.copy(testCases = listOf(incomingCase))
+
+            val options = mapOf(
+                "outputFileName" to outputFileName,
+                "outputMode" to "SINGLE_FILE",
+                "writeMode" to "MERGE",
+                "format" to "JSON",
+                "preventOverwriteSuites" to false,
+                "preventOverwriteCases" to false,
+                "protectedTestCaseFields" to "securityValues",
+            )
+
+            step("Write suite with only securityValues protected") {
+                TestSuiteWriter(tempDir.toFile(), options).also { writer ->
+                    writer.generateTests(incomingSuite)
+                }
+            }
+
+            step("Verify securityValues is preserved while other fields are updated") {
+                val produced: Map<String, TestSuite> = readAggregatedFile(outputFile, OutputFormat.JSON)
+                val resultCase = produced["createUser"]?.testCases?.first()
+
+                // securityValues preserved from existing
+                assertThat(resultCase?.securityValues).usingRecursiveComparison()
+                    .isEqualTo(existingSecurityValues)
+
+                // Other fields updated from incoming
+                assertThat(resultCase?.method).isEqualTo("PUT")
+                assertThat(resultCase?.path).isEqualTo("/updated")
+                assertThat(resultCase?.expectedStatusCode).isEqualTo(400)
+            }
+        }
     }
 
     @Nested
@@ -1041,7 +1134,7 @@ internal class TestSuiteWriterTest {
         fun shouldSkipSuiteWithInvalidOperationName(
             scenario: String,
             operationName: String?,
-            @TempDir tempDir: Path
+            @TempDir tempDir: Path,
         ) {
             val suite = TestSuite(
                 path = "/test",
@@ -1120,7 +1213,7 @@ internal class TestSuiteWriterTest {
             outputMode: String,
             fileNamePrefix: String,
             setupMalformedFile: (Path) -> Unit,
-            @TempDir tempDir: Path
+            @TempDir tempDir: Path,
         ) {
             step("Setup malformed file(s)") {
                 setupMalformedFile(tempDir)
@@ -1547,7 +1640,7 @@ internal class TestSuiteWriterTest {
         fun shouldAcceptValidEnumValues(
             scenario: String,
             options: Map<String, Any?>,
-            validator: (TestSuiteWriterOptions) -> Unit
+            validator: (TestSuiteWriterOptions) -> Unit,
         ) {
             val result = transformAndValidateWriterOptions(options)
             validator(result)
@@ -1602,7 +1695,7 @@ internal class TestSuiteWriterTest {
         fun shouldUseDefaultsForInvalidEnums(
             scenario: String,
             options: Map<String, Any?>,
-            validator: (TestSuiteWriterOptions) -> Unit
+            validator: (TestSuiteWriterOptions) -> Unit,
         ) {
             val result = transformAndValidateWriterOptions(options)
             validator(result)
@@ -1627,7 +1720,7 @@ internal class TestSuiteWriterTest {
         fun shouldParseValidBooleanValues(
             scenario: String,
             options: Map<String, Any?>,
-            validator: (TestSuiteWriterOptions) -> Unit
+            validator: (TestSuiteWriterOptions) -> Unit,
         ) {
             val result = transformAndValidateWriterOptions(options)
             validator(result)
@@ -1662,7 +1755,7 @@ internal class TestSuiteWriterTest {
         fun shouldUseDefaultsForInvalidBooleans(
             scenario: String,
             options: Map<String, Any?>,
-            validator: (TestSuiteWriterOptions) -> Unit
+            validator: (TestSuiteWriterOptions) -> Unit,
         ) {
             val result = transformAndValidateWriterOptions(options)
             validator(result)
@@ -1728,7 +1821,7 @@ internal class TestSuiteWriterTest {
         fun shouldThrowForInvalidTypes(
             scenario: String,
             options: Map<String, Any?>,
-            expectedMessage: String
+            expectedMessage: String,
         ) {
             assertThatThrownBy {
                 transformAndValidateWriterOptions(options)
@@ -1740,18 +1833,18 @@ internal class TestSuiteWriterTest {
         fun protectedFieldsParsingProvider(): Stream<Arguments> = Stream.of(
             Arguments.of(
                 "Collection with comma-separated values",
-                listOf("field1", "field2,field3", "  field4  "),
-                setOf("field1", "field2", "field3", "field4")
+                listOf("name", "method,path", "  queryParams  "),
+                setOf("name", "method", "path", "queryParams")
             ),
             Arguments.of(
                 "Comma-separated string",
-                "field1, field2 , field3",
-                setOf("field1", "field2", "field3")
+                "body, expectedBody , expectedStatusCode",
+                setOf("body", "expectedBody", "expectedStatusCode")
             ),
             Arguments.of(
                 "String with empty values filtered",
-                "field1,,  ,field2",
-                setOf("field1", "field2")
+                "headers,,  ,cookie",
+                setOf("headers", "cookie")
             )
         )
 
@@ -1761,7 +1854,7 @@ internal class TestSuiteWriterTest {
         fun shouldParseProtectedTestCaseFields(
             scenario: String,
             input: Any?,
-            expected: Set<String>
+            expected: Set<String>,
         ) {
             val options = transformAndValidateWriterOptions(
                 mapOf(
@@ -1793,6 +1886,73 @@ internal class TestSuiteWriterTest {
                 mapOf("outputFileName" to "test.json", "indent" to null)
             )
             assertThat(nullIndent.indent).isEqualTo("    ")
+        }
+
+        @Test
+        @DisplayName("should reject invalid field names in protectedTestCaseFields")
+        @Description("Invalid field names should throw IllegalArgumentException with helpful message")
+        fun shouldRejectInvalidFieldNamesInProtectedTestCaseFields() {
+            assertThatThrownBy {
+                transformAndValidateWriterOptions(
+                    mapOf(
+                        "outputFileName" to "test.json",
+                        "protectedTestCaseFields" to "invalidField",
+                    )
+                )
+            }
+                .isInstanceOf(IllegalArgumentException::class.java)
+                .hasMessageContaining("Invalid field name(s) in 'protectedTestCaseFields': [invalidField]")
+                .hasMessageContaining("Valid fields are:")
+        }
+
+        @Test
+        @DisplayName("should reject multiple invalid field names")
+        @Description("Multiple invalid field names should all be reported")
+        fun shouldRejectMultipleInvalidFieldNames() {
+            assertThatThrownBy {
+                transformAndValidateWriterOptions(
+                    mapOf(
+                        "outputFileName" to "test.json",
+                        "protectedTestCaseFields" to "foo, bar, name, baz",
+                    )
+                )
+            }
+                .isInstanceOf(IllegalArgumentException::class.java)
+                .hasMessageContaining("[bar, baz, foo]")
+        }
+
+        @Test
+        @DisplayName("should accept all valid TestCase field names")
+        @Description("All TestCase fields should be accepted")
+        fun shouldAcceptAllValidTestCaseFieldNames() {
+            val allFields = listOf(
+                "name", "method", "path", "queryParams", "pathParams", "headers",
+                "cookie", "securityValues", "body", "expectedBody", "needToComplete",
+                "expectedStatusCode", "rule"
+            )
+
+            val options = transformAndValidateWriterOptions(
+                mapOf(
+                    "outputFileName" to "test.json",
+                    "protectedTestCaseFields" to allFields,
+                )
+            )
+
+            assertThat(options.protectedTestCaseFields).containsExactlyInAnyOrderElementsOf(allFields.toSet())
+        }
+
+        @Test
+        @DisplayName("should accept empty protectedTestCaseFields")
+        @Description("Empty list should be valid")
+        fun shouldAcceptEmptyProtectedTestCaseFields() {
+            val options = transformAndValidateWriterOptions(
+                mapOf(
+                    "outputFileName" to "test.json",
+                    "protectedTestCaseFields" to emptyList<String>(),
+                )
+            )
+
+            assertThat(options.protectedTestCaseFields).isEmpty()
         }
     }
 

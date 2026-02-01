@@ -1,3 +1,7 @@
+---
+description: Gradle plugin reference for OpenAPI Test Generator. Documents extension properties, testGenerationSettings DSL, task registration, and automatic source set wiring.
+---
+
 # Gradle plugin reference
 
 Plugin id: `art.galushko.openapi-test-generator`
@@ -10,9 +14,10 @@ Implementation class: `art.galushko.openapi.testgen.plugin.OpenApiTestGeneratorP
 
 ```kotlin
 plugins {
-    id("art.galushko.openapi-test-generator") version "0.9.1"
+    id("art.galushko.openapi-test-generator") version "<version>"
 }
 ```
+See [Version placeholders](../getting-started/installation.md#version-placeholders) for how to choose `<version>`.
 
 ### Step 2: Configure the generator
 
@@ -51,13 +56,13 @@ Or explicitly:
 
 See [CI/CD integration](../how-to/integration/ci-cd.md) for job wiring patterns.
 
-## Extension: `openApiTestGenerator`
+## Extension: `openApiTestGenerator` {#extension-properties}
 
 Apply and configure:
 
 ```kotlin
 plugins {
-    id("art.galushko.openapi-test-generator") version "0.9.1"
+    id("art.galushko.openapi-test-generator") version "<version>"
 }
 
 openApiTestGenerator {
@@ -95,7 +100,7 @@ openApiTestGenerator {
 - `alwaysWriteTests: Property<Boolean>` (optional): force writing artifacts even when generation fails.
 - `logLevel: Property<String>` (optional): log level for generator logs (SLF4J backend).
 
-## Nested extension: `testGenerationSettings { ... }`
+## Nested extension: `testGenerationSettings { ... }` {#test-generation-settings}
 
 ```kotlin
 openApiTestGenerator {

@@ -1,8 +1,13 @@
+---
+description: Reference documentation for the model module's key types including TestSuite, SecurityValues, and KeyValuePair. Explains how these data classes are used across the system for test generation and serialization.
+---
+
 # TestSuite
 
-This document is non-normative and targets contributors. For core entry points, see
-the [core module](../../modules/core.md).
-For output formats and generator usage, see [Getting started](../../getting-started/index.md).
+This page is the schema reference for generated `TestSuite` output (JSON/YAML) written by the `test-suite-writer` generator.
+It is also useful to contributors, since these model types are shared across core generation and reporting.
+
+See also: [Test-suite-writer generator](../../how-to/generators/test-suite-writer.md) and the [core module](../../modules/core.md).
 
 ## Scope and responsibilities
 

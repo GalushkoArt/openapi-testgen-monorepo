@@ -19,7 +19,7 @@ the `SchemaValueProvider` SPI from `example-value` and can be used standalone or
 
 ```kotlin
 dependencies {
-    implementation("art.galushko.openapi:testgen-pattern-value:0.9.1")
+    implementation("art.galushko.openapi:testgen-pattern-value:0.9.2")
 }
 ```
 

@@ -26,7 +26,7 @@ Add the plugin to your `build.gradle.kts`:
 
 ```kotlin
 plugins {
-    id("art.galushko.openapi-test-generator") version "0.9.1"
+    id("art.galushko.openapi-test-generator") version "0.9.2"
 }
 ```
 

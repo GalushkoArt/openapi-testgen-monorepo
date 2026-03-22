@@ -1,6 +1,7 @@
 package art.galushko.openapi.testgen.testdata
 
 import art.galushko.openapi.testgen.generation.step
+import art.galushko.openapi.testgen.logging.TestLogCapture
 import art.galushko.openapi.testgen.model.SecurityValues
 import art.galushko.openapi.testgen.model.TestCase
 import art.galushko.openapi.testgen.model.error.Outcome
@@ -12,6 +13,8 @@ import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.Operation
 import io.swagger.v3.oas.models.Paths
+import io.swagger.v3.oas.models.examples.Example
+import io.swagger.v3.oas.models.media.ArraySchema
 import io.swagger.v3.oas.models.media.Content
 import io.swagger.v3.oas.models.media.MediaType
 import io.swagger.v3.oas.models.media.ObjectSchema
@@ -82,7 +85,10 @@ class ValidCaseBuilderTest {
             operation = operationWithResponse("201")
                 .requestBody(jsonRequestBody(mapOf("name" to "test-pet", "type" to "dog"))),
             expected = expectedCase("post", "/pets", 201)
-                .copy(body = mapOf("name" to "test-pet", "type" to "dog")),
+                .copy(
+                    body = mapOf("name" to "test-pet", "type" to "dog"),
+                    requestBodyMediaType = "application/json",
+                ),
         )
     )
 
@@ -184,6 +190,152 @@ class ValidCaseBuilderTest {
         val failure = outcome as Outcome.Failure
         assertThat(failure.errors).hasSize(1)
         assertThat(failure.errors[0].message).contains("Unsupported API-KEY security scheme type apiKey")
+    }
+
+    @Test
+    @DisplayName("generateValidCase should prefer supported JSON media type by priority and warn for unsupported ones")
+    fun generateValidCaseShouldSelectSupportedMediaTypeAndWarnForUnsupported() {
+        val halSchema = ObjectSchema().apply {
+            addProperty("name", StringSchema().example("hal"))
+            required = listOf("name")
+        }
+        val textJsonSchema = ObjectSchema().apply {
+            addProperty("name", StringSchema().example("text-json"))
+            required = listOf("name")
+        }
+        val jsonSchema = ObjectSchema().apply {
+            addProperty("name", StringSchema().example("json"))
+            required = listOf("name")
+        }
+        val requestBody = RequestBody().required(true).content(
+            Content()
+                .addMediaType("text/html", MediaType().schema(StringSchema().example("html")))
+                .addMediaType("text/json", MediaType().schema(textJsonSchema))
+                .addMediaType("application/hal+json", MediaType().schema(halSchema))
+                .addMediaType("application/json", MediaType().schema(jsonSchema))
+        )
+        val operation = operationWithResponse("200").requestBody(requestBody)
+        val builder = ValidCaseBuilder("/test", "post", operation, createOpenAPIWithoutSecurity())
+
+        val (outcome, logs) = TestLogCapture.capture { builder.generateValidCase() }
+
+        assertThat(logs).contains("Unsupported request body media type: text/html")
+        assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+        val testCase = (outcome as Outcome.Success).value
+        assertThat(testCase.body).isEqualTo(mapOf("name" to "json"))
+        assertThat(testCase.requestBodyMediaType).isEqualTo("application/json")
+    }
+
+    @Test
+    @DisplayName("generateValidCase should support text/json request bodies")
+    fun generateValidCaseShouldSupportTextJsonRequestBody() {
+        val textJsonSchema = ObjectSchema().apply {
+            addProperty("sub", StringSchema().example("user-456"))
+            required = listOf("sub")
+        }
+        val requestBody = RequestBody().required(true).content(
+            Content().addMediaType("text/json", MediaType().schema(textJsonSchema))
+        )
+        val operation = operationWithResponse("200").requestBody(requestBody)
+        val builder = ValidCaseBuilder("/test", "post", operation, createOpenAPIWithoutSecurity())
+
+        val outcome = builder.generateValidCase()
+
+        assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+        val testCase = (outcome as Outcome.Success).value
+        assertThat(testCase.body).isEqualTo(mapOf("sub" to "user-456"))
+        assertThat(testCase.requestBodyMediaType).isEqualTo("text/json")
+    }
+
+    @Test
+    @DisplayName("generateValidCase should support application/jwt request bodies")
+    fun generateValidCaseShouldSupportJwtRequestBody() {
+        val jwtSchema = ObjectSchema().apply {
+            addProperty("sub", StringSchema().example("user-123"))
+            required = listOf("sub")
+        }
+        val requestBody = RequestBody().required(true).content(
+            Content().addMediaType("application/jwt", MediaType().schema(jwtSchema))
+        )
+        val operation = operationWithResponse("200").requestBody(requestBody)
+        val builder = ValidCaseBuilder("/test", "post", operation, createOpenAPIWithoutSecurity())
+
+        val outcome = builder.generateValidCase()
+
+        assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+        val testCase = (outcome as Outcome.Success).value
+        assertThat(testCase.body).isEqualTo(mapOf("sub" to "user-123"))
+        assertThat(testCase.requestBodyMediaType).isEqualTo("application/jwt")
+    }
+
+    @Test
+    @DisplayName("generateValidCase should keep failure behavior when no supported request body media types exist")
+    fun generateValidCaseShouldKeepFailureWhenNoSupportedRequestBodyMediaTypesExist() {
+        val requestBody = RequestBody().required(true).content(
+            Content()
+                .addMediaType("text/html", MediaType().schema(StringSchema().example("html")))
+                .addMediaType("text/plain", MediaType().schema(StringSchema().example("plain")))
+        )
+        val operation = operationWithResponse("200").requestBody(requestBody)
+        val builder = ValidCaseBuilder("/test", "post", operation, createOpenAPIWithoutSecurity())
+
+        val (outcome, logs) = TestLogCapture.capture { builder.generateValidCase() }
+
+        assertThat(logs)
+            .contains("Unsupported request body media type: text/html")
+            .contains("Unsupported request body media type: text/plain")
+        assertThat(outcome).isInstanceOf(Outcome.Failure::class.java)
+        val failure = outcome as Outcome.Failure
+        assertThat(failure.errors).hasSize(1)
+        assertThat(failure.errors[0].message).contains("Unsupported request body media type")
+    }
+
+    @Test
+    @DisplayName("generateValidCase should use required parameter content schema when schema is absent")
+    fun generateValidCaseShouldUseRequiredParameterContentSchemaWhenSchemaIsAbsent() {
+        val operation = operationWithResponse("200")
+            .addParametersItem(requiredQueryParameterWithContent("filter", mapOf("id" to "42")))
+        val builder = ValidCaseBuilder("/test", "get", operation, createOpenAPIWithoutSecurity())
+
+        val outcome = builder.generateValidCase()
+
+        assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+        val testCase = (outcome as Outcome.Success).value
+        assertThat(testCase.queryParams).containsEntry("filter", mapOf("id" to "42"))
+    }
+
+    @Test
+    @DisplayName("generateValidCase should preserve structured header and cookie parameter content values")
+    fun generateValidCaseShouldPreserveStructuredHeaderAndCookieParameterContentValues() {
+        val headerValue = mapOf("region" to "eu", "tenant" to "alpha")
+        val cookieValue = listOf("session-a", "session-b")
+        val operation = operationWithResponse("200")
+            .addParametersItem(requiredHeaderParameterWithContent("X-Context", headerValue))
+            .addParametersItem(requiredCookieParameterWithContent("session", cookieValue))
+        val builder = ValidCaseBuilder("/test", "get", operation, createOpenAPIWithoutSecurity())
+
+        val outcome = builder.generateValidCase()
+
+        assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+        val testCase = (outcome as Outcome.Success).value
+        assertThat(testCase.headers).containsExactly("X-Context" with headerValue)
+        assertThat(testCase.cookie).containsExactly("session" with cookieValue)
+    }
+
+    @Test
+    @DisplayName("generateValidCase should fail when required parameter has neither schema nor content schema")
+    fun generateValidCaseShouldFailWhenRequiredParameterHasNoUsableSchema() {
+        val parameter = QueryParameter().name("filter").required(true)
+            .content(Content().addMediaType("application/json", MediaType()))
+        val operation = operationWithResponse("200").addParametersItem(parameter)
+        val builder = ValidCaseBuilder("/test", "get", operation, createOpenAPIWithoutSecurity())
+
+        val outcome = builder.generateValidCase()
+
+        assertThat(outcome).isInstanceOf(Outcome.Failure::class.java)
+        val failure = outcome as Outcome.Failure
+        assertThat(failure.errors).hasSize(1)
+        assertThat(failure.errors[0].message).contains("does not define schema or content schema")
     }
 
     @Test
@@ -474,6 +626,7 @@ class ValidCaseBuilderTest {
             assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
             val testCase = (outcome as Outcome.Success).value
             assertThat(testCase.expectedBody).isEqualTo(responseExample)
+            assertThat(testCase.responseBodyMediaType).isEqualTo("application/json")
         }
 
         @Test
@@ -487,6 +640,7 @@ class ValidCaseBuilderTest {
             assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
             val testCase = (outcome as Outcome.Success).value
             assertThat(testCase.expectedBody).isNull()
+            assertThat(testCase.responseBodyMediaType).isNull()
         }
 
         @Test
@@ -513,6 +667,7 @@ class ValidCaseBuilderTest {
             assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
             val testCase = (outcome as Outcome.Success).value
             assertThat(testCase.expectedBody).isEqualTo(mapOf("status" to "ok"))
+            assertThat(testCase.responseBodyMediaType).isEqualTo("application/json")
         }
 
         @Test
@@ -553,6 +708,182 @@ class ValidCaseBuilderTest {
             // Should use 200 (minimum 2xx) not 201
             assertThat(testCase.expectedStatusCode).isEqualTo(200)
             assertThat(testCase.expectedBody).isEqualTo(mapOf("ok" to true))
+            assertThat(testCase.responseBodyMediaType).isEqualTo("application/json")
+        }
+    }
+
+    @Nested
+    @DisplayName("Request body media type example extraction")
+    inner class RequestBodyMediaTypeExampleTest {
+
+        @Test
+        @DisplayName("should use media type example (singular) instead of schema generation")
+        fun shouldUseMediaTypeExampleSingular() {
+            val schema = ObjectSchema().apply {
+                addProperty("cursor", StringSchema())
+            }
+            val requestBody = RequestBody().required(true).content(
+                Content().addMediaType(
+                    "application/json",
+                    MediaType().schema(schema).example(mapOf("cursor" to "aGVsbG8h"))
+                )
+            )
+            val operation = operationWithResponse("200").requestBody(requestBody)
+            val builder = ValidCaseBuilder("/test", "post", operation, createOpenAPIWithoutSecurity())
+
+            val outcome = builder.generateValidCase()
+
+            assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+            val testCase = (outcome as Outcome.Success).value
+            assertThat(testCase.body).isEqualTo(mapOf("cursor" to "aGVsbG8h"))
+            assertThat(testCase.requestBodyMediaType).isEqualTo("application/json")
+        }
+
+        @Test
+        @DisplayName("should use media type example when schema is absent")
+        fun shouldUseMediaTypeExampleWithoutSchema() {
+            val requestBody = RequestBody().required(true).content(
+                Content().addMediaType(
+                    "application/json",
+                    MediaType().example(mapOf("cursor" to "example-only"))
+                )
+            )
+            val operation = operationWithResponse("200").requestBody(requestBody)
+            val builder = ValidCaseBuilder("/test", "post", operation, createOpenAPIWithoutSecurity())
+
+            val outcome = builder.generateValidCase()
+
+            assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+            val testCase = (outcome as Outcome.Success).value
+            assertThat(testCase.body).isEqualTo(mapOf("cursor" to "example-only"))
+            assertThat(testCase.requestBodyMediaType).isEqualTo("application/json")
+        }
+
+        @Test
+        @DisplayName("should use media type examples (plural) and resolve first by sorted key")
+        fun shouldUseMediaTypeExamplesPlural() {
+            val schema = ObjectSchema().apply {
+                addProperty("cursor", StringSchema())
+            }
+            val requestBody = RequestBody().required(true).content(
+                Content().addMediaType(
+                    "application/json",
+                    MediaType().schema(schema).examples(
+                        mapOf(
+                            "zeta" to Example().value(mapOf("cursor" to "zeta-cursor")),
+                            "alpha" to Example().value(mapOf("cursor" to "alpha-cursor")),
+                        )
+                    )
+                )
+            )
+            val operation = operationWithResponse("200").requestBody(requestBody)
+            val builder = ValidCaseBuilder("/test", "post", operation, createOpenAPIWithoutSecurity())
+
+            val outcome = builder.generateValidCase()
+
+            assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+            val testCase = (outcome as Outcome.Success).value
+            assertThat(testCase.body).isEqualTo(mapOf("cursor" to "alpha-cursor"))
+            assertThat(testCase.requestBodyMediaType).isEqualTo("application/json")
+        }
+
+        @Test
+        @DisplayName("should use media type examples when schema is absent")
+        fun shouldUseMediaTypeExamplesPluralWithoutSchema() {
+            val requestBody = RequestBody().required(true).content(
+                Content().addMediaType(
+                    "application/json",
+                    MediaType().examples(
+                        mapOf(
+                            "zeta" to Example().value(mapOf("cursor" to "zeta-only")),
+                            "alpha" to Example().value(mapOf("cursor" to "alpha-only")),
+                        )
+                    )
+                )
+            )
+            val operation = operationWithResponse("200").requestBody(requestBody)
+            val builder = ValidCaseBuilder("/test", "post", operation, createOpenAPIWithoutSecurity())
+
+            val outcome = builder.generateValidCase()
+
+            assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+            val testCase = (outcome as Outcome.Success).value
+            assertThat(testCase.body).isEqualTo(mapOf("cursor" to "alpha-only"))
+            assertThat(testCase.requestBodyMediaType).isEqualTo("application/json")
+        }
+
+        @Test
+        @DisplayName("should prefer media type example over schema-based generation")
+        fun shouldPreferMediaTypeExampleOverSchema() {
+            val schema = ObjectSchema().apply {
+                addProperty("name", StringSchema().example("schema-generated"))
+                required = listOf("name")
+            }
+            val requestBody = RequestBody().required(true).content(
+                Content().addMediaType(
+                    "application/json",
+                    MediaType().schema(schema).example(mapOf("name" to "from-example"))
+                )
+            )
+            val operation = operationWithResponse("200").requestBody(requestBody)
+            val builder = ValidCaseBuilder("/test", "post", operation, createOpenAPIWithoutSecurity())
+
+            val outcome = builder.generateValidCase()
+
+            assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+            val testCase = (outcome as Outcome.Success).value
+            assertThat(testCase.body).isEqualTo(mapOf("name" to "from-example"))
+        }
+
+        @Test
+        @DisplayName("should fall back to schema generation when no media type examples exist")
+        fun shouldFallBackToSchemaWhenNoMediaTypeExamples() {
+            val schema = ObjectSchema().apply {
+                addProperty("name", StringSchema().example("schema-value"))
+                required = listOf("name")
+            }
+            val requestBody = RequestBody().required(true).content(
+                Content().addMediaType("application/json", MediaType().schema(schema))
+            )
+            val operation = operationWithResponse("200").requestBody(requestBody)
+            val builder = ValidCaseBuilder("/test", "post", operation, createOpenAPIWithoutSecurity())
+
+            val outcome = builder.generateValidCase()
+
+            assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+            val testCase = (outcome as Outcome.Success).value
+            assertThat(testCase.body).isEqualTo(mapOf("name" to "schema-value"))
+        }
+
+        @Test
+        @DisplayName("should resolve example refs in media type examples")
+        fun shouldResolveExampleRefsInMediaTypeExamples() {
+            val schema = ObjectSchema().apply {
+                addProperty("cursor", StringSchema())
+            }
+            val openAPI = OpenAPI().paths(Paths()).apply {
+                components = Components().apply {
+                    addExamples("CursorExample", Example().value(mapOf("cursor" to "ref-cursor")))
+                }
+            }
+            val requestBody = RequestBody().required(true).content(
+                Content().addMediaType(
+                    "application/json",
+                    MediaType().schema(schema).examples(
+                        mapOf(
+                            "ref" to Example().apply { `$ref` = "#/components/examples/CursorExample" },
+                        )
+                    )
+                )
+            )
+            val operation = operationWithResponse("200").requestBody(requestBody)
+            val builder = ValidCaseBuilder("/test", "post", operation, openAPI)
+
+            val outcome = builder.generateValidCase()
+
+            assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+            val testCase = (outcome as Outcome.Success).value
+            assertThat(testCase.body).isEqualTo(mapOf("cursor" to "ref-cursor"))
         }
     }
 
@@ -601,11 +932,43 @@ class ValidCaseBuilderTest {
     private fun requiredQueryParameter(name: String, value: String): Parameter =
         QueryParameter().name(name).required(true).schema(StringSchema().example(value))
 
+    private fun requiredQueryParameterWithContent(name: String, value: Map<String, String>): Parameter {
+        return QueryParameter()
+            .name(name)
+            .required(true)
+            .content(Content().addMediaType("application/json", MediaType().schema(contentObjectSchema(value))))
+    }
+
     private fun requiredHeaderParameter(name: String, example: String): Parameter =
         HeaderParameter().name(name).required(true).schema(StringSchema().example(example))
 
+    private fun requiredHeaderParameterWithContent(name: String, value: Map<String, String>): Parameter =
+        HeaderParameter()
+            .name(name)
+            .required(true)
+            .content(Content().addMediaType("application/json", MediaType().schema(contentObjectSchema(value))))
+
     private fun requiredCookieParameter(name: String, example: String): Parameter =
         CookieParameter().name(name).required(true).schema(StringSchema().example(example))
+
+    private fun requiredCookieParameterWithContent(name: String, value: List<String>): Parameter =
+        CookieParameter()
+            .name(name)
+            .required(true)
+            .content(Content().addMediaType("application/json", MediaType().schema(contentArraySchema(value))))
+
+    private fun contentObjectSchema(value: Map<String, String>): ObjectSchema =
+        ObjectSchema().apply {
+            value.forEach { (key, example) -> addProperty(key, StringSchema().example(example)) }
+            required = value.keys.toList()
+        }
+
+    private fun contentArraySchema(value: List<String>): ArraySchema =
+        ArraySchema().apply {
+            items = StringSchema().example(value.first())
+            example = value
+            minItems = value.size
+        }
 
     private fun operationWithResponse(code: String): Operation {
         val responses = ApiResponses().addApiResponse(code, ApiResponse().description("Created"))

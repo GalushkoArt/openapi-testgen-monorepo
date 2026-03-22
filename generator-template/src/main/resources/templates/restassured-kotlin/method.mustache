@@ -2,28 +2,42 @@
     @DisplayName("{{testCaseName}}")
     fun {{methodName}}() {
         val requestSpec = RestAssured.given()
+{{#notes}}
+        // {{{.}}}
+{{/notes}}
 {{#headers}}
-        requestSpec.header("{{key}}", "{{#escapeString}}{{value}}{{/escapeString}}")
+        requestSpec.header("{{key}}", "{{{escapedValue}}}")
 {{/headers}}
-{{#shouldHaveBody}}
-        requestSpec.header("Content-Type", "application/json")
-{{/shouldHaveBody}}
+{{#requestBodyMediaType}}
+        requestSpec.header("Content-Type", "{{.}}")
+{{/requestBodyMediaType}}
+{{#responseBodyMediaType}}
+        requestSpec.header("Accept", "{{.}}")
+{{/responseBodyMediaType}}
 {{#requestBody}}
-        val requestBody = "{{#escapeString}}{{{ requestBody.rawBody }}}{{/escapeString}}"
+{{#requestBodyTodoComment}}
+        // {{{.}}}
+{{/requestBodyTodoComment}}
+        val requestBody = "{{{requestBody.escapedRawBody}}}"
         requestSpec.body(requestBody)
 {{/requestBody}}
 {{#pathParams}}
-        requestSpec.pathParam("{{key}}", "{{#escapeString}}{{value}}{{/escapeString}}")
+        requestSpec.pathParam("{{key}}", "{{{escapedValue}}}")
 {{/pathParams}}
 {{#queryParams}}
-        requestSpec.queryParam("{{key}}", "{{#escapeString}}{{value}}{{/escapeString}}")
+        requestSpec.queryParam("{{key}}", "{{{escapedValue}}}")
 {{/queryParams}}
 
         val response = requestSpec.{{httpMethod}}("{{path}}")
         response.then().statusCode({{expectedStatusCode}})
 {{#expectedResponseBody}}
         val responseBody = response.body.asString()
-        val expectedBodyJson = "{{#escapeString}}{{{expectedResponseBody.rawBody}}}{{/escapeString}}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+{{#responseAssertionTodoComment}}
+        // {{{.}}}
+{{/responseAssertionTodoComment}}
+{{#assertJsonResponseBody}}
+        val expectedBodyJson = "{{{expectedResponseBody.escapedRawBody}}}"
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
+{{/assertJsonResponseBody}}
 {{/expectedResponseBody}}
     }

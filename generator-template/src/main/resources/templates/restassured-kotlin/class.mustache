@@ -37,7 +37,7 @@ class {{className}} {
         RestAssured.baseURI = "{{customVariables.baseUrl}}"
     }
 
-    private fun assertExpectedBody(expectedBodyJson: String, responseBody: String) {
+    private fun assertExpectedJsonBody(expectedBodyJson: String, responseBody: String) {
         val expectedNode = objectMapper.readTree(expectedBodyJson)
         val actualNode = try {
             objectMapper.readTree(responseBody)

@@ -195,7 +195,10 @@ public object SchemaTypeHelpers {
         if (schema is ObjectSchema) return true
         val types = schema.types
         if (types != null && types.contains("object")) return true
-        return schema.type == "object"
+        if (schema.type == "object") return true
+        // Implicit object: properties present but no explicit type (common in real-world specs)
+        if (schema.type == null && types == null && schema.properties?.isNotEmpty() == true) return true
+        return false
     }
 }
 

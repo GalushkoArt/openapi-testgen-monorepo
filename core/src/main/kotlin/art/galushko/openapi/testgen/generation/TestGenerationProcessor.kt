@@ -54,11 +54,29 @@ internal class TestGenerationProcessor(
 
     /**
      * Validates include and ignore configurations, logging warnings for invalid paths or patterns.
+     *
+     * Three-state behavior:
+     * - **Paths present**: validates include/ignore configs and returns normally
+     * - **No paths, webhooks present**: warns that webhooks are skipped by test generation
+     * - **No paths, no webhooks**: warns that no operations are available
      */
     private fun validateConfig(openAPI: OpenAPI) {
-        includeHandler.validatePathsExist(openAPI.paths.keys)
-        ignoreHandler.validatePathsExist(openAPI.paths.keys)
+        val specPaths = openAPI.paths?.keys ?: emptySet()
+        includeHandler.validatePathsExist(specPaths)
+        ignoreHandler.validatePathsExist(specPaths)
         ignoreHandler.warnOnForbiddenWildcards()
+
+        if (specPaths.isNotEmpty()) return
+
+        val webhookCount = openAPI.webhooks?.size ?: 0
+        if (webhookCount > 0) {
+            log.warn(
+                "OpenAPI spec contains {} webhook(s) but no paths. Webhook operations are currently skipped by test generation.",
+                webhookCount,
+            )
+        } else {
+            log.warn("OpenAPI spec contains no paths. No operations available for test generation.")
+        }
     }
 
     /**
@@ -68,7 +86,7 @@ internal class TestGenerationProcessor(
     private fun filterPaths(
         openAPI: OpenAPI,
     ): Map<String, PathItem> {
-        return openAPI.paths
+        return openAPI.paths.orEmpty()
             .filter { (path, _) -> includeHandler.shouldIncludePath(path) }
             .filterNot { (path, _) -> ignoreHandler.shouldIgnorePath(path) }
     }

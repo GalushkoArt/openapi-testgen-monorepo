@@ -1,5 +1,5 @@
 ---
-description: Publish library modules to Maven Central and the Gradle plugin to the Plugin Portal. Covers account setup, credential configuration, signing, and troubleshooting upload issues.
+description: Publish library modules to Maven Central, the Gradle plugin to the Plugin Portal, and npm artifacts, including the release checklist and troubleshooting guidance.
 ---
 
 # Publishing artifacts
@@ -91,6 +91,28 @@ gradle.publish.secret=your-plugin-portal-secret
 ```bash
 ./gradlew check
 ./gradlew apiCheck
+./gradlew docsBuild
+```
+
+`docsBuild` is the current docs verification task and already runs Dokka generation through `dokkaHtmlAll`.
+
+## Release checklist
+
+### 1. Prepare and verify
+
+- Update `gradle/libs.versions.toml`
+- Update `docs/changelog/CHANGELOG.md`
+- Run `./gradlew check`
+- Run `./gradlew apiCheck`
+- Run `./gradlew docsBuild`
+
+### 2. Commit and tag
+
+```bash
+git add -A
+git commit -m "Release <version>"
+git tag -a <version> -m "Release <version>"
+git push origin main --tags
 ```
 
 ## Publish to Maven Central
@@ -200,6 +222,41 @@ env:
     ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
     GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
     GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
+```
+
+## GitHub release
+
+After Maven Central, the Plugin Portal, and npm artifacts are published:
+
+1. Create a GitHub release from the pushed tag
+2. Copy the relevant section from `docs/changelog/CHANGELOG.md`
+3. Attach CLI release artifacts if they were built outside CI defaults
+
+## Post-release
+
+After a successful release:
+
+1. Bump the project to the next development version
+2. Update the changelog `Unreleased` section if needed
+3. Verify public package pages and docs links
+
+## Hotfix releases
+
+For urgent fixes on top of a tagged release:
+
+```bash
+git checkout -b hotfix/<next-patch-version> <previous-version-tag>
+```
+
+Apply the fix, follow the same checklist, and publish the new patch version.
+
+## Dry run
+
+Use local publishing and docs verification before a real release:
+
+```bash
+./gradlew publishToMavenLocal
+./gradlew docsBuild
 ```
 
 ## Troubleshooting

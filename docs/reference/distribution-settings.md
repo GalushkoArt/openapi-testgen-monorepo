@@ -36,15 +36,15 @@ is available when modules are created.
 
 ## Top-level settings
 
-| Setting            | CLI                   | Gradle             | Type    | Required | Description                                               |
-|--------------------|-----------------------|--------------------|---------|----------|-----------------------------------------------------------|
-| Config file        | `--config-file`       | `configFile`       | String  | No       | YAML base config path. Can contain other require settings |
-| Spec file          | `--spec-file`         | `specFile`         | String  | Yes      | OpenAPI specification file path                           |
-| Output dir         | `--output-dir`        | `outputDir`        | String  | Yes      | Output directory for generated artifacts                  |
-| Generator id       | `--generator`         | `generator`        | String  | Yes      | Generator: `template` or `test-suite-writer`              |
-| Generator options  | `--generator-option`  | `generatorOptions` | Map     | No       | Generator-specific options (see [Generator options](catalogs/generator-options.md)) |
-| Always write tests | `--always-write-test` | `alwaysWriteTests` | Boolean | No       | Write artifacts even on errors (default: `false`)         |
-| Log level          | `--log-level`         | `logLevel`         | String  | No       | `ALL`, `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`, `OFF`   |
+| Setting            | CLI                   | Gradle             | Type    | Required | Description                                                                                                                                                         |
+|--------------------|-----------------------|--------------------|---------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Config file        | `--config-file`       | `configFile`       | String  | No       | YAML base config path. Can contain other require settings                                                                                                           |
+| Spec file          | `--spec-file`         | `specFile`         | String  | Yes      | OpenAPI specification file path                                                                                                                                     |
+| Output dir         | `--output-dir`        | `outputDir`        | String  | Yes      | Output directory for generated artifacts                                                                                                                            |
+| Generator id       | `--generator`         | `generator`        | String  | Yes      | Generator: `template` or `test-suite-writer`                                                                                                                        |
+| Generator options  | `--generator-option`  | `generatorOptions` | Map     | No       | Generator-specific options (see [Generators](../how-to/generators.md))                                                                                              |
+| Always write tests | `--always-write-test` | `alwaysWriteTests` | Boolean | No       | Write artifacts even when generation reports errors; if artifacts are written, execution still returns success and the report retains the errors (default: `false`) |
+| Log level          | `--log-level`         | `logLevel`         | String  | No       | `ALL`, `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`, `OFF`                                                                                                             |
 
 ## testGenerationSettings
 
@@ -113,7 +113,7 @@ Behavior:
 - Method matching is case-insensitive (methods are normalized to uppercase).
 - Use `*` as a wildcard method to match all methods for a path.
 - Exact path entries take precedence over the wildcard path:
-  - When `"/users": ["GET"]` exists, wildcard path methods (like `"*": ["POST"]`) are **not** additive for `"/users"`.
+    - When `"/users": ["GET"]` exists, wildcard path methods (like `"*": ["POST"]`) are **not** additive for `"/users"`.
 - Paths that are not present in the OpenAPI spec are ignored and logged as warnings.
 
 Example:
@@ -281,15 +281,38 @@ testGenerationSettings:
         spaceChars: " \t"
 ```
 
+## parserSettings
+
+Parser-level settings shared by CLI and Gradle plugin.
+
+### SnakeYAML options
+
+| Setting                        | Type    | Default | Description            |
+|--------------------------------|---------|---------|------------------------|
+| `yamlCodePointLimit`           | Integer | `null`  | Max YAML code points   |
+| `yamlMaxAliasesForCollections` | Integer | `null`  | Max YAML aliases       |
+| `yamlAllowRecursiveKeys`       | Boolean | `null`  | Recursive key handling |
+| `yamlNestingDepthLimit`        | Integer | `null`  | Max YAML nesting depth |
+
+`null` means "use swagger-parser / SnakeYAML default".
+
+Example:
+
+```yaml
+parserSettings:
+    yamlCodePointLimit: 10000000
+```
+
 ## Generator options
 
-Generator options are generator-specific and live under the top-level `generatorOptions` key (YAML) / `generatorOptions` property (Gradle) / `--generator-option` (CLI).
+Generator options are generator-specific and live under the top-level `generatorOptions` key (YAML) / `generatorOptions` property (Gradle) /
+`--generator-option` (CLI).
 
 See:
 
-- Reference: [Generator options](catalogs/generator-options.md)
-- How-to: [Template generator](../how-to/generators/template-generator.md)
-- How-to: [Test-suite-writer](../how-to/generators/test-suite-writer.md)
+- How-to: [Generators](../how-to/generators.md)
+- How-to: [Template generator](../how-to/generators.md#template-generator)
+- How-to: [Test-suite-writer](../how-to/generators.md#test-suite-writer-generator)
 
 ## Gradle-only settings
 
@@ -357,7 +380,7 @@ logLevel: INFO
 - [Distribution-bundle module](../modules/distribution-bundle.md)
 - [CLI reference](cli.md)
 - [Gradle plugin reference](gradle-plugin.md)
-- [Budget controls](../concepts/budget-controls.md)
-- [Ignore rules how-to](../how-to/configuration/ignore-rules.md)
-- [Include operations](../how-to/configuration/include-operations.md)
-- [Security values how-to](../how-to/configuration/security-values.md)
+- [Budget controls](../concepts/architecture.md#budget-controls)
+- [Ignore rules how-to](../how-to/configuration.md#ignore-rules)
+- [Include operations](../how-to/configuration.md#include-operations)
+- [Security values how-to](../how-to/configuration.md#security-values)

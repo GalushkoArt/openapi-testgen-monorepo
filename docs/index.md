@@ -1,53 +1,20 @@
 ---
-description: OpenAPI Test Generator automatically creates validation tests from OpenAPI specifications, ensuring your API enforces parameter types, required fields, format constraints, and security schemes.
+description: Entry point for OpenAPI Test Generator documentation. Start here for installation, quick starts, task guides, concepts, samples, and contributor docs.
 ---
 
 # OpenAPI Test Generator
 
-Deterministic test generation from OpenAPI specs. This repo provides a core engine, optional feature modules, a CLI, and a Gradle plugin. See [Glossary](concepts/glossary.md) for definitions of core terms.
+Deterministic test generation from OpenAPI specs. The project ships a CLI, a Gradle plugin, and a set of reusable Kotlin modules for generation, value providers, and artifact output.
 
-Generated tests validate that your API correctly enforces the contract defined in your OpenAPI specification - parameter types, required fields, format constraints, and security schemes. This is **infrastructure-level validation** (input validation, schema enforcement, authentication), not business logic testing.
+Generated tests validate **infrastructure-level behavior** defined by your OpenAPI contract: parameter validation, request-body constraints, and security enforcement. They do **not** replace business-logic tests.
 
-## Choose your path
+## Start here
 
-- **New here?** Start with [Getting started](getting-started/index.md).
-- **Need to solve a problem?** Jump to [How-to guides](how-to/index.md).
-- **Want to understand how it works?** See [Concepts](concepts/index.md).
-- **Looking up specific keys/types?** Use [Reference](reference/index.md).
-- **Working on the codebase?** See [Modules](modules/index.md) and [Contributing](contributing/index.md).
-
-## Quick start
-
-### CLI
-
-```bash
-openapi-testgen --help
-# Config filename is arbitrary; examples use openapi-testgen.yaml
-openapi-testgen --config-file ./openapi-testgen.yaml
-```
-
-### Gradle plugin
-
-See [Version placeholders](getting-started/installation.md#version-placeholders) for how to choose `<version>`.
-
-```kotlin
-plugins {
-    id("art.galushko.openapi-test-generator") version "<version>"
-}
-
-openApiTestGenerator {
-    specFile.set("src/test/resources/openapi.yaml")
-    outputDir.set(layout.buildDirectory.dir("generated/openapi-tests"))
-    generator.set("template")
-    generatorOptions.putAll(
-        mapOf(
-            "templateSet" to "restassured-java",
-            "templateVariables" to mapOf(
-                "package" to "com.example.generated",
-                "baseUrl" to "http://localhost:8080",
-            ),
-        )
-    )
-}
-```
+- **New to the tool?** Go to [Getting started](getting-started/index.md).
+- **Need install details or platform notes?** See [Installation](getting-started/installation.md).
+- **Trying to solve a specific problem?** Use [Configuration](how-to/configuration.md), [Generators](how-to/generators.md), [Negative testing](how-to/negative-testing.md), or [Troubleshooting](how-to/troubleshooting.md).
+- **Need exact keys, defaults, or SPI contracts?** Start with [Distribution settings](reference/distribution-settings.md), [CLI reference](reference/cli.md), [Gradle plugin reference](reference/gradle-plugin.md), and [SPI](reference/spi.md).
+- **Want runnable examples?** Browse [Samples](samples/index.md).
+- **Working on the codebase?** See [Modules](modules/index.md), [Development setup](contributing/development-setup.md), and [Publishing artifacts](contributing/publishing.md).
+- **Looking for release history?** See the [Changelog](changelog/CHANGELOG.md).
 

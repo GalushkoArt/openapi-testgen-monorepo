@@ -1,0 +1,21 @@
+openapi: 3.1.0
+info:
+    title: Webhook-only API
+    version: 1.0.0
+webhooks:
+    paymentUpdated:
+        post:
+            operationId: paymentUpdatedWebhook
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required: [id]
+                            properties:
+                                id:
+                                    type: string
+            responses:
+                "200":
+                    description: Accepted

@@ -10,15 +10,10 @@ import io.swagger.v3.oas.models.media.NumberSchema
 import io.swagger.v3.oas.models.media.ObjectSchema
 import io.swagger.v3.oas.models.media.Schema
 import io.swagger.v3.oas.models.media.StringSchema
-import io.swagger.v3.oas.models.media.XML
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments
-import org.junit.jupiter.params.provider.MethodSource
-import java.util.stream.Stream
 
 @Epic("Test Generator")
 @Feature("Circular Reference Detection")
@@ -39,13 +34,13 @@ class CircularReferenceTest {
     }
 
     @Nested
-    @DisplayName("Structural Cycle Detection")
-    inner class StructuralCycleDetection {
+    @DisplayName("Identity Cycle Detection")
+    inner class IdentityCycleDetection {
 
         @Test
-        @DisplayName("should detect cycle when visiting structurally identical schemas")
-        @Description("Two schemas with same type, properties, and required fields should be detected as structural cycle")
-        fun shouldDetectStructuralCycle() {
+        @DisplayName("should not flag different instances with identical structure as a cycle")
+        @Description("Two separate schema instances with the same structure are NOT cycles — identity check only")
+        fun shouldNotDetectStructuralCycleForDifferentInstances() {
             // Arrange
             val schemaA = ObjectSchema().name("A").apply {
                 addProperty("prop", StringSchema())
@@ -61,12 +56,14 @@ class CircularReferenceTest {
             val contextA = context.withVisitedSchema(schemaA, "A")
             val contextB = contextA?.withVisitedSchema(schemaB, "B")
 
-            // Assert
+            // Assert — different instances, not the same Java object → not a cycle
             assertThat(contextA).isNotNull
             assertThat(contextB)
-                .describedAs("Structurally identical schema B should be detected as cycle")
+                .describedAs("Structurally identical but distinct instances should NOT be detected as a cycle")
+                .isNotNull
+            assertThat(contextA?.checkSkip(schemaB))
+                .describedAs("Different instance should return null (no cycle)")
                 .isNull()
-            assertThat(contextA?.checkSkip(schemaB)).isEqualTo(SkipReason.CYCLE_DETECTED)
         }
 
         @Test
@@ -96,7 +93,7 @@ class CircularReferenceTest {
 
         @Test
         @DisplayName("should detect cycle in self-referencing object schema")
-        @Description("Object schema that references itself should be detected as cycle on second visit")
+        @Description("Object schema that references itself (same Java instance) should be detected as cycle on second visit")
         fun shouldDetectSelfReferencingCycle() {
             // Arrange
             val schema = ObjectSchema().name("LinkedList").apply {
@@ -146,7 +143,7 @@ class CircularReferenceTest {
 
         @Test
         @DisplayName("should detect cycle in self-referencing array schema")
-        @Description("Object schema that references itself should be detected as cycle on second visit")
+        @Description("Array schema that references itself (same Java instance) should be detected as cycle on second visit")
         fun shouldDetectSelfReferencingInArraysCycle() {
             // Arrange
             val schema = ArraySchema().name("Nods").apply {
@@ -168,12 +165,77 @@ class CircularReferenceTest {
     }
 
     @Nested
-    @DisplayName($$"$ref Cycle Detection")
+    @DisplayName("False Positive Prevention")
+    inner class FalsePositivePrevention {
+
+        @Test
+        @DisplayName("should not flag sibling properties with identical anyOf structure")
+        @Description("Simulates bcc/cc/to pattern: different instances with same anyOf structure must not trigger CYCLE_DETECTED")
+        fun shouldNotFlagSiblingPropertiesWithIdenticalAnyOfStructure() {
+            // Arrange — three separate instances, same anyOf structure
+            val schemaA = Schema<Any>().apply {
+                anyOf = listOf(StringSchema(), ArraySchema().items(StringSchema()))
+            }
+            val schemaB = Schema<Any>().apply {
+                anyOf = listOf(StringSchema(), ArraySchema().items(StringSchema()))
+            }
+            val schemaC = Schema<Any>().apply {
+                anyOf = listOf(StringSchema(), ArraySchema().items(StringSchema()))
+            }
+            val context = createContext()
+
+            // Act
+            val context1 = context.withVisitedSchema(schemaA, "to")
+
+            // Assert
+            assertThat(context1?.checkSkip(schemaB))
+                .describedAs("'cc' field (different instance) should not be flagged as CYCLE_DETECTED")
+                .isNull()
+            assertThat(context1?.checkSkip(schemaC))
+                .describedAs("'bcc' field (different instance) should not be flagged as CYCLE_DETECTED")
+                .isNull()
+        }
+
+        @Test
+        @DisplayName("should not flag a shared type used at multiple positions")
+        @Description("Same schema type appearing in unrelated positions should only be a cycle when the exact instance was an ancestor")
+        fun shouldNotFlagSharedTypeAtMultiplePositions() {
+            // Arrange
+            val recipient = StringSchema()
+            val context = createContext().withVisitedSchema(ObjectSchema(), "data")
+
+            // Assert — recipient has not been visited on this path
+            assertThat(context?.checkSkip(recipient))
+                .describedAs("Unvisited instance should not be flagged as CYCLE_DETECTED")
+                .isNull()
+        }
+
+        @Test
+        @DisplayName("should allow same schema type reused across unrelated sibling branches")
+        @Description("Schema instances that share structure but are not ancestor-descendant should be traversed independently")
+        fun shouldAllowSameTypedSchemasInSiblingBranches() {
+            // Arrange — two different StringSchema instances
+            val prop1Schema = StringSchema()
+            val prop2Schema = StringSchema()
+            val context = createContext()
+
+            // Act — visit prop1Schema on a branch
+            val context1 = context.withVisitedSchema(prop1Schema, "prop1")
+
+            // Assert — prop2Schema (different instance) should be fine
+            assertThat(context1?.checkSkip(prop2Schema))
+                .describedAs("Different string schema instance should not trigger CYCLE_DETECTED")
+                .isNull()
+        }
+    }
+
+    @Nested
+    @DisplayName("\$ref Cycle Detection")
     inner class RefCycleDetection {
 
         @Test
-        @DisplayName($$"should detect cycle when visiting same $ref twice")
-        @Description($$"Schema with same $ref should be detected as cycle on second visit")
+        @DisplayName("should detect cycle when visiting same \$ref twice")
+        @Description("Schema with same \$ref should be detected as cycle on second visit")
         fun shouldDetectRefCycle() {
             // Arrange
             val schemaRef = Schema<Any>().apply { `$ref` = "#/components/schemas/Person" }
@@ -186,23 +248,23 @@ class CircularReferenceTest {
             // Assert
             assertThat(context1).isNotNull
             assertThat(context2)
-                .describedAs($$"Same $ref visited twice should be detected as cycle")
+                .describedAs("Same \$ref visited twice should be detected as cycle")
                 .isNull()
             assertThat(context1?.checkSkip(schemaRef)).isEqualTo(SkipReason.CYCLE_DETECTED)
         }
 
         @Test
-        @DisplayName($$"should allow visiting different $refs with different structures")
-        @Description($$"Schemas with different $refs and different structures should be allowed")
+        @DisplayName("should allow visiting different \$refs")
+        @Description("Schemas with different \$refs should be allowed regardless of structure")
         fun shouldAllowDifferentRefs() {
-            // Arrange - Give them different structures to avoid false positives from structural hash
+            // Arrange
             val schemaRef1 = ObjectSchema().apply {
                 `$ref` = "#/components/schemas/Person"
                 addProperty("name", StringSchema())
             }
             val schemaRef2 = ObjectSchema().apply {
                 `$ref` = "#/components/schemas/Address"
-                addProperty("street", StringSchema())
+                addProperty("name", StringSchema())
             }
             val context = createContext()
 
@@ -213,16 +275,16 @@ class CircularReferenceTest {
             // Assert
             assertThat(context1).isNotNull
             assertThat(context2)
-                .describedAs($$"Different $refs with different structures should be allowed")
+                .describedAs("Different \$refs should be allowed")
                 .isNotNull
             assertThat(context1?.checkSkip(schemaRef2)).isNull()
         }
 
         @Test
-        @DisplayName($$"should detect multi-hop $ref cycle")
-        @Description($$"Cycle A -> B -> C -> A via $refs should be detected")
+        @DisplayName("should detect multi-hop \$ref cycle")
+        @Description("Cycle A -> B -> C -> A via \$refs should be detected")
         fun shouldDetectMultiHopRefCycle() {
-            // Arrange - Give each schema different structure to test pure $ref cycle detection
+            // Arrange
             val refA = ObjectSchema().apply {
                 `$ref` = "#/components/schemas/A"
                 addProperty("a", StringSchema())
@@ -248,7 +310,7 @@ class CircularReferenceTest {
             assertThat(context2).isNotNull
             assertThat(context3).isNotNull
             assertThat(context4)
-                .describedAs($$"Returning to previously visited $ref should be detected as cycle")
+                .describedAs("Returning to previously visited \$ref should be detected as cycle")
                 .isNull()
             assertThat(context3?.checkSkip(refA)).isEqualTo(SkipReason.CYCLE_DETECTED)
         }
@@ -335,7 +397,7 @@ class CircularReferenceTest {
 
         @Test
         @DisplayName("should detect self-referencing array schema")
-        @Description("Array schema whose items reference the array itself should detect cycle")
+        @Description("Array schema whose items reference the exact same array instance should detect cycle")
         fun shouldDetectSelfReferencingArray() {
             // Arrange
             val arraySchema = ArraySchema()
@@ -355,10 +417,10 @@ class CircularReferenceTest {
         }
 
         @Test
-        @DisplayName("should distinguish arrays with different item constraints")
-        @Description("Arrays with different minItems/maxItems should be distinguished as different structures")
-        fun shouldDistinguishArraysWithDifferentItemConstraints() {
-            // Arrange - Both have same item type, but different constraints ARE part of structural hash
+        @DisplayName("should allow arrays with different item instances")
+        @Description("Two distinct array schemas with identical structure are allowed (identity-based check)")
+        fun shouldAllowDistinctArrayInstances() {
+            // Arrange — two separate instances, same structure
             val array1 = ArraySchema().apply {
                 items = StringSchema()
                 minItems = 1
@@ -366,8 +428,8 @@ class CircularReferenceTest {
             }
             val array2 = ArraySchema().apply {
                 items = StringSchema()
-                minItems = 2 // Different constraint
-                maxItems = 20 // Different constraint
+                minItems = 1
+                maxItems = 10
             }
             val context = createContext()
 
@@ -375,606 +437,10 @@ class CircularReferenceTest {
             val context1 = context.withVisitedSchema(array1, "arr1")
             val shouldSkip = context1?.checkSkip(array2)
 
-            // Assert - Should NOT detect as cycle because minItems/maxItems differ
+            // Assert — different instances → not a cycle
             assertThat(shouldSkip)
-                .describedAs("Arrays with different min/max constraints should be distinguished")
+                .describedAs("Distinct array instances should not trigger CYCLE_DETECTED")
                 .isNull()
-        }
-
-        @Test
-        @DisplayName("should distinguish arrays with uniqueItems difference")
-        @Description("Arrays with different uniqueItems setting should be distinguished")
-        fun shouldDistinguishArraysWithDifferentUniqueItems() {
-            // Arrange
-            val array1 = ArraySchema().apply {
-                items = StringSchema()
-                uniqueItems = true
-            }
-            val array2 = ArraySchema().apply {
-                items = StringSchema()
-                uniqueItems = false
-            }
-            val context = createContext()
-
-            // Act
-            val context1 = context.withVisitedSchema(array1, "arr1")
-            val shouldSkip = context1?.checkSkip(array2)
-
-            // Assert - uniqueItems is part of structural hash
-            assertThat(shouldSkip)
-                .describedAs("Arrays with different uniqueItems should be distinguished")
-                .isNull()
-        }
-    }
-
-    @Nested
-    @DisplayName("Hash Computation Edge Cases")
-    inner class HashComputationEdgeCases {
-        @Suppress("LongMethod", "CyclomaticComplexMethod")
-        fun provideStructurallyEquivalentSchemas(): Stream<Arguments> = Stream.of(
-            Arguments.of(
-                "Same array item type",
-                ArraySchema().items(StringSchema().name("item1")),
-                ArraySchema().items(StringSchema().name("item2"))
-            ),
-            Arguments.of(
-                "Same required fields (different order)",
-                ObjectSchema().apply {
-                    addProperty("a", StringSchema())
-                    addProperty("b", StringSchema())
-                    required = listOf("b", "a")
-                },
-                ObjectSchema().apply {
-                    addProperty("a", StringSchema())
-                    addProperty("b", StringSchema())
-                    required = listOf("a", "b")
-                }
-            ),
-            Arguments.of(
-                "Same property names (different order)",
-                ObjectSchema().apply {
-                    addProperty("z", StringSchema())
-                    addProperty("a", StringSchema())
-                },
-                ObjectSchema().apply {
-                    addProperty("a", StringSchema())
-                    addProperty("z", StringSchema())
-                }
-            ),
-            Arguments.of(
-                "Same enum values (different order)",
-                StringSchema().apply {
-                    enum = listOf("beta", "alpha", "gamma")
-                },
-                StringSchema().apply {
-                    enum = listOf("alpha", "gamma", "beta")
-                }
-            ),
-            Arguments.of(
-                "Same nested property structures",
-                ObjectSchema().apply {
-                    addProperty("user", ObjectSchema().apply {
-                        addProperty("name", StringSchema())
-                        addProperty("email", StringSchema())
-                    })
-                },
-                ObjectSchema().apply {
-                    addProperty("user", ObjectSchema().apply {
-                        addProperty("email", StringSchema())
-                        addProperty("name", StringSchema())
-                    })
-                }
-            ),
-            Arguments.of(
-                "Array with same object property structures",
-                ArraySchema().apply {
-                    items(ObjectSchema().apply {
-                        addProperty("name", StringSchema())
-                        addProperty("email", StringSchema())
-                    })
-                },
-                ArraySchema().apply {
-                    items(ObjectSchema().apply {
-                        addProperty("email", StringSchema())
-                        addProperty("name", StringSchema())
-                    })
-                }
-            ),
-            Arguments.of(
-                "Same nested property of array item object",
-                ArraySchema().apply {
-                    items(ObjectSchema().apply {
-                        addProperty("person", ObjectSchema().apply {
-                            addProperty("id", StringSchema())
-                        })
-                    })
-                },
-                ArraySchema().apply {
-                    items(ObjectSchema().apply {
-                        addProperty("person", ObjectSchema().apply {
-                            addProperty("id", StringSchema())
-                        })
-                    })
-                },
-            ),
-            Arguments.of(
-                "Same nested property of item of array item object",
-                ArraySchema().apply {
-                    items(ArraySchema().apply {
-                        items(ObjectSchema().apply {
-                            addProperty("id", StringSchema())
-                        })
-                    })
-                },
-                ArraySchema().apply {
-                    items(ArraySchema().apply {
-                        items(ObjectSchema().apply {
-                            addProperty("id", StringSchema())
-                        })
-                    })
-                },
-            ),
-            Arguments.of(
-                "Same XML metadata",
-                StringSchema().apply {
-                    xml = XML().apply {
-                        name = "user"
-                        namespace = "http://example.com/schema"
-                        prefix = "ex"
-                        attribute = false
-                    }
-                },
-                StringSchema().apply {
-                    xml = XML().apply {
-                        name = "user"
-                        namespace = "http://example.com/schema"
-                        prefix = "ex"
-                        attribute = false
-                    }
-                }
-            ),
-            Arguments.of(
-                "XML null vs missing",
-                StringSchema().apply { xml = null },
-                StringSchema()
-            ),
-        )
-
-        @ParameterizedTest(name = "{0}")
-        @MethodSource("provideStructurallyEquivalentSchemas")
-        @DisplayName("should compute same hash for structurally equivalent schemas")
-        @Description("Schemas with same structure but different instances should produce same hash")
-        fun shouldComputeSameHashForEquivalentSchemas(
-            scenario: String,
-            schema1: Schema<*>,
-            schema2: Schema<*>,
-        ) {
-            // Arrange
-            val context = createContext()
-
-            // Act
-            val context1 = context.withVisitedSchema(schema1, "first")
-            val shouldSkip = context1?.checkSkip(schema2)
-
-            // Assert
-            assertThat(shouldSkip)
-                .describedAs("$scenario: should detect as cycle")
-                .isEqualTo(SkipReason.CYCLE_DETECTED)
-        }
-
-        @Suppress("LongMethod", "CyclomaticComplexMethod")
-        fun provideStructurallyDifferentSchemas(): Stream<Arguments> = Stream.of(
-            Arguments.of(
-                "Different property names",
-                ObjectSchema().addProperty("name", StringSchema()),
-                ObjectSchema().addProperty("title", StringSchema())
-            ),
-            Arguments.of(
-                "Different required fields",
-                ObjectSchema().apply {
-                    addProperty("name", StringSchema())
-                    required = listOf("name")
-                },
-                ObjectSchema().apply {
-                    addProperty("name", StringSchema())
-                    required = emptyList()
-                }
-            ),
-            Arguments.of(
-                "Different types",
-                StringSchema(),
-                IntegerSchema()
-            ),
-            Arguments.of(
-                "Different array item types",
-                ArraySchema().items(StringSchema()),
-                ArraySchema().items(IntegerSchema())
-            ),
-            Arguments.of(
-                "Different number of properties",
-                ObjectSchema().apply {
-                    addProperty("a", StringSchema())
-                    addProperty("b", StringSchema())
-                },
-                ObjectSchema().addProperty("a", StringSchema())
-            ),
-            Arguments.of(
-                "Object vs Array",
-                ObjectSchema().addProperty("items", StringSchema()),
-                ArraySchema().items(StringSchema())
-            ),
-            Arguments.of(
-                "Different enum values",
-                StringSchema().apply { enum = listOf("a", "b", "c") },
-                StringSchema().apply { enum = listOf("a", "b", "d") }
-            ),
-            Arguments.of(
-                "Different root property names with nested objects",
-                ObjectSchema().apply {
-                    addProperty("person", ObjectSchema().apply {
-                        addProperty("id", StringSchema())
-                    })
-                },
-                ObjectSchema().apply {
-                    addProperty("employee", ObjectSchema().apply { // Different root name
-                        addProperty("id", StringSchema())
-                    })
-                }
-            ),
-            Arguments.of(
-                "Different nested property type of array item object",
-                ArraySchema().apply {
-                    items(ObjectSchema().apply {
-                        addProperty("person", ObjectSchema().apply {
-                            addProperty("id", StringSchema())
-                        })
-                    })
-                },
-                ArraySchema().apply {
-                    items(ObjectSchema().apply {
-                        addProperty("person", ObjectSchema().apply {
-                            addProperty("id", IntegerSchema()) // Different property type
-                        })
-                    })
-                },
-            ),
-            Arguments.of(
-                "Different nested property name of array item object",
-                ArraySchema().apply {
-                    items(ObjectSchema().apply {
-                        addProperty("person", ObjectSchema().apply {
-                            addProperty("id", StringSchema())
-                        })
-                    })
-                },
-                ArraySchema().apply {
-                    items(ObjectSchema().apply {
-                        addProperty("person", ObjectSchema().apply {
-                            addProperty("personId", StringSchema()) // Different property name
-                        })
-                    })
-                },
-            ),
-            Arguments.of(
-                "Different nested property type of item of array item object",
-                ArraySchema().apply {
-                    items(ArraySchema().apply {
-                        items(ObjectSchema().apply {
-                            addProperty("id", StringSchema())
-                        })
-                    })
-                },
-                ArraySchema().apply {
-                    items(ArraySchema().apply {
-                        items(ObjectSchema().apply {
-                            addProperty("id", IntegerSchema()) // Different property type
-                        })
-                    })
-                },
-            ),
-            Arguments.of(
-                "Different nested property name of item of array item object",
-                ArraySchema().apply {
-                    items(ArraySchema().apply {
-                        items(ObjectSchema().apply {
-                            addProperty("id", StringSchema())
-                        })
-                    })
-                },
-                ArraySchema().apply {
-                    items(ArraySchema().apply {
-                        items(ObjectSchema().apply {
-                            addProperty("idProperty", StringSchema()) // Different property name
-                        })
-                    })
-                },
-            ),
-            Arguments.of(
-                "Different XML name",
-                StringSchema().apply {
-                    xml = XML().apply { name = "user" }
-                },
-                StringSchema().apply {
-                    xml = XML().apply { name = "person" }
-                }
-            ),
-            Arguments.of(
-                "Different XML namespace",
-                StringSchema().apply {
-                    xml = XML().apply {
-                        name = "user"
-                        namespace = "http://example.com/v1"
-                    }
-                },
-                StringSchema().apply {
-                    xml = XML().apply {
-                        name = "user"
-                        namespace = "http://example.com/v2"
-                    }
-                }
-            ),
-            Arguments.of(
-                "Different XML prefix",
-                StringSchema().apply {
-                    xml = XML().apply {
-                        name = "user"
-                        prefix = "v1"
-                    }
-                },
-                StringSchema().apply {
-                    xml = XML().apply {
-                        name = "user"
-                        prefix = "v2"
-                    }
-                }
-            ),
-            Arguments.of(
-                "Different XML attribute setting",
-                StringSchema().apply {
-                    xml = XML().apply {
-                        name = "user"
-                        attribute = true
-                    }
-                },
-                StringSchema().apply {
-                    xml = XML().apply {
-                        name = "user"
-                        attribute = false
-                    }
-                }
-            ),
-        )
-
-        @ParameterizedTest(name = "{0}")
-        @MethodSource("provideStructurallyDifferentSchemas")
-        @DisplayName("should compute different hash for structurally different schemas")
-        @Description("Schemas with different structures should produce different hashes")
-        fun shouldComputeDifferentHashForDifferentSchemas(
-            scenario: String,
-            schema1: Schema<*>,
-            schema2: Schema<*>,
-        ) {
-            // Arrange
-            val context = createContext()
-
-            // Act
-            val context1 = context.withVisitedSchema(schema1, "first")
-            val shouldSkip = context1?.checkSkip(schema2)
-
-            // Assert
-            assertThat(shouldSkip)
-                .describedAs("$scenario: should NOT detect as cycle")
-                .isNull()
-        }
-    }
-
-    @Nested
-    @DisplayName("Advanced Hash Features")
-    inner class AdvancedHashFeatures {
-
-        @Test
-        @DisplayName("should detect deep nested property cycles")
-        @Description("Recursive property hashing should detect cycles in deeply nested object properties")
-        fun shouldDetectDeepNestedPropertyCycles() {
-            // Arrange - Create identical deeply nested structure
-            val schema1 = ObjectSchema().apply {
-                addProperty("level1", ObjectSchema().apply {
-                    addProperty("level2", ObjectSchema().apply {
-                        addProperty("value", StringSchema())
-                        required = listOf("value")
-                    })
-                })
-            }
-            val schema2 = ObjectSchema().apply {
-                addProperty("level1", ObjectSchema().apply {
-                    addProperty("level2", ObjectSchema().apply {
-                        addProperty("value", StringSchema())
-                        required = listOf("value")
-                    })
-                })
-            }
-            val context = createContext()
-
-            // Act
-            val context1 = context.withVisitedSchema(schema1, "first")
-            val shouldSkip = context1?.checkSkip(schema2)
-
-            // Assert
-            assertThat(shouldSkip)
-                .describedAs("Deeply nested identical structures should be detected as cycle")
-                .isEqualTo(SkipReason.CYCLE_DETECTED)
-        }
-
-        @Test
-        @DisplayName("should distinguish deep nested structures with different leaf types")
-        @Description("Small differences in deeply nested properties should be detected")
-        fun shouldDistinguishDeepNestedDifferences() {
-            // Arrange - Same structure but different leaf type
-            val stringLeaf = StringSchema().apply { type = "string" }
-            val integerLeaf = IntegerSchema().apply { type = "integer" }
-
-            val schema1 = ObjectSchema().apply {
-                type = "object"
-                addProperty("level1", ObjectSchema().apply {
-                    type = "object"
-                    addProperty("level2", ObjectSchema().apply {
-                        type = "object"
-                        addProperty("value", stringLeaf)
-                    })
-                })
-            }
-            val schema2 = ObjectSchema().apply {
-                type = "object"
-                addProperty("level1", ObjectSchema().apply {
-                    type = "object"
-                    addProperty("level2", ObjectSchema().apply {
-                        type = "object"
-                        addProperty("value", integerLeaf)
-                    })
-                })
-            }
-            val context = createContext()
-
-            // Act
-            val context1 = context.withVisitedSchema(schema1, "first")
-            val shouldSkip = context1?.checkSkip(schema2)
-
-            // Assert
-            assertThat(shouldSkip)
-                .describedAs("Deep nested structures with different leaf types should NOT be cycles")
-                .isNull()
-        }
-
-        @Test
-        @DisplayName("should hash array items recursively")
-        @Description("Array item properties should be hashed, not just item presence")
-        fun shouldHashArrayItemsRecursively() {
-            // Arrange - Arrays with same structure but different nested properties
-            val array1 = ArraySchema().items(ObjectSchema().apply {
-                addProperty("nested", ObjectSchema().apply {
-                    addProperty("id", StringSchema())
-                })
-            })
-            val array2 = ArraySchema().items(ObjectSchema().apply {
-                addProperty("nested", ObjectSchema().apply {
-                    addProperty("id", StringSchema())
-                })
-            })
-            val context = createContext()
-
-            // Act
-            val context1 = context.withVisitedSchema(array1, "arr1")
-            val shouldSkip = context1?.checkSkip(array2)
-
-            // Assert - Recursive hashing should detect these as same
-            assertThat(shouldSkip)
-                .describedAs("Arrays with identical nested item properties should be detected as cycles")
-                .isEqualTo(SkipReason.CYCLE_DETECTED)
-        }
-
-        @Test
-        @DisplayName("should distinguish array items with different nested properties")
-        @Description("Differences in array item nested properties should be detected")
-        fun shouldDistinguishArrayItemsDifferentNestedProps() {
-            // Arrange
-            val array1 = ArraySchema().items(ObjectSchema().apply {
-                addProperty("user", ObjectSchema().apply {
-                    addProperty("name", StringSchema())
-                })
-            })
-            val array2 = ArraySchema().items(ObjectSchema().apply {
-                addProperty("user", ObjectSchema().apply {
-                    addProperty("email", StringSchema()) // Different property!
-                })
-            })
-            val context = createContext()
-
-            // Act
-            val context1 = context.withVisitedSchema(array1, "arr1")
-            val shouldSkip = context1?.checkSkip(array2)
-
-            // Assert
-            assertThat(shouldSkip)
-                .describedAs("Arrays with different nested item properties should NOT be cycles")
-                .isNull()
-        }
-
-        @Test
-        @DisplayName("should handle null schemas gracefully")
-        @Description("Null schema should return 0 hash without errors")
-        fun shouldHandleNullSchemaGracefully() {
-            // Arrange
-            val context = createContext()
-            val normalSchema = ObjectSchema().addProperty("prop", StringSchema())
-
-            // Act - Visit normal schema, then check skip with null shouldn't crash
-            val context1 = context.withVisitedSchema(normalSchema, "normal")
-
-            // Assert - Should not throw exception
-            assertThat(context1).isNotNull
-        }
-
-        @Test
-        @DisplayName("should handle empty property maps")
-        @Description("Objects with no properties should hash consistently")
-        fun shouldHandleEmptyPropertyMaps() {
-            // Arrange - Both empty object schemas
-            val schema1 = ObjectSchema()
-            val schema2 = ObjectSchema()
-            val context = createContext()
-
-            // Act
-            val context1 = context.withVisitedSchema(schema1, "empty1")
-            val shouldSkip = context1?.checkSkip(schema2)
-
-            // Assert
-            assertThat(shouldSkip)
-                .describedAs("Empty object schemas should be detected as cycles")
-                .isEqualTo(SkipReason.CYCLE_DETECTED)
-        }
-
-        @Test
-        @DisplayName("should handle empty required lists")
-        @Description("Required fields should only affect hash when non-empty")
-        fun shouldHandleEmptyRequiredLists() {
-            // Arrange - Both have properties but no required
-            val schema1 = ObjectSchema().apply {
-                addProperty("name", StringSchema())
-                required = emptyList()
-            }
-            val schema2 = ObjectSchema().apply {
-                addProperty("name", StringSchema())
-                required = null // null vs empty list
-            }
-            val context = createContext()
-
-            // Act
-            val context1 = context.withVisitedSchema(schema1, "s1")
-            val shouldSkip = context1?.checkSkip(schema2)
-
-            // Assert - Both empty/null required should be treated the same
-            assertThat(shouldSkip)
-                .describedAs("Empty and null required lists should be treated as equivalent")
-                .isEqualTo(SkipReason.CYCLE_DETECTED)
-        }
-
-        @Test
-        @DisplayName("should handle empty enum lists")
-        @Description("Enum should only affect hash when non-empty")
-        fun shouldHandleEmptyEnumLists() {
-            // Arrange
-            val schema1 = StringSchema().apply { enum = emptyList() }
-            val schema2 = StringSchema().apply { enum = null }
-            val context = createContext()
-
-            // Act
-            val context1 = context.withVisitedSchema(schema1, "s1")
-            val shouldSkip = context1?.checkSkip(schema2)
-
-            // Assert
-            assertThat(shouldSkip)
-                .describedAs("Empty and null enum lists should be treated as equivalent")
-                .isEqualTo(SkipReason.CYCLE_DETECTED)
         }
     }
 
@@ -983,8 +449,8 @@ class CircularReferenceTest {
     inner class CombinedScenarios {
 
         @Test
-        @DisplayName("should handle mixed ref and structural cycles")
-        @Description($$"Should detect both $ref cycles and structural cycles in same traversal")
+        @DisplayName("should detect \$ref cycle even when structural copy is allowed")
+        @Description("Should detect \$ref cycles; structural copies of visited schemas are NOT cycles")
         fun shouldHandleMixedCycles() {
             // Arrange
             val refSchema = Schema<Any>().apply { `$ref` = "#/components/schemas/Person" }
@@ -1008,13 +474,13 @@ class CircularReferenceTest {
             assertThat(context1).isNotNull
             assertThat(context2).isNotNull
             assertThat(context3)
-                .describedAs($$"$ref cycle should be detected")
+                .describedAs("\$ref cycle should be detected")
                 .isNull()
             assertThat(context4)
-                .describedAs("Structural cycle should be detected")
-                .isNull()
+                .describedAs("Structural copy is a different instance — must NOT be detected as a cycle")
+                .isNotNull
             assertThat(context2?.checkSkip(refSchema)).isEqualTo(SkipReason.CYCLE_DETECTED)
-            assertThat(context2?.checkSkip(structuralSchemaCopy)).isEqualTo(SkipReason.CYCLE_DETECTED)
+            assertThat(context2?.checkSkip(structuralSchemaCopy)).isNull()
         }
 
         @Test
@@ -1126,4 +592,3 @@ class CircularReferenceTest {
         }
     }
 }
-

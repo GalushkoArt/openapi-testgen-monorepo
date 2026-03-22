@@ -33,7 +33,9 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": null,
+                "responseBodyMediaType": null,
                 "needToComplete": false,
                 "expectedStatusCode": 401,
                 "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
@@ -67,12 +69,14 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.WrongUuidFormatSchemaValidationRule"
@@ -108,12 +112,14 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
@@ -149,12 +155,14 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
@@ -190,12 +198,14 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.InvalidEnumValueSchemaValidationRule"
@@ -231,12 +241,14 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumLengthStringSchemaValidationRule"
@@ -272,12 +284,14 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
@@ -313,12 +327,14 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
@@ -366,12 +382,14 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.AboveMaxItemsArraySchemaValidationRule"
@@ -409,12 +427,14 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ArrayItemSchemaValidationRule"
@@ -452,12 +472,14 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ArrayItemSchemaValidationRule"
@@ -493,12 +515,14 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.BelowMinItemsArraySchemaValidationRule"
@@ -537,12 +561,14 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.NonUniqueItemsArraySchemaValidationRule"
@@ -584,7 +610,9 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": null,
+                "responseBodyMediaType": null,
                 "needToComplete": false,
                 "expectedStatusCode": 401,
                 "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
@@ -614,12 +642,14 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
@@ -644,7 +674,9 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": null,
+                "responseBodyMediaType": null,
                 "needToComplete": false,
                 "expectedStatusCode": 401,
                 "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
@@ -678,12 +710,14 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": null,
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": true,
                 "expectedStatusCode": 200,
                 "rule": null

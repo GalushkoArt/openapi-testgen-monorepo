@@ -23,7 +23,7 @@ class ListOrdersTest {
         RestAssured.baseURI = "http://localhost:8080/v1"
     }
 
-    private fun assertExpectedBody(expectedBodyJson: String, responseBody: String) {
+    private fun assertExpectedJsonBody(expectedBodyJson: String, responseBody: String) {
         val expectedNode = objectMapper.readTree(expectedBodyJson)
         val actualNode = try {
             objectMapper.readTree(responseBody)
@@ -42,12 +42,13 @@ class ListOrdersTest {
     @DisplayName("No security values provided")
     fun noSecurityValuesProvided() {
         val requestSpec = RestAssured.given()
+        requestSpec.header("Accept", "application/json")
 
         val response = requestSpec.get("/orders")
         response.then().statusCode(401)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"unauthorized\",\"message\":\"API key required\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -55,12 +56,13 @@ class ListOrdersTest {
     fun invalidXAPIKeyAPIKeySecurity() {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "new_invalid_api_key")
+        requestSpec.header("Accept", "application/json")
 
         val response = requestSpec.get("/orders")
         response.then().statusCode(401)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"unauthorized\",\"message\":\"API key required\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -68,13 +70,14 @@ class ListOrdersTest {
     fun invalidQueryPageParameterIntegerBreaking() {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "test-api-key-123")
+        requestSpec.header("Accept", "application/json")
         requestSpec.queryParam("page", "1.5")
 
         val response = requestSpec.get("/orders")
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -82,13 +85,14 @@ class ListOrdersTest {
     fun invalidQueryPageParameterOutOfMinimumBoundaryNumber() {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "test-api-key-123")
+        requestSpec.header("Accept", "application/json")
         requestSpec.queryParam("page", "0")
 
         val response = requestSpec.get("/orders")
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -96,13 +100,14 @@ class ListOrdersTest {
     fun invalidQueryPageSizeParameterIntegerBreaking() {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "test-api-key-123")
+        requestSpec.header("Accept", "application/json")
         requestSpec.queryParam("pageSize", "1.5")
 
         val response = requestSpec.get("/orders")
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -110,13 +115,14 @@ class ListOrdersTest {
     fun invalidQueryPageSizeParameterOutOfMaximumBoundaryNumber() {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "test-api-key-123")
+        requestSpec.header("Accept", "application/json")
         requestSpec.queryParam("pageSize", "101")
 
         val response = requestSpec.get("/orders")
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -124,13 +130,14 @@ class ListOrdersTest {
     fun invalidQueryPageSizeParameterOutOfMinimumBoundaryNumber() {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "test-api-key-123")
+        requestSpec.header("Accept", "application/json")
         requestSpec.queryParam("pageSize", "0")
 
         val response = requestSpec.get("/orders")
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
 }

@@ -691,7 +691,27 @@ class SchemaTypeHelpersTest {
             Arguments.of("Schema with type 'object'", Schema<Any>().apply { type = "object" }, true),
             Arguments.of("Schema with types containing 'object'", Schema<Any>().apply { types = setOf("object") }, true),
             Arguments.of("StringSchema", StringSchema(), false),
-            Arguments.of("ArraySchema", ArraySchema(), false)
+            Arguments.of("ArraySchema", ArraySchema(), false),
+            Arguments.of(
+                "Schema with properties but no type (implicit object)",
+                Schema<Any>().apply { addProperty("cursor", StringSchema()) },
+                true,
+            ),
+            Arguments.of(
+                "Schema with empty properties and no type",
+                Schema<Any>().apply { properties = emptyMap() },
+                false,
+            ),
+            Arguments.of(
+                "Schema with properties and explicit type 'string'",
+                Schema<Any>().apply { type = "string"; addProperty("cursor", StringSchema()) },
+                false,
+            ),
+            Arguments.of(
+                "Schema with properties and explicit types ['string']",
+                Schema<Any>().apply { types = setOf("string"); addProperty("cursor", StringSchema()) },
+                false,
+            ),
         )
     }
 }

@@ -26,7 +26,7 @@ openapi-testgen --help
 ## Documentation
 
 - [CLI Reference](https://docs.galushko.art/openapi-test-generator/reference/cli/)
-- [npm Installation Guide](https://docs.galushko.art/openapi-test-generator/getting-started/npm-installation/)
+- [Installation Guide](https://docs.galushko.art/openapi-test-generator/getting-started/installation/#cli-via-npm)
 
 ## License
 

@@ -23,5 +23,5 @@ dependencies {
     implementation(libs.commons.lang3)
 
     // Logging implementation for test (SLF4J backend)
-    testRuntimeOnly(libs.logback.classic)
+    testImplementation(libs.logback.classic)
 }

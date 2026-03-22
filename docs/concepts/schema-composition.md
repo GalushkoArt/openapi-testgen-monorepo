@@ -1,5 +1,5 @@
 ---
-description: Explains how the generator handles OpenAPI schema composition keywords (allOf, anyOf, oneOf), including merge behavior, test case generation strategies, cycle detection, and budget controls for composed schemas.
+description: How the generator handles OpenAPI schema composition keywords (allOf, anyOf, oneOf), including merge behavior, test case generation strategies, cycle detection, and budget controls for composed schemas.
 ---
 
 # Schema composition
@@ -102,7 +102,7 @@ Composed schemas can lead to combinatorial explosion. Two budget settings contro
 | `maxMergedSchemaDepth`  | Maximum recursion depth when merging composed schemas |
 | `maxSchemaCombinations` | Maximum schema combinations per parameter/property    |
 
-Defaults and types are documented in [Distribution settings](../reference/distribution-settings.md#budget-controls).
+Defaults are documented in [Distribution settings](../reference/distribution-settings.md#budget-controls).
 
 ### When budgets are exceeded
 
@@ -120,7 +120,7 @@ testGenerationSettings:
     maxSchemaCombinations: 200    # Increase for complex anyOf/oneOf
 ```
 
-See [Budget controls](budget-controls.md) for more details on tuning these limits.
+See [Budget controls](architecture.md#budget-controls) for more details on tuning these limits.
 
 ## Cycle detection
 
@@ -160,6 +160,6 @@ testGenerationSettings:
 
 ## Related docs
 
-- [Budget controls](budget-controls.md) - Tuning composition limits
+- [Budget controls](architecture.md#budget-controls) - Tuning composition limits
 - [Architecture](architecture.md) - SchemaMerger in the value generation stack
 - [Error handling](error-handling.md) - How budget violations are reported

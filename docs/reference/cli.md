@@ -10,14 +10,19 @@ Command: `openapi-testgen`
 
 See:
 
-- [Installation](../getting-started/installation.md) - all supported install methods (npm, native binaries, build from source)
-- [npm Installation](../getting-started/npm-installation.md) - npm/pnpm/yarn/bun details and troubleshooting
+- [Installation](../getting-started/installation.md) - npm, native, JVM, and source-build installation paths
 
 ## Usage
 
 ```bash
 openapi-testgen [options]
 ```
+
+## Operation scope
+
+- Generation currently targets operations from `paths`.
+- `webhooks` are parsed but not generated as test suites.
+- If the spec contains only `webhooks` and no `paths`, the command succeeds and reports zero generated suites.
 
 ## Core options {#core-options}
 
@@ -27,14 +32,14 @@ openapi-testgen [options]
 - `--spec-file <path>`: path to OpenAPI spec file (YAML/JSON)
 - `--output-dir <path>`: output directory for generated files
 - `--generator <id>`: generator id (e.g. `template`, `test-suite-writer`)
-- `--always-write-test`: write artifacts even if generation fails (default: false)
+- `--always-write-test`: write artifacts even if generation reports errors; when artifacts are written, the command exits successfully and the report still includes the errors (default: false)
 - `--log-level <level>`: log level for generator logs (ALL, TRACE, DEBUG, INFO, WARN, ERROR, OFF; default: INFO)
 
 ## npm wrapper options {#npm-options}
 
 When installed via npm, the wrapper script provides additional options:
 
-- `--prefer-jar`: Force JAR execution, skipping native binary detection (requires Java 21+)
+- `--prefer-jar`: Force JAR execution, skipping native binary detection in the npm wrapper (requires Java 21+)
 
 ## Generator options {#generator-options}
 
@@ -43,6 +48,11 @@ When installed via npm, the wrapper script provides additional options:
 ## Settings {#settings}
 
 - `--setting <key.nested.path=value>`: test generation setting (repeatable). Supports dot notation for nested maps and `[]` for lists.
+- `--parser-setting <key.nested.path=value>`: parser setting (repeatable). Supports dot notation for nested maps and `[]` for lists.
+
+Parser settings are resolved under `parserSettings`:
+
+- SnakeYAML limits, for example `yamlCodePointLimit=10000000`
 
 ## Nested option examples
 
@@ -80,6 +90,16 @@ openapi-testgen \
   --setting exampleValues.useSchemaExampleFallback=true
 ```
 
+### Parser settings and parse options
+
+```bash
+openapi-testgen \
+  --spec-file ./openapi.yaml \
+  --output-dir ./build/generated-tests \
+  --generator test-suite-writer \
+  --parser-setting yamlCodePointLimit=10000000
+```
+
 ### Target operations with includeOperations
 
 ```bash
@@ -93,7 +113,7 @@ openapi-testgen \
 
 ## Worked example: target a single operation
 
-See [Include operations](../how-to/configuration/include-operations.md) for a full walkthrough (YAML + CLI + expected output excerpt).
+See [Include operations](../how-to/configuration.md#include-operations) for a full walkthrough (YAML + CLI + expected output excerpt).
 
 ## CI integration
 
@@ -139,12 +159,12 @@ openapi-testgen \
 
 ## See also
 
-- [First test suite tutorial](../getting-started/first-test-suite.md) - Get started with generating tests
+- [Getting started](../getting-started/index.md) - Fastest path to useful output
 - [End-to-end workflow](../getting-started/end-to-end-workflow.md) - Complete workflow from spec to tests
-- [Include operations](../how-to/configuration/include-operations.md) - Target specific operations
-- [Ignore rules](../how-to/configuration/ignore-rules.md) - Filter by exclusion
-- [CI/CD integration](../how-to/integration/ci-cd.md) - CI job wiring patterns
-- [Test-suite-writer](../how-to/generators/test-suite-writer.md) - Output format details
+- [Include operations](../how-to/configuration.md#include-operations) - Target specific operations
+- [Ignore rules](../how-to/configuration.md#ignore-rules) - Filter by exclusion
+- [CI/CD integration](../how-to/ci-cd.md) - CI job wiring patterns
+- [Test-suite-writer](../how-to/generators.md#test-suite-writer-generator) - Output format details
 
 ## Distribution defaults
 

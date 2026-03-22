@@ -16,33 +16,20 @@ type-specific generation, format hints (email, date, uuid), and extensibility vi
 
 ## Usage
 
-This module can be used standalone or as part of the full test generation pipeline.
-
-### Standalone
+Use this module directly when you want schema-derived example generation without the rest of the test-generation pipeline.
 
 ```kotlin
 dependencies {
-    implementation("art.galushko.openapi:testgen-example-value:0.9.2")
+    implementation("art.galushko.openapi.testgen:example-value:<version>")
 }
 ```
 
-```kotlin
-val generator = SchemaExampleValueGeneratorFactory().create(
-    options = SchemaExampleValueGeneratorOptions(),
-    providers = listOf(EnumValueProvider(), ConstValueProvider(), PlainStringValueProvider())
-)
-
-val exampleValue = generator.generate(schema, openAPI)
-```
-
-### With Core
-
-When using `core` or `distribution-bundle`, example value generation is automatically configured.
+When using `core` or `distribution-bundle`, example value generation is already wired for you.
 
 ## Documentation
 
-- [Module Overview](https://docs.galushko.art/openapi-test-generator/modules/example-value/)
-- [Value Providers SPI](https://docs.galushko.art/openapi-test-generator/reference/spi/value-providers/)
+- [Module Catalog](https://docs.galushko.art/openapi-test-generator/modules/#example-value)
+- [Value Providers SPI](https://docs.galushko.art/openapi-test-generator/reference/spi/#value-providers)
 - [API Reference (Dokka)](https://docs.galushko.art/openapi-test-generator/api/)
 
 ## Development

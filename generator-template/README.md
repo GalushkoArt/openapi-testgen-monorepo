@@ -48,7 +48,8 @@ openApiTestGenerator {
 openapi-testgen \
   --generator template \
   --generator-option templateSet=restassured-java \
-  --generator-option templateVariables.package=com.example.generated
+  --generator-option templateVariables.package=com.example.generated \
+  --generator-option templateVariables.baseUrl=http://localhost:8080
 ```
 
 ### Custom Templates
@@ -66,10 +67,10 @@ openApiTestGenerator {
 
 ## Documentation
 
-- [Template Generator Guide](https://docs.galushko.art/openapi-test-generator/how-to/generators/template-generator/)
-- [Custom Templates Guide](https://docs.galushko.art/openapi-test-generator/how-to/generators/custom-templates/)
-- [Generator Options Reference](https://docs.galushko.art/openapi-test-generator/reference/catalogs/generator-options/)
-- [Module Overview](https://docs.galushko.art/openapi-test-generator/modules/generator-template/)
+- [Template Generator Guide](https://docs.galushko.art/openapi-test-generator/how-to/generators/#template-generator)
+- [Custom Templates Guide](https://docs.galushko.art/openapi-test-generator/how-to/generators/#custom-mustache-templates)
+- [Generators Guide](https://docs.galushko.art/openapi-test-generator/how-to/generators/)
+- [Module Catalog](https://docs.galushko.art/openapi-test-generator/modules/#generator-template)
 - [API Reference (Dokka)](https://docs.galushko.art/openapi-test-generator/api/)
 
 ## Development

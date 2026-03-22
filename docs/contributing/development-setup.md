@@ -1,5 +1,5 @@
 ---
-description: Setup guide for contributors including project structure, convention plugins, build commands, working with rules/providers/generators, and native image considerations.
+description: Setup guide for contributors including project structure, convention plugins, build commands, code style, testing conventions, and native image considerations.
 ---
 
 # Development Guide
@@ -77,11 +77,11 @@ CLI distribution builds:
 ## Working on generators, rules, and providers
 
 - Rules: implement `SimpleSchemaValidationRule` or `AuthValidationRule` and register via
-  `TestGenerationModule` (see [SPI](../reference/spi/index.md) and [rules catalog](../reference/catalogs/rules-catalog.md)).
+  `TestGenerationModule` (see [SPI](../reference/spi.md) and [rules catalog](../reference/catalogs/rules-catalog.md)).
 - Providers: implement `TestCaseProvider<T>` and wire via a custom `TestSuiteGenerator` or
   `TestGeneratorConfigurer` (see [providers catalog](../reference/catalogs/providers-catalog.md)).
 - Generators: implement `ArtifactGeneratorFactory` and register via a module (see
-  [generators docs](../how-to/generators/test-suite-writer.md)).
+  [generators docs](../how-to/generators.md#test-suite-writer-generator)).
 
 When generator output changes, update snapshot fixtures under `core/src/test/resources` and run
 module tests.
@@ -102,10 +102,35 @@ After adding dependencies that rely on reflection or resources, regenerate confi
 ./gradlew :cli:regenerateNativeImageConfig
 ```
 
+The regeneration task runs the native-image tracing agent against a fixture set (baseline OpenAPI,
+OpenAPI 3.0 exclusive bounds, and OpenAPI 3.1 advanced schema keywords) to reduce reflection gaps.
+
+Reflection metadata is exercised by the CLI test suite against the fixture specs above.
+
 See the [CLI reference](../reference/cli.md) for details.
+
+## Code style
+
+This repo is Kotlin-first and relies on automated checks to enforce consistency.
+
+- PascalCase for classes/interfaces; camelCase for functions/variables; UPPER_SNAKE_CASE for constants.
+- Avoid `!!`; use safe calls, `requireNotNull`, or null-object defaults.
+- Prefer immutable data; use `data class` for value types.
+- Use guard clauses and fail fast with `require(...)`/`check(...)`.
+- Formatting is enforced by Detekt (with ktlint rules). Keep edits minimal and avoid reformatting unrelated code.
+- Use SLF4J parameterized logging (no string concatenation).
+
+## Testing
+
+Tests should be deterministic, fast, and isolated.
+
+- Frameworks: JUnit 5, AssertJ, Allure (annotations + steps).
+- Avoid network access. Use fixtures under `core/src/test/resources` when you need OpenAPI specs or snapshot JSON.
+- Prefer focused unit tests over large integration tests.
+- Use stable ordering in assertions (`containsExactly`, sorted lists) to avoid flaky diffs.
 
 ## Documentation maintenance
 
 - Keep [docs/index.md](../index.md) in sync with new or renamed docs.
 - Ensure cross-links remain valid and reflect module boundaries.
-- When adding new extension points, update [SPI docs](../reference/spi/index.md).
+- When adding new extension points, update [SPI docs](../reference/spi.md).

@@ -1,7 +1,6 @@
 package art.galushko.openapi.testgen.example.generator
 
 import art.galushko.openapi.testgen.example.config.ExampleValueSettings
-
 import art.galushko.openapi.testgen.example.response.ResponseExampleExtractor
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.qameta.allure.Allure
@@ -38,7 +37,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.math.BigDecimal
-import java.util.UUID
+import java.util.*
 import java.util.stream.Stream
 
 @Suppress("unused", "LargeClass")
@@ -191,6 +190,36 @@ class SchemaExampleValueGeneratorTest {
                 OpenAPI()
             )
         }.isInstanceOf(IllegalStateException::class.java).hasMessage("Empty array item schema for param testParam")
+    }
+
+    @Test
+    @DisplayName("getExampleValue should handle allOf with array ref and inline metadata")
+    @Description("Verifies that composed schemas using allOf(ref array + inline metadata) preserve item schema for example generation")
+    fun getExampleValueShouldHandleAllOfWithArrayRefAndInlineMetadata() {
+        val openAPI = OpenAPI().components(
+            Components().addSchemas(
+                "RotationContactIdList",
+                ArraySchema().apply {
+                    items = StringSchema().example("contact-1")
+                    minItems = 1
+                    maxItems = 30
+                }
+            )
+        )
+        val schema = ComposedSchema().apply {
+            allOf = listOf(
+                Schema<Any>().apply { `$ref` = "#/components/schemas/RotationContactIdList" },
+                Schema<Any>().apply { description = "Contact order determines the shift order" },
+            )
+        }
+
+        val result = step("Call getExampleValue for composed array ref") {
+            getExampleValue("ContactIds", schema, openAPI)
+        }
+
+        assertThat(result).isInstanceOf(List::class.java)
+        @Suppress("UNCHECKED_CAST")
+        assertThat(result as List<Any>).containsExactly("contact-1")
     }
 
     @Test
@@ -564,7 +593,7 @@ class SchemaExampleValueGeneratorTest {
     }
 
     @Test
-    @DisplayName("extractExpectedResponseExample should skip schema fallback for non-JSON media types")
+    @DisplayName("extractExpectedResponseExample should skip schema fallback for not expected media types")
     fun extractExpectedResponseExampleShouldSkipSchemaFallbackForNonJsonMediaTypes() {
         val schema = ObjectSchema().apply {
             addProperty("status", StringSchema().example("ok"))
@@ -572,11 +601,43 @@ class SchemaExampleValueGeneratorTest {
         }
         val operation = createOperationWithResponse(
             200,
-            Content().addMediaType("application/xml", MediaType().schema(schema))
+            Content().addMediaType("multipart/form-data", MediaType().schema(schema))
         )
 
         val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
         assertThat(result).isNull()
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should treat application/jwt as JSON-like for schema fallback")
+    fun extractExpectedResponseExampleShouldTreatApplicationJwtAsJsonLike() {
+        val schema = ObjectSchema().apply {
+            addProperty("status", StringSchema().example("ok"))
+            required = listOf("status")
+        }
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType("application/jwt", MediaType().schema(schema))
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+        assertThat(result).isEqualTo(mapOf("status" to "ok"))
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should treat +jwt media types as JSON-like for schema fallback")
+    fun extractExpectedResponseExampleShouldTreatJwtSuffixMediaTypesAsJsonLike() {
+        val schema = ObjectSchema().apply {
+            addProperty("status", StringSchema().example("ok"))
+            required = listOf("status")
+        }
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType("application/secevent+jwt", MediaType().schema(schema))
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+        assertThat(result).isEqualTo(mapOf("status" to "ok"))
     }
 
     @Test
@@ -757,6 +818,21 @@ class SchemaExampleValueGeneratorTest {
         val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
 
         assertThat(result).isEqualTo(mapOf("standard" to true))
+    }
+
+    @Test
+    @DisplayName("extractExpectedResponseExample should prefer +xml media types over form-urlencoded")
+    fun extractExpectedResponseExampleShouldPreferXmlSuffixOverFormUrlEncoded() {
+        val operation = createOperationWithResponse(
+            200,
+            Content()
+                .addMediaType("application/x-www-form-urlencoded", MediaType().example("form-example"))
+                .addMediaType("application/problem+xml", MediaType().example("<error>xml</error>"))
+        )
+
+        val result = responseExampleExtractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+
+        assertThat(result).isEqualTo("<error>xml</error>")
     }
 
     @Test
@@ -2019,6 +2095,41 @@ class SchemaExampleValueGeneratorTest {
     fun <T> step(name: String, action: () -> T): T {
         Allure.step(name)
         return action()
+    }
+
+    @Test
+    @DisplayName("Should handle oneOf with implicit object schemas (properties but no explicit type)")
+    @Description("Reproduces the 1Password Events API pattern: oneOf referencing schemas that have properties but no type: object")
+    fun shouldHandleOneOfWithImplicitObjectSchemas() {
+        // Arrange - Mimic the 1Password pattern: ComposedSchema with oneOf referencing
+        // schemas that have properties but no explicit "type: object" and no "required"
+        val openAPI = OpenAPI().apply {
+            components = Components().apply {
+                addSchemas("CursorRequest", Schema<Any>().apply {
+                    // Implicit object: has properties but no type field set
+                    addProperty("cursor", StringSchema().example("aGVsbG8h"))
+                })
+                addSchemas("LimitRequest", Schema<Any>().apply {
+                    // Implicit object: has properties but no type field set
+                    addProperty("limit", IntegerSchema().example(100))
+                })
+            }
+        }
+
+        val composedSchema = ComposedSchema().apply {
+            oneOf = listOf(
+                Schema<Any>().apply { `$ref` = "#/components/schemas/CursorRequest" },
+                Schema<Any>().apply { `$ref` = "#/components/schemas/LimitRequest" },
+            )
+        }
+
+        // Act - Should not throw "Provide example for param request body"
+        val result = step("Call getExampleValue with oneOf implicit objects") {
+            getExampleValue("request body", composedSchema, openAPI)
+        }
+
+        // Assert - Should return an empty map (no required properties) instead of throwing
+        assertThat(result).isEqualTo(emptyMap<String, Any>())
     }
 
     @Test

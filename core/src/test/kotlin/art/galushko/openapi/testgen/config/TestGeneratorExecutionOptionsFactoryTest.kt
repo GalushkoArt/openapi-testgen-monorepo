@@ -277,6 +277,89 @@ class TestGeneratorExecutionOptionsFactoryTest {
     }
 
     @Nested
+    @Story("Parser Settings")
+    @DisplayName("Parser Settings Merge")
+    inner class ParserSettingsMerge {
+
+        @Test
+        @DisplayName("should resolve parser settings from config")
+        fun shouldResolveParserSettingsFromConfig(@TempDir tempDir: Path) {
+            val config = GeneratorConfig(
+                specFile = "spec.yaml",
+                outputDir = tempDir.toString(),
+                generator = "template",
+                parserSettings = mapOf(
+                    "yamlCodePointLimit" to 5_000_000,
+                    "yamlMaxAliasesForCollections" to 75,
+                    "yamlAllowRecursiveKeys" to true,
+                    "yamlNestingDepthLimit" to 25,
+                ),
+            )
+
+            val options = TestGeneratorExecutionOptionsFactory.fromConfig(config)
+
+            assertThat(options.parserSettings).isEqualTo(
+                ParserSettings(
+                    yamlCodePointLimit = 5_000_000,
+                    yamlMaxAliasesForCollections = 75,
+                    yamlAllowRecursiveKeys = true,
+                    yamlNestingDepthLimit = 25,
+                ),
+            )
+        }
+
+        @Test
+        @DisplayName("should deep merge parser settings with overrides taking precedence")
+        fun shouldDeepMergeParserSettings(@TempDir tempDir: Path) {
+            val config = GeneratorConfig(
+                specFile = "spec.yaml",
+                outputDir = tempDir.toString(),
+                generator = "template",
+                parserSettings = mapOf(
+                    "yamlCodePointLimit" to 5_000_000,
+                    "yamlMaxAliasesForCollections" to 50,
+                ),
+            )
+            val overrides = TestGeneratorOverrides(
+                parserSettings = mapOf(
+                    "yamlCodePointLimit" to "10000000",
+                    "yamlAllowRecursiveKeys" to true,
+                ),
+            )
+
+            val options = TestGeneratorExecutionOptionsFactory.fromConfig(config, overrides)
+
+            assertThat(options.parserSettings).isEqualTo(
+                ParserSettings(
+                    yamlCodePointLimit = 10_000_000,
+                    yamlMaxAliasesForCollections = 50,
+                    yamlAllowRecursiveKeys = true,
+                    yamlNestingDepthLimit = null,
+                ),
+            )
+        }
+
+        @Test
+        @DisplayName("should fail fast when override parser settings contain invalid values")
+        fun shouldFailFastOnInvalidOverrideParserSettings(@TempDir tempDir: Path) {
+            val config = GeneratorConfig(
+                specFile = "spec.yaml",
+                outputDir = tempDir.toString(),
+                generator = "template",
+            )
+            val overrides = TestGeneratorOverrides(
+                parserSettings = mapOf(
+                    "yamlCodePointLimit" to 0,
+                ),
+            )
+
+            assertThatThrownBy { TestGeneratorExecutionOptionsFactory.fromConfig(config, overrides) }
+                .isInstanceOf(IllegalArgumentException::class.java)
+                .hasMessage("yamlCodePointLimit must be positive or null, was 0")
+        }
+    }
+
+    @Nested
     @Story("Side Effects")
     @DisplayName("Side Effects")
     inner class SideEffects {

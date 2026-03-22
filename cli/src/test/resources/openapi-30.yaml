@@ -1,0 +1,1146 @@
+openapi: 3.0.3
+info:
+    title: GraalVM Reflection Coverage API (OpenAPI 3.0)
+    description: |
+        Kitchen-sink OpenAPI 3.0.3 spec designed to exercise as many OpenAPI 3.0 keywords
+        and Schema Object (JSON Schema draft-04-ish) features as practical for generators
+        (e.g., GraalVM reflect-config generation).
+
+        Notes:
+        - OpenAPI 3.0 Schema Object aligns with an older JSON Schema vocabulary (draft-04 style).
+          So 3.1-only keywords (unevaluatedProperties, if/then/else, contains, const, prefixItems,
+          contentEncoding, etc.) are intentionally NOT used here.
+        - For exclusive bounds in 3.0, Schema Object uses the boolean form:
+          exclusiveMinimum/exclusiveMaximum: true + minimum/maximum.
+    termsOfService: https://example.com/terms
+    contact:
+        name: API Support
+        url: https://example.com/support
+        email: support@example.com
+    license:
+        name: Apache 2.0
+        url: https://www.apache.org/licenses/LICENSE-2.0.html
+    version: 1.0.0
+externalDocs:
+    description: Project documentation
+    url: https://example.com/docs
+
+tags:
+    - name: Users
+      description: User service
+      externalDocs:
+          description: Users API docs
+          url: https://example.com/docs/users
+      x-team: iam
+    - name: Orders
+      description: Order service
+      x-team: commerce
+    - name: Payments
+      description: Payments service (callbacks + links)
+      x-team: payments
+    - name: Refunds
+      description: Refunds service (exclusive bounds boolean style)
+      x-team: payments
+    - name: Files
+      description: File upload/download and streaming examples
+      x-team: platform
+    - name: Debug
+      description: Method + parameter coverage endpoints
+      x-team: platform
+
+servers:
+    - url: https://{env}.api.test/{basePath}
+      description: Main gateway
+      variables:
+          env:
+              default: staging
+              enum: [staging, prod]
+          basePath:
+              default: v1
+
+security:
+    - ApiKeyAuth: []
+    - OAuth2: [payments:write, payments:read]
+
+paths:
+    /health:
+        get:
+            summary: Liveness probe
+            operationId: health
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: ok
+
+    /users:
+        summary: Users collection
+        description: Demonstrates path-level servers + shared parameters + examples.
+        servers:
+            - url: https://users.{env}.api.test/{basePath}
+              description: Users service
+              variables:
+                  env: { default: staging }
+                  basePath: { default: v1 }
+        get:
+            tags: [Users]
+            summary: List users
+            operationId: listUsers
+            externalDocs:
+                description: Pagination guidelines
+                url: https://example.com/docs/pagination
+            parameters:
+                - $ref: "#/components/parameters/Page"
+                - $ref: "#/components/parameters/PageSize"
+                - $ref: "#/components/parameters/SearchQuery"
+                - $ref: "#/components/parameters/TraceIdHeader"
+                - $ref: "#/components/parameters/SessionCookie"
+            responses:
+                "200":
+                    description: Users page
+                    headers:
+                        X-Request-Id:
+                            $ref: "#/components/headers/RequestId"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/UserList"
+                            examples:
+                                ok:
+                                    $ref: "#/components/examples/UserListOk"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/UserListXml"
+                default:
+                    $ref: "#/components/responses/GenericError"
+        post:
+            tags: [Users]
+            summary: Create user
+            operationId: createUser
+            parameters:
+                - $ref: "#/components/parameters/IdempotencyKey"
+            requestBody:
+                $ref: "#/components/requestBodies/NewUserBody"
+            responses:
+                "201":
+                    description: Created
+                    headers:
+                        Location:
+                            description: URL of the new resource
+                            schema:
+                                type: string
+                                format: uri
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/User"
+                            examples:
+                                created:
+                                    $ref: "#/components/examples/UserCreated"
+                    links:
+                        GetUserById:
+                            operationId: getUser
+                            parameters:
+                                userId: "$response.body#/id"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+
+    /users/{userId}:
+        get:
+            tags: [Users]
+            summary: Get user by id
+            operationId: getUser
+            parameters:
+                - $ref: "#/components/parameters/UserIdPath"
+            responses:
+                "200":
+                    description: User
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/User"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+
+    /orders:
+        get:
+            tags: [Orders]
+            summary: List orders
+            operationId: listOrders
+            parameters:
+                - $ref: "#/components/parameters/Page"
+                - $ref: "#/components/parameters/PageSize"
+                - $ref: "#/components/parameters/OrderFilterDeepObject"
+                - $ref: "#/components/parameters/JsonParamViaContent"
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Orders page
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/OrderList"
+                default:
+                    $ref: "#/components/responses/GenericError"
+        post:
+            tags: [Orders]
+            summary: Create order
+            operationId: createOrder
+            requestBody:
+                required: true
+                description: Order create payload (paymentMethod uses discriminator).
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/NewOrder"
+                        examples:
+                            new:
+                                value:
+                                    userId: "u_123"
+                                    items:
+                                        - sku: "sku-1"
+                                          quantity: 2
+                                    paymentMethod:
+                                        kind: card
+                                        cardToken: "tok_12345678"
+            responses:
+                "201":
+                    description: Created
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Order"
+                "409":
+                    $ref: "#/components/responses/Conflict"
+
+    /payments:
+        post:
+            tags: [Payments]
+            summary: Create payment
+            description: Creates a payment and registers a callback URL for status updates.
+            operationId: createPayment
+            servers:
+                - url: https://payments.{env}.api.test/{basePath}
+                  description: Payments service
+                  variables:
+                      env: { default: staging }
+                      basePath: { default: v1 }
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/PaymentRequest"
+                        examples:
+                            card:
+                                value:
+                                    callbackUrl: "https://client.example.com/payments/callback"
+                                    amount: 12.34
+                                    method:
+                                        kind: card
+                                        cardToken: "tok_12345678"
+                                    metadata:
+                                        x-client: "demo"
+            callbacks:
+                onPaymentEvent:
+                    $ref: "#/components/callbacks/OnPaymentEvent"
+            responses:
+                "201":
+                    description: Created
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/PaymentResponse"
+                    links:
+                        GetPaymentById:
+                            $ref: "#/components/links/GetPaymentById"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+
+    /payments/{paymentId}:
+        parameters:
+            - $ref: "#/components/parameters/PaymentIdPath"
+        get:
+            tags: [Payments]
+            summary: Get payment
+            operationId: getPayment
+            responses:
+                "200":
+                    description: Payment
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/PaymentResponse"
+                        application/jwt:
+                            schema:
+                                $ref: "#/components/schemas/JwtPaymentResponse"
+                            examples:
+                                jwtPayment:
+                                    $ref: "#/components/examples/JwtPaymentResponse"
+                        application/secevent+jwt:
+                            schema:
+                                $ref: "#/components/schemas/JwtPaymentResponse"
+        patch:
+            tags: [Payments]
+            summary: Patch payment status (JSON Merge Patch)
+            operationId: patchPayment
+            requestBody:
+                required: true
+                content:
+                    application/merge-patch+json:
+                        schema:
+                            type: object
+                            additionalProperties: false
+                            properties:
+                                status:
+                                    $ref: "#/components/schemas/Status"
+                    application/jwt:
+                        schema:
+                            $ref: "#/components/schemas/JwtPaymentPatch"
+                        examples:
+                            jwtPatch:
+                                $ref: "#/components/examples/JwtPaymentPatch"
+                    application/payment-status+jwt:
+                        schema:
+                            $ref: "#/components/schemas/JwtPaymentPatch"
+            responses:
+                "200":
+                    description: Patched
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/PaymentResponse"
+
+    /refunds:
+        post:
+            tags: [Refunds]
+            summary: Create refund (exclusive bounds boolean style)
+            operationId: createRefund
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/RefundRequest"
+            responses:
+                "201":
+                    description: Created
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/RefundResponse"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+
+    /files/upload:
+        post:
+            tags: [Files]
+            summary: Upload a file (multipart + encoding)
+            operationId: uploadFile
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required: [file, meta]
+                            additionalProperties: false
+                            properties:
+                                file:
+                                    type: string
+                                    format: binary
+                                meta:
+                                    $ref: "#/components/schemas/FileMeta"
+                        encoding:
+                            meta:
+                                contentType: application/json
+                                style: form
+                                explode: true
+                                headers:
+                                    X-Meta-Format:
+                                        $ref: "#/components/headers/MetaFormat"
+            responses:
+                "201":
+                    description: Uploaded
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/FileReceipt"
+
+    /files/{fileId}:
+        head:
+            tags: [Files]
+            summary: Get file metadata only (HEAD)
+            operationId: headFile
+            parameters:
+                - $ref: "#/components/parameters/FileIdPath"
+            responses:
+                "200":
+                    description: OK
+                    headers:
+                        Content-Length:
+                            description: Size in bytes
+                            schema: { type: integer, minimum: 0 }
+                        Content-Type:
+                            description: MIME type
+                            schema: { type: string }
+        get:
+            tags: [Files]
+            summary: Download file (binary response)
+            operationId: downloadFile
+            parameters:
+                - $ref: "#/components/parameters/FileIdPath"
+            responses:
+                "200":
+                    description: File bytes
+                    content:
+                        application/octet-stream:
+                            schema:
+                                type: string
+                                format: binary
+                "404":
+                    $ref: "#/components/responses/NotFound"
+        delete:
+            tags: [Files]
+            summary: Delete file
+            operationId: deleteFile
+            parameters:
+                - $ref: "#/components/parameters/FileIdPath"
+            responses:
+                "204":
+                    description: Deleted
+
+    /debug/echo:
+        options:
+            tags: [Debug]
+            summary: CORS / preflight example (OPTIONS)
+            operationId: optionsEcho
+            responses:
+                "204":
+                    description: No Content
+                    headers:
+                        Access-Control-Allow-Origin:
+                            schema: { type: string }
+                        Access-Control-Allow-Methods:
+                            schema: { type: string }
+                        Access-Control-Allow-Headers:
+                            schema: { type: string }
+        trace:
+            tags: [Debug]
+            summary: TRACE example (rarely used)
+            description: A deliberately weird endpoint to ensure TRACE is supported by tooling.
+            operationId: traceEcho
+            deprecated: true
+            requestBody:
+                required: false
+                content:
+                    text/plain:
+                        schema: { type: string }
+            responses:
+                "200":
+                    description: Echoed bytes
+                    content:
+                        message/http:
+                            schema: { type: string }
+
+    /debug/params/{id}:
+        get:
+            tags: [Debug]
+            summary: Parameter style/explode coverage
+            operationId: debugParams
+            parameters:
+                - $ref: "#/components/parameters/MatrixIdPath"
+                - $ref: "#/components/parameters/LabelIdPath"
+                - $ref: "#/components/parameters/SpaceDelimitedArray"
+                - $ref: "#/components/parameters/PipeDelimitedArray"
+                - $ref: "#/components/parameters/FormObjectExplodeFalse"
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/KitchenSinkObject"
+
+components:
+    securitySchemes:
+        ApiKeyAuth:
+            type: apiKey
+            in: header
+            name: X-API-Key
+        BasicAuth:
+            type: http
+            scheme: basic
+        BearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+        OAuth2:
+            type: oauth2
+            flows:
+                authorizationCode:
+                    authorizationUrl: https://auth.example.com/oauth/authorize
+                    tokenUrl: https://auth.example.com/oauth/token
+                    refreshUrl: https://auth.example.com/oauth/refresh
+                    scopes:
+                        payments:read: Read payments
+                        payments:write: Write payments
+                clientCredentials:
+                    tokenUrl: https://auth.example.com/oauth/token
+                    scopes:
+                        payments:read: Read payments
+        OpenIDConnect:
+            type: openIdConnect
+            openIdConnectUrl: https://auth.example.com/.well-known/openid-configuration
+
+    parameters:
+        PaymentIdPath:
+            name: paymentId
+            in: path
+            required: true
+            description: Payment identifier
+            schema:
+                type: string
+                minLength: 3
+            style: simple
+
+        UserIdPath:
+            name: userId
+            in: path
+            required: true
+            schema:
+                type: string
+                pattern: "^u_[A-Za-z0-9]+$"
+            examples:
+                sample:
+                    $ref: "#/components/examples/UserIdExample"
+
+        FileIdPath:
+            name: fileId
+            in: path
+            required: true
+            schema:
+                type: string
+                format: uuid
+
+        # Two alternative styles for the *same* path parameter name, just to exercise keyword coverage.
+        MatrixIdPath:
+            name: id
+            in: path
+            required: true
+            description: Matrix style path param
+            style: matrix
+            explode: false
+            schema: { type: string }
+        LabelIdPath:
+            name: id
+            in: path
+            required: true
+            description: Label style path param
+            style: label
+            explode: false
+            schema: { type: string }
+
+        Page:
+            name: page
+            in: query
+            schema: { type: integer, minimum: 1, default: 1 }
+            style: form
+            explode: true
+            allowEmptyValue: false
+        PageSize:
+            name: pageSize
+            in: query
+            schema: { type: integer, minimum: 1, maximum: 200, default: 50 }
+            style: form
+            explode: true
+
+        SearchQuery:
+            name: q
+            in: query
+            description: Search by name or email
+            schema: { type: string, maxLength: 100 }
+            allowReserved: true
+
+        SpaceDelimitedArray:
+            name: space
+            in: query
+            style: spaceDelimited
+            explode: false
+            schema:
+                type: array
+                items: { type: string }
+        PipeDelimitedArray:
+            name: pipe
+            in: query
+            style: pipeDelimited
+            explode: false
+            schema:
+                type: array
+                items: { type: string }
+
+        FormObjectExplodeFalse:
+            name: obj
+            in: query
+            style: form
+            explode: false
+            schema:
+                type: object
+                additionalProperties: { type: string }
+
+        OrderFilterDeepObject:
+            name: filter
+            in: query
+            description: Deep object style query filter
+            style: deepObject
+            explode: true
+            schema:
+                type: object
+                properties:
+                    status: { $ref: "#/components/schemas/Status" }
+                    minTotal: { type: number, minimum: 0 }
+                    createdAfter: { type: string, format: date-time }
+
+        TraceIdHeader:
+            name: X-Trace-Id
+            in: header
+            required: false
+            schema: { type: string }
+            deprecated: false
+
+        SessionCookie:
+            name: sessionId
+            in: cookie
+            schema:
+                type: string
+                minLength: 10
+            example: "s_0123456789abcdef"
+
+        IdempotencyKey:
+            name: Idempotency-Key
+            in: header
+            required: false
+            description: Enables safe retries for POSTs.
+            schema:
+                type: string
+                minLength: 8
+
+        JsonParamViaContent:
+            name: complex
+            in: query
+            description: Parameter defined via `content` instead of `schema`.
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/KitchenSinkObject"
+
+    requestBodies:
+        NewUserBody:
+            description: New user payload
+            required: true
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/NewUser"
+                    examples:
+                        newUser:
+                            value:
+                                name: "Ada Lovelace"
+                                email: "ada@example.com"
+
+    headers:
+        RequestId:
+            description: Correlation id for debugging
+            schema:
+                type: string
+                format: uuid
+        MetaFormat:
+            description: Declares metadata serialization format
+            schema:
+                type: string
+                enum: [json]
+                default: json
+
+    responses:
+        BadRequest:
+            description: Invalid request
+            content:
+                application/problem+json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+                    examples:
+                        invalid:
+                            $ref: "#/components/examples/ErrorBadRequest"
+        NotFound:
+            description: Not found
+            content:
+                application/problem+json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+        Conflict:
+            description: Conflict
+            content:
+                application/problem+json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+        GenericError:
+            description: Error response
+            headers:
+                X-Request-Id:
+                    $ref: "#/components/headers/RequestId"
+            content:
+                application/problem+json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+
+    examples:
+        UserListOk:
+            summary: Example users page
+            value:
+                page: 1
+                pageSize: 2
+                total: 12
+                items:
+                    - id: "u_123"
+                      name: "Ada Lovelace"
+                      email: "ada@example.com"
+                      createdAt: "2025-07-01T12:00:00Z"
+                    - id: "u_124"
+                      name: "Alan Turing"
+                      email: "alan@example.com"
+                      createdAt: "2025-07-02T08:00:00Z"
+        UserCreated:
+            value:
+                id: "u_125"
+                name: "Grace Hopper"
+                email: "grace@example.com"
+                createdAt: "2025-07-03T09:30:00Z"
+        UserIdExample:
+            value: "u_123"
+        ErrorBadRequest:
+            value:
+                code: "bad_request"
+                message: "Invalid request payload"
+        ExternalValueExample:
+            summary: Example that points to an external resource
+            externalValue: https://example.com/examples/external.json
+        JwtPaymentPatch:
+            summary: JWT-like patch payload
+            description: Reusable component example for `application/jwt` request bodies.
+            value:
+                status: accepted
+                reason: "Approved by risk controls"
+        JwtPaymentResponse:
+            summary: JWT-like payment response
+            description: Reusable component example for `application/jwt` responses.
+            value:
+                id: "pay_123"
+                status: accepted
+                tokenType: "secevent+jwt"
+
+    links:
+        GetPaymentById:
+            description: Follow-up call to fetch the created payment
+            operationId: getPayment
+            parameters:
+                paymentId: "$response.body#/id"
+
+    callbacks:
+        OnPaymentEvent:
+            "{$request.body#/callbackUrl}":
+                post:
+                    summary: Payment status callback
+                    operationId: paymentEventCallback
+                    requestBody:
+                        required: true
+                        content:
+                            application/json:
+                                schema:
+                                    type: object
+                                    required: [id, status]
+                                    additionalProperties: false
+                                    properties:
+                                        id: { type: string }
+                                        status: { $ref: "#/components/schemas/Status" }
+                                examples:
+                                    callbackExample:
+                                        $ref: "#/components/examples/ExternalValueExample"
+                    responses:
+                        "202":
+                            description: Accepted
+
+    schemas:
+        Status:
+            type: string
+            enum: [pending, accepted, rejected]
+            description: Generic status enum
+
+        Error:
+            type: object
+            required: [code, message]
+            additionalProperties: false
+            properties:
+                code:
+                    type: string
+                    minLength: 1
+                message:
+                    type: string
+                    minLength: 1
+                details:
+                    type: array
+                    items:
+                        type: string
+            example:
+                code: bad_request
+                message: Invalid payload
+
+        User:
+            type: object
+            required: [id, name, email, createdAt]
+            properties:
+                id: { type: string }
+                name:
+                    type: string
+                    maxLength: 200
+                email:
+                    type: string
+                    format: email
+                createdAt:
+                    type: string
+                    format: date-time
+                    readOnly: true
+            xml:
+                name: user
+
+        NewUser:
+            type: object
+            required: [name, email]
+            additionalProperties: false
+            properties:
+                name: { type: string, maxLength: 200 }
+                email: { type: string, format: email }
+
+        UserList:
+            type: object
+            required: [page, pageSize, total, items]
+            properties:
+                page: { type: integer, minimum: 1 }
+                pageSize: { type: integer, minimum: 1 }
+                total: { type: integer, minimum: 0 }
+                items:
+                    type: array
+                    items: { $ref: "#/components/schemas/User" }
+
+        UserListXml:
+            type: object
+            required: [items]
+            properties:
+                items:
+                    type: array
+                    xml:
+                        name: users
+                        wrapped: true
+                    items:
+                        $ref: "#/components/schemas/User"
+
+        OrderItem:
+            type: object
+            required: [sku, quantity]
+            additionalProperties: false
+            properties:
+                sku: { type: string }
+                quantity:
+                    type: integer
+                    minimum: 1
+                price:
+                    type: number
+                    minimum: 0
+                    default: 0
+
+        Order:
+            type: object
+            required: [id, userId, items, status]
+            properties:
+                id: { type: string }
+                userId: { type: string }
+                items:
+                    type: array
+                    minItems: 1
+                    items: { $ref: "#/components/schemas/OrderItem" }
+                status: { $ref: "#/components/schemas/Status" }
+
+        OrderList:
+            type: object
+            required: [items]
+            properties:
+                items:
+                    type: array
+                    items: { $ref: "#/components/schemas/Order" }
+
+        NewOrder:
+            type: object
+            required: [userId, items, paymentMethod]
+            properties:
+                userId: { type: string }
+                items:
+                    type: array
+                    minItems: 1
+                    items: { $ref: "#/components/schemas/OrderItem" }
+                paymentMethod:
+                    oneOf:
+                        - $ref: "#/components/schemas/CardMethod"
+                        - $ref: "#/components/schemas/BankMethod"
+                    discriminator:
+                        propertyName: kind
+                        mapping:
+                            card: "#/components/schemas/CardMethod"
+                            bank: "#/components/schemas/BankMethod"
+
+        MethodBase:
+            type: object
+            required: [kind]
+            properties:
+                kind: { type: string }
+            xml:
+                name: method
+
+        CardMethod:
+            allOf:
+                - $ref: "#/components/schemas/MethodBase"
+                - type: object
+                  required: [kind, cardToken]
+                  additionalProperties: false
+                  properties:
+                      kind:
+                          type: string
+                          enum: [card]
+                      cardToken:
+                          type: string
+                          minLength: 8
+                          writeOnly: true
+                      cardBrand:
+                          type: string
+                          enum: [visa, mastercard, amex]
+
+        BankMethod:
+            allOf:
+                - $ref: "#/components/schemas/MethodBase"
+                - type: object
+                  required: [kind, iban]
+                  additionalProperties: false
+                  properties:
+                      kind:
+                          type: string
+                          enum: [bank]
+                      iban:
+                          type: string
+                          pattern: "^[A-Z0-9]{15,34}$"
+
+        PaymentRequest:
+            type: object
+            required: [callbackUrl, amount, method, metadata, note, secret]
+            additionalProperties: false
+            properties:
+                callbackUrl:
+                    type: string
+                    format: uri
+                    nullable: true
+                amount:
+                    type: number
+                    minimum: 0
+                    maximum: 100000
+                    exclusiveMinimum: true
+                    exclusiveMaximum: true
+                    multipleOf: 0.01
+                method:
+                    oneOf:
+                        - $ref: "#/components/schemas/CardMethod"
+                        - $ref: "#/components/schemas/BankMethod"
+                    discriminator:
+                        propertyName: kind
+                metadata:
+                    description: Free-form metadata map (patternProperties/dependencies removed for OpenAPI 3.0 compatibility).
+                    type: object
+                    additionalProperties:
+                        type: string
+                note:
+                    type: string
+                    minLength: 0
+                    maxLength: 500
+                secret:
+                    type: string
+                    format: password
+                    deprecated: true
+                x-graalvm-hint: exercise-nonstandard-keyword
+
+        PaymentResponse:
+            type: object
+            required: [id, status]
+            properties:
+                id: { type: string }
+                status: { $ref: "#/components/schemas/Status" }
+
+        JwtPaymentPatch:
+            description: JWT-like object schema that uses `properties` without explicit `type`.
+            properties:
+                status: { $ref: "#/components/schemas/Status" }
+                reason: { type: string, minLength: 3 }
+            required: [status]
+            additionalProperties: false
+        JwtPaymentResponse:
+            description: "JWT-like response schema that omits explicit type: object."
+            properties:
+                id: { type: string }
+                status: { $ref: "#/components/schemas/Status" }
+                tokenType: { type: string }
+            required: [id, status]
+            additionalProperties: false
+
+        RefundRequest:
+            type: object
+            required: [amount, reason, adjustmentDays, tags]
+            additionalProperties: false
+            properties:
+                amount:
+                    type: number
+                    minimum: 0
+                    maximum: 100000
+                    exclusiveMinimum: true
+                    exclusiveMaximum: true
+                    multipleOf: 0.01
+                reason:
+                    type: string
+                    minLength: 3
+                    maxLength: 120
+                    pattern: "^[A-Za-z0-9 .,_-]+$"
+                adjustmentDays:
+                    type: integer
+                    minimum: 0
+                    maximum: 30
+                    exclusiveMinimum: true
+                tags:
+                    type: array
+                    minItems: 1
+                    uniqueItems: true
+                    items: { type: string }
+
+        RefundResponse:
+            type: object
+            required: [id, status]
+            properties:
+                id: { type: string }
+                status:
+                    type: string
+                    enum: [accepted, rejected]
+
+        FileMeta:
+            type: object
+            required: [filename]
+            additionalProperties: false
+            properties:
+                filename: { type: string }
+                contentType: { type: string }
+                checksum:
+                    type: string
+                    format: byte
+                    description: Base64-encoded checksum
+
+        FileReceipt:
+            type: object
+            required: [fileId, meta]
+            properties:
+                fileId: { type: string, format: uuid }
+                meta: { $ref: "#/components/schemas/FileMeta" }
+
+        RecursiveNode:
+            type: object
+            required: [value]
+            additionalProperties: false
+            properties:
+                value: { type: string }
+                next:
+                    $ref: "#/components/schemas/RecursiveNode"
+
+        KitchenSinkObject:
+            title: KitchenSinkObject
+            type: object
+            minProperties: 1
+            maxProperties: 50
+            required: [fixed, choice, list, regexMap, conditional, dependencyExample]
+            properties:
+                fixed:
+                    description: Demonstrates enum/default/deprecated.
+                    type: string
+                    enum: [fixed]
+                    default: fixed
+                    deprecated: true
+                count:
+                    type: integer
+                    format: int32
+                    minimum: 0
+                    maximum: 2147483647
+                choice:
+                    description: Demonstrates oneOf/anyOf/allOf/not + discriminator.
+                    allOf:
+                        - type: object
+                          properties:
+                              kind: { type: string }
+                    oneOf:
+                        - type: object
+                          required: [kind, a]
+                          properties:
+                              kind: { type: string, enum: [a] }
+                              a: { type: integer, minimum: 0 }
+                        - type: object
+                          required: [kind, b]
+                          properties:
+                              kind: { type: string, enum: [b] }
+                              b: { type: string, minLength: 1 }
+                    anyOf:
+                        - type: object
+                          properties:
+                              optional: { type: boolean }
+                        - not:
+                              required: [forbidden]
+                    discriminator:
+                        propertyName: kind
+                list:
+                    description: Array keyword coverage (items, minItems, maxItems, uniqueItems).
+                    type: array
+                    minItems: 1
+                    maxItems: 100
+                    uniqueItems: false
+                    items:
+                        type: string
+                regexMap:
+                    description: Demonstrates additionalProperties without patternProperties.
+                    type: object
+                    additionalProperties:
+                        oneOf:
+                            - type: string
+                            - type: number
+                conditional:
+                    description: "In 3.0 (draft-04), model conditionals via oneOf (instead of if/then/else)."
+                    oneOf:
+                        - type: object
+                          required: [mode, token]
+                          properties:
+                              mode: { type: string, enum: [token] }
+                              token: { type: string, minLength: 1 }
+                        - type: object
+                          required: [mode]
+                          properties:
+                              mode: { type: string, enum: [none] }
+                dependencyExample:
+                    description: Models a simple field dependency without using JSON Schema dependencies.
+                    type: object
+                    properties:
+                        creditCard: { type: string }
+                        billingAddress: { type: string }
+                    additionalProperties: false
+            additionalProperties:
+                type: string

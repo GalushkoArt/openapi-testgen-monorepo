@@ -12,6 +12,7 @@ public final class art/galushko/openapi/testgen/cli/GenerateCommand : java/util/
 	public final fun getGenerator ()Ljava/lang/String;
 	public final fun getGeneratorOptionsRaw ()[Ljava/lang/String;
 	public final fun getOutputDir ()Ljava/lang/String;
+	public final fun getParserSettingsRaw ()[Ljava/lang/String;
 	public final fun getSpecFile ()Ljava/lang/String;
 	public final fun getTestSettingsRaw ()[Ljava/lang/String;
 	public final fun setAlwaysWriteTests (Ljava/lang/Boolean;)V
@@ -19,6 +20,7 @@ public final class art/galushko/openapi/testgen/cli/GenerateCommand : java/util/
 	public final fun setGenerator (Ljava/lang/String;)V
 	public final fun setGeneratorOptionsRaw ([Ljava/lang/String;)V
 	public final fun setOutputDir (Ljava/lang/String;)V
+	public final fun setParserSettingsRaw ([Ljava/lang/String;)V
 	public final fun setSpecFile (Ljava/lang/String;)V
 	public final fun setTestSettingsRaw ([Ljava/lang/String;)V
 }

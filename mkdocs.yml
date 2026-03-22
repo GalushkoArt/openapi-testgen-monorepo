@@ -34,7 +34,6 @@ theme:
     # Navigation
     - navigation.tabs
     - navigation.sections
-    - navigation.indexes
     - navigation.top
     - navigation.instant
     - navigation.instant.prefetch
@@ -81,7 +80,7 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.snippets:
       auto_append:
-        - docs/includes/abbreviations.md
+        - mkdocs/includes/abbreviations.md
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -106,93 +105,43 @@ nav:
   - Getting started:
       - Overview: getting-started/index.md
       - Installation: getting-started/installation.md
-      - npm Installation: getting-started/npm-installation.md
-      - First test suite (CLI): getting-started/first-test-suite.md
       - Gradle integration: getting-started/gradle-integration.md
       - End-to-end workflow: getting-started/end-to-end-workflow.md
-      - Understanding output: getting-started/understanding-output.md
   - Samples:
       - Overview: samples/index.md
       - Java Spring file writer: samples/java-spring-file-writer.md
       - Java Spring RestAssured: samples/java-spring-rest-assured.md
       - Kotlin Spring RestAssured: samples/kotlin-spring-rest-assured.md
   - How-to:
-      - Overview: how-to/index.md
-      - Configuration:
-          - YAML config: how-to/configuration/yaml-config.md
-          - Include operations: how-to/configuration/include-operations.md
-          - Ignore rules: how-to/configuration/ignore-rules.md
-          - Security values: how-to/configuration/security-values.md
-          - Positive testing: how-to/configuration/positive-testing.md
-      - Negative testing:
-          - Overview: how-to/negative-testing/index.md
-          - Generating: how-to/negative-testing/generating.md
-          - Path parameters: how-to/negative-testing/path-parameters.md
-          - Query parameters: how-to/negative-testing/query-parameters.md
-          - Header parameters: how-to/negative-testing/header-parameters.md
-          - Request body schema: how-to/negative-testing/request-body-schema.md
-      - Generators:
-          - Template generator: how-to/generators/template-generator.md
-          - Custom templates: how-to/generators/custom-templates.md
-          - Test-suite-writer: how-to/generators/test-suite-writer.md
-      - Extension:
-          - Custom rules: how-to/extension/custom-rules.md
-          - Custom providers: how-to/extension/custom-providers.md
-          - Custom generators: how-to/extension/custom-generators.md
-          - Custom modules: how-to/extension/custom-modules.md
-      - Integration:
-          - CI/CD: how-to/integration/ci-cd.md
-          - RestAssured: how-to/integration/restassured.md
-          - Spring Boot: how-to/integration/spring-boot.md
+      - Configuration: how-to/configuration.md
+      - Negative testing: how-to/negative-testing.md
+      - Generators: how-to/generators.md
+      - Extending: how-to/extending.md
+      - CI/CD: how-to/ci-cd.md
       - Troubleshooting: how-to/troubleshooting.md
   - Concepts:
-      - Overview: concepts/index.md
       - Architecture: concepts/architecture.md
-      - Provider-rule model: concepts/provider-rule-model.md
-      - Test generation flow: concepts/test-generation-flow.md
       - Schema composition: concepts/schema-composition.md
-      - Determinism: concepts/determinism.md
-      - Budget controls: concepts/budget-controls.md
       - Error handling: concepts/error-handling.md
       - Glossary: concepts/glossary.md
   - Reference:
-      - Overview: reference/index.md
       - Catalogs:
-          - Generator options: reference/catalogs/generator-options.md
           - Rules: reference/catalogs/rules-catalog.md
           - Providers: reference/catalogs/providers-catalog.md
       - Distribution settings: reference/distribution-settings.md
-      - Model:
-          - TestSuite: reference/model/test-suite.md
-          - TestCase: reference/model/test-case.md
-          - Errors: reference/model/errors.md
-      - SPI:
-          - Overview: reference/spi/index.md
-          - Validation rules: reference/spi/validation-rules.md
-          - Test providers: reference/spi/test-providers.md
-          - Generators: reference/spi/generators.md
-          - Value providers: reference/spi/value-providers.md
+      - Model: reference/model.md
+      - SPI: reference/spi.md
       - API reference: reference/api.md
       - CLI: reference/cli.md
       - Gradle plugin: reference/gradle-plugin.md
   - Modules:
       - Overview: modules/index.md
-      - Model: modules/model.md
-      - Example-value: modules/example-value.md
       - Core: modules/core.md
       - Pattern-value: modules/pattern-value.md
-      - Pattern-support: modules/pattern-support.md
-      - Generator-template: modules/generator-template.md
       - Distribution-bundle: modules/distribution-bundle.md
-      - Plugin: modules/plugin.md
-      - CLI: modules/cli.md
   - Contributing:
-      - Overview: contributing/index.md
       - Development setup: contributing/development-setup.md
-      - Code style: contributing/code-style.md
-      - Testing guide: contributing/testing-guide.md
       - Documentation guide: contributing/documentation-guide.md
       - Publishing artifacts: contributing/publishing.md
       - npm Publishing: contributing/npm-publishing.md
-      - Release process: contributing/release-process.md
   - Changelog: changelog/CHANGELOG.md

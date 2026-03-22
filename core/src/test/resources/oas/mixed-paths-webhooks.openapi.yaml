@@ -1,0 +1,41 @@
+openapi: 3.1.0
+info:
+    title: Mixed Paths and Webhooks API
+    version: 1.0.0
+
+paths:
+    /items:
+        get:
+            operationId: listItems
+            summary: List items
+            parameters:
+                - name: limit
+                  in: query
+                  required: true
+                  schema:
+                      type: integer
+                      minimum: 1
+                      maximum: 100
+            responses:
+                "200":
+                    description: OK
+
+webhooks:
+    itemCreated:
+        post:
+            operationId: itemCreatedWebhook
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required: [id, name]
+                            properties:
+                                id:
+                                    type: string
+                                name:
+                                    type: string
+            responses:
+                "200":
+                    description: Accepted

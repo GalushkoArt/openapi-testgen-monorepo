@@ -1,252 +1,270 @@
 {
-    "getOrderStatus": {
-        "path": "/orders/status",
-        "method": "GET",
-        "operationName": "getOrderStatus",
-        "testCases": [
+    "getOrderStatus" : {
+        "path" : "/orders/status",
+        "method" : "GET",
+        "operationName" : "getOrderStatus",
+        "testCases" : [
             {
-                "name": "Missed Required Query Parameter trackingId",
-                "method": "GET",
-                "path": "/orders/status",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Missed Required Query Parameter trackingId",
+                "method" : "GET",
+                "path" : "/orders/status",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
             },
             {
-                "name": "Test Valid Case",
-                "method": "GET",
-                "path": "/orders/status",
-                "queryParams": {
-                    "trackingId": "TRK-998877"
+                "name" : "Test Valid Case",
+                "method" : "GET",
+                "path" : "/orders/status",
+                "queryParams" : {
+                    "trackingId" : "TRK-998877"
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": {
-                    "estimatedDelivery": 1703462400000,
-                    "status": "SHIPPED",
-                    "trackingId": "TRK-998877"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "estimatedDelivery" : 1703462400000,
+                    "status" : "SHIPPED",
+                    "trackingId" : "TRK-998877"
                 },
-                "needToComplete": true,
-                "expectedStatusCode": 200,
-                "rule": null
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : true,
+                "expectedStatusCode" : 200,
+                "rule" : null
             }
         ]
     },
-    "getSystemInfo": {
-        "path": "/system/info",
-        "method": "GET",
-        "operationName": "getSystemInfo",
-        "testCases": [
+    "getSystemInfo" : {
+        "path" : "/system/info",
+        "method" : "GET",
+        "operationName" : "getSystemInfo",
+        "testCases" : [
             {
-                "name": "Missed Required Query Parameter nodeId",
-                "method": "GET",
-                "path": "/system/info",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Missed Required Query Parameter nodeId",
+                "method" : "GET",
+                "path" : "/system/info",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
             },
             {
-                "name": "Test Valid Case",
-                "method": "GET",
-                "path": "/system/info",
-                "queryParams": {
-                    "nodeId": "a"
+                "name" : "Test Valid Case",
+                "method" : "GET",
+                "path" : "/system/info",
+                "queryParams" : {
+                    "nodeId" : "a"
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": {
-                    "isHealthy": true,
-                    "uptimeSeconds": 1
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "isHealthy" : true,
+                    "uptimeSeconds" : 1
                 },
-                "needToComplete": true,
-                "expectedStatusCode": 200,
-                "rule": null
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : true,
+                "expectedStatusCode" : 200,
+                "rule" : null
             }
         ]
     },
-    "listUsers": {
-        "path": "/users/list",
-        "method": "GET",
-        "operationName": "listUsers",
-        "testCases": [
+    "listUsers" : {
+        "path" : "/users/list",
+        "method" : "GET",
+        "operationName" : "listUsers",
+        "testCases" : [
             {
-                "name": "Missed Required Query Parameter group",
-                "method": "GET",
-                "path": "/users/list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Missed Required Query Parameter group",
+                "method" : "GET",
+                "path" : "/users/list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
             },
             {
-                "name": "Test Valid Case",
-                "method": "GET",
-                "path": "/users/list",
-                "queryParams": {
-                    "group": "admins"
+                "name" : "Test Valid Case",
+                "method" : "GET",
+                "path" : "/users/list",
+                "queryParams" : {
+                    "group" : "admins"
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": [
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : [
                     {
-                        "id": 101,
-                        "username": "alice_dev",
-                        "role": "admin"
+                        "id" : 101,
+                        "username" : "alice_dev",
+                        "role" : "admin"
                     },
                     {
-                        "id": 102,
-                        "username": "bob_qa",
-                        "role": "editor"
+                        "id" : 102,
+                        "username" : "bob_qa",
+                        "role" : "editor"
                     }
                 ],
-                "needToComplete": true,
-                "expectedStatusCode": 200,
-                "rule": null
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : true,
+                "expectedStatusCode" : 200,
+                "rule" : null
             }
         ]
     },
-    "searchProducts": {
-        "path": "/products/search",
-        "method": "GET",
-        "operationName": "searchProducts",
-        "testCases": [
+    "searchProducts" : {
+        "path" : "/products/search",
+        "method" : "GET",
+        "operationName" : "searchProducts",
+        "testCases" : [
             {
-                "name": "Invalid Query query parameter: Out Of Minimum Length String",
-                "method": "GET",
-                "path": "/products/search",
-                "queryParams": {
-                    "query": "aa"
+                "name" : "Invalid Query query parameter: Out Of Minimum Length String",
+                "method" : "GET",
+                "path" : "/products/search",
+                "queryParams" : {
+                    "query" : "aa"
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": {
-                    "status": 400,
-                    "code": "CONTENT_MODERATION",
-                    "message": "Query contains restricted terms."
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "status" : 400,
+                    "code" : "CONTENT_MODERATION",
+                    "message" : "Query contains restricted terms."
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
             },
             {
-                "name": "Missed Required Query Parameter query",
-                "method": "GET",
-                "path": "/products/search",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Missed Required Query Parameter query",
+                "method" : "GET",
+                "path" : "/products/search",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": {
-                    "status": 400,
-                    "code": "CONTENT_MODERATION",
-                    "message": "Query contains restricted terms."
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "status" : 400,
+                    "code" : "CONTENT_MODERATION",
+                    "message" : "Query contains restricted terms."
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
             },
             {
-                "name": "Test Valid Case",
-                "method": "GET",
-                "path": "/products/search",
-                "queryParams": {
-                    "query": "macbook"
+                "name" : "Test Valid Case",
+                "method" : "GET",
+                "path" : "/products/search",
+                "queryParams" : {
+                    "query" : "macbook"
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": {
-                    "id": "999-xyz",
-                    "productType": "digital",
-                    "name": "E-Book: API Design",
-                    "price": 20.0,
-                    "fileSizeMb": 5.5,
-                    "downloadUrl": "https://example.com/dl/123"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "id" : "999-xyz",
+                    "productType" : "digital",
+                    "name" : "E-Book: API Design",
+                    "price" : 20.0,
+                    "fileSizeMb" : 5.5,
+                    "downloadUrl" : "https://example.com/dl/123"
                 },
-                "needToComplete": true,
-                "expectedStatusCode": 200,
-                "rule": null
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : true,
+                "expectedStatusCode" : 200,
+                "rule" : null
             }
         ]
     }

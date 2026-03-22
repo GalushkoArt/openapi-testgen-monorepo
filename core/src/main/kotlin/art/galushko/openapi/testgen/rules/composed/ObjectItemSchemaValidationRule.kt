@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory
  * Output: [RuleValue]s whose descriptions are prefixed with "Object Property <name> " and whose values are objects
  * with an invalid property value.
  * Constraints: applies only to object schemas with properties; skips when recursion depth exceeds
- * `TestGenerationSettings.maxSchemaDepth` or when schema cycles are detected via structural hashing.
+ * `TestGenerationSettings.maxSchemaDepth` or when schema cycles are detected via `$ref` or identity-based checks.
  * Determinism: preserves rule order from [RuleContainer] and schema-combination order from `SchemaMerger`.
  * Settings: `maxSchemaDepth` controls recursion limit (default 10); `maxSchemaCombinations` limits composed-schema
  * expansion; example generation follows `exampleValues` provider order.
@@ -50,9 +50,9 @@ internal class ObjectItemSchemaValidationRule(
     ): Sequence<RuleValue> {
         val propSchema = tryGetSchemaFromRef(propertySchema, context.openAPI)
 
-        val updated = context.withVisitedSchema(propertySchema, propName)
+        val updated = context.withVisitedSchema(propSchema, propName)
         if (updated == null) {
-            val reason = context.checkSkip(propertySchema)
+            val reason = context.checkSkip(propSchema)
             val path = (context.schemaPath + propName).joinToString(" -> ")
             log.warn(
                 "Skipping nested property '{}' for operation {}. Reason: {}. Path: {}. " +

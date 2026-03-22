@@ -3,7 +3,9 @@ package art.galushko.openapi.testgen.testdata
 import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGenerator
 import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGeneratorFactory
 import art.galushko.openapi.testgen.example.openapi.SchemaTypeHelpers
+import art.galushko.openapi.testgen.example.openapi.SchemaTypeHelpers.resolveExampleRef
 import art.galushko.openapi.testgen.example.response.ResponseExampleExtractor
+import art.galushko.openapi.testgen.example.util.MediaTypePrioritizer.orderedMediaTypeKeys
 import art.galushko.openapi.testgen.model.KeyValuePair
 import art.galushko.openapi.testgen.model.SecurityValues
 import art.galushko.openapi.testgen.model.TestCase
@@ -12,10 +14,12 @@ import art.galushko.openapi.testgen.model.error.GenerationError
 import art.galushko.openapi.testgen.model.error.Outcome
 import art.galushko.openapi.testgen.model.with
 import art.galushko.openapi.testgen.openapi.SecurityHelpers
-import art.galushko.openapi.testgen.util.Consts
 import art.galushko.openapi.testgen.util.exceptions.UnsupportedParameterType
+import art.galushko.openapi.testgen.util.isMediaTypeSupported
+import art.galushko.openapi.testgen.util.resolveParameterSchema
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.Operation
+import io.swagger.v3.oas.models.media.MediaType
 import io.swagger.v3.oas.models.parameters.CookieParameter
 import io.swagger.v3.oas.models.parameters.HeaderParameter
 import io.swagger.v3.oas.models.parameters.Parameter
@@ -32,7 +36,7 @@ import org.slf4j.LoggerFactory
  * Inputs: operation metadata, OpenAPI model, and providers for security and example values.
  * Output: [Outcome.Success] with a baseline valid case or [Outcome.Failure] with errors.
  * Determinism: parameter iteration follows the OpenAPI parameter order; request body media type
- * selection uses [Consts.supportedMediaTypes] order.
+ * selection uses [orderedMediaTypeKeys] with [isMediaTypeSupported] filtering.
  *
  * @param path API path template (e.g. "/pets/{id}")
  * @param method HTTP method in lowercase as defined in the OpenAPI spec
@@ -60,6 +64,7 @@ public class ValidCaseBuilder(
     private val cookie: MutableList<KeyValuePair<String, Any>> = mutableListOf()
     private var securityValues: SecurityValues = SecurityValues()
     private var body: Any? = null
+    private var requestBodyMediaType: String? = null
 
     /**
      * Constructs a valid positive test case that satisfies required parameters,
@@ -67,7 +72,8 @@ public class ValidCaseBuilder(
      *
      * Behavior:
      * - Only required parameters are populated (path/query/header/cookie).
-     * - Request body uses the first supported media type with a schema.
+     * - Parameter schema resolution uses `schema` first; if absent, falls back to `content` schema.
+     * - Request body uses the first supported media type with example(s) or a schema.
      * - Success status code is the first 2xx response, then `2XX`, then `default` if present.
      * - Security uses the first security requirement object if multiple are defined.
      *
@@ -79,29 +85,33 @@ public class ValidCaseBuilder(
             addRequiredSecurityItems()
 
             for (param in getRequiredParams()) {
-                val value = schemaExampleValueGenerator.getExampleValue(param.name, param.schema, openAPI)
+                val resolved = resolveParameterSchema(param, openAPI)
+                val schema = resolved.schema ?: throw IllegalStateException(
+                    "$reference Required ${param.`in`} parameter '${param.name}' does not define schema or content schema"
+                )
+                val value = schemaExampleValueGenerator.getExampleValue(param.name, schema, openAPI)
                 when (param) {
                     is QueryParameter -> queryParams[param.name] = value
                     is PathParameter -> pathParams[param.name] = value
-                    is HeaderParameter -> headers.add(param.name with value.toString())
-                    is CookieParameter -> cookie.add(param.name with value.toString())
+                    is HeaderParameter -> headers.add(param.name with value)
+                    is CookieParameter -> cookie.add(param.name with value)
                     else -> throw UnsupportedParameterType(param)
                 }
             }
 
             if (operation.requestBody != null) {
                 val requestBody = SchemaTypeHelpers.tryGetRequestBodyFromRef(operation.requestBody, openAPI)
-                val possibleBody = Consts.supportedMediaTypes.firstNotNullOfOrNull { mediaType ->
-                    extractBodyFromMediaType(requestBody, mediaType, openAPI)
-                }
-                if (possibleBody != null) {
-                    body = possibleBody
+                val extractedBody = extractBodyFromMediaType(requestBody, openAPI)
+                if (extractedBody.body != null) {
+                    body = extractedBody.body
+                    requestBodyMediaType = extractedBody.mediaType
                 } else if (requestBody.required == true) {
                     throw IllegalStateException("$reference Unsupported request body media type ${requestBody.content.keys}")
                 }
             }
 
             val successStatusCode = getSuccessStatusCode()
+            val expectedResponse = responseExampleExtractor.extractExpectedResponseExampleWithMediaType(operation, openAPI, successStatusCode)
 
             val testCase = TestCase(
                 name = "Test Valid Case",
@@ -113,7 +123,9 @@ public class ValidCaseBuilder(
                 cookie = cookie.toList(),
                 securityValues = securityValues,
                 body = body,
-                expectedBody = responseExampleExtractor.extractExpectedResponseExample(operation, openAPI, successStatusCode),
+                requestBodyMediaType = requestBodyMediaType,
+                expectedBody = expectedResponse.body,
+                responseBodyMediaType = expectedResponse.mediaType,
                 expectedStatusCode = successStatusCode
             )
 
@@ -133,12 +145,44 @@ public class ValidCaseBuilder(
         }
     }
 
-    private fun extractBodyFromMediaType(requestBody: RequestBody, mediaTypeStr: String, openAPI: OpenAPI): Any? {
-        val mediaType = requestBody.content[mediaTypeStr]
-        if (mediaType != null && mediaType.schema != null) {
-            return schemaExampleValueGenerator.getExampleValue("request body", mediaType.schema, openAPI)
+    private fun extractBodyFromMediaType(requestBody: RequestBody, openAPI: OpenAPI): ExtractedRequestBody {
+        val content = requestBody.content ?: return ExtractedRequestBody(body = null, mediaType = null)
+        val mediaTypeKeys = orderedMediaTypeKeys(content)
+        mediaTypeKeys
+            .filterNot { isMediaTypeSupported(it) }
+            .forEach { mediaType ->
+                log.warn("$reference Unsupported request body media type: {}", mediaType)
+            }
+
+        mediaTypeKeys
+            .filter { isMediaTypeSupported(it) }
+            .forEach { mediaTypeName ->
+                val mediaType = checkNotNull(content[mediaTypeName])
+
+                // 1. Try media type-level example/examples first (most authoritative)
+                extractExampleFromMediaType(mediaType, openAPI)?.let {
+                    return ExtractedRequestBody(body = it, mediaType = mediaTypeName)
+                }
+
+                // 2. Fall back to schema-based generation
+                mediaType.schema?.let { schema ->
+                    return ExtractedRequestBody(
+                        body = schemaExampleValueGenerator.getExampleValue("request body", schema, openAPI),
+                        mediaType = mediaTypeName,
+                    )
+                }
+            }
+
+        return ExtractedRequestBody(body = null, mediaType = null)
+    }
+
+    private fun extractExampleFromMediaType(mediaType: MediaType, openAPI: OpenAPI): Any? {
+        mediaType.example?.let { return it }
+        val examples = mediaType.examples ?: return null
+        if (examples.isEmpty()) return null
+        return examples.toSortedMap().values.firstNotNullOfOrNull { ex ->
+            resolveExampleRef(ex, openAPI).value
         }
-        return null
     }
 
     private fun addRequiredSecurityItems() {
@@ -215,5 +259,10 @@ public class ValidCaseBuilder(
         }
     }
 }
+
+private data class ExtractedRequestBody(
+    val body: Any?,
+    val mediaType: String?,
+)
 
 

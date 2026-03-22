@@ -69,6 +69,16 @@ public class GenerateCommand : Callable<Int> {
     )
     public var testSettingsRaw: Array<String> = emptyArray()
 
+    @Option(
+        names = ["--parser-setting"],
+        description = [
+            "Parser setting key.nested.path=value (e.g., yamlCodePointLimit=10000000)"
+        ],
+        split = ",",
+        arity = "0..*"
+    )
+    public var parserSettingsRaw: Array<String> = emptyArray()
+
     @Option(names = ["--always-write-test"], description = ["Flag to force writing tests even if there are errors on generation (default: false)"])
     public var alwaysWriteTests: Boolean? = null
 
@@ -116,6 +126,7 @@ public class GenerateCommand : Callable<Int> {
     private fun buildOverrides(): TestGeneratorOverrides {
         val generatorOptions = KeyValueParser.parse(generatorOptionsRaw)
         val testSettings = KeyValueParser.parse(testSettingsRaw)
+        val parserOptions = KeyValueParser.parse(parserSettingsRaw)
 
         return TestGeneratorOverrides(
             logLevel = logLevel,
@@ -125,6 +136,7 @@ public class GenerateCommand : Callable<Int> {
             generatorOptions = generatorOptions,
             testGenerationSettings = testSettings,
             alwaysWriteTests = alwaysWriteTests,
+            parserSettings = parserOptions,
         )
     }
 

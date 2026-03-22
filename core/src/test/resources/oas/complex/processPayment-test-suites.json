@@ -1,1058 +1,1104 @@
 {
-    "processPayment": {
-        "path": "/payments",
-        "method": "POST",
-        "operationName": "processPayment",
-        "testCases": [
+    "processPayment" : {
+        "path" : "/payments",
+        "method" : "POST",
+        "operationName" : "processPayment",
+        "testCases" : [
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties amount",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties amount",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "cardNumber": "a",
-                        "cvv": "a",
-                        "expiryDate": "a",
-                        "method": "credit_card"
+                "body" : {
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cardNumber" : "a",
+                        "cvv" : "a",
+                        "expiryDate" : "a",
+                        "method" : "credit_card"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties currency",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties currency",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "paymentMethod": {
-                        "cardNumber": "a",
-                        "cvv": "a",
-                        "expiryDate": "a",
-                        "method": "credit_card"
+                "body" : {
+                    "amount" : 0.01,
+                    "paymentMethod" : {
+                        "cardNumber" : "a",
+                        "cvv" : "a",
+                        "expiryDate" : "a",
+                        "method" : "credit_card"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties paymentMethod",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties paymentMethod",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD"
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property amount Out Of Minimum Boundary Number",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property amount Out Of Minimum Boundary Number",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": -0.99,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "cardNumber": "a",
-                        "cvv": "a",
-                        "expiryDate": "a",
-                        "method": "credit_card"
+                "body" : {
+                    "amount" : -0.99,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cardNumber" : "a",
+                        "cvv" : "a",
+                        "expiryDate" : "a",
+                        "method" : "credit_card"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property currency Invalid Enum Value",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property currency Invalid Enum Value",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "invalid_enum1",
-                    "paymentMethod": {
-                        "cardNumber": "a",
-                        "cvv": "a",
-                        "expiryDate": "a",
-                        "method": "credit_card"
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "invalid_enum1",
+                    "paymentMethod" : {
+                        "cardNumber" : "a",
+                        "cvv" : "a",
+                        "expiryDate" : "a",
+                        "method" : "credit_card"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties accountNumber",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties accountNumber",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "method": "bank_transfer",
-                        "routingNumber": "a"
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "method" : "bank_transfer",
+                        "routingNumber" : "a"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties cardNumber",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties cardNumber",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "cvv": "a",
-                        "expiryDate": "a",
-                        "method": "credit_card"
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cvv" : "a",
+                        "expiryDate" : "a",
+                        "method" : "credit_card"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties cryptocurrency",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties cryptocurrency",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "method": "crypto",
-                        "walletAddress": "a"
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "method" : "crypto",
+                        "walletAddress" : "a"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties cvv",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties cvv",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "cardNumber": "a",
-                        "expiryDate": "a",
-                        "method": "credit_card"
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cardNumber" : "a",
+                        "expiryDate" : "a",
+                        "method" : "credit_card"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties expiryDate",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties expiryDate",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "cardNumber": "a",
-                        "cvv": "a",
-                        "method": "credit_card"
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cardNumber" : "a",
+                        "cvv" : "a",
+                        "method" : "credit_card"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties method",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties method",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "cardNumber": "a",
-                        "cvv": "a",
-                        "expiryDate": "a"
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cardNumber" : "a",
+                        "cvv" : "a",
+                        "expiryDate" : "a"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties method",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties method",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "accountNumber": "a",
-                        "routingNumber": "a"
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "accountNumber" : "a",
+                        "routingNumber" : "a"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties method",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties method",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "cryptocurrency": "BTC",
-                        "walletAddress": "a"
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cryptocurrency" : "BTC",
+                        "walletAddress" : "a"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties routingNumber",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties routingNumber",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "accountNumber": "a",
-                        "method": "bank_transfer"
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "accountNumber" : "a",
+                        "method" : "bank_transfer"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties walletAddress",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property paymentMethod Missed Required Object Properties walletAddress",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "cryptocurrency": "BTC",
-                        "method": "crypto"
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cryptocurrency" : "BTC",
+                        "method" : "crypto"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property paymentMethod Object Property cryptocurrency Invalid Enum Value",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property paymentMethod Object Property cryptocurrency Invalid Enum Value",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "cryptocurrency": "invalid_enum1",
-                        "method": "crypto",
-                        "walletAddress": "a"
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cryptocurrency" : "invalid_enum1",
+                        "method" : "crypto",
+                        "walletAddress" : "a"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Authorization header security",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Invalid Authorization header security",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     },
                     {
-                        "key": "authorization",
-                        "value": "bearer some_really_invalid_authorization_header"
+                        "key" : "authorization",
+                        "value" : "bearer some_really_invalid_authorization_header"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "bearer some_really_invalid_authorization_header"
+                            "key" : "authorization",
+                            "value" : "bearer some_really_invalid_authorization_header"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "cardNumber": "a",
-                        "cvv": "a",
-                        "expiryDate": "a",
-                        "method": "credit_card"
+                "body" : {
+                    "amount" : 500.0,
+                    "currency" : "EUR",
+                    "paymentMethod" : {
+                        "method" : "bank_transfer",
+                        "accountNumber" : "12345678",
+                        "routingNumber" : "987654321",
+                        "bankName" : "Example Bank"
                     }
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
             },
             {
-                "name": "Invalid Header X-Idempotency-Key parameter: Wrong UUID Format",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Invalid Header X-Idempotency-Key parameter: Wrong UUID Format",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "8e258b27-c787-49ef-9539-11461b251ffg"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "8e258b27-c787-49ef-9539-11461b251ffg"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "cardNumber": "a",
-                        "cvv": "a",
-                        "expiryDate": "a",
-                        "method": "credit_card"
+                "body" : {
+                    "amount" : 500.0,
+                    "currency" : "EUR",
+                    "paymentMethod" : {
+                        "method" : "bank_transfer",
+                        "accountNumber" : "12345678",
+                        "routingNumber" : "987654321",
+                        "bankName" : "Example Bank"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.WrongUuidFormatSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.WrongUuidFormatSchemaValidationRule"
             },
             {
-                "name": "Invalid X-API-Key API key security",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Invalid X-API-Key API key security",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     },
                     {
-                        "key": "X-API-Key",
-                        "value": "some_really_invalid_api_key"
+                        "key" : "X-API-Key",
+                        "value" : "some_really_invalid_api_key"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         },
                         {
-                            "key": "X-API-Key",
-                            "value": "some_really_invalid_api_key"
+                            "key" : "X-API-Key",
+                            "value" : "some_really_invalid_api_key"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "cardNumber": "a",
-                        "cvv": "a",
-                        "expiryDate": "a",
-                        "method": "credit_card"
+                "body" : {
+                    "amount" : 500.0,
+                    "currency" : "EUR",
+                    "paymentMethod" : {
+                        "method" : "bank_transfer",
+                        "accountNumber" : "12345678",
+                        "routingNumber" : "987654321",
+                        "bankName" : "Example Bank"
                     }
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
             },
             {
-                "name": "Missed Required Header Parameter X-Idempotency-Key",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Missed Required Header Parameter X-Idempotency-Key",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "cardNumber": "a",
-                        "cvv": "a",
-                        "expiryDate": "a",
-                        "method": "credit_card"
+                "body" : {
+                    "amount" : 500.0,
+                    "currency" : "EUR",
+                    "paymentMethod" : {
+                        "method" : "bank_transfer",
+                        "accountNumber" : "12345678",
+                        "routingNumber" : "987654321",
+                        "bankName" : "Example Bank"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
             },
             {
-                "name": "No security values provided",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "No security values provided",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "cardNumber": "a",
-                        "cvv": "a",
-                        "expiryDate": "a",
-                        "method": "credit_card"
+                "body" : {
+                    "amount" : 500.0,
+                    "currency" : "EUR",
+                    "paymentMethod" : {
+                        "method" : "bank_transfer",
+                        "accountNumber" : "12345678",
+                        "routingNumber" : "987654321",
+                        "bankName" : "Example Bank"
                     }
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
             },
             {
-                "name": "Required Request Body is missing",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Required Request Body is missing",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
             },
             {
-                "name": "Test Valid Case",
-                "method": "POST",
-                "path": "/payments",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Test Valid Case",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Idempotency-Key",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "amount": 0.01,
-                    "currency": "USD",
-                    "paymentMethod": {
-                        "cardNumber": "a",
-                        "cvv": "a",
-                        "expiryDate": "a",
-                        "method": "credit_card"
+                "body" : {
+                    "amount" : 500.0,
+                    "currency" : "EUR",
+                    "paymentMethod" : {
+                        "method" : "bank_transfer",
+                        "accountNumber" : "12345678",
+                        "routingNumber" : "987654321",
+                        "bankName" : "Example Bank"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": true,
-                "expectedStatusCode": 200,
-                "rule": null
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : true,
+                "expectedStatusCode" : 200,
+                "rule" : null
             }
         ]
     }

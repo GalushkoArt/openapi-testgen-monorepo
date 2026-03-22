@@ -2,21 +2,30 @@
     @DisplayName("{{testCaseName}}")
     public void {{methodName}}() {
         RequestSpecification requestSpec = RestAssured.given();
+{{#notes}}
+        // {{{.}}}
+{{/notes}}
 {{#headers}}
-        requestSpec.header("{{key}}", "{{#escapeString}}{{value}}{{/escapeString}}");
+        requestSpec.header("{{key}}", "{{{escapedValue}}}");
 {{/headers}}
-{{#shouldHaveBody}}
-        requestSpec.header("Content-Type", "application/json");
-{{/shouldHaveBody}}
+{{#requestBodyMediaType}}
+        requestSpec.header("Content-Type", "{{.}}");
+{{/requestBodyMediaType}}
+{{#responseBodyMediaType}}
+        requestSpec.header("Accept", "{{.}}");
+{{/responseBodyMediaType}}
 {{#requestBody}}
-        String requestBody = "{{#escapeString}}{{{ requestBody.rawBody }}}{{/escapeString}}";
+{{#requestBodyTodoComment}}
+        // {{{.}}}
+{{/requestBodyTodoComment}}
+        String requestBody = "{{{requestBody.escapedRawBody}}}";
         requestSpec.body(requestBody);
 {{/requestBody}}
 {{#pathParams}}
-        requestSpec.pathParam("{{key}}", "{{#escapeString}}{{value}}{{/escapeString}}");
+        requestSpec.pathParam("{{key}}", "{{{escapedValue}}}");
 {{/pathParams}}
 {{#queryParams}}
-        requestSpec.queryParam("{{key}}", "{{#escapeString}}{{value}}{{/escapeString}}");
+        requestSpec.queryParam("{{key}}", "{{{escapedValue}}}");
 {{/queryParams}}
 
         Response response = requestSpec.{{httpMethod}}("{{path}}");
@@ -24,7 +33,12 @@
 {{#expectedResponseBody}}
 
         String responseBody = response.getBody().asString();
-        String expectedBodyJson = "{{#escapeString}}{{{expectedResponseBody.rawBody}}}{{/escapeString}}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+{{#responseAssertionTodoComment}}
+        // {{{.}}}
+{{/responseAssertionTodoComment}}
+{{#assertJsonResponseBody}}
+        String expectedBodyJson = "{{{expectedResponseBody.escapedRawBody}}}";
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
+{{/assertJsonResponseBody}}
 {{/expectedResponseBody}}
     }

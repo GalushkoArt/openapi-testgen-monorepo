@@ -16,7 +16,7 @@ npx @openapi-testgen/cli --help
 
 Native binaries are automatically used when available for your platform (Linux x64/ARM64, macOS ARM64, Windows x64). Falls back to JAR if Java 21+ is installed.
 
-See [npm Installation Guide](https://docs.galushko.art/openapi-test-generator/getting-started/npm-installation/) for details.
+See [Installation](https://docs.galushko.art/openapi-test-generator/getting-started/installation/#cli-via-npm) for platform notes and npm-wrapper behavior.
 
 ### Download Release
 
@@ -56,7 +56,8 @@ openapi-testgen \
   --output-dir ./generated-tests \
   --generator template \
   --generator-option templateSet=restassured-java \
-  --generator-option templateVariables.package=com.example.generated
+  --generator-option templateVariables.package=com.example.generated \
+  --generator-option templateVariables.baseUrl=http://localhost:8080
 ```
 
 Generate JSON test suites:
@@ -71,18 +72,19 @@ openapi-testgen \
 
 ## Options
 
-| Option                | Description                                       |
-|-----------------------|---------------------------------------------------|
-| `--spec-file`         | Path to OpenAPI spec (required unless in config)  |
-| `--output-dir`        | Output directory (required unless in config)      |
-| `--generator`         | Generator: `template` or `test-suite-writer`      |
-| `--generator-option`  | Generator option (repeatable): `key=value`        |
-| `--config-file`       | YAML configuration file                           |
-| `--setting`           | Test generation setting (repeatable): `key=value` |
-| `--always-write-test` | Write output even on errors                       |
-| `--log-level`         | TRACE, DEBUG, INFO, WARN, ERROR, OFF              |
-| `--help`              | Show help                                         |
-| `--version`           | Show version                                      |
+| Option                | Description                                                                               |
+|-----------------------|-------------------------------------------------------------------------------------------|
+| `--spec-file`         | Path to OpenAPI spec (required unless in config)                                          |
+| `--output-dir`        | Output directory (required unless in config)                                              |
+| `--generator`         | Generator: `template` or `test-suite-writer`                                              |
+| `--generator-option`  | Generator option (repeatable): `key=value`                                                |
+| `--config-file`       | YAML configuration file                                                                   |
+| `--setting`           | Test generation setting (repeatable): `key=value`                                         |
+| `--parser-setting`    | Parser setting (repeatable): `key.nested.path=value` (e.g. `yamlCodePointLimit=10000000`) |
+| `--always-write-test` | Write output even on errors                                                               |
+| `--log-level`         | TRACE, DEBUG, INFO, WARN, ERROR, OFF                                                      |
+| `--help`              | Show help                                                                                 |
+| `--version`           | Show version                                                                              |
 
 ## Configuration File
 
@@ -183,6 +185,7 @@ Build locally (requires GraalVM with `native-image`):
 
 - Rule and generator wiring is explicit (no reflection for discovery)
 - Reflection config is pre-generated for: OpenAPI parser, Jackson, Mustache, Logback
+- `Schema` reflection is guarded by `allPublicMethods` to reduce metadata drift across Swagger updates
 - Config files: `src/main/resources/META-INF/native-image/`
 
 Regenerate reflection config after dependency changes:
@@ -191,12 +194,19 @@ Regenerate reflection config after dependency changes:
 ./gradlew :cli:regenerateNativeImageConfig
 ```
 
+The regeneration task runs the tracing agent against multiple fixtures:
+
+- `src/test/resources/openapi-30.yaml` (OpenAPI 3.0 keyword coverage)
+- `src/test/resources/openapi-31.yaml` (OpenAPI 3.1 schema features)
+
+Reflection metadata is exercised by the CLI test suite against the fixture specs listed above.
+
 ## Documentation
 
 - [Getting Started](https://docs.galushko.art/openapi-test-generator/getting-started/)
 - [CLI Reference](https://docs.galushko.art/openapi-test-generator/reference/cli/)
 - [Distribution Settings](https://docs.galushko.art/openapi-test-generator/reference/distribution-settings/)
-- [Generator Options](https://docs.galushko.art/openapi-test-generator/reference/catalogs/generator-options/)
+- [Generators Guide](https://docs.galushko.art/openapi-test-generator/how-to/generators/)
 - [API Reference (Dokka)](https://docs.galushko.art/openapi-test-generator/api/)
 
 ## Development

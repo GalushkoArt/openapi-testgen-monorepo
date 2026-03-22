@@ -38,6 +38,10 @@ paths:
                                             default: user
                                         metadata:
                                             $ref: '#/components/schemas/FlexibleValue'
+                                        tags:
+                                            allOf:
+                                                - $ref: '#/components/schemas/LabelList'
+                                                - description: Optional labels to categorize the user
 
             responses:
                 '201':
@@ -121,6 +125,25 @@ components:
                     minLength: 1
                 -   type: number
                 -   type: boolean
+
+        Label:
+            type: object
+            required: [key]
+            properties:
+                key:
+                    type: string
+                    minLength: 1
+                    maxLength: 128
+                value:
+                    type: string
+                    maxLength: 256
+
+        LabelList:
+            type: array
+            items:
+                $ref: '#/components/schemas/Label'
+            minItems: 0
+            maxItems: 10
 
         BaseEntity:
             type: object

@@ -39,6 +39,7 @@ public class OpenApiTestGeneratorPlugin : Plugin<Project> {
 
             // Copy typed settings from extension to task
             copyTypedSettings(task.testGenerationSettings, extension.testGenerationSettings)
+            copyNestedProperties(task.parserSettings, extension.parserSettings)
         }
 
         project.afterEvaluate {

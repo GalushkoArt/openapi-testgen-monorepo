@@ -23,7 +23,7 @@ class CreateOrderTest {
         RestAssured.baseURI = "http://localhost:8080/v1"
     }
 
-    private fun assertExpectedBody(expectedBodyJson: String, responseBody: String) {
+    private fun assertExpectedJsonBody(expectedBodyJson: String, responseBody: String) {
         val expectedNode = objectMapper.readTree(expectedBodyJson)
         val actualNode = try {
             objectMapper.readTree(responseBody)
@@ -43,14 +43,15 @@ class CreateOrderTest {
     fun noSecurityValuesProvided() {
         val requestSpec = RestAssured.given()
         requestSpec.header("Content-Type", "application/json")
-        val requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":\"a\"}],\"userId\":\"a\"}"
+        requestSpec.header("Accept", "application/json")
+        val requestBody = "{\"userId\":\"u_123\",\"items\":[{\"sku\":\"SKU-1\",\"quantity\":1,\"price\":99.95},{\"sku\":\"SKU-2\",\"quantity\":1,\"price\":50.0}]}"
         requestSpec.body(requestBody)
 
         val response = requestSpec.post("/orders")
         response.then().statusCode(401)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"unauthorized\",\"message\":\"API key required\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -59,14 +60,15 @@ class CreateOrderTest {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "new_invalid_api_key")
         requestSpec.header("Content-Type", "application/json")
-        val requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":\"a\"}],\"userId\":\"a\"}"
+        requestSpec.header("Accept", "application/json")
+        val requestBody = "{\"userId\":\"u_123\",\"items\":[{\"sku\":\"SKU-1\",\"quantity\":1,\"price\":99.95},{\"sku\":\"SKU-2\",\"quantity\":1,\"price\":50.0}]}"
         requestSpec.body(requestBody)
 
         val response = requestSpec.post("/orders")
         response.then().statusCode(401)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"unauthorized\",\"message\":\"API key required\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -76,14 +78,15 @@ class CreateOrderTest {
         requestSpec.header("X-API-Key", "test-api-key-123")
         requestSpec.header("Idempotency-Key", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         requestSpec.header("Content-Type", "application/json")
-        val requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":\"a\"}],\"userId\":\"a\"}"
+        requestSpec.header("Accept", "application/json")
+        val requestBody = "{\"userId\":\"u_123\",\"items\":[{\"sku\":\"SKU-1\",\"quantity\":1,\"price\":99.95},{\"sku\":\"SKU-2\",\"quantity\":1,\"price\":50.0}]}"
         requestSpec.body(requestBody)
 
         val response = requestSpec.post("/orders")
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -92,12 +95,13 @@ class CreateOrderTest {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "test-api-key-123")
         requestSpec.header("Content-Type", "application/json")
+        requestSpec.header("Accept", "application/json")
 
         val response = requestSpec.post("/orders")
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -106,6 +110,7 @@ class CreateOrderTest {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "test-api-key-123")
         requestSpec.header("Content-Type", "application/json")
+        requestSpec.header("Accept", "application/json")
         val requestBody = "{\"userId\":\"a\"}"
         requestSpec.body(requestBody)
 
@@ -113,7 +118,7 @@ class CreateOrderTest {
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -122,6 +127,7 @@ class CreateOrderTest {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "test-api-key-123")
         requestSpec.header("Content-Type", "application/json")
+        requestSpec.header("Accept", "application/json")
         val requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":\"a\"}]}"
         requestSpec.body(requestBody)
 
@@ -129,7 +135,7 @@ class CreateOrderTest {
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -138,6 +144,7 @@ class CreateOrderTest {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "test-api-key-123")
         requestSpec.header("Content-Type", "application/json")
+        requestSpec.header("Accept", "application/json")
         val requestBody = "{\"items\":[],\"userId\":\"a\"}"
         requestSpec.body(requestBody)
 
@@ -145,7 +152,7 @@ class CreateOrderTest {
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -154,6 +161,7 @@ class CreateOrderTest {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "test-api-key-123")
         requestSpec.header("Content-Type", "application/json")
+        requestSpec.header("Accept", "application/json")
         val requestBody = "{\"items\":[{\"quantity\":1,\"sku\":\"a\"}],\"userId\":\"a\"}"
         requestSpec.body(requestBody)
 
@@ -161,7 +169,7 @@ class CreateOrderTest {
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -170,6 +178,7 @@ class CreateOrderTest {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "test-api-key-123")
         requestSpec.header("Content-Type", "application/json")
+        requestSpec.header("Accept", "application/json")
         val requestBody = "{\"items\":[{\"price\":0,\"sku\":\"a\"}],\"userId\":\"a\"}"
         requestSpec.body(requestBody)
 
@@ -177,7 +186,7 @@ class CreateOrderTest {
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -186,6 +195,7 @@ class CreateOrderTest {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "test-api-key-123")
         requestSpec.header("Content-Type", "application/json")
+        requestSpec.header("Accept", "application/json")
         val requestBody = "{\"items\":[{\"price\":0,\"quantity\":1}],\"userId\":\"a\"}"
         requestSpec.body(requestBody)
 
@@ -193,7 +203,7 @@ class CreateOrderTest {
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -202,6 +212,7 @@ class CreateOrderTest {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "test-api-key-123")
         requestSpec.header("Content-Type", "application/json")
+        requestSpec.header("Accept", "application/json")
         val requestBody = "{\"items\":[{\"price\":0,\"quantity\":1.5,\"sku\":\"a\"}],\"userId\":\"a\"}"
         requestSpec.body(requestBody)
 
@@ -209,7 +220,7 @@ class CreateOrderTest {
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -218,6 +229,7 @@ class CreateOrderTest {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "test-api-key-123")
         requestSpec.header("Content-Type", "application/json")
+        requestSpec.header("Accept", "application/json")
         val requestBody = "{\"items\":[{\"price\":0,\"quantity\":0,\"sku\":\"a\"}],\"userId\":\"a\"}"
         requestSpec.body(requestBody)
 
@@ -225,7 +237,7 @@ class CreateOrderTest {
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -234,6 +246,7 @@ class CreateOrderTest {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "test-api-key-123")
         requestSpec.header("Content-Type", "application/json")
+        requestSpec.header("Accept", "application/json")
         val requestBody = "{\"items\":[{\"price\":-1,\"quantity\":1,\"sku\":\"a\"}],\"userId\":\"a\"}"
         requestSpec.body(requestBody)
 
@@ -241,7 +254,7 @@ class CreateOrderTest {
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
 }

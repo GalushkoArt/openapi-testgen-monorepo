@@ -1,14 +1,12 @@
 ---
-description: Tutorial for integrating OpenAPI test generation into Gradle builds. Shows how to apply the plugin, configure the extension, run generation, and optionally use manualOnly mode.
+description: Minimal Gradle plugin setup for wiring OpenAPI-generated tests into a build, with notes on automatic wiring and manual-only mode.
 ---
 
 # Gradle integration
 
-This tutorial integrates test generation into a Gradle project using the plugin.
+Use the Gradle plugin when you want generation wired into your build instead of running the CLI separately.
 
 ## 1) Apply the plugin
-
-The plugin is published to the [Gradle Plugin Portal](https://plugins.gradle.org/plugin/art.galushko.openapi-test-generator).
 
 ```kotlin
 plugins {
@@ -16,12 +14,11 @@ plugins {
 }
 ```
 
-!!! tip "Finding the latest version"
-    See [Version placeholders](installation.md#version-placeholders) for where to look up `<version>`.
+See [Version placeholders](installation.md#version-placeholders) for where to look up `<version>`.
 
-## 2) Configure the extension
+## 2) Configure generation
 
-Minimal template generator configuration:
+Minimal template-generator setup:
 
 ```kotlin
 openApiTestGenerator {
@@ -40,17 +37,29 @@ openApiTestGenerator {
 }
 ```
 
+Minimal JSON/YAML writer setup:
+
+```kotlin
+openApiTestGenerator {
+    specFile.set("src/test/resources/openapi.yaml")
+    outputDir.set(layout.buildDirectory.dir("generated/openapi-tests"))
+    generator.set("test-suite-writer")
+    generatorOptions.put("outputFileName", "test-suites.json")
+}
+```
+
 ## 3) Run generation
 
 ```bash
 ./gradlew generateOpenApiTests
 ```
 
-The generated tests will be automatically added to your test source set.
+Default wiring:
 
-## 4) Manual-only mode (optional)
+- `template` output is added to the test source set
+- `test-suite-writer` output is wired into test resources
 
-To disable automatic wiring into compilation/resource processing:
+## 4) Disable automatic wiring when needed
 
 ```kotlin
 openApiTestGenerator {
@@ -58,10 +67,10 @@ openApiTestGenerator {
 }
 ```
 
-Use this when you need custom control over when and how generated sources are included.
+Use `manualOnly` when you want to control task ordering or consume generated output from a custom location.
 
 ## Next steps
 
-- Generator configuration details: [Template generator](../how-to/generators/template-generator.md)
-- Reference for all DSL fields: [Gradle plugin reference](../reference/gradle-plugin.md)
-- All available settings: [Distribution settings](../reference/distribution-settings.md)
+- [Generators](../how-to/generators.md) for generator-specific options
+- [Distribution settings](../reference/distribution-settings.md) for defaults and settings semantics
+- [Gradle plugin reference](../reference/gradle-plugin.md) for the full DSL surface

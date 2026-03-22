@@ -16,14 +16,14 @@ The rule system is described in [architecture](../../concepts/architecture.md) a
 `core/src/main/kotlin/art/galushko/openapi/testgen/generation/TestGeneratorConfigurer.kt`.
 
 For core entry points and extension context, see the [core module](../../modules/core.md).
-For rule interfaces and extension points, see the [Validation rules SPI](../spi/validation-rules.md).
-For user-facing configuration (ignore rules), see [ignore rules](../../how-to/configuration/ignore-rules.md).
-To target a subset of operations before generation, use [include operations](../../how-to/configuration/include-operations.md).
-For scenario-specific guides, see [negative testing](../../how-to/negative-testing/index.md).
+For rule interfaces and extension points, see the [Validation rules SPI](../spi.md#validation-rules).
+For user-facing configuration (ignore rules), see [ignore rules](../../how-to/configuration.md#ignore-rules).
+To target a subset of operations before generation, use [include operations](../../how-to/configuration.md#include-operations).
+For scenario-specific guides, see [negative testing](../../how-to/negative-testing.md).
 
 ## RuleValue contract
 `RuleValue` is the output format for schema validation rules and is used to build test case names and invalid substitution values.
-For the canonical contract and helper methods (`buildDescription`, `grow`), see [Validation rules SPI → RuleValue](../spi/validation-rules.md#rulevalue).
+For the canonical contract and helper methods (`buildDescription`, `grow`), see [Validation rules SPI - RuleValue](../spi.md#rulevalue).
 
 ## Registration and ordering
 - `ManualRuleRegistry` returns built-in rules plus any extra rules from `TestGenerationModule`.
@@ -52,7 +52,7 @@ Rules interact with settings through the `TestGenerationContext`:
 
 Array constraints:
 - `art.galushko.openapi.testgen.rules.schema.BelowMinItemsArraySchemaValidationRule` - arrays with
-  fewer items than `minItems`. See [Request Body Schema Tests](../../how-to/negative-testing/request-body-schema.md)
+  fewer items than `minItems`. See [Request Body Schema Tests](../../how-to/negative-testing.md#request-body-schema)
   for an example with `minItems: 1`.
 - `art.galushko.openapi.testgen.rules.schema.AboveMaxItemsArraySchemaValidationRule` - arrays with
   more items than `maxItems`.
@@ -87,12 +87,12 @@ String constraints:
 - `art.galushko.openapi.testgen.rules.schema.WrongEmailFormatSchemaValidationRule` - invalid email
   for `format = email`.
 - `art.galushko.openapi.testgen.rules.schema.WrongUuidFormatSchemaValidationRule` - invalid UUID for
-  `format = uuid`. See [Path Parameter Validation Tests](../../how-to/negative-testing/path-parameters.md)
+  `format = uuid`. See [Path Parameter Validation Tests](../../how-to/negative-testing.md#path-parameters)
   for an example.
 
 Object constraints:
 - `art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule` -
-  objects with one required property omitted. See [Request Body Schema Tests](../../how-to/negative-testing/request-body-schema.md)
+  objects with one required property omitted. See [Request Body Schema Tests](../../how-to/negative-testing.md#request-body-schema)
   for request body examples.
 
 Date format constraints (parameterized, all share a class):
@@ -112,7 +112,7 @@ Composed schema rules:
 - `art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule` - applies all schema
   rules to object properties and wraps the result in an object value.
 
-See [Request Body Schema Tests](../../how-to/negative-testing/request-body-schema.md) for examples
+See [Request Body Schema Tests](../../how-to/negative-testing.md#request-body-schema) for examples
 of nested object and array validation in request bodies.
 
 ## Pattern module rules
@@ -124,7 +124,7 @@ The `pattern-support` module contributes additional rules when enabled (enabled 
   string that does NOT match the schema `pattern` regex. Applies to string schemas with a `pattern`
   constraint. Rule name: "Invalid Pattern".
   - **Example:** Path parameter with `pattern: '^[a-z0-9_]+$'` generates a test case with value `"AE."`.
-  - **See also:** [Path Parameter Validation Tests](../../how-to/negative-testing/path-parameters.md)
+  - **See also:** [Path Parameter Validation Tests](../../how-to/negative-testing.md#path-parameters)
 
 !!! note "Library limitations"
     The regexp-gen library has some limitations:
@@ -136,7 +136,7 @@ The `pattern-support` module contributes additional rules when enabled (enabled 
 
     When generation fails, the rule logs an error and is skipped for that schema.
 
-See [pattern-support module](../../modules/pattern-support.md) for configuration options.
+See [pattern-support in the module catalog](../../modules/index.md#pattern-support) for configuration options.
 
 ## Built-in auth rules
 
@@ -146,7 +146,7 @@ handle security headers (e.g., `Authorization`, `X-API-Key`) defined in `securit
 !!! note "Security vs Non-Security Headers"
     Security headers are defined in `components.securitySchemes` and handled by auth rules.
     Non-security headers defined in operation `parameters` are handled by parameter providers.
-    See [Header Parameter Validation Tests](../../how-to/negative-testing/header-parameters.md).
+    See [Header Parameter Validation Tests](../../how-to/negative-testing.md#header-parameters).
 
 ### AllSecurityMissedAuthValidationRule
 
@@ -154,7 +154,7 @@ Removes all security values from the request.
 
 - **Test Case Name:** `No security values provided`
 - **Expected Status Code:** 401
-- **See also:** [Header Parameter Validation Tests](../../how-to/negative-testing/header-parameters.md)
+- **See also:** [Header Parameter Validation Tests](../../how-to/negative-testing.md#header-parameters)
 
 ### MissingSecurityValuesAuthValidationRule
 
@@ -163,7 +163,7 @@ Omits one or more schemes from a multi-scheme requirement (AND security).
 - **Test Case Pattern:** `Missing {scheme} header security` or `Missing {name} API key security`
 - **Expected Status Code:** 401
 - **Applies When:** Multiple security schemes are required together
-- **See also:** [Header Parameter Validation Tests](../../how-to/negative-testing/header-parameters.md)
+- **See also:** [Header Parameter Validation Tests](../../how-to/negative-testing.md#header-parameters)
 
 ### InvalidSecurityValuesAuthValidationRule
 
@@ -171,7 +171,7 @@ Supplies invalid auth values for each security scheme.
 
 - **Test Case Pattern:** `Invalid {scheme} header security` or `Invalid {name} API key security`
 - **Expected Status Code:** 401
-- **See also:** [Header Parameter Validation Tests](../../how-to/negative-testing/header-parameters.md)
+- **See also:** [Header Parameter Validation Tests](../../how-to/negative-testing.md#header-parameters)
 
 ### InsufficientScopesAuthValidationRule
 

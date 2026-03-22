@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory
  * Inputs: array schema (dereferenced) and [TestGenerationContext].
  * Output: [RuleValue]s whose descriptions are prefixed with "Array Item " and whose values are arrays with an invalid item.
  * Constraints: applies only to array schemas with items; skips when recursion depth exceeds
- * `TestGenerationSettings.maxSchemaDepth` or when schema cycles are detected via structural hashing.
+ * `TestGenerationSettings.maxSchemaDepth` or when schema cycles are detected via `$ref` or identity-based checks.
  * Determinism: preserves rule order from [RuleContainer] and schema-combination order from `SchemaMerger`.
  * Settings: `maxSchemaDepth` controls recursion limit (default 10); `maxSchemaCombinations` limits composed-schema
  * expansion; example generation follows `exampleValues` provider order.
@@ -37,10 +37,11 @@ internal class ArrayItemSchemaValidationRule(
         if (!canProcess) return emptySequence()
 
         val rawItem = deref.items ?: return emptySequence()
+        val rawItemSchema = tryGetSchemaFromRef(rawItem, context.openAPI)
 
-        val updatedContext = context.withVisitedSchema(rawItem, "item")
+        val updatedContext = context.withVisitedSchema(rawItemSchema, "item")
         if (updatedContext == null) {
-            val reason = context.checkSkip(rawItem)
+            val reason = context.checkSkip(rawItemSchema)
             val path = (context.schemaPath + "item").joinToString(" -> ")
             log.warn(
                 "Skipping nested array item validation for operation {}. Reason: {}. Path: {}. " +
@@ -52,7 +53,6 @@ internal class ArrayItemSchemaValidationRule(
             return emptySequence()
         }
 
-        val rawItemSchema = tryGetSchemaFromRef(rawItem, context.openAPI)
         return context.schemaMerger.getSchemaFlatCombinations(
             rawItemSchema,
             context.depth,

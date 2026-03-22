@@ -1,5 +1,9 @@
 package art.galushko.openapi.testgen.config
 
+import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGeneratorFactory
+import art.galushko.openapi.testgen.example.openapi.SchemaMerger
+import art.galushko.openapi.testgen.example.openapi.SchemaMergerOptions
+import art.galushko.openapi.testgen.example.spi.SchemaValueProvider
 import art.galushko.openapi.testgen.filtering.IgnoreConfigHandler
 import art.galushko.openapi.testgen.filtering.IncludeOperationsHandler
 import art.galushko.openapi.testgen.generation.TestGenerationProcessor
@@ -7,13 +11,9 @@ import art.galushko.openapi.testgen.generation.TestGeneratorConfigurer.createTes
 import art.galushko.openapi.testgen.generation.TestGeneratorConfigurer.createTestSuiteGenerator
 import art.galushko.openapi.testgen.generator.ArtifactGeneratorFactory
 import art.galushko.openapi.testgen.generator.ArtifactGeneratorRegistry
-import art.galushko.openapi.testgen.model.error.GenerationReport
 import art.galushko.openapi.testgen.model.error.ErrorHandlingConfig
+import art.galushko.openapi.testgen.model.error.GenerationReport
 import art.galushko.openapi.testgen.openapi.OpenApiSpecParser
-import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGeneratorFactory
-import art.galushko.openapi.testgen.example.openapi.SchemaMerger
-import art.galushko.openapi.testgen.example.openapi.SchemaMergerOptions
-import art.galushko.openapi.testgen.example.spi.SchemaValueProvider
 import art.galushko.openapi.testgen.rules.ManualRuleRegistry
 import art.galushko.openapi.testgen.spi.ArtifactGenerator
 import io.swagger.v3.oas.models.OpenAPI
@@ -51,7 +51,7 @@ public object TestGenerationEngine {
      * Parses OpenAPI specification according to [TestGeneratorExecutionOptions].
      */
     internal fun parseOpenApi(options: TestGeneratorExecutionOptions): OpenAPI =
-        OpenApiSpecParser.parseOpenApi(options.specFile)
+        OpenApiSpecParser.parseOpenApi(options.specFile, options.parserSettings)
 
     /**
      * Creates [TestGenerationProcessor] configured according to [TestGeneratorExecutionOptions].

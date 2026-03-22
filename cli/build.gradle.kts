@@ -1,5 +1,4 @@
 import org.gradle.kotlin.dsl.support.serviceOf
-import org.gradle.process.ExecOperations
 
 plugins {
     id("testgen.library-with-allure")
@@ -25,6 +24,8 @@ dependencies {
     implementation(libs.slf4j.api)
 
     testImplementation(libs.jackson.kotlin)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.params)
 }
 
 
@@ -183,8 +184,11 @@ tasks.register("regenerateNativeImageConfig") {
     dependsOn(tasks.named("classes"))
 
     val agentOutputDir = layout.buildDirectory.dir("native-image-agent-output")
-    val specFile = file("src/test/resources/openapi.yaml")
     val outputDir = layout.buildDirectory.dir("native-agent-test-output")
+    val specFiles = listOf(
+        file("src/test/resources/openapi-30.yaml"),
+        file("src/test/resources/openapi-31.yaml"),
+    )
     val sourceConfigDir = file(nativeImageConfigDir)
     val configFiles = listOf(
         "reflect-config.json",
@@ -216,6 +220,10 @@ tasks.register("regenerateNativeImageConfig") {
         require(agentCandidates.any { it.exists() }) {
             "native-image-agent not found. Set JAVA_HOME or GRAALVM_HOME to GraalVM and run `gu install native-image`."
         }
+        require(specFiles.all { it.exists() }) {
+            val missingSpecs = specFiles.filterNot { it.exists() }.joinToString(", ") { it.path }
+            "Spec fixtures for native-image agent are missing: $missingSpecs"
+        }
 
         // Seed the merge directory with the current configs so manual entries are preserved.
         configFiles.forEach { configFile ->
@@ -236,29 +244,34 @@ tasks.register("regenerateNativeImageConfig") {
         val mainClass = "art.galushko.openapi.testgen.cli.MainKt"
         val agentArg = "-agentlib:native-image-agent=config-merge-dir=${agentOutputDir.get().asFile.absolutePath}"
 
-        // Run test-suite-writer generator (JSON output)
-        execOps.exec {
-            commandLine(
-                javaExecutable, agentArg, "-cp", classpath, mainClass,
-                "--spec-file", specFile.absolutePath,
-                "--output-dir", outputDir.get().asFile.absolutePath,
-                "--generator", "test-suite-writer",
-                "--setting", "validSecurityValues.ApiKeyAuth=test-api-key",
-                "--generator-option", "outputFileName=generated.json",
-            )
-        }
+        specFiles.forEach { specFile ->
+            val specOutputDir = outputDir.get().dir(specFile.nameWithoutExtension).asFile
+            specOutputDir.mkdirs()
 
-        // Run template generator (Mustache templates - captures template reflection)
-        execOps.exec {
-            commandLine(
-                javaExecutable, agentArg, "-cp", classpath, mainClass,
-                "--spec-file", specFile.absolutePath,
-                "--output-dir", outputDir.get().asFile.absolutePath,
-                "--generator", "template",
-                "--setting", "validSecurityValues.ApiKeyAuth=test-api-key",
-                "--generator-option", "templateSet=restassured-java",
-                "--generator-option", "package=com.example.test",
-            )
+            // Run test-suite-writer generator (JSON output).
+            execOps.exec {
+                commandLine(
+                    javaExecutable, agentArg, "-cp", classpath, mainClass,
+                    "--spec-file", specFile.absolutePath,
+                    "--output-dir", specOutputDir.absolutePath,
+                    "--generator", "test-suite-writer",
+                    "--setting", "validSecurityValues.ApiKeyAuth=test-api-key",
+                    "--generator-option", "outputFileName=${specFile.nameWithoutExtension}.json",
+                )
+            }
+
+            // Run template generator (Mustache templates - captures template reflection).
+            execOps.exec {
+                commandLine(
+                    javaExecutable, agentArg, "-cp", classpath, mainClass,
+                    "--spec-file", specFile.absolutePath,
+                    "--output-dir", specOutputDir.absolutePath,
+                    "--generator", "template",
+                    "--setting", "validSecurityValues.ApiKeyAuth=test-api-key",
+                    "--generator-option", "templateSet=restassured-java",
+                    "--generator-option", "package=com.example.test",
+                )
+            }
         }
 
         // Copy generated configs to source directory (excluding native-image.properties which is manually maintained)

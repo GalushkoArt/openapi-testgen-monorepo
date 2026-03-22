@@ -8,6 +8,19 @@ description: Solutions for common issues including missing test output, budget e
 
 - Check your OpenAPI spec contains operations with parameters and/or request bodies.
 - Check ignore filters are not excluding everything: `testGenerationSettings.ignoreTestCases`, `ignoreSchemaValidationRules`, `ignoreAuthValidationRules`.
+- If your spec is webhook-only (defines `webhooks` but no `paths`), generation currently returns zero suites by design.
+
+### Webhook-only spec produces no suites
+
+Current generation logic targets `paths` operations. OpenAPI `webhooks` are parsed but not yet converted into test suites.
+
+Expected behavior for webhook-only specs:
+
+- CLI/Gradle command succeeds
+- summary contains zero operations and zero test cases
+- no suite artifact is written by `test-suite-writer`
+
+Workaround: if you need generated suites now, model the webhook consumer endpoints under `paths` in a generation-specific spec.
 
 ## Budget exceeded
 
@@ -28,11 +41,13 @@ By default, artifacts are written only on success.
 - CLI: use `--always-write-test`
 - YAML/Gradle: set `alwaysWriteTests: true` / `alwaysWriteTests.set(true)`
 
+With `alwaysWriteTests` enabled, the generator writes whatever artifacts it can and the CLI/Gradle task stays successful when output is written. Inspect the report/log output for the remaining generation errors.
+
 ## CLI / npm issues
 
 ### Force JAR execution
 
-If you experience issues with the native binary, use `--prefer-jar` to bypass it and run the JAR directly:
+If you installed the CLI via npm and experience issues with the native binary, use the npm-wrapper flag `--prefer-jar` to bypass native execution and run the bundled JAR directly:
 
 ```bash
 openapi-testgen --prefer-jar --spec-file api.yaml --output-dir tests --generator test-suite-writer
@@ -92,5 +107,5 @@ Native binaries require glibc. On musl-based systems (Alpine), install Java 21+:
 apk add openjdk21
 ```
 
-See [npm Installation - Troubleshooting](../getting-started/npm-installation.md#troubleshooting) for more details.
+See [Installation](../getting-started/installation.md#cli-via-npm) for platform details and npm-wrapper behavior.
 

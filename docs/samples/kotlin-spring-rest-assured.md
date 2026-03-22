@@ -6,7 +6,7 @@ description: Demonstrates the template generator with Kotlin and custom Mustache
 
 This sample demonstrates the `template` generator with Kotlin, including custom Mustache templates for complete control over generated test code.
 
-[View on GitHub](https://github.com/GalushkoArt/openapi-testgen-monorepo/tree/master/samples/kotlin-spring-rest-assured){ .md-button }
+[View on GitHub](https://github.com/GalushkoArt/openapi-testgen-monorepo/tree/main/samples/kotlin-spring-rest-assured){ .md-button }
 
 ## Overview
 
@@ -104,7 +104,7 @@ tasks.named("compileTestKotlin") { dependsOn("generateOpenApiTestsCustomTemplate
 
 This sample includes custom Mustache templates demonstrating full control over generated code.
 
-The templates are in [`templates/`](https://github.com/GalushkoArt/openapi-testgen-monorepo/tree/master/samples/kotlin-spring-rest-assured/templates):
+The templates are in [`templates/`](https://github.com/GalushkoArt/openapi-testgen-monorepo/tree/main/samples/kotlin-spring-rest-assured/templates):
 
 ```
 templates/
@@ -118,7 +118,7 @@ For detailed guidance on creating custom templates, including:
 - Mustache syntax examples
 - Configuration options
 
-See the [Custom templates how-to guide](../how-to/generators/custom-templates.md).
+See the [Custom templates how-to guide](../how-to/generators.md#custom-mustache-templates).
 
 ## Running the sample
 
@@ -171,7 +171,7 @@ Custom templates are useful when you need:
 
 ## Related docs
 
-- [Custom templates](../how-to/generators/custom-templates.md)
-- [Template generator](../how-to/generators/template-generator.md)
-- [RestAssured integration](../how-to/integration/restassured.md)
+- [Custom templates](../how-to/generators.md#custom-mustache-templates)
+- [Template generator](../how-to/generators.md#template-generator)
+- [RestAssured integration](../how-to/generators.md#restassured-integration)
 - [Gradle plugin reference](../reference/gradle-plugin.md)

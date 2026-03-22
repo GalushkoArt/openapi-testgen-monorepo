@@ -22,9 +22,11 @@ createOrder:
       other: {}
     body:
       userId: "a"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
@@ -49,9 +51,11 @@ createOrder:
       - price: 0
         quantity: 1
         sku: "a"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
@@ -77,9 +81,11 @@ createOrder:
       - quantity: 1
         sku: "a"
       userId: "a"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -105,9 +111,11 @@ createOrder:
       - price: 0
         sku: "a"
       userId: "a"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -133,9 +141,11 @@ createOrder:
       - price: 0
         quantity: 1
       userId: "a"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -162,9 +172,11 @@ createOrder:
         quantity: 1
         sku: "a"
       userId: "a"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -191,9 +203,11 @@ createOrder:
         quantity: 1.5
         sku: "a"
       userId: "a"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -220,9 +234,11 @@ createOrder:
         quantity: 0
         sku: "a"
       userId: "a"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -245,9 +261,11 @@ createOrder:
     body:
       items: []
       userId: "a"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -270,14 +288,19 @@ createOrder:
       cookie: []
       other: {}
     body:
+      userId: "u_123"
       items:
-      - price: 0
+      - sku: "SKU-1"
         quantity: 1
-        sku: "a"
-      userId: "a"
+        price: 99.95
+      - sku: "SKU-2"
+        quantity: 1
+        price: 50.0
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.OutOfMaximumLengthStringSchemaValidationRule"
@@ -298,14 +321,19 @@ createOrder:
       cookie: []
       other: {}
     body:
+      userId: "u_123"
       items:
-      - price: 0
+      - sku: "SKU-1"
         quantity: 1
-        sku: "a"
-      userId: "a"
+        price: 99.95
+      - sku: "SKU-2"
+        quantity: 1
+        price: 50.0
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "unauthorized"
       message: "API key required"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 401
     rule: "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
@@ -322,14 +350,19 @@ createOrder:
       cookie: []
       other: {}
     body:
+      userId: "u_123"
       items:
-      - price: 0
+      - sku: "SKU-1"
         quantity: 1
-        sku: "a"
-      userId: "a"
+        price: 99.95
+      - sku: "SKU-2"
+        quantity: 1
+        price: 50.0
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "unauthorized"
       message: "API key required"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 401
     rule: "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
@@ -350,9 +383,11 @@ createOrder:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
@@ -379,9 +414,11 @@ createUser:
       other: {}
     body:
       name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
@@ -403,9 +440,11 @@ createUser:
       other: {}
     body:
       email: "test0@example.com"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
@@ -428,9 +467,11 @@ createUser:
     body:
       email: "[ {"
       name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -453,9 +494,11 @@ createUser:
     body:
       email: "invalid.email@example"
       name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -479,9 +522,11 @@ createUser:
       email: "test0@example.com"
       name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
       id: "8e258b27-c787-49ef-9539-11461b251ffg"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -504,9 +549,11 @@ createUser:
     body:
       email: "test0@example.com"
       name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -529,9 +576,11 @@ createUser:
     body:
       email: "test0@example.com"
       name: ""
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -554,11 +603,13 @@ createUser:
       cookie: []
       other: {}
     body:
-      email: "test0@example.com"
-      name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      name: "Grace Hopper"
+      email: "grace@example.com"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.OutOfMaximumLengthStringSchemaValidationRule"
@@ -579,11 +630,13 @@ createUser:
       cookie: []
       other: {}
     body:
-      email: "test0@example.com"
-      name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      name: "Grace Hopper"
+      email: "grace@example.com"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "unauthorized"
       message: "API key required"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 401
     rule: "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
@@ -600,11 +653,13 @@ createUser:
       cookie: []
       other: {}
     body:
-      email: "test0@example.com"
-      name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      name: "Grace Hopper"
+      email: "grace@example.com"
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "unauthorized"
       message: "API key required"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 401
     rule: "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
@@ -625,9 +680,11 @@ createUser:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: "application/json"
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
@@ -654,9 +711,11 @@ getUser:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.pattern.support.InvalidPatternSchemaValidationRule"
@@ -678,9 +737,11 @@ getUser:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "unauthorized"
       message: "API key required"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 401
     rule: "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
@@ -698,9 +759,11 @@ getUser:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "unauthorized"
       message: "API key required"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 401
     rule: "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
@@ -727,9 +790,11 @@ listOrders:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
@@ -751,9 +816,11 @@ listOrders:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
@@ -775,9 +842,11 @@ listOrders:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
@@ -799,9 +868,11 @@ listOrders:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
@@ -823,9 +894,11 @@ listOrders:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
@@ -846,9 +919,11 @@ listOrders:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "unauthorized"
       message: "API key required"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 401
     rule: "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
@@ -865,9 +940,11 @@ listOrders:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "unauthorized"
       message: "API key required"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 401
     rule: "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
@@ -894,9 +971,11 @@ listUsers:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
@@ -918,9 +997,11 @@ listUsers:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
@@ -942,9 +1023,11 @@ listUsers:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
@@ -966,9 +1049,11 @@ listUsers:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
@@ -990,9 +1075,11 @@ listUsers:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
@@ -1014,9 +1101,11 @@ listUsers:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "bad_request"
       message: "Invalid input"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.OutOfMaximumLengthStringSchemaValidationRule"
@@ -1037,9 +1126,11 @@ listUsers:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "unauthorized"
       message: "API key required"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 401
     rule: "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
@@ -1056,9 +1147,11 @@ listUsers:
       cookie: []
       other: {}
     body: null
+    requestBodyMediaType: null
     expectedBody:
       code: "unauthorized"
       message: "API key required"
+    responseBodyMediaType: "application/json"
     needToComplete: false
     expectedStatusCode: 401
     rule: "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"

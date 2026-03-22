@@ -20,27 +20,31 @@ For CLI and Gradle plugin usage, this module is an internal dependency. For cust
 
 ```kotlin
 dependencies {
-    implementation("art.galushko.openapi:testgen-distribution-bundle:0.9.2")
+    implementation("art.galushko.openapi.testgen:distribution-bundle:<version>")
 }
 ```
 
 ```kotlin
-val result = TestGenerationRunner.builder()
-    .specFile(Path.of("openapi.yaml"))
-    .outputDir(Path.of("./generated"))
-    .generator("template")
-    .generatorOptions(mapOf(
-        "templateSet" to "restassured-java",
-        "templateVariables" to mapOf("package" to "com.example")
-    ))
-    .reporter(Slf4jReporter())
-    .build()
-    .run()
+import org.slf4j.LoggerFactory
 
-when (result) {
-    is TestGenerationResult.Success -> println("Generated ${result.testSuites.size} suites")
-    is TestGenerationResult.Failure -> println("Failed: ${result.errors}")
-}
+val runner = TestGenerationRunner.withDefaults(
+    reporter = Slf4jReporter(LoggerFactory.getLogger("openapi-testgen"))
+)
+
+val result = runner.execute(
+    config = null,
+    overrides = TestGeneratorOverrides(
+        specFile = "openapi.yaml",
+        outputDir = Path.of("build/generated"),
+        generatorId = "test-suite-writer",
+        generatorOptions = mapOf(
+            "format" to "json",
+            "outputFileName" to "test-suites.json",
+        ),
+    ),
+)
+
+println(result)
 ```
 
 ## Components

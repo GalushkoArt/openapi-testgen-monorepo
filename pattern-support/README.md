@@ -23,7 +23,7 @@ For custom wiring without `distribution-bundle`:
 
 ```kotlin
 dependencies {
-    implementation("art.galushko.openapi:testgen-pattern-support:0.9.2")
+    implementation("art.galushko.openapi.testgen:pattern-support:<version>")
 }
 ```
 
@@ -43,7 +43,6 @@ Configure pattern generation via `testGenerationSettings`:
 testGenerationSettings:
   patternGeneration:
     defaultMinLength: 10
-    defaultMaxLength: 50
     spaceChars: " "
     anyPrintableChars: "abcABC123"
 ```
@@ -54,16 +53,16 @@ Or in Gradle:
 testGenerationSettings {
     patternGeneration.putAll(mapOf(
         "defaultMinLength" to 10,
-        "defaultMaxLength" to 50,
+        "spaceChars" to " ",
     ))
 }
 ```
 
 ## Documentation
 
-- [Module Overview](https://docs.galushko.art/openapi-test-generator/modules/pattern-support/)
-- [Pattern Value Module](https://docs.galushko.art/openapi-test-generator/modules/pattern-value/)
-- [YAML Configuration](https://docs.galushko.art/openapi-test-generator/how-to/configuration/yaml-config/)
+- [Module Catalog](https://docs.galushko.art/openapi-test-generator/modules/#pattern-support)
+- [Pattern Value Module](https://docs.galushko.art/openapi-test-generator/modules/#pattern-value)
+- [Configuration Guide](https://docs.galushko.art/openapi-test-generator/how-to/configuration/)
 - [API Reference (Dokka)](https://docs.galushko.art/openapi-test-generator/api/)
 
 ## Development

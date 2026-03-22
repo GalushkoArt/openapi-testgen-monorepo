@@ -32,6 +32,8 @@ class OpenApiTestGeneratorTaskTest {
         assertThat(task.alwaysWriteTests.orNull).isNull()
         assertThat(task.logLevel.orNull).isNull()
         assertThat(task.testGenerationSettings).isNotNull()
+        assertThat(task.parserSettings).isNotNull()
+        assertThat(task.parserSettings.buildParserSettingsMap()).isEmpty()
     }
 
     @Nested
@@ -96,6 +98,19 @@ class OpenApiTestGeneratorTaskTest {
             task.logLevel.set("DEBUG")
 
             assertThat(task.logLevel.get()).isEqualTo("DEBUG")
+        }
+
+        @Test
+        @DisplayName("should set parser settings")
+        fun shouldSetParserSettings() {
+            task.parserSettings.yamlCodePointLimit.set(7_000_000)
+            task.parserSettings.yamlAllowRecursiveKeys.set(true)
+
+            assertThat(task.parserSettings.yamlCodePointLimit.get()).isEqualTo(7_000_000)
+            assertThat(task.parserSettings.yamlAllowRecursiveKeys.get()).isTrue()
+            assertThat(task.parserSettings.buildParserSettingsMap())
+                .containsEntry("yamlCodePointLimit", 7_000_000)
+                .containsEntry("yamlAllowRecursiveKeys", true)
         }
     }
 

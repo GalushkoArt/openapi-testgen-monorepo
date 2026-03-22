@@ -1,5 +1,6 @@
 package art.galushko.openapi.testgen.plugin
 
+import org.gradle.api.Action
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.MapProperty
@@ -43,6 +44,20 @@ public open class TestGeneratorExtension @Inject constructor(
     /** Configure test generation settings using type-safe DSL. */
     public fun testGenerationSettings(configure: TestGenerationSettingsExtension.() -> Unit) {
         configure(testGenerationSettings)
+    }
+
+    /** Type-safe parser settings for SnakeYAML configuration. */
+    @get:Nested
+    public val parserSettings: ParserSettingsExtension = objects.newInstance(ParserSettingsExtension::class.java)
+
+    /** Configure parser settings using type-safe DSL. */
+    public fun parserSettings(configure: ParserSettingsExtension.() -> Unit) {
+        configure(parserSettings)
+    }
+
+    /** Configure parser settings using Gradle Action DSL. */
+    public fun parserSettings(action: Action<ParserSettingsExtension>) {
+        action.execute(parserSettings)
     }
 
     /** If true, generation task will only run when invoked manually (no implicit wiring). */

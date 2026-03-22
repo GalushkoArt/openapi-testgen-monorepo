@@ -6,7 +6,7 @@ import art.galushko.openapi.testgen.model.TestCase
 import art.galushko.openapi.testgen.model.with
 import art.galushko.openapi.testgen.openapi.SecurityHelpers.isAuthSchemeWithScope
 import art.galushko.openapi.testgen.spi.SecuritySchemeToScope
-import art.galushko.openapi.testgen.testdata.extractExpectedResponseExample
+import art.galushko.openapi.testgen.testdata.extractExpectedResponseExampleWithMediaType
 import art.galushko.openapi.testgen.util.Consts.UNAUTHORIZED_CODE
 import art.galushko.openapi.testgen.util.addOrReplace
 import art.galushko.openapi.testgen.util.remove
@@ -167,12 +167,14 @@ internal object SecurityHelpers {
     @JvmStatic
     public fun testCaseWithoutSecurityValues(context: TestGenerationContext): TestCase {
         val testCase = context.validCase
+        val expectedResponse = context.responseExampleExtractor.extractExpectedResponseExampleWithMediaType(context, UNAUTHORIZED_CODE)
         val queryParams = testCase.queryParams.filter { (key, _) -> !testCase.securityValues.queryParams.keys.contains(key) }
         val headers = testCase.headers.filter { (key, _) -> !testCase.securityValues.headers.any { it.key == key } }
         val cookie = testCase.cookie.filter { (key, _) -> !testCase.securityValues.cookie.any { it.key == key } }
         return testCase.copy(
             expectedStatusCode = UNAUTHORIZED_CODE,
-            expectedBody = context.responseExampleExtractor.extractExpectedResponseExample(context, UNAUTHORIZED_CODE),
+            expectedBody = expectedResponse.body,
+            responseBodyMediaType = expectedResponse.mediaType,
             queryParams = queryParams,
             headers = headers,
             cookie = cookie,
@@ -191,6 +193,7 @@ internal object SecurityHelpers {
      */
     @JvmStatic
     public fun removePropertyValuesForSecurityFromTestCase(context: TestGenerationContext, securitySchemesToRemove: List<SecuritySchemeToScope>): TestCase {
+        val expectedResponse = context.responseExampleExtractor.extractExpectedResponseExampleWithMediaType(context, UNAUTHORIZED_CODE)
         val apiKeyRequirements = securitySchemesToRemove.filter { isApiKeySecurity(it) }
         val headers = apiKeyRequirements.filter { it.scheme.`in` == SecurityScheme.In.HEADER }.map { it.scheme.name }.toMutableList()
         val cookies = apiKeyRequirements.filter { it.scheme.`in` == SecurityScheme.In.COOKIE }.map { it.scheme.name }
@@ -199,7 +202,8 @@ internal object SecurityHelpers {
         val validCase = context.validCase
         return validCase.copy(
             expectedStatusCode = UNAUTHORIZED_CODE,
-            expectedBody = context.responseExampleExtractor.extractExpectedResponseExample(context, UNAUTHORIZED_CODE),
+            expectedBody = expectedResponse.body,
+            responseBodyMediaType = expectedResponse.mediaType,
             headers = validCase.headers.remove(headers, true),
             cookie = validCase.cookie.remove(cookies),
             queryParams = validCase.queryParams.remove(queries),

@@ -4,15 +4,20 @@ import art.galushko.openapi.testgen.generation.Conditions.ruleAppliedTo
 import art.galushko.openapi.testgen.generation.TestGeneratorConfigurer
 import art.galushko.openapi.testgen.generation.createTestContext
 import art.galushko.openapi.testgen.generation.step
+import art.galushko.openapi.testgen.logging.TestLogCapture
 import art.galushko.openapi.testgen.rules.ValidationRuleTest
 import art.galushko.openapi.testgen.spi.RuleValue
 import io.qameta.allure.Description
+import io.swagger.v3.oas.models.Components
+import io.swagger.v3.oas.models.OpenAPI
+import io.swagger.v3.oas.models.Operation
 import io.swagger.v3.oas.models.media.ArraySchema
 import io.swagger.v3.oas.models.media.ObjectSchema
 import io.swagger.v3.oas.models.media.Schema
 import io.swagger.v3.oas.models.media.StringSchema
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -87,6 +92,39 @@ class ArrayItemSchemaValidationRuleTest : ValidationRuleTest() {
         val result = step("Call apply") { rule.apply(schema, createTestContext()) }
         assertThat(result.toList()).`is`(ruleAppliedTo(expected))
     }
-}
 
+    @Test
+    @DisplayName("Array Item Schema: allOf wrappers should not trigger false cycle detection")
+    fun shouldHandleAllOfWrappedItemsWithoutFalseCycleDetection() {
+        val openApi = OpenAPI().components(
+            Components().schemas(
+                mapOf(
+                    "Tag" to ObjectSchema().addProperty("Key", StringSchema().minLength(3).example("key")),
+                    "TagsList" to ArraySchema().items(allOfRef("Tag", "tag-item")),
+                )
+            )
+        )
+        val schema = ArraySchema().items(allOfRef("Tag", "tag-item"))
+        val baseContext = createTestContext(
+            operation = Operation().operationId("TagResource"),
+            openAPI = openApi,
+        )
+        val context = baseContext.withVisitedSchema(allOfRef("TagsList", "tags"), "Tags")
+            ?: error("Failed to create parent context for array cycle test")
+
+        val (_, logs) = TestLogCapture.capture {
+            rule.apply(schema, context).toList()
+        }
+
+        assertThat(logs).doesNotContain("Skipping nested array item validation for operation TagResource")
+    }
+
+    private fun allOfRef(schemaName: String, description: String): Schema<Any> =
+        Schema<Any>().allOf(
+            listOf(
+                Schema<Any>().apply { `$ref` = "#/components/schemas/$schemaName" },
+                Schema<Any>().apply { this.description = description },
+            )
+        )
+}
 

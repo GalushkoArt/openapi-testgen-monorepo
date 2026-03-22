@@ -8,9 +8,11 @@ Gradle plugin for generating API tests from OpenAPI specifications.
 
 ```kotlin
 plugins {
-    id("art.galushko.openapi-test-generator") version "0.9.2"
+    id("art.galushko.openapi-test-generator") version "<version>"
 }
 ```
+
+See the [installation guide](https://docs.galushko.art/openapi-test-generator/getting-started/installation/#version-placeholders) for where to look up `<version>`.
 
 [View on Gradle Plugin Portal](https://plugins.gradle.org/plugin/art.galushko.openapi-test-generator)
 
@@ -68,9 +70,9 @@ openApiTestGenerator {
         validSecurityValues.put("ApiKeyAuth", "test-key")
 
         // Filtering
-        ignoreSchemaValidationRules.add("InvalidEnumValue")
+        ignoreSchemaValidationRules.add("art.galushko.openapi.testgen.rules.schema.InvalidEnumValueSchemaValidationRule")
         ignoreTestCases.putAll(mapOf(
-            "/internal/*" to mapOf("*" to listOf("*"))
+            "/internal" to "*"
         ))
 
         // Module settings (raw maps)
@@ -167,7 +169,7 @@ tasks.register<OpenApiTestGeneratorTask>("generateOpenApiTestsYaml") {
 
 - [Getting Started](https://docs.galushko.art/openapi-test-generator/getting-started/)
 - [Gradle Plugin Reference](https://docs.galushko.art/openapi-test-generator/reference/gradle-plugin/)
-- [Generator Options](https://docs.galushko.art/openapi-test-generator/reference/catalogs/generator-options/)
+- [Generators Guide](https://docs.galushko.art/openapi-test-generator/how-to/generators/)
 - [Distribution Settings](https://docs.galushko.art/openapi-test-generator/reference/distribution-settings/)
 - [API Reference (Dokka)](https://docs.galushko.art/openapi-test-generator/api/)
 

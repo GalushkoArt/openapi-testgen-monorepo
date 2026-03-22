@@ -364,7 +364,7 @@ Set CI secrets/environment variables for:
 - `API_BASE_URL` (where the API under test is reachable)
 - `API_TEST_KEY` (a valid API key for `ApiKeyAuth`)
 
-For CI patterns (split generation vs tests, caching, and artifacts), see [CI/CD integration](../how-to/integration/ci-cd.md).
+For CI patterns (split generation vs tests, caching, and artifacts), see [CI/CD integration](../how-to/ci-cd.md).
 
 ## 8) Target specific operations (optional)
 
@@ -381,7 +381,7 @@ npx @openapi-testgen/cli \
   --setting 'includeOperations./users/{userId}[]=GET'
 ```
 
-See [Include operations](../how-to/configuration/include-operations.md) for more filtering options (including Gradle DSL and wildcards).
+See [Include operations](../how-to/configuration.md#include-operations) for more filtering options (including Gradle DSL and wildcards).
 
 ## Summary
 
@@ -394,6 +394,6 @@ See [Include operations](../how-to/configuration/include-operations.md) for more
 
 ## Next steps
 
-- Customize generated code: [Custom templates](../how-to/generators/custom-templates.md)
-- Add your own rules: [Custom rules](../how-to/extension/custom-rules.md)
-- Filter out unwanted cases: [Ignore rules](../how-to/configuration/ignore-rules.md)
+- Customize generated code: [Custom templates](../how-to/generators.md#custom-mustache-templates)
+- Add your own rules: [Custom rules](../how-to/extending.md#custom-validation-rules)
+- Filter out unwanted cases: [Ignore rules](../how-to/configuration.md#ignore-rules)

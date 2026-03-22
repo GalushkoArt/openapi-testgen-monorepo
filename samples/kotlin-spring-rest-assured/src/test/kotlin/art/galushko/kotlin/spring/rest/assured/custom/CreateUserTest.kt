@@ -46,7 +46,7 @@ class CreateUserTest {
     fun noSecurityValuesProvided() {
         val requestSpec = RestAssured.given()
         requestSpec.header("Content-Type", "application/json")
-        val requestBody = "{\"email\":\"test0@example.com\",\"name\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}"
+        val requestBody = "{\"name\":\"Grace Hopper\",\"email\":\"grace@example.com\"}"
         requestSpec.body(requestBody)
 
         val response = requestSpec.post("/users")
@@ -62,7 +62,7 @@ class CreateUserTest {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "some_really_invalid_api_key")
         requestSpec.header("Content-Type", "application/json")
-        val requestBody = "{\"email\":\"test0@example.com\",\"name\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}"
+        val requestBody = "{\"name\":\"Grace Hopper\",\"email\":\"grace@example.com\"}"
         requestSpec.body(requestBody)
 
         val response = requestSpec.post("/users")
@@ -79,7 +79,7 @@ class CreateUserTest {
         requestSpec.header("X-API-Key", "test-api-key-123")
         requestSpec.header("Idempotency-Key", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         requestSpec.header("Content-Type", "application/json")
-        val requestBody = "{\"email\":\"test0@example.com\",\"name\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}"
+        val requestBody = "{\"name\":\"Grace Hopper\",\"email\":\"grace@example.com\"}"
         requestSpec.body(requestBody)
 
         val response = requestSpec.post("/users")

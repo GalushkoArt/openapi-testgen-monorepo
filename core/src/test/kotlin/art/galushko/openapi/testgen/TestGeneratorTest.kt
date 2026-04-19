@@ -110,6 +110,78 @@ class TestGeneratorTest {
         )
     }
 
+    @Test
+    @DisplayName("Webhook-only spec: should not fail when paths are missing")
+    @Description("Verifies that webhook-only OpenAPI specs are handled gracefully and produce an empty successful report")
+    fun shouldHandleWebhookOnlySpecWithoutFailure() {
+        val options = TestGeneratorExecutionOptionsFactory.fromConfig(
+            GeneratorConfig(
+                specFile = "oas/webhook-only.openapi.yaml",
+                outputDir = "build/tmp/json-generator-test",
+                generator = "test-suite-writer",
+                generatorOptions = mapOf(
+                    "outputFileName" to "oas/webhook-only-generated-test-suites.json",
+                    "writeMode" to "OVERWRITE",
+                ),
+            )
+        )
+
+        val report = step("Generate report for webhook-only spec") {
+            generateReport(options)
+        }
+
+        step("Verify webhook-only report shape") {
+            assertSoftly { assertions ->
+                assertions.assertThat(report.hasErrors).isFalse
+                assertions.assertThat(report.errors).isEmpty()
+                assertions.assertThat(report.successfulSuites).isEmpty()
+                assertions.assertThat(report.summary.totalOperations).isZero()
+                assertions.assertThat(report.summary.totalTestCases).isZero()
+                assertions.assertThat(report.summary.successfulOperations).isEmpty()
+                assertions.assertThat(report.summary.partialOperations).isEmpty()
+                assertions.assertThat(report.summary.failedOperations).isEmpty()
+                assertions.assertThat(report.summary.notTestedOperations).isEmpty()
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Mixed spec (paths + webhooks): should generate suites only from paths")
+    @Description("Verifies that a spec with both paths and webhooks generates test suites from paths and does not produce errors")
+    fun shouldGenerateSuitesFromPathsWhenWebhooksAlsoPresent() {
+        val options = TestGeneratorExecutionOptionsFactory.fromConfig(
+            GeneratorConfig(
+                specFile = "oas/mixed-paths-webhooks.openapi.yaml",
+                outputDir = "build/tmp/json-generator-test",
+                generator = "test-suite-writer",
+                generatorOptions = mapOf(
+                    "outputFileName" to "oas/mixed-paths-webhooks-test-suites.json",
+                    "writeMode" to "OVERWRITE",
+                ),
+            )
+        )
+
+        val report = step("Generate report for mixed paths + webhooks spec") {
+            generateReport(options)
+        }
+
+        step("Verify suites generated from paths only") {
+            assertSoftly { assertions ->
+                assertions.assertThat(report.hasErrors).isFalse
+                assertions.assertThat(report.errors).isEmpty()
+                assertions.assertThat(report.successfulSuites).hasSize(1)
+                assertions.assertThat(report.successfulSuites[0].operationName).isEqualTo("listItems")
+                assertions.assertThat(report.summary.totalOperations).isEqualTo(1)
+                assertions.assertThat(report.summary.totalTestCases).isGreaterThan(0)
+                assertions.assertThat(report.summary.successfulOperations).hasSize(1)
+                assertions.assertThat(report.summary.successfulOperations[0].operationId).isEqualTo("listItems")
+                assertions.assertThat(report.summary.partialOperations).isEmpty()
+                assertions.assertThat(report.summary.failedOperations).isEmpty()
+                assertions.assertThat(report.summary.notTestedOperations).isEmpty()
+            }
+        }
+    }
+
     @Nested
     @Story("Complex Schema Validation")
     @DisplayName("Complex Schema Tests")
@@ -239,6 +311,42 @@ class TestGeneratorTest {
                     includeValidCase = true,
                 )
             )
+        }
+    }
+
+    @Test
+    @DisplayName("False positive cycle: sibling properties with identical anyOf structure each generate test cases")
+    @Description("Verifies that structurally-identical sibling fields (to/cc/bcc) are not falsely detected as cycles — all three must produce test cases")
+    fun shouldGenerateTestCasesForIdenticalSiblingAnyOfFields() {
+        val options = TestGeneratorExecutionOptionsFactory.fromConfig(
+            GeneratorConfig(
+                specFile = "oas/false-positive-cycles.openapi.yaml",
+                outputDir = "build/tmp/json-generator-test",
+                generator = "test-suite-writer",
+                generatorOptions = mapOf(
+                    "outputFileName" to "oas/false-positive-cycles-test-suites.json",
+                    "writeMode" to "OVERWRITE",
+                ),
+                testGenerationSettings = mapOf("includeValidCase" to true),
+            )
+        )
+        val report = step("Generate tests for false-positive-cycles") {
+            generateReport(options)
+        }
+        step("Verify cc and bcc fields each produce test cases (not skipped by false positive cycle detection)") {
+            assertSoftly { assertions ->
+                assertions.assertThat(report.hasErrors).isFalse
+                val suite = report.successfulSuites.first { it.operationName == "createEmailMessage" }
+                assertions.assertThat(suite.testCases)
+                    .describedAs("'to' field test cases")
+                    .anyMatch { it.name.contains("Object Property to ") }
+                assertions.assertThat(suite.testCases)
+                    .describedAs("'cc' field test cases — previously skipped by false positive CYCLE_DETECTED")
+                    .anyMatch { it.name.contains("Object Property cc ") }
+                assertions.assertThat(suite.testCases)
+                    .describedAs("'bcc' field test cases — previously skipped by false positive CYCLE_DETECTED")
+                    .anyMatch { it.name.contains("Object Property bcc ") }
+            }
         }
     }
 

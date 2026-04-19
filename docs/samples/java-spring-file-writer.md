@@ -6,7 +6,7 @@ description: Demonstrates the test-suite-writer generator for outputting test su
 
 This sample demonstrates the `test-suite-writer` generator, which outputs test suites as JSON or YAML files instead of executable code. This is useful for data-driven testing frameworks or when you need to process test cases programmatically.
 
-[View on GitHub](https://github.com/GalushkoArt/openapi-testgen-monorepo/tree/master/samples/java-spring-file-writer){ .md-button }
+[View on GitHub](https://github.com/GalushkoArt/openapi-testgen-monorepo/tree/main/samples/java-spring-file-writer){ .md-button }
 
 ## Overview
 
@@ -81,7 +81,7 @@ tasks.register<OpenApiTestGeneratorTask>("generateOpenApiTestsYaml") {
 }
 ```
 
-See [`open-api-test-generation-config.yaml`](https://github.com/GalushkoArt/openapi-testgen-monorepo/blob/master/samples/java-spring-file-writer/open-api-test-generation-config.yaml) for the YAML config example.
+See [`open-api-test-generation-config.yaml`](https://github.com/GalushkoArt/openapi-testgen-monorepo/blob/main/samples/java-spring-file-writer/open-api-test-generation-config.yaml) for the YAML config example.
 
 ## Output structure
 
@@ -107,8 +107,7 @@ In `SINGLE_FILE` mode (default), the generated JSON file is a map keyed by `oper
 
 For field definitions and the canonical schema, see:
 
-- Reference: [TestSuite](../reference/model/test-suite.md)
-- Reference: [TestCase](../reference/model/test-case.md)
+- Reference: [Model](../reference/model.md) (TestSuite, TestCase)
 
 ## Running the tests
 
@@ -153,10 +152,10 @@ for (Map.Entry<String, TestSuite> entry : suites.entrySet()) {
 ## Merge behavior
 
 With `writeMode: MERGE`, the writer can preserve existing suites/cases and protect manual edits via `preventOverwrite*` flags and `protectedTestCaseFields`.
-For the canonical merge semantics and edge cases, see [Generator options](../reference/catalogs/generator-options.md#test-suite-writer-options).
+For the canonical merge semantics and edge cases, see [Generators](../how-to/generators.md#merge-semantics).
 
 ## Related docs
 
-- [Test-suite-writer generator](../how-to/generators/test-suite-writer.md)
+- [Test-suite-writer generator](../how-to/generators.md#test-suite-writer-generator)
 - [Gradle plugin reference](../reference/gradle-plugin.md)
-- [YAML configuration](../how-to/configuration/yaml-config.md)
+- [YAML configuration](../how-to/configuration.md#yaml-configuration)

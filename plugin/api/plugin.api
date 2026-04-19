@@ -13,9 +13,20 @@ public abstract class art/galushko/openapi/testgen/plugin/OpenApiTestGeneratorTa
 	public abstract fun getGeneratorOptions ()Lorg/gradle/api/provider/MapProperty;
 	public abstract fun getLogLevel ()Lorg/gradle/api/provider/Property;
 	public abstract fun getOutputDir ()Lorg/gradle/api/file/DirectoryProperty;
+	public final fun getParserSettings ()Lart/galushko/openapi/testgen/plugin/ParserSettingsExtension;
 	public abstract fun getSpecFile ()Lorg/gradle/api/provider/Property;
 	public final fun getTestGenerationSettings ()Lart/galushko/openapi/testgen/plugin/TestGenerationSettingsExtension;
+	public final fun parserSettings (Lkotlin/jvm/functions/Function1;)V
 	public final fun testGenerationSettings (Lkotlin/jvm/functions/Function1;)V
+}
+
+public class art/galushko/openapi/testgen/plugin/ParserSettingsExtension {
+	public fun <init> (Lorg/gradle/api/model/ObjectFactory;)V
+	public final fun buildParserSettingsMap ()Ljava/util/Map;
+	public final fun getYamlAllowRecursiveKeys ()Lorg/gradle/api/provider/Property;
+	public final fun getYamlCodePointLimit ()Lorg/gradle/api/provider/Property;
+	public final fun getYamlMaxAliasesForCollections ()Lorg/gradle/api/provider/Property;
+	public final fun getYamlNestingDepthLimit ()Lorg/gradle/api/provider/Property;
 }
 
 public class art/galushko/openapi/testgen/plugin/TestGenerationSettingsExtension {
@@ -47,8 +58,11 @@ public class art/galushko/openapi/testgen/plugin/TestGeneratorExtension {
 	public final fun getLogLevel ()Lorg/gradle/api/provider/Property;
 	public final fun getManualOnly ()Lorg/gradle/api/provider/Property;
 	public final fun getOutputDir ()Lorg/gradle/api/file/DirectoryProperty;
+	public final fun getParserSettings ()Lart/galushko/openapi/testgen/plugin/ParserSettingsExtension;
 	public final fun getSpecFile ()Lorg/gradle/api/provider/Property;
 	public final fun getTestGenerationSettings ()Lart/galushko/openapi/testgen/plugin/TestGenerationSettingsExtension;
+	public final fun parserSettings (Lkotlin/jvm/functions/Function1;)V
+	public final fun parserSettings (Lorg/gradle/api/Action;)V
 	public final fun testGenerationSettings (Lkotlin/jvm/functions/Function1;)V
 }
 

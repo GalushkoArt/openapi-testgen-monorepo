@@ -27,7 +27,7 @@ internal class TemplateArtifactGenerator(
     optionMap: Map<String, Any?>,
 ) : ArtifactGenerator {
 
-    private val mapper = ObjectMapper()
+    private val jsonMapper = ObjectMapper()
     private val log = LoggerFactory.getLogger(TemplateArtifactGenerator::class.java)
     private val templateCache = mutableMapOf<String, Mustache>()
     private val options: TemplateArtifactGeneratorOptions = transformAndValidateTemplateOptions(optionMap)
@@ -103,14 +103,33 @@ internal class TemplateArtifactGenerator(
 
     private fun createMethodTemplateContext(testCase: TestCase): GenericMethodTemplateContext {
         val methodName = generateMethodName(testCase)
+        val defaultJsonMethods = setOf("POST", "PUT", "PATCH")
+        val requestBodyMediaType = testCase.requestBodyMediaType ?: if (testCase.method.uppercase() in defaultJsonMethods) {
+            "application/json"
+        } else {
+            null
+        }
+        val requestRendering = testCase.body?.let {
+            createRequestBodyRendering(it, requestBodyMediaType, jsonMapper)
+        }
+        val responseAssertion = createResponseAssertionPlan(
+            body = testCase.expectedBody,
+            mediaType = testCase.responseBodyMediaType,
+            jsonMapper = jsonMapper,
+        )
 
         val queryParams = testCase.queryParams.flatMap { param ->
             if (param.value is List<*>) (param.value as List<*>).map {
                 GenericParamContext(
                     param.key,
-                    it.toString()
+                    serializeParameterValue(it ?: "", jsonMapper)
                 )
-            } else listOf(GenericParamContext(param.key, param.value.toString()))
+            } else listOf(GenericParamContext(param.key, serializeParameterValue(param.value, jsonMapper)))
+        }
+        val notes = buildList {
+            if (testCase.needToComplete || requestRendering?.manualComment != null || responseAssertion.manualComment != null) {
+                add("TODO: Review this generated case before relying on it as a fully automated test.")
+            }
         }
 
         return GenericMethodTemplateContext(
@@ -120,13 +139,19 @@ internal class TemplateArtifactGenerator(
             httpMethod = testCase.method.lowercase(),
             path = testCase.path,
             expectedStatusCode = testCase.expectedStatusCode,
-            headers = testCase.headers.map { GenericParamContext(it.key, it.value.toString()) },
-            pathParams = testCase.pathParams.map { (key, value) -> GenericParamContext(key, value.toString()) },
+            headers = testCase.headers.map { GenericParamContext(it.key, serializeParameterValue(it.value, jsonMapper)) },
+            pathParams = testCase.pathParams.map { (key, value) -> GenericParamContext(key, serializeParameterValue(value, jsonMapper)) },
             queryParams = queryParams,
-            cookies = testCase.cookie.map { GenericParamContext(it.key, it.value.toString()) },
-            requestBody = testCase.body?.let { createGenericBodyContext(it) },
-            expectedResponseBody = testCase.expectedBody?.let { createGenericBodyContext(it) },
+            cookies = testCase.cookie.map { GenericParamContext(it.key, serializeParameterValue(it.value, jsonMapper)) },
+            requestBody = requestRendering?.body,
+            requestBodyMediaType = requestBodyMediaType,
+            expectedResponseBody = responseAssertion.body,
+            responseBodyMediaType = testCase.responseBodyMediaType,
+            assertJsonResponseBody = responseAssertion.assertJson,
+            requestBodyTodoComment = requestRendering?.manualComment,
+            responseAssertionTodoComment = responseAssertion.manualComment,
             needToComplete = testCase.needToComplete,
+            notes = notes,
             customVariables = options.templateVariables,
         )
     }
@@ -137,20 +162,6 @@ internal class TemplateArtifactGenerator(
         val methodPrefix = options.templateVariables["methodPrefix"] as? String ?: ""
         val methodSuffix = options.templateVariables["methodSuffix"] as? String ?: ""
         return methodPrefix + baseName + methodSuffix
-    }
-
-    private fun createGenericBodyContext(body: Any): GenericBodyContext {
-        val jsonBody = try {
-            mapper.writeValueAsString(body)
-        } catch (e: Exception) {
-            log.warn("Failed to serialize request body to JSON", e)
-            "{}"
-        }
-
-        return GenericBodyContext(
-            rawBody = jsonBody,
-            body = body
-        )
     }
 
     private fun loadTemplate(templatePath: String): Mustache {
@@ -205,4 +216,87 @@ private fun camelCaseName(input: String?, capitalizeFirst: Boolean): String {
     }
 
     return result.toString()
+}
+
+private data class RequestBodyRendering(
+    val body: GenericBodyContext,
+    val manualComment: String? = null,
+)
+
+private data class ResponseAssertionPlan(
+    val body: GenericBodyContext?,
+    val assertJson: Boolean,
+    val manualComment: String? = null,
+)
+
+private fun createRequestBodyRendering(
+    body: Any,
+    mediaType: String?,
+    jsonMapper: ObjectMapper,
+): RequestBodyRendering {
+    if (isJsonLikeMediaType(mediaType)) {
+        return RequestBodyRendering(
+            body = GenericBodyContext(rawBody = jsonMapper.writeValueAsString(body), body = body),
+        )
+    }
+
+    return when (body) {
+        is String, is Number, is Boolean, is Char -> RequestBodyRendering(
+            body = GenericBodyContext(rawBody = body.toString(), body = body),
+        )
+
+        else -> RequestBodyRendering(
+            body = GenericBodyContext(rawBody = "", body = body),
+            manualComment = "TODO: Manual request body serialization required for media type '${mediaType ?: "unknown"}'. " +
+                "Replace the placeholder body before using this test.",
+        )
+    }
+}
+
+private fun createResponseAssertionPlan(
+    body: Any?,
+    mediaType: String?,
+    jsonMapper: ObjectMapper,
+): ResponseAssertionPlan {
+    if (body == null) {
+        return ResponseAssertionPlan(body = null, assertJson = false)
+    }
+
+    if (isJsonLikeMediaType(mediaType)) {
+        return ResponseAssertionPlan(
+            body = GenericBodyContext(rawBody = jsonMapper.writeValueAsString(body), body = body),
+            assertJson = true,
+        )
+    }
+
+    val previewBody = when (body) {
+        is String, is Number, is Boolean, is Char -> body.toString()
+        else -> jsonMapper.writeValueAsString(body)
+    }
+
+    return ResponseAssertionPlan(
+        body = GenericBodyContext(rawBody = previewBody, body = body),
+        assertJson = false,
+        manualComment = "TODO: Manual response assertion required for media type '${mediaType ?: "unknown"}'. Expected body preview is provided below.",
+    )
+}
+
+private fun serializeParameterValue(value: Any, jsonMapper: ObjectMapper): String {
+    return when (value) {
+        is String -> value
+        is Number, is Boolean, is Char -> value.toString()
+        else -> jsonMapper.writeValueAsString(value)
+    }
+}
+
+private fun isJsonLikeMediaType(mediaType: String?): Boolean {
+    val normalized = mediaType
+        ?.substringBefore(';')
+        ?.trim()
+        ?.lowercase()
+
+    return normalized == null ||
+        normalized == "application/json" ||
+        normalized == "text/json" ||
+        normalized.endsWith("+json")
 }

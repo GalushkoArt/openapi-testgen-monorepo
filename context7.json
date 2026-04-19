@@ -1,0 +1,16 @@
+{
+    "url": "https://context7.com/galushkoart/openapi-testgen-monorepo",
+    "public_key": "pk_O87TsTFvY36RDWCnoUvdq",
+    "$schema": "https://context7.com/schema/context7.json",
+    "excludeFolders": [
+        "build-logic",
+        "samples",
+        ".claude",
+        ".cursor",
+        "skills"
+    ],
+    "excludeFiles": [
+        "DOCS_MAP.md",
+        "AGENTS.md"
+    ]
+}

@@ -6,7 +6,7 @@ description: Demonstrates the template generator with RestAssured to produce exe
 
 This sample demonstrates the `template` generator with RestAssured, producing executable Java test classes that can be compiled and run directly.
 
-[View on GitHub](https://github.com/GalushkoArt/openapi-testgen-monorepo/tree/master/samples/java-spring-rest-assured){ .md-button }
+[View on GitHub](https://github.com/GalushkoArt/openapi-testgen-monorepo/tree/main/samples/java-spring-rest-assured){ .md-button }
 
 ## Overview
 
@@ -125,7 +125,7 @@ tasks.named("compileTestJava") { dependsOn("generateOpenApiTestsToSrc") }
 
 This generates tests to `src/test/java/` with a different package, demonstrating how to use multiple generation configurations.
 
-See [`open-api-test-generation-config.yaml`](https://github.com/GalushkoArt/openapi-testgen-monorepo/blob/master/samples/java-spring-rest-assured/open-api-test-generation-config.yaml) for the config file.
+See [`open-api-test-generation-config.yaml`](https://github.com/GalushkoArt/openapi-testgen-monorepo/blob/main/samples/java-spring-rest-assured/open-api-test-generation-config.yaml) for the config file.
 
 ## Running the sample
 
@@ -174,7 +174,7 @@ dependencies {
 
 ## Related docs
 
-- [Template generator](../how-to/generators/template-generator.md)
-- [RestAssured integration](../how-to/integration/restassured.md)
-- [Spring Boot integration](../how-to/integration/spring-boot.md)
+- [Template generator](../how-to/generators.md#template-generator)
+- [RestAssured integration](../how-to/generators.md#restassured-integration)
+- [Spring Boot integration](../how-to/generators.md#spring-boot-integration)
 - [Gradle plugin reference](../reference/gradle-plugin.md)

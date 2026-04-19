@@ -46,7 +46,7 @@ class CreateOrderTest {
     fun noSecurityValuesProvided() {
         val requestSpec = RestAssured.given()
         requestSpec.header("Content-Type", "application/json")
-        val requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":\"a\"}],\"userId\":\"a\"}"
+        val requestBody = "{\"userId\":\"u_123\",\"items\":[{\"sku\":\"SKU-1\",\"quantity\":1,\"price\":99.95},{\"sku\":\"SKU-2\",\"quantity\":1,\"price\":50.0}]}"
         requestSpec.body(requestBody)
 
         val response = requestSpec.post("/orders")
@@ -62,7 +62,7 @@ class CreateOrderTest {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "some_really_invalid_api_key")
         requestSpec.header("Content-Type", "application/json")
-        val requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":\"a\"}],\"userId\":\"a\"}"
+        val requestBody = "{\"userId\":\"u_123\",\"items\":[{\"sku\":\"SKU-1\",\"quantity\":1,\"price\":99.95},{\"sku\":\"SKU-2\",\"quantity\":1,\"price\":50.0}]}"
         requestSpec.body(requestBody)
 
         val response = requestSpec.post("/orders")
@@ -79,7 +79,7 @@ class CreateOrderTest {
         requestSpec.header("X-API-Key", "test-api-key-123")
         requestSpec.header("Idempotency-Key", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         requestSpec.header("Content-Type", "application/json")
-        val requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":\"a\"}],\"userId\":\"a\"}"
+        val requestBody = "{\"userId\":\"u_123\",\"items\":[{\"sku\":\"SKU-1\",\"quantity\":1,\"price\":99.95},{\"sku\":\"SKU-2\",\"quantity\":1,\"price\":50.0}]}"
         requestSpec.body(requestBody)
 
         val response = requestSpec.post("/orders")

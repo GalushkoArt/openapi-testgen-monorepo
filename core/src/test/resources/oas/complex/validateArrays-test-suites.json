@@ -1,207 +1,463 @@
 {
-    "validateArrays": {
-        "path": "/validation/arrays",
-        "method": "POST",
-        "operationName": "validateArrays",
-        "testCases": [
+    "validateAllOfArrayRef" : {
+        "path" : "/validation/arrays/allof-ref",
+        "method" : "POST",
+        "operationName" : "validateAllOfArrayRef",
+        "testCases" : [
             {
-                "name": "Incorrect Request Body: Object Property smartArray Array Item Object Property id Integer Breaking",
-                "method": "POST",
-                "path": "/validation/arrays",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties contactIds",
+                "method" : "POST",
+                "path" : "/validation/arrays/allof-ref",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "smartArray": [
+                "body" : { },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Authorization header security",
+                "method" : "POST",
+                "path" : "/validation/arrays/allof-ref",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "id": 1.5
+                            "key" : "authorization",
+                            "value" : "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "contactIds" : { }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name" : "Invalid X-API-Key API key security",
+                "method" : "POST",
+                "path" : "/validation/arrays/allof-ref",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "some_really_invalid_api_key"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        },
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "some_really_invalid_api_key"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "contactIds" : { }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name" : "No security values provided",
+                "method" : "POST",
+                "path" : "/validation/arrays/allof-ref",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "contactIds" : { }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name" : "Required Request Body is missing",
+                "method" : "POST",
+                "path" : "/validation/arrays/allof-ref",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+            },
+            {
+                "name" : "Test Valid Case",
+                "method" : "POST",
+                "path" : "/validation/arrays/allof-ref",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "contactIds" : { }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : true,
+                "expectedStatusCode" : 200,
+                "rule" : null
+            }
+        ]
+    },
+    "validateArrays" : {
+        "path" : "/validation/arrays",
+        "method" : "POST",
+        "operationName" : "validateArrays",
+        "testCases" : [
+            {
+                "name" : "Incorrect Request Body: Object Property smartArray Array Item Object Property id Integer Breaking",
+                "method" : "POST",
+                "path" : "/validation/arrays",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "smartArray" : [
+                        {
+                            "id" : 1.5
                         }
                     ]
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Authorization header security",
-                "method": "POST",
-                "path": "/validation/arrays",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Invalid Authorization header security",
+                "method" : "POST",
+                "path" : "/validation/arrays",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "bearer some_really_invalid_authorization_header"
+                        "key" : "authorization",
+                        "value" : "bearer some_really_invalid_authorization_header"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "bearer some_really_invalid_authorization_header"
+                            "key" : "authorization",
+                            "value" : "bearer some_really_invalid_authorization_header"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {},
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+                "body" : {
+                    "flexibleArray" : [
+                        "item1",
+                        "important",
+                        "item3"
+                    ]
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
             },
             {
-                "name": "Invalid X-API-Key API key security",
-                "method": "POST",
-                "path": "/validation/arrays",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Invalid X-API-Key API key security",
+                "method" : "POST",
+                "path" : "/validation/arrays",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-API-Key",
-                        "value": "some_really_invalid_api_key"
+                        "key" : "X-API-Key",
+                        "value" : "some_really_invalid_api_key"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         },
                         {
-                            "key": "X-API-Key",
-                            "value": "some_really_invalid_api_key"
+                            "key" : "X-API-Key",
+                            "value" : "some_really_invalid_api_key"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {},
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+                "body" : {
+                    "flexibleArray" : [
+                        "item1",
+                        "important",
+                        "item3"
+                    ]
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
             },
             {
-                "name": "No security values provided",
-                "method": "POST",
-                "path": "/validation/arrays",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "No security values provided",
+                "method" : "POST",
+                "path" : "/validation/arrays",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {},
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+                "body" : {
+                    "flexibleArray" : [
+                        "item1",
+                        "important",
+                        "item3"
+                    ]
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
             },
             {
-                "name": "Required Request Body is missing",
-                "method": "POST",
-                "path": "/validation/arrays",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Required Request Body is missing",
+                "method" : "POST",
+                "path" : "/validation/arrays",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
             },
             {
-                "name": "Test Valid Case",
-                "method": "POST",
-                "path": "/validation/arrays",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Test Valid Case",
+                "method" : "POST",
+                "path" : "/validation/arrays",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {},
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : {
+                    "flexibleArray" : [
+                        "item1",
+                        "important",
+                        "item3"
+                    ]
                 },
-                "needToComplete": true,
-                "expectedStatusCode": 200,
-                "rule": null
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : true,
+                "expectedStatusCode" : 200,
+                "rule" : null
             }
         ]
     }

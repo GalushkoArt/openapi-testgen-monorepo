@@ -21,6 +21,7 @@ public data class GeneratorConfig(
     val generatorOptions: Map<String, Any?>? = null,
     val testGenerationSettings: Map<String, Any?>? = null,
     val alwaysWriteTests: Boolean? = null,
+    val parserSettings: Map<String, Any?>? = null,
 )
 
 /**

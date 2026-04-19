@@ -1,812 +1,1121 @@
 {
-    "createUser": {
-        "path": "/users",
-        "method": "POST",
-        "operationName": "createUser",
-        "testCases": [
+    "createUser" : {
+        "path" : "/users",
+        "method" : "POST",
+        "operationName" : "createUser",
+        "testCases" : [
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties age",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties age",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "contactInfo": {
-                        "email": "test0@example.com"
+                "body" : {
+                    "contactInfo" : {
+                        "email" : "test0@example.com"
                     },
-                    "firstName": "a"
+                    "firstName" : "a"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties contactInfo",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties contactInfo",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "age": 0,
-                    "firstName": "a"
+                "body" : {
+                    "age" : 0,
+                    "firstName" : "a"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties firstName",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties firstName",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "age": 0,
-                    "contactInfo": {
-                        "email": "test0@example.com"
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "email" : "test0@example.com"
                     }
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property age Integer Breaking",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property age Integer Breaking",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "age": 1.5,
-                    "contactInfo": {
-                        "email": "test0@example.com"
+                "body" : {
+                    "age" : 1.5,
+                    "contactInfo" : {
+                        "email" : "test0@example.com"
                     },
-                    "firstName": "a"
+                    "firstName" : "a"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property age Out Of Minimum Boundary Number",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property age Out Of Minimum Boundary Number",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "age": -1,
-                    "contactInfo": {
-                        "email": "test0@example.com"
+                "body" : {
+                    "age" : -1,
+                    "contactInfo" : {
+                        "email" : "test0@example.com"
                     },
-                    "firstName": "a"
+                    "firstName" : "a"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property contactInfo Missed Required Object Properties address",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property contactInfo Missed Required Object Properties address",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "age": 0,
-                    "contactInfo": {},
-                    "firstName": "a"
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : { },
+                    "firstName" : "a"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property contactInfo Missed Required Object Properties email",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property contactInfo Missed Required Object Properties email",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "age": 0,
-                    "contactInfo": {},
-                    "firstName": "a"
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : { },
+                    "firstName" : "a"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property contactInfo Missed Required Object Properties phone",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property contactInfo Missed Required Object Properties phone",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "age": 0,
-                    "contactInfo": {},
-                    "firstName": "a"
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : { },
+                    "firstName" : "a"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property contactInfo Object Property address Missed Required Object Properties city",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property contactInfo Object Property address Missed Required Object Properties city",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "age": 0,
-                    "contactInfo": {
-                        "address": {
-                            "country": "a",
-                            "street": "a"
-                        }
-                    },
-                    "firstName": "a"
-                },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
-                },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
-            },
-            {
-                "name": "Incorrect Request Body: Object Property contactInfo Object Property address Missed Required Object Properties country",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
-                    {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
-                    }
-                ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
-                        {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
-                        }
-                    ],
-                    "cookie": [],
-                    "other": {}
-                },
-                "body": {
-                    "age": 0,
-                    "contactInfo": {
-                        "address": {
-                            "city": "a",
-                            "street": "a"
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "address" : {
+                            "country" : "a",
+                            "street" : "a"
                         }
                     },
-                    "firstName": "a"
+                    "firstName" : "a"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property contactInfo Object Property address Missed Required Object Properties street",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property contactInfo Object Property address Missed Required Object Properties country",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "age": 0,
-                    "contactInfo": {
-                        "address": {
-                            "city": "a",
-                            "country": "a"
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "address" : {
+                            "city" : "a",
+                            "street" : "a"
                         }
                     },
-                    "firstName": "a"
+                    "firstName" : "a"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property contactInfo Object Property email Wrong Email Format",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property contactInfo Object Property address Missed Required Object Properties street",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
-                        }
-                    ],
-                    "cookie": [],
-                    "other": {}
-                },
-                "body": {
-                    "age": 0,
-                    "contactInfo": {
-                        "email": "invalid.email@example"
-                    },
-                    "firstName": "a"
-                },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
-                },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
-            },
-            {
-                "name": "Incorrect Request Body: Object Property email Wrong Email Format",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
-                    {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
-                    }
-                ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
-                        {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "age": 0,
-                    "contactInfo": {
-                        "email": "test0@example.com"
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "address" : {
+                            "city" : "a",
+                            "country" : "a"
+                        }
                     },
-                    "firstName": "a",
-                    "email": "invalid.email@example"
+                    "firstName" : "a"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property metadata Out Of Minimum Length String",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property contactInfo Object Property email Wrong Email Format",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "age": 0,
-                    "contactInfo": {
-                        "email": "test0@example.com"
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "email" : "invalid.email@example"
                     },
-                    "firstName": "a",
-                    "metadata": ""
+                    "firstName" : "a"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property role Invalid Enum Value",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property email Wrong Email Format",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "age": 0,
-                    "contactInfo": {
-                        "email": "test0@example.com"
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "email" : "test0@example.com"
                     },
-                    "firstName": "a",
-                    "role": "invalid_enum1"
+                    "firstName" : "a",
+                    "email" : "invalid.email@example"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Authorization header security",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property metadata Out Of Minimum Length String",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "bearer some_really_invalid_authorization_header"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "bearer some_really_invalid_authorization_header"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "age": 0,
-                    "contactInfo": {
-                        "email": "test0@example.com"
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "email" : "test0@example.com"
                     },
-                    "firstName": "a"
+                    "firstName" : "a",
+                    "metadata" : ""
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid X-API-Key API key security",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property role Invalid Enum Value",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
-                    },
-                    {
-                        "key": "X-API-Key",
-                        "value": "some_really_invalid_api_key"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "email" : "test0@example.com"
+                    },
+                    "firstName" : "a",
+                    "role" : "invalid_enum1"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property tags Above Max Items Array",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "email" : "test0@example.com"
+                    },
+                    "firstName" : "a",
+                    "tags" : [
+                        {
+                            "key" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                         },
                         {
-                            "key": "X-API-Key",
-                            "value": "some_really_invalid_api_key"
+                            "key" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        },
+                        {
+                            "key" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        },
+                        {
+                            "key" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        },
+                        {
+                            "key" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        },
+                        {
+                            "key" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        },
+                        {
+                            "key" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        },
+                        {
+                            "key" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        },
+                        {
+                            "key" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        },
+                        {
+                            "key" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        },
+                        {
+                            "key" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                         }
-                    ],
-                    "cookie": [],
-                    "other": {}
+                    ]
                 },
-                "body": {
-                    "age": 0,
-                    "contactInfo": {
-                        "email": "test0@example.com"
-                    },
-                    "firstName": "a"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "No security values provided",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
-                },
-                "body": {
-                    "age": 0,
-                    "contactInfo": {
-                        "email": "test0@example.com"
-                    },
-                    "firstName": "a"
-                },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
-            },
-            {
-                "name": "Required Request Body is missing",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property tags Array Item Missed Required Object Properties key",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "email" : "test0@example.com"
+                    },
+                    "firstName" : "a",
+                    "tags" : [
+                        { }
+                    ]
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Test Valid Case",
-                "method": "POST",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property tags Array Item Object Property key Out Of Maximum Length String",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "age": 0,
-                    "contactInfo": {
-                        "email": "test0@example.com"
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "email" : "test0@example.com"
                     },
-                    "firstName": "a"
+                    "firstName" : "a",
+                    "tags" : [
+                        {
+                            "key" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        }
+                    ]
                 },
-                "expectedBody": {
-                    "data": {
-                        "createdAt": "2025-05-05T17:32:28Z",
-                        "email": "test0@example.com",
-                        "id": "d5a5495b-cbdc-4237-a66e-000000000000",
-                        "role": "user",
-                        "username": "aaaaaaaaaaaaaaaaaaaa"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property tags Array Item Object Property key Out Of Minimum Length String",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "email" : "test0@example.com"
                     },
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                    "firstName" : "a",
+                    "tags" : [
+                        {
+                            "key" : ""
+                        }
+                    ]
                 },
-                "needToComplete": true,
-                "expectedStatusCode": 201,
-                "rule": null
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property tags Array Item Object Property value Out Of Maximum Length String",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "email" : "test0@example.com"
+                    },
+                    "firstName" : "a",
+                    "tags" : [
+                        {
+                            "key" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                            "value" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        }
+                    ]
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Authorization header security",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "bearer some_really_invalid_authorization_header"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "bearer some_really_invalid_authorization_header"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "email" : "test0@example.com"
+                    },
+                    "firstName" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name" : "Invalid X-API-Key API key security",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "some_really_invalid_api_key"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        },
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "some_really_invalid_api_key"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "email" : "test0@example.com"
+                    },
+                    "firstName" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name" : "No security values provided",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "email" : "test0@example.com"
+                    },
+                    "firstName" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name" : "Required Request Body is missing",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+            },
+            {
+                "name" : "Test Valid Case",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "age" : 0,
+                    "contactInfo" : {
+                        "email" : "test0@example.com"
+                    },
+                    "firstName" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : {
+                        "createdAt" : "2025-05-05T17:32:28Z",
+                        "email" : "test0@example.com",
+                        "id" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                        "role" : "user",
+                        "username" : "aaaaaaaaaaaaaaaaaaaa"
+                    },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : true,
+                "expectedStatusCode" : 201,
+                "rule" : null
             }
         ]
     }

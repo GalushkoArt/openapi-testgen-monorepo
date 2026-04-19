@@ -59,6 +59,15 @@ public abstract class OpenApiTestGeneratorTask @Inject constructor(
         configure(testGenerationSettings)
     }
 
+    @get:Nested
+    public val parserSettings: ParserSettingsExtension =
+        objects.newInstance(ParserSettingsExtension::class.java)
+
+    /** Configure parser settings using type-safe DSL. */
+    public fun parserSettings(configure: ParserSettingsExtension.() -> Unit) {
+        configure(parserSettings)
+    }
+
     @get:Input
     @get:Optional
     public abstract val alwaysWriteTests: Property<Boolean>
@@ -127,6 +136,7 @@ public abstract class OpenApiTestGeneratorTask @Inject constructor(
             generatorOptions = generatorOptions.getOrElse(emptyMap()),
             testGenerationSettings = testGenerationSettings.buildTestGenerationSettingsMap(),
             alwaysWriteTests = alwaysWriteTests.orNull,
+            parserSettings = parserSettings.buildParserSettingsMap(),
         )
     }
 

@@ -299,5 +299,5 @@ If native binary doesn't work after installation:
 ## See Also
 
 - [Publishing artifacts](publishing.md) - Maven Central and Gradle Plugin Portal
-- [Release process](release-process.md) - Full release checklist
-- [npm Installation](../getting-started/npm-installation.md) - User installation guide
+- [Publishing artifacts](publishing.md#release-checklist) - Full release checklist
+- [Installation](../getting-started/installation.md#cli-via-npm) - User installation guide

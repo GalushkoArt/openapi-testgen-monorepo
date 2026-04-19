@@ -14,7 +14,9 @@ package art.galushko.openapi.testgen.model
  * @property cookie Cookies as ordered name-value pairs.
  * @property securityValues Security material derived from OpenAPI security requirements.
  * @property body Request body as any present object, or null if absent.
+ * @property requestBodyMediaType Request body media type selected from OpenAPI content, if applicable.
  * @property expectedBody Expected response body example, when available from the OpenAPI spec.
+ * @property responseBodyMediaType Response media type used to populate expectedBody, if applicable.
  * @property needToComplete Whether this generated case requires manual completion.
  * @property expectedStatusCode Expected HTTP status code; 0 means unspecified.
  * @property rule Fully qualified rule class name that generated this case, if any.
@@ -29,7 +31,9 @@ public data class TestCase(
     val cookie: List<KeyValuePair<String, Any>> = emptyList(),
     val securityValues: SecurityValues = SecurityValues(),
     val body: Any? = null,
+    val requestBodyMediaType: String? = null,
     val expectedBody: Any? = null,
+    val responseBodyMediaType: String? = null,
     val needToComplete: Boolean = false,
     val expectedStatusCode: Int = 0,
     val rule: String? = null,

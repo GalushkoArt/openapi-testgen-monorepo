@@ -5,7 +5,7 @@ import art.galushko.openapi.testgen.generation.TestGenerationContext
 import art.galushko.openapi.testgen.model.TestCase
 import art.galushko.openapi.testgen.model.error.Outcome
 import art.galushko.openapi.testgen.spi.TestCaseProvider
-import art.galushko.openapi.testgen.testdata.extractExpectedResponseExample
+import art.galushko.openapi.testgen.testdata.extractExpectedResponseExampleWithMediaType
 import art.galushko.openapi.testgen.util.Consts.BAD_REQUEST_CODE
 import art.galushko.openapi.testgen.util.buildRequestBodyContext
 import art.galushko.openapi.testgen.util.runProviderSafely
@@ -38,12 +38,14 @@ internal class MissedRequiredRequestBodyTestProvider : TestCaseProvider<RequestB
      * @return the derived negative test case
      */
     public fun getTestcaseWithInvalidValue(context: TestGenerationContext): TestCase {
+        val expectedResponse = context.responseExampleExtractor.extractExpectedResponseExampleWithMediaType(context, BAD_REQUEST_CODE)
         return context.validCase.copy(
             name = "Required Request Body is missing",
             rule = MissedRequiredRequestBodyTestProvider::class.java.name,
             body = null,
             expectedStatusCode = BAD_REQUEST_CODE,
-            expectedBody = context.responseExampleExtractor.extractExpectedResponseExample(context, BAD_REQUEST_CODE),
+            expectedBody = expectedResponse.body,
+            responseBodyMediaType = expectedResponse.mediaType,
         )
     }
 

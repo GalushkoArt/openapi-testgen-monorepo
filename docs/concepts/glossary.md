@@ -1,5 +1,5 @@
 ---
-description: Definitions of key terms and concepts used throughout the OpenAPI Test Generator documentation, including providers, rules, outcomes, budgets, and core data types.
+description: Definitions of key terms and concepts used throughout the documentation, including providers, rules, outcomes, budgets, and core data types.
 ---
 
 # Glossary
@@ -10,7 +10,7 @@ Component that emits outputs for generated suites (source code or JSON/YAML), ba
 
 ## Budget
 
-Configured limit that prevents combinatorial explosion (schema depth, schema combinations, test case count). See [Budget controls](budget-controls.md).
+Configured limit that prevents combinatorial explosion (schema depth, schema combinations, test case count). See [Budget controls](architecture.md#budget-controls).
 
 ## CombinationBudget
 
@@ -123,3 +123,7 @@ Interface providing shared context during generation:
 ## ValidCaseBuilder
 
 Constructs baseline valid `TestCase` instances from operation parameters, request body, and security requirements. Uses `SchemaExampleValueGenerator` to derive values from schema examples, patterns, or defaults.
+
+## Webhook
+
+An OpenAPI 3.1+ construct (`webhooks`) that describes outbound HTTP callbacks sent by the server to a pre-registered client URL. Unlike `paths` operations (where the client sends requests to the server), webhooks define payloads the server sends out. OpenAPI Test Generator currently skips webhooks during test generation because its negative-testing approach targets inbound request validation. See [Troubleshooting](../how-to/troubleshooting.md) for workarounds.

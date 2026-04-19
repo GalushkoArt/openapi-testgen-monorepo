@@ -15,7 +15,7 @@ class CliIncludeValidCaseTest {
 
     @Test
     fun `should include valid case with 2xx status when enabled`(@TempDir tmp: Path) {
-        val spec = requireNotNull(this::class.java.classLoader.getResource("openapi.yaml")).toURI()
+        val spec = requireNotNull(this::class.java.classLoader.getResource("openapi-31.yaml")).toURI()
         val out = tmp.resolve("out-include")
         Files.createDirectories(out)
 
@@ -50,7 +50,7 @@ class CliIncludeValidCaseTest {
 
     @Test
     fun `should not include valid case when setting is false`(@TempDir tmp: Path) {
-        val spec = requireNotNull(this::class.java.classLoader.getResource("openapi.yaml")).toURI()
+        val spec = requireNotNull(this::class.java.classLoader.getResource("openapi-31.yaml")).toURI()
         val out = tmp.resolve("out-exclude")
         Files.createDirectories(out)
 

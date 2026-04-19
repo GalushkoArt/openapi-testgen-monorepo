@@ -114,8 +114,9 @@ tasks.register("generateDokkaSitemap") {
         val apiDir = docsOutputDir.get().dir("api").asFile
         val htmlFiles = apiDir.walkTopDown()
             .filter { it.isFile && it.extension == "html" }
-            .map { it.relativeTo(docsOutputDir.get().asFile).path.replace("\\", "/") }
-            .toList()
+            .map {
+                it.relativeTo(docsOutputDir.get().asFile).path.replace("\\", "/").removeSuffix("index.html").removeSuffix(".html")
+            }.toList()
 
         // Generate sitemap entries for Dokka pages
         val dokkaEntries = htmlFiles.joinToString("\n") { path ->

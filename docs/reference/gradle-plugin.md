@@ -54,7 +54,7 @@ Or explicitly:
 ./gradlew generateOpenApiTests test
 ```
 
-See [CI/CD integration](../how-to/integration/ci-cd.md) for job wiring patterns.
+See [CI/CD integration](../how-to/ci-cd.md) for job wiring patterns.
 
 ## Extension: `openApiTestGenerator` {#extension-properties}
 
@@ -85,6 +85,9 @@ openApiTestGenerator {
             )
         )
     }
+    parserSettings {
+        yamlCodePointLimit.set(10_000_000)
+    }
 }
 ```
 
@@ -96,9 +99,17 @@ openApiTestGenerator {
 - `generator: Property<String>`: generator id (`template` or `test-suite-writer`).
 - `generatorOptions: MapProperty<String, Any?>`: generator-specific options.
 - `testGenerationSettings: TestGenerationSettingsExtension`: typed settings DSL (nested block).
+- `parserSettings: ParserSettingsExtension`: parser settings DSL (SnakeYAML).
 - `manualOnly: Property<Boolean>` (default `false`): disable automatic wiring when `true`.
 - `alwaysWriteTests: Property<Boolean>` (optional): force writing artifacts even when generation fails.
 - `logLevel: Property<String>` (optional): log level for generator logs (SLF4J backend).
+
+### Nested extension: `parserSettings { ... }`
+
+- `yamlCodePointLimit: Property<Int>`
+- `yamlMaxAliasesForCollections: Property<Int>`
+- `yamlAllowRecursiveKeys: Property<Boolean>`
+- `yamlNestingDepthLimit: Property<Int>`
 
 ## Nested extension: `testGenerationSettings { ... }` {#test-generation-settings}
 
@@ -153,12 +164,18 @@ Wiring depends on `generator` and `manualOnly`:
 - `test-suite-writer`:
   - Wires generated files into `processTestResources` when `manualOnly=false`
 
+## Operation scope
+
+- Generation currently targets operations under `paths`.
+- OpenAPI `webhooks` are parsed but are not yet generated into test suites.
+- When a spec contains only `webhooks` and no `paths`, `generateOpenApiTests` completes successfully with zero generated suites.
+
 ## See also
 
-- [Include operations](../how-to/configuration/include-operations.md) - Target specific operations (recommended)
-- [Ignore rules](../how-to/configuration/ignore-rules.md) - Filter by exclusion
-- [CI/CD integration](../how-to/integration/ci-cd.md) - CI job wiring patterns
-- [Test-suite-writer](../how-to/generators/test-suite-writer.md) - JSON/YAML output format
+- [Include operations](../how-to/configuration.md#include-operations) - Target specific operations (recommended)
+- [Ignore rules](../how-to/configuration.md#ignore-rules) - Filter by exclusion
+- [CI/CD integration](../how-to/ci-cd.md) - CI job wiring patterns
+- [Test-suite-writer](../how-to/generators.md#test-suite-writer-generator) - JSON/YAML output format
 
 ## Distribution defaults
 

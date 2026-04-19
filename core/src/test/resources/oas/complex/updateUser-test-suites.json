@@ -29,12 +29,14 @@
                     "other": {}
                 },
                 "body": {},
+                "requestBodyMediaType": "application/json",
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
@@ -66,12 +68,14 @@
                 "body": {
                     "lastName": "a"
                 },
+                "requestBodyMediaType": "application/json",
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
@@ -103,12 +107,14 @@
                 "body": {
                     "firstName": "a"
                 },
+                "requestBodyMediaType": "application/json",
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
@@ -138,12 +144,14 @@
                     "other": {}
                 },
                 "body": {},
+                "requestBodyMediaType": "application/json",
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
@@ -177,12 +185,14 @@
                     "lastName": "a",
                     "email": "invalid.email@example"
                 },
+                "requestBodyMediaType": "application/json",
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -214,12 +224,14 @@
                 "body": {
                     "email": "invalid.email@example"
                 },
+                "requestBodyMediaType": "application/json",
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -252,12 +264,14 @@
                     "phone": "a",
                     "email": "invalid.email@example"
                 },
+                "requestBodyMediaType": "application/json",
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
@@ -290,7 +304,9 @@
                     "firstName": "a",
                     "lastName": "a"
                 },
+                "requestBodyMediaType": "application/json",
                 "expectedBody": null,
+                "responseBodyMediaType": null,
                 "needToComplete": false,
                 "expectedStatusCode": 401,
                 "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
@@ -331,7 +347,9 @@
                     "firstName": "a",
                     "lastName": "a"
                 },
+                "requestBodyMediaType": "application/json",
                 "expectedBody": null,
+                "responseBodyMediaType": null,
                 "needToComplete": false,
                 "expectedStatusCode": 401,
                 "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
@@ -354,7 +372,9 @@
                     "firstName": "a",
                     "lastName": "a"
                 },
+                "requestBodyMediaType": "application/json",
                 "expectedBody": null,
+                "responseBodyMediaType": null,
                 "needToComplete": false,
                 "expectedStatusCode": 401,
                 "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
@@ -384,12 +404,14 @@
                     "other": {}
                 },
                 "body": null,
+                "requestBodyMediaType": "application/json",
                 "expectedBody": {
                     "data": {},
                     "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": false,
                 "expectedStatusCode": 400,
                 "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
@@ -422,6 +444,7 @@
                     "firstName": "a",
                     "lastName": "a"
                 },
+                "requestBodyMediaType": "application/json",
                 "expectedBody": {
                     "data": {
                         "createdAt": "2025-05-05T17:32:28Z",
@@ -434,6 +457,7 @@
                     "status": "success",
                     "timestamp": "2025-05-05T17:32:28Z"
                 },
+                "responseBodyMediaType": "application/json",
                 "needToComplete": true,
                 "expectedStatusCode": 200,
                 "rule": null

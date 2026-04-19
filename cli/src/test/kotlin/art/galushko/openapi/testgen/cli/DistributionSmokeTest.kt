@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -24,11 +26,15 @@ import java.util.concurrent.TimeUnit
  */
 internal class DistributionSmokeTest {
 
-    @Test
     @Tag("fat-jar")
-    fun `fat JAR produces expected output`(@TempDir tmp: Path) {
+    @ParameterizedTest
+    @CsvSource(value = [
+        "openapi-31.yaml,openapi-31-test-suites.json",
+        "openapi-30.yaml,openapi-30-test-suites.json",
+    ])
+    fun `fat JAR produces expected output`(spec: String, expected: String, @TempDir tmp: Path) {
         val fatJarPath = System.getenv("TEST_FATJAR_PATH")
-        val specPath = resolveTestResource("openapi.yaml")
+        val specPath = resolveTestResource(spec)
         val outputDir = tmp.resolve("fatjar-out")
         Files.createDirectories(outputDir)
 
@@ -38,7 +44,7 @@ internal class DistributionSmokeTest {
             "--output-dir", outputDir.toString(),
             "--generator", "test-suite-writer",
             "--setting", "validSecurityValues.ApiKeyAuth=test-api-key-123",
-            "--setting", "ignoreTestCases./orders.post[]=Incorrect Request Body: Missed Required Object Properties items",
+            "--setting", "ignoreTestCases./orders.post[]=Incorrect Request Body: Missed Required Object Properties paymentMethod",
             "--generator-option", "outputFileName=generated.json",
         )
             .redirectErrorStream(true)
@@ -51,16 +57,20 @@ internal class DistributionSmokeTest {
         val outputFile = outputDir.resolve("generated.json")
         assertTrue(Files.exists(outputFile), "Output file not created at $outputFile")
 
-        val expected = loadExpectedOutput()
+        val expected = loadExpectedOutput(expected)
         val actual = Files.readString(outputFile).trim()
         assertEquals(expected.lines(), actual.lines(), "Output mismatch for fat JAR")
     }
 
-    @Test
+    @ParameterizedTest
+    @CsvSource(value = [
+        "openapi-31.yaml,openapi-31-test-suites.json",
+        "openapi-30.yaml,openapi-30-test-suites.json",
+    ])
     @Tag("native-binary")
-    fun `native binary produces expected output`(@TempDir tmp: Path) {
+    fun `native binary produces expected output`(spec: String, expected: String, @TempDir tmp: Path) {
         val nativePath = System.getenv("TEST_NATIVE_PATH")
-        val specPath = resolveTestResource("openapi.yaml")
+        val specPath = resolveTestResource(spec)
         val outputDir = tmp.resolve("native-out")
         Files.createDirectories(outputDir)
 
@@ -70,7 +80,7 @@ internal class DistributionSmokeTest {
             "--output-dir", outputDir.toString(),
             "--generator", "test-suite-writer",
             "--setting", "validSecurityValues.ApiKeyAuth=test-api-key-123",
-            "--setting", "ignoreTestCases./orders.post[]=Incorrect Request Body: Missed Required Object Properties items",
+            "--setting", "ignoreTestCases./orders.post[]=Incorrect Request Body: Missed Required Object Properties paymentMethod",
             "--generator-option", "outputFileName=generated.json",
         )
             .redirectErrorStream(true)
@@ -83,7 +93,7 @@ internal class DistributionSmokeTest {
         val outputFile = outputDir.resolve("generated.json")
         assertTrue(Files.exists(outputFile), "Output file not created at $outputFile")
 
-        val expected = loadExpectedOutput()
+        val expected = loadExpectedOutput(expected)
         val actual = Files.readString(outputFile).trim()
         assertEquals(expected.lines(), actual.lines(), "Output mismatch for native binary")
     }
@@ -94,7 +104,7 @@ internal class DistributionSmokeTest {
     fun `native and fat JAR produce identical output`(@TempDir tmp: Path) {
         val fatJarPath = System.getenv("TEST_FATJAR_PATH")
         val nativePath = System.getenv("TEST_NATIVE_PATH")
-        val specPath = resolveTestResource("openapi.yaml")
+        val specPath = resolveTestResource("openapi-31.yaml")
 
         val fatJarOut = tmp.resolve("fatjar")
         val nativeOut = tmp.resolve("native")
@@ -191,8 +201,8 @@ internal class DistributionSmokeTest {
         return Paths.get(url.toURI()).toString()
     }
 
-    private fun loadExpectedOutput(): String {
-        return requireNotNull(this::class.java.classLoader.getResourceAsStream("openapi-test-suites.json")) {
+    private fun loadExpectedOutput(expected: String): String {
+        return requireNotNull(this::class.java.classLoader.getResourceAsStream(expected)) {
             "Expected output resource not found"
         }.bufferedReader().readText().trim()
     }

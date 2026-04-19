@@ -21,16 +21,14 @@ need to depend on it directly unless building custom tooling.
 
 ```kotlin
 dependencies {
-    implementation("art.galushko.openapi:testgen-model:0.9.2")
+    implementation("art.galushko.openapi.testgen:model:<version>")
 }
 ```
 
 ## Documentation
 
-- [Module Overview](https://docs.galushko.art/openapi-test-generator/modules/model/)
-- [TestSuite Reference](https://docs.galushko.art/openapi-test-generator/reference/model/test-suite/)
-- [TestCase Reference](https://docs.galushko.art/openapi-test-generator/reference/model/test-case/)
-- [Error Handling](https://docs.galushko.art/openapi-test-generator/reference/model/errors/)
+- [Module Catalog](https://docs.galushko.art/openapi-test-generator/modules/#model)
+- [Model Reference](https://docs.galushko.art/openapi-test-generator/reference/model/) (TestSuite, TestCase, errors)
 - [API Reference (Dokka)](https://docs.galushko.art/openapi-test-generator/api/)
 
 ## Development

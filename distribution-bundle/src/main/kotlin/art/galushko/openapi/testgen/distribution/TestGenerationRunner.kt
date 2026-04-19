@@ -60,15 +60,20 @@ public class TestGenerationRunner private constructor(
         val formattedReport = reporter.formatReport(generationReport)
         reporter.logInfo(formattedReport)
 
-        return if (generationReport.errors.isEmpty() || executionOptions.alwaysWriteTests) {
+        val shouldWriteArtifacts = generationReport.errors.isEmpty() || executionOptions.alwaysWriteTests
+        if (shouldWriteArtifacts) {
             artifactGenerator.generateTests(generationReport.successfulSuites)
             reporter.logInfo("OpenAPI tests generated")
+        }
+
+        return if (shouldWriteArtifacts) {
             TestGenerationResult.Success(
                 report = generationReport,
-                testsWritten = true,
+                testsWritten = shouldWriteArtifacts,
             )
         } else {
-            val message = "Test Generation failed due to errors. Consider using --always-write-test to force writing tests"
+            val message = "Test Generation failed due to errors. " +
+                "Enable 'always write tests' to force writing tests anyway."
             TestGenerationResult.Failure(
                 report = generationReport,
                 message = message,

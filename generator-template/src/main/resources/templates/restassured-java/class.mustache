@@ -40,7 +40,7 @@ public class {{className}} {
         RestAssured.baseURI = "{{customVariables.baseUrl}}";
     }
 
-    private void assertExpectedBody(String expectedBodyJson, String responseBody) {
+    private void assertExpectedJsonBody(String expectedBodyJson, String responseBody) {
         JsonNode expectedNode;
         try {
             expectedNode = objectMapper.readTree(expectedBodyJson);

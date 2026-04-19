@@ -1,7 +1,7 @@
 public final class art/galushko/openapi/testgen/config/GeneratorConfig {
 	public fun <init> ()V
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;)V
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Ljava/lang/String;
@@ -9,14 +9,16 @@ public final class art/galushko/openapi/testgen/config/GeneratorConfig {
 	public final fun component5 ()Ljava/util/Map;
 	public final fun component6 ()Ljava/util/Map;
 	public final fun component7 ()Ljava/lang/Boolean;
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;)Lart/galushko/openapi/testgen/config/GeneratorConfig;
-	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/config/GeneratorConfig;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;ILjava/lang/Object;)Lart/galushko/openapi/testgen/config/GeneratorConfig;
+	public final fun component8 ()Ljava/util/Map;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;Ljava/util/Map;)Lart/galushko/openapi/testgen/config/GeneratorConfig;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/config/GeneratorConfig;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;Ljava/util/Map;ILjava/lang/Object;)Lart/galushko/openapi/testgen/config/GeneratorConfig;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAlwaysWriteTests ()Ljava/lang/Boolean;
 	public final fun getGenerator ()Ljava/lang/String;
 	public final fun getGeneratorOptions ()Ljava/util/Map;
 	public final fun getLogLevel ()Ljava/lang/String;
 	public final fun getOutputDir ()Ljava/lang/String;
+	public final fun getParserSettings ()Ljava/util/Map;
 	public final fun getSpecFile ()Ljava/lang/String;
 	public final fun getTestGenerationSettings ()Ljava/util/Map;
 	public fun hashCode ()I
@@ -61,6 +63,31 @@ public final class art/galushko/openapi/testgen/config/ModuleSettings$Companion 
 public abstract interface class art/galushko/openapi/testgen/config/ModuleSettingsExtractor {
 	public abstract fun getSettingsKey ()Ljava/lang/String;
 	public abstract fun parse (Ljava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class art/galushko/openapi/testgen/config/ParserSettings {
+	public static final field Companion Lart/galushko/openapi/testgen/config/ParserSettings$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Boolean;Ljava/lang/Integer;)V
+	public synthetic fun <init> (Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Boolean;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Integer;
+	public final fun component2 ()Ljava/lang/Integer;
+	public final fun component3 ()Ljava/lang/Boolean;
+	public final fun component4 ()Ljava/lang/Integer;
+	public final fun copy (Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Boolean;Ljava/lang/Integer;)Lart/galushko/openapi/testgen/config/ParserSettings;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/config/ParserSettings;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Boolean;Ljava/lang/Integer;ILjava/lang/Object;)Lart/galushko/openapi/testgen/config/ParserSettings;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getYamlAllowRecursiveKeys ()Ljava/lang/Boolean;
+	public final fun getYamlCodePointLimit ()Ljava/lang/Integer;
+	public final fun getYamlMaxAliasesForCollections ()Ljava/lang/Integer;
+	public final fun getYamlNestingDepthLimit ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/config/ParserSettings$Companion {
+	public final fun fromMap (Ljava/util/Map;Lart/galushko/openapi/testgen/config/ParserSettings;)Lart/galushko/openapi/testgen/config/ParserSettings;
+	public static synthetic fun fromMap$default (Lart/galushko/openapi/testgen/config/ParserSettings$Companion;Ljava/util/Map;Lart/galushko/openapi/testgen/config/ParserSettings;ILjava/lang/Object;)Lart/galushko/openapi/testgen/config/ParserSettings;
 }
 
 public final class art/galushko/openapi/testgen/config/TestGenerationEngine {
@@ -132,8 +159,8 @@ public final class art/galushko/openapi/testgen/config/TestGenerationSettings$Co
 }
 
 public final class art/galushko/openapi/testgen/config/TestGeneratorExecutionOptions {
-	public synthetic fun <init> (Ljava/lang/String;Ljava/nio/file/Path;Ljava/lang/String;Ljava/util/Map;Lart/galushko/openapi/testgen/config/TestGenerationSettings;ZLjava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (Ljava/lang/String;Ljava/nio/file/Path;Ljava/lang/String;Ljava/util/Map;Lart/galushko/openapi/testgen/config/TestGenerationSettings;ZLjava/util/Map;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/nio/file/Path;Ljava/lang/String;Ljava/util/Map;Lart/galushko/openapi/testgen/config/TestGenerationSettings;ZLjava/util/Map;Lart/galushko/openapi/testgen/config/ParserSettings;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/nio/file/Path;Ljava/lang/String;Ljava/util/Map;Lart/galushko/openapi/testgen/config/TestGenerationSettings;ZLjava/util/Map;Lart/galushko/openapi/testgen/config/ParserSettings;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Ljava/nio/file/Path;
 	public final fun component3 ()Ljava/lang/String;
@@ -141,14 +168,16 @@ public final class art/galushko/openapi/testgen/config/TestGeneratorExecutionOpt
 	public final fun component5 ()Lart/galushko/openapi/testgen/config/TestGenerationSettings;
 	public final fun component6 ()Z
 	public final fun component7-QecFAe0 ()Ljava/util/Map;
-	public final fun copy-fggTBxI (Ljava/lang/String;Ljava/nio/file/Path;Ljava/lang/String;Ljava/util/Map;Lart/galushko/openapi/testgen/config/TestGenerationSettings;ZLjava/util/Map;)Lart/galushko/openapi/testgen/config/TestGeneratorExecutionOptions;
-	public static synthetic fun copy-fggTBxI$default (Lart/galushko/openapi/testgen/config/TestGeneratorExecutionOptions;Ljava/lang/String;Ljava/nio/file/Path;Ljava/lang/String;Ljava/util/Map;Lart/galushko/openapi/testgen/config/TestGenerationSettings;ZLjava/util/Map;ILjava/lang/Object;)Lart/galushko/openapi/testgen/config/TestGeneratorExecutionOptions;
+	public final fun component8 ()Lart/galushko/openapi/testgen/config/ParserSettings;
+	public final fun copy-91S20Ug (Ljava/lang/String;Ljava/nio/file/Path;Ljava/lang/String;Ljava/util/Map;Lart/galushko/openapi/testgen/config/TestGenerationSettings;ZLjava/util/Map;Lart/galushko/openapi/testgen/config/ParserSettings;)Lart/galushko/openapi/testgen/config/TestGeneratorExecutionOptions;
+	public static synthetic fun copy-91S20Ug$default (Lart/galushko/openapi/testgen/config/TestGeneratorExecutionOptions;Ljava/lang/String;Ljava/nio/file/Path;Ljava/lang/String;Ljava/util/Map;Lart/galushko/openapi/testgen/config/TestGenerationSettings;ZLjava/util/Map;Lart/galushko/openapi/testgen/config/ParserSettings;ILjava/lang/Object;)Lart/galushko/openapi/testgen/config/TestGeneratorExecutionOptions;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAlwaysWriteTests ()Z
 	public final fun getGeneratorId ()Ljava/lang/String;
 	public final fun getGeneratorOptions ()Ljava/util/Map;
 	public final fun getModuleSettings-QecFAe0 ()Ljava/util/Map;
 	public final fun getOutputDir ()Ljava/nio/file/Path;
+	public final fun getParserSettings ()Lart/galushko/openapi/testgen/config/ParserSettings;
 	public final fun getSpecFile ()Ljava/lang/String;
 	public final fun getTestGenerationSettings ()Lart/galushko/openapi/testgen/config/TestGenerationSettings;
 	public fun hashCode ()I
@@ -163,8 +192,8 @@ public final class art/galushko/openapi/testgen/config/TestGeneratorExecutionOpt
 
 public final class art/galushko/openapi/testgen/config/TestGeneratorOverrides {
 	public fun <init> ()V
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/nio/file/Path;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;)V
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/nio/file/Path;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/nio/file/Path;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/nio/file/Path;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Ljava/nio/file/Path;
@@ -172,14 +201,16 @@ public final class art/galushko/openapi/testgen/config/TestGeneratorOverrides {
 	public final fun component5 ()Ljava/util/Map;
 	public final fun component6 ()Ljava/util/Map;
 	public final fun component7 ()Ljava/lang/Boolean;
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/nio/file/Path;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;)Lart/galushko/openapi/testgen/config/TestGeneratorOverrides;
-	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/config/TestGeneratorOverrides;Ljava/lang/String;Ljava/lang/String;Ljava/nio/file/Path;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;ILjava/lang/Object;)Lart/galushko/openapi/testgen/config/TestGeneratorOverrides;
+	public final fun component8 ()Ljava/util/Map;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/nio/file/Path;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;Ljava/util/Map;)Lart/galushko/openapi/testgen/config/TestGeneratorOverrides;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/config/TestGeneratorOverrides;Ljava/lang/String;Ljava/lang/String;Ljava/nio/file/Path;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;Ljava/util/Map;ILjava/lang/Object;)Lart/galushko/openapi/testgen/config/TestGeneratorOverrides;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAlwaysWriteTests ()Ljava/lang/Boolean;
 	public final fun getGeneratorId ()Ljava/lang/String;
 	public final fun getGeneratorOptions ()Ljava/util/Map;
 	public final fun getLogLevel ()Ljava/lang/String;
 	public final fun getOutputDir ()Ljava/nio/file/Path;
+	public final fun getParserSettings ()Ljava/util/Map;
 	public final fun getSpecFile ()Ljava/lang/String;
 	public final fun getTestGenerationSettings ()Ljava/util/Map;
 	public fun hashCode ()I
@@ -378,6 +409,8 @@ public final class art/galushko/openapi/testgen/testdata/BasicTestDataProvider {
 public final class art/galushko/openapi/testgen/testdata/SchemaExampleValueGeneratorExtensionsKt {
 	public static final fun extractExpectedResponseExample (Lart/galushko/openapi/testgen/example/response/ResponseExampleExtractor;Lart/galushko/openapi/testgen/generation/TestGenerationContext;I)Ljava/lang/Object;
 	public static final fun extractExpectedResponseExample (Lart/galushko/openapi/testgen/example/response/ResponseExampleExtractor;Lart/galushko/openapi/testgen/generation/TestGenerationContext;ILjava/lang/String;)Ljava/lang/Object;
+	public static final fun extractExpectedResponseExampleWithMediaType (Lart/galushko/openapi/testgen/example/response/ResponseExampleExtractor;Lart/galushko/openapi/testgen/generation/TestGenerationContext;I)Lart/galushko/openapi/testgen/example/response/ExtractedResponseExample;
+	public static final fun extractExpectedResponseExampleWithMediaType (Lart/galushko/openapi/testgen/example/response/ResponseExampleExtractor;Lart/galushko/openapi/testgen/generation/TestGenerationContext;ILjava/lang/String;)Lart/galushko/openapi/testgen/example/response/ExtractedResponseExample;
 	public static final fun tryGetExample (Lart/galushko/openapi/testgen/generation/TestGenerationContext;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/media/Schema;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
 }
 
@@ -414,9 +447,6 @@ public final class art/galushko/openapi/testgen/util/CollectionHelpersKt {
 }
 
 public final class art/galushko/openapi/testgen/util/Consts {
-	public static final field APPLICATION_JSON Ljava/lang/String;
-	public static final field APPLICATION_XML Ljava/lang/String;
-	public static final field APPLICATION_XWWW_FORM_URLENCODED Ljava/lang/String;
 	public static final field BAD_REQUEST_CODE I
 	public static final field DATE_FORMAT Ljava/lang/String;
 	public static final field DATE_TIME_FORMAT Ljava/lang/String;
@@ -427,7 +457,10 @@ public final class art/galushko/openapi/testgen/util/Consts {
 	public static final field INT64_FORMAT Ljava/lang/String;
 	public static final field UNAUTHORIZED_CODE I
 	public static final field UUID_FORMAT Ljava/lang/String;
-	public static final field supportedMediaTypes Ljava/util/List;
+}
+
+public final class art/galushko/openapi/testgen/util/MediaTypeHelperKt {
+	public static final fun isMediaTypeSupported (Ljava/lang/String;)Z
 }
 
 public final class art/galushko/openapi/testgen/util/exceptions/UnsupportedParameterType : java/lang/RuntimeException {

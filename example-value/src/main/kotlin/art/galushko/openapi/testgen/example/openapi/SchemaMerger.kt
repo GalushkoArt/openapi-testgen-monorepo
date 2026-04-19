@@ -3,6 +3,7 @@ package art.galushko.openapi.testgen.example.openapi
 import art.galushko.openapi.testgen.example.util.CombinationBudget
 import art.galushko.openapi.testgen.example.util.cartesianProduct
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.swagger.v3.oas.models.SpecVersion
 import io.swagger.v3.oas.models.media.ArraySchema
@@ -220,6 +221,7 @@ public class SchemaMerger(
         inputs.forEach { inc ->
             inc.required?.let { requiredAcc += it }
             meetScalarConstraints(target, inc)
+            uniqueItemsAcc = uniqueItemsAcc || (inc.uniqueItems == true)
 
             if (target.items != null || inc.items != null) {
                 val existing = target.items
@@ -235,7 +237,6 @@ public class SchemaMerger(
                         }
                     }
                 }
-                uniqueItemsAcc = uniqueItemsAcc || (inc.uniqueItems == true)
             }
 
             if (inc.additionalProperties != null) {
@@ -307,7 +308,59 @@ public class SchemaMerger(
             else -> typesAcc?.singleOrNull()?.let { target.type = it }
         }
 
+        ensureArrayItemsArePreserved(
+            target = target,
+            source = source,
+            inputs = inputs,
+            resolve = resolve,
+        )
+
         return target
+    }
+
+    /**
+     * Preserves array item schema for composed array definitions where members may contribute only metadata.
+     *
+     * Real-world specs frequently define array properties as:
+     * `allOf: [ { $ref: '#/components/schemas/ArrayType' }, { description: ... } ]`.
+     * Depending on traversal and visited refs, the merge source can lose direct `items`.
+     * This helper restores `items` from available source/member candidates in deterministic order.
+     */
+    private fun ensureArrayItemsArePreserved(
+        target: Schema<*>,
+        source: Schema<*>,
+        inputs: List<Schema<*>>,
+        resolve: (Schema<*>) -> Schema<*>,
+    ) {
+        if (target.items != null) return
+
+        val candidates = (listOf(source) + inputs)
+            .flatMap { schema -> collectArrayItemCandidates(schema, resolve) }
+
+        if (candidates.isEmpty()) return
+
+        target.items = candidates.fold<Schema<*>, Schema<*>?>(null) { acc, candidate ->
+            when {
+                acc == null -> candidate
+                schemasAreEquivalent(acc, candidate) -> acc
+                else -> composedAllOf(target.specVersion, acc, candidate)
+            }
+        }
+    }
+
+    private fun collectArrayItemCandidates(
+        schema: Schema<*>,
+        resolve: (Schema<*>) -> Schema<*>,
+    ): List<Schema<*>> {
+        val candidates = mutableListOf<Schema<*>>()
+        schema.items?.let { candidates += resolve(it) }
+
+        val members = schema.allOf ?: emptyList()
+        members.forEach { member ->
+            val resolvedMember = resolve(member)
+            resolvedMember.items?.let { candidates += resolve(it) }
+        }
+        return candidates
     }
 
     private fun pickUnvisitedOneOfAnyOf(schema: Schema<*>, visitedRefs: Set<String>): List<Schema<*>> {
@@ -414,6 +467,7 @@ public class SchemaMerger(
 
     private val jsonMapper by lazy {
         jacksonObjectMapper().apply {
+            registerModule(JavaTimeModule())
             setSerializationInclusion(JsonInclude.Include.NON_NULL)
         }
     }

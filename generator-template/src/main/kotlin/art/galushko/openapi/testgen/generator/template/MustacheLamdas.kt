@@ -6,10 +6,9 @@ private const val ESCAPE_BUFFER_PADDING = 16
 private const val UNICODE_ESCAPE_LENGTH = 4
 private const val HEX_RADIX = 16
 
-internal val escapeString: (Object) -> Object = escapeStringFun@{ s ->
-    if (s !is String) return@escapeStringFun s
-    val sb = StringBuilder(s.length + ESCAPE_BUFFER_PADDING)
-    for (ch in s) {
+internal fun escapeStringLiteral(value: String): String {
+    val sb = StringBuilder(value.length + ESCAPE_BUFFER_PADDING)
+    for (ch in value) {
         when (ch) {
             '\\' -> sb.append("\\\\")
             '"' -> sb.append("\\\"")
@@ -23,9 +22,16 @@ internal val escapeString: (Object) -> Object = escapeStringFun@{ s ->
             '/' -> sb.append("\\/")
             else -> if (ch < ' ') {
                 sb.append("\\u").append(ch.code.toString(HEX_RADIX).padStart(UNICODE_ESCAPE_LENGTH, '0'))
-            } else sb.append(ch)
+            } else {
+                sb.append(ch)
+            }
         }
     }
-    sb.toString() as Object
+    return sb.toString()
+}
+
+internal val escapeString: (Object) -> Object = escapeStringFun@{ s ->
+    if (s !is String) return@escapeStringFun s
+    escapeStringLiteral(s) as Object
 }
 

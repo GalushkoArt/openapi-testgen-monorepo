@@ -151,6 +151,29 @@ class OpenApiTestGeneratorTaskIntegrationTest {
                 .isInstanceOf(IllegalArgumentException::class.java)
                 .hasMessageContaining("Parsed OpenAPI model is null")
         }
+
+        @Test
+        @DisplayName("should fail fast when parser settings are invalid")
+        fun shouldFailFastForInvalidParserSettings() {
+            val specContent = this::class.java.getResourceAsStream("/openapi-minimal.yaml")?.reader()?.readText()
+                ?: error("Cannot read test spec file")
+            val specFile = tempDir.resolve("openapi.yaml")
+            Files.writeString(specFile, specContent)
+
+            val outputDir = tempDir.resolve("generated")
+            Files.createDirectories(outputDir)
+
+            task.specFile.set("openapi.yaml")
+            task.outputDir.set(project.layout.projectDirectory.dir("generated"))
+            task.generator.set("test-suite-writer")
+            task.generatorOptions.put("format", "json")
+            task.generatorOptions.put("outputMode", "MULTIPLE_FILES")
+            task.parserSettings.yamlCodePointLimit.set(0)
+
+            assertThatThrownBy { task.generate() }
+                .isInstanceOf(IllegalArgumentException::class.java)
+                .hasMessage("yamlCodePointLimit must be positive or null, was 0")
+        }
     }
 
     @Nested

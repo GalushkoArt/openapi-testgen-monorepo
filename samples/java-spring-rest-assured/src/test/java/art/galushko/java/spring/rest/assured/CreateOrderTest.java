@@ -26,7 +26,7 @@ public class CreateOrderTest {
         RestAssured.baseURI = "http://localhost:8080/v1";
     }
 
-    private void assertExpectedBody(String expectedBodyJson, String responseBody) {
+    private void assertExpectedJsonBody(String expectedBodyJson, String responseBody) {
         JsonNode expectedNode;
         try {
             expectedNode = objectMapper.readTree(expectedBodyJson);
@@ -56,7 +56,8 @@ public class CreateOrderTest {
     public void noSecurityValuesProvided() {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("Content-Type", "application/json");
-        String requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":\"a\"}],\"userId\":\"a\"}";
+        requestSpec.header("Accept", "application/json");
+        String requestBody = "{\"userId\":\"u_123\",\"items\":[{\"sku\":\"SKU-1\",\"quantity\":1,\"price\":99.95},{\"sku\":\"SKU-2\",\"quantity\":1,\"price\":50.0}]}";
         requestSpec.body(requestBody);
 
         Response response = requestSpec.post("/orders");
@@ -64,7 +65,7 @@ public class CreateOrderTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"unauthorized\",\"message\":\"API key required\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -73,7 +74,8 @@ public class CreateOrderTest {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "new_invalid_api_key");
         requestSpec.header("Content-Type", "application/json");
-        String requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":\"a\"}],\"userId\":\"a\"}";
+        requestSpec.header("Accept", "application/json");
+        String requestBody = "{\"userId\":\"u_123\",\"items\":[{\"sku\":\"SKU-1\",\"quantity\":1,\"price\":99.95},{\"sku\":\"SKU-2\",\"quantity\":1,\"price\":50.0}]}";
         requestSpec.body(requestBody);
 
         Response response = requestSpec.post("/orders");
@@ -81,7 +83,7 @@ public class CreateOrderTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"unauthorized\",\"message\":\"API key required\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -91,7 +93,8 @@ public class CreateOrderTest {
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.header("Idempotency-Key", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         requestSpec.header("Content-Type", "application/json");
-        String requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":\"a\"}],\"userId\":\"a\"}";
+        requestSpec.header("Accept", "application/json");
+        String requestBody = "{\"userId\":\"u_123\",\"items\":[{\"sku\":\"SKU-1\",\"quantity\":1,\"price\":99.95},{\"sku\":\"SKU-2\",\"quantity\":1,\"price\":50.0}]}";
         requestSpec.body(requestBody);
 
         Response response = requestSpec.post("/orders");
@@ -99,7 +102,7 @@ public class CreateOrderTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -108,13 +111,14 @@ public class CreateOrderTest {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
 
         Response response = requestSpec.post("/orders");
         response.then().statusCode(400);
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -123,6 +127,7 @@ public class CreateOrderTest {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
         String requestBody = "{\"userId\":\"a\"}";
         requestSpec.body(requestBody);
 
@@ -131,7 +136,7 @@ public class CreateOrderTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -140,6 +145,7 @@ public class CreateOrderTest {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
         String requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":\"a\"}]}";
         requestSpec.body(requestBody);
 
@@ -148,7 +154,7 @@ public class CreateOrderTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -157,6 +163,7 @@ public class CreateOrderTest {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
         String requestBody = "{\"items\":[],\"userId\":\"a\"}";
         requestSpec.body(requestBody);
 
@@ -165,7 +172,7 @@ public class CreateOrderTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -174,6 +181,7 @@ public class CreateOrderTest {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
         String requestBody = "{\"items\":[{\"quantity\":1,\"sku\":\"a\"}],\"userId\":\"a\"}";
         requestSpec.body(requestBody);
 
@@ -182,7 +190,7 @@ public class CreateOrderTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -191,6 +199,7 @@ public class CreateOrderTest {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
         String requestBody = "{\"items\":[{\"price\":0,\"sku\":\"a\"}],\"userId\":\"a\"}";
         requestSpec.body(requestBody);
 
@@ -199,7 +208,7 @@ public class CreateOrderTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -208,6 +217,7 @@ public class CreateOrderTest {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
         String requestBody = "{\"items\":[{\"price\":0,\"quantity\":1}],\"userId\":\"a\"}";
         requestSpec.body(requestBody);
 
@@ -216,7 +226,7 @@ public class CreateOrderTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -225,6 +235,7 @@ public class CreateOrderTest {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
         String requestBody = "{\"items\":[{\"price\":0,\"quantity\":1.5,\"sku\":\"a\"}],\"userId\":\"a\"}";
         requestSpec.body(requestBody);
 
@@ -233,7 +244,7 @@ public class CreateOrderTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -242,6 +253,7 @@ public class CreateOrderTest {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
         String requestBody = "{\"items\":[{\"price\":0,\"quantity\":0,\"sku\":\"a\"}],\"userId\":\"a\"}";
         requestSpec.body(requestBody);
 
@@ -250,7 +262,7 @@ public class CreateOrderTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -259,6 +271,7 @@ public class CreateOrderTest {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
         requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
         String requestBody = "{\"items\":[{\"price\":-1,\"quantity\":1,\"sku\":\"a\"}],\"userId\":\"a\"}";
         requestSpec.body(requestBody);
 
@@ -267,7 +280,7 @@ public class CreateOrderTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
 }

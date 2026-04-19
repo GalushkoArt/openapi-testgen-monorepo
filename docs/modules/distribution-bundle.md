@@ -27,7 +27,7 @@ Runs a generation end-to-end with configurable modules and reporting:
 2. Extracts module settings (e.g., pattern generation options)
 3. Creates modules via a `ModuleFactory`
 4. Generates a `GenerationReport`
-5. Writes artifacts when generation succeeds or `alwaysWriteTests` is set
+5. Writes artifacts when generation succeeds or `alwaysWriteTests` is set, and returns success when artifacts were written even if the report contains errors
 
 Use `withDefaults(reporter)` for standard wiring or the builder for customization.
 
@@ -101,8 +101,8 @@ For embedding/integration scenarios, prefer:
 
 - Concepts: [Architecture](../concepts/architecture.md)
 - How-to:
-  - [Custom modules](../how-to/extension/custom-modules.md)
-  - [Custom generators](../how-to/extension/custom-generators.md)
+  - [Custom modules](../how-to/extending.md#custom-modules)
+  - [Custom generators](../how-to/extending.md#custom-generators)
 - Modules:
   - [Core module](core.md)
-  - [Pattern support](pattern-support.md)
+  - [Pattern support](index.md#pattern-support)

@@ -49,7 +49,8 @@ openapi-testgen \
   --output-dir ./generated-tests \
   --generator template \
   --generator-option templateSet=restassured-java \
-  --generator-option templateVariables.package=com.example.generated
+  --generator-option templateVariables.package=com.example.generated \
+  --generator-option templateVariables.baseUrl=http://localhost:8080
 ```
 
 Generate JSON test suites:
@@ -113,7 +114,7 @@ openapi-testgen --config-file config.yaml
 
 - [Getting Started](https://docs.galushko.art/openapi-test-generator/getting-started/)
 - [CLI Reference](https://docs.galushko.art/openapi-test-generator/reference/cli/)
-- [npm Installation Guide](https://docs.galushko.art/openapi-test-generator/getting-started/npm-installation/)
+- [Installation Guide](https://docs.galushko.art/openapi-test-generator/getting-started/installation/#cli-via-npm)
 
 ## License
 

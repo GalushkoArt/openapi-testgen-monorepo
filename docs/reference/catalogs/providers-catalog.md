@@ -1,5 +1,5 @@
 ---
-description: Catalog of test case providers that generate negative test cases for OpenAPI operations. Includes operation-level providers for auth, parameters, and request bodies, along with their execution order, expected status codes, and extension points.
+description: Reference catalog listing all built-in providers with their execution order, expected status codes, budget settings, and extension points.
 ---
 
 # Providers
@@ -11,8 +11,8 @@ Providers generate negative test cases for a single OpenAPI operation. Each prov
 `OutcomeAggregator` (see [architecture](../../concepts/architecture.md)).
 
 For core entry points and extension context, see the [core module](../../modules/core.md).
-For provider interfaces and extension points, see the [Test providers SPI](../spi/test-providers.md).
-For user-facing configuration (ignore rules, budgets), see [YAML config](../../how-to/configuration/yaml-config.md).
+For provider interfaces and extension points, see the [Test providers SPI](../spi.md#test-providers).
+For user-facing configuration (ignore rules, budgets), see [YAML config](../../how-to/configuration.md#yaml-configuration).
 
 Providers operate at two levels:
 - Operation-level providers decide which OpenAPI element to target (parameters, request body, auth).
@@ -64,12 +64,14 @@ The order matters for deterministic output ordering in generated test suites.
       "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
     }
     ```
-  - **See also:** [Query Parameter Validation Tests](../../how-to/negative-testing/query-parameters.md), [Header Parameter Validation Tests](../../how-to/negative-testing/header-parameters.md)
+  - **See also:** [Query Parameter Validation Tests](../../how-to/negative-testing.md#query-parameters), [Header Parameter Validation Tests](../../how-to/negative-testing.md#header-parameters)
 
 - `ParameterSchemaValidationTestProvider`
   - Applies schema validation rules to parameter schemas (including composed schemas).
+  - Resolves parameter schema from `parameter.schema`; if absent, falls back to the first `parameter.content` media type with a schema.
+  - When both `schema` and `content` are defined, logs a warning and uses only `schema`.
   - Supports query/path/header/cookie parameters.
-  - **See also:** [Path Parameter Validation Tests](../../how-to/negative-testing/path-parameters.md), [Query Parameter Validation Tests](../../how-to/negative-testing/query-parameters.md), [Header Parameter Validation Tests](../../how-to/negative-testing/header-parameters.md)
+  - **See also:** [Path Parameter Validation Tests](../../how-to/negative-testing.md#path-parameters), [Query Parameter Validation Tests](../../how-to/negative-testing.md#query-parameters), [Header Parameter Validation Tests](../../how-to/negative-testing.md#header-parameters)
 
 ### Request body providers
 - `MissedRequiredRequestBodyTestProvider`
@@ -77,23 +79,34 @@ The order matters for deterministic output ordering in generated test suites.
   - **Test Case Name:** `Required Request Body is missing`
   - **Expected Status Code:** 400
   - **Applies When:** `requestBody.required: true`
-  - **See also:** [Request Body Schema Tests](../../how-to/negative-testing/request-body-schema.md)
+  - **See also:** [Request Body Schema Tests](../../how-to/negative-testing.md#request-body-schema)
 
 - `RequestBodySchemaValidationTestProvider`
   - Applies schema validation rules to the request body schema.
-  - Uses the first supported media type from `Consts.supportedMediaTypes`
-    (`application/json`, `application/xml`, `application/x-www-form-urlencoded`).
+  - Processes all supported request-body media types with schemas and deduplicates identical generated cases.
+  - Supported media types include `application/json`, `text/json`, `application/jwt`, `application/xml`, `text/xml`,
+    `application/x-www-form-urlencoded`, and `+json` / `+jwt` / `+xml` suffixes.
+  - Unsupported media types are skipped and logged as warnings.
   - **Test Case Pattern:** `Incorrect Request Body: {rule description}`
   - **Expected Status Code:** 400
   - **Applies When:** Request body has a supported media type and schema constraints
-  - **See also:** [Request Body Schema Tests](../../how-to/negative-testing/request-body-schema.md)
+  - **See also:** [Request Body Schema Tests](../../how-to/negative-testing.md#request-body-schema)
 
-## Negative-case semantics and status codes
-- Parameter and request body providers generate invalid inputs with `expectedStatusCode = 400`.
-- Auth rules generate `expectedStatusCode = 401` or `403` depending on the rule:
-  - 401 Unauthorized: missing/invalid security values.
-  - 403 Forbidden: insufficient or incorrect OAuth2/OpenID scopes.
-For scenario-specific guides, see [negative testing](../../how-to/negative-testing/index.md).
+## Status codes by provider and rule
+
+| Provider / Rule | Test scenario | Expected status |
+|-----------------|---------------|-----------------|
+| `MissedRequiredParameterTestProvider` | Missing required query/header/cookie parameter | 400 |
+| `ParameterSchemaValidationTestProvider` | Invalid parameter value (wrong type, out of range, bad format) | 400 |
+| `MissedRequiredRequestBodyTestProvider` | Missing required request body | 400 |
+| `RequestBodySchemaValidationTestProvider` | Request body schema violation (missing property, bad value) | 400 |
+| `AllSecurityMissedAuthValidationRule` | No security credentials provided | 401 |
+| `MissingSecurityValuesAuthValidationRule` | One or more required security schemes missing | 401 |
+| `InvalidSecurityValuesAuthValidationRule` | Invalid security credential value | 401 |
+| `InsufficientScopesAuthValidationRule` | Insufficient OAuth2/OpenID scopes | 403 |
+| `IncorrectScopesAuthValidationRule` | Invalid OAuth2/OpenID scopes | 403 |
+
+For scenario-specific guides, see [negative testing](../../how-to/negative-testing.md).
 
 ## Ignore settings
 - `TestGenerationSettings.ignoreSchemaValidationRules` and `ignoreAuthValidationRules` filter the

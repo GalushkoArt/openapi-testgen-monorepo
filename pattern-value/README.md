@@ -19,19 +19,18 @@ the `SchemaValueProvider` SPI from `example-value` and can be used standalone or
 
 ```kotlin
 dependencies {
-    implementation("art.galushko.openapi:testgen-pattern-value:0.9.2")
+    implementation("art.galushko.openapi.testgen:pattern-value:<version>")
 }
 ```
 
 ```kotlin
 val generator = PatternValueGenerator(
-    options = PatternGeneratorOptions(
+    options = PatternGenerationOptions(
         defaultMinLength = 5,
-        defaultMaxLength = 20
     )
 )
 
-val value = generator.generate("^[A-Z]{2}\\d{4}$") // e.g., "AB1234"
+val value = generator.generateValidValue("^[A-Z]{2}\\d{4}$", minLength = null, maxLength = null, variationIndex = 0)
 ```
 
 ### As Value Provider
@@ -50,16 +49,15 @@ wiring, add `pattern-support` which registers the provider and adds the `Invalid
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `defaultMinLength` | 1 | Minimum generated string length |
-| `defaultMaxLength` | 100 | Maximum generated string length |
-| `spaceChars` | ` ` | Characters for `\s` matching |
+| `defaultMinLength` | 3 | Minimum generated string length when the schema does not define one |
+| `spaceChars` | ` \t\f\n\r\u00a0` | Characters for `\s` matching |
 | `anyPrintableChars` | ASCII printable | Characters for `.` matching |
 
 ## Documentation
 
-- [Module Overview](https://docs.galushko.art/openapi-test-generator/modules/pattern-value/)
-- [Pattern Support Module](https://docs.galushko.art/openapi-test-generator/modules/pattern-support/)
-- [Value Providers SPI](https://docs.galushko.art/openapi-test-generator/reference/spi/value-providers/)
+- [Module Catalog](https://docs.galushko.art/openapi-test-generator/modules/#pattern-value)
+- [Pattern Support Module](https://docs.galushko.art/openapi-test-generator/modules/#pattern-support)
+- [Value Providers SPI](https://docs.galushko.art/openapi-test-generator/reference/spi/#value-providers)
 - [API Reference (Dokka)](https://docs.galushko.art/openapi-test-generator/api/)
 
 ## Development

@@ -21,7 +21,7 @@ import java.nio.file.StandardCopyOption
  *
  * Supports two output modes:
  * - [OutputMode.SINGLE_FILE]: Aggregates all suites into one file keyed by operationName.
- * - [OutputMode.MULTIPLE_FILES]: Writes one file per suite immediately (prefix + operationName + extension).
+ * - [OutputMode.MULTIPLE_FILES]: Writes one file per suite (prefix + operationName + extension).
  *
  * ## Lifecycle
  *
@@ -32,14 +32,14 @@ import java.nio.file.StandardCopyOption
  * Use [TestSuiteWriterGeneratorFactory] or [art.galushko.openapi.testgen.generator.ArtifactGeneratorRegistry] to create instances:
  *
  * ```kotlin
- * // Preferred: Use the registry/factory
+ * // Preferred: Use the batch method via the registry/factory
  * val registry = ArtifactGeneratorRegistry()
  * val writer = registry.create("test-suite-writer", outputDir, options)
- * testSuites.forEach { writer.generateTests(it) }
+ * writer.generateTests(testSuites)
  *
  * // Direct instantiation (for testing or when factory not available)
  * val writer = TestSuiteWriter(outputDir, options)
- * testSuites.forEach { writer.generateTests(it) }
+ * writer.generateTests(testSuites)
  * // Do not reuse 'writer' for a new generation run
  * ```
  *
@@ -48,8 +48,8 @@ import java.nio.file.StandardCopyOption
  * ```kotlin
  * // BAD: Reusing writer across generation runs causes state leakage
  * val writer = TestSuiteWriter(outputDir, options)
- * generation1.forEach { writer.generateTests(it) }
- * generation2.forEach { writer.generateTests(it) }  // State from generation1 leaks here!
+ * writer.generateTests(generation1)
+ * writer.generateTests(generation2)  // State from generation1 leaks here!
  * ```
  *
  * ## Thread Safety
@@ -63,9 +63,20 @@ import java.nio.file.StandardCopyOption
  * - **SINGLE_FILE mode**: Suites are aggregated in memory and written together.
  * - **MERGE mode**: Existing file content is loaded on construction and merged with incoming suites.
  *
+ * ## Performance
+ *
+ * The batch method [generateTests(List)] is optimized for both output modes:
+ * - **SINGLE_FILE**: All suites are processed in memory first, then the aggregated file is written **once**
+ *   (instead of rewriting after each suite).
+ * - **MULTIPLE_FILES**: All suites are processed sequentially, then individual files are written
+ *   in **parallel** via `parallelStream()`.
+ *
+ * CLI and Gradle plugin use the batch entry point automatically.
+ *
  * @see TestSuiteWriterGeneratorFactory factory for creating instances
  * @see art.galushko.openapi.testgen.generator.ArtifactGeneratorRegistry registry-based creation with discovery
  */
+@Suppress("TooManyFunctions")
 internal class TestSuiteWriter(
     private val outputDir: File,
     optionMap: Map<String, Any?>,
@@ -84,34 +95,64 @@ internal class TestSuiteWriter(
     init {
         prepareOutputDir()
         if (options.writeMode == WriteMode.MERGE) {
-            loadExisting()
+            when (options.outputMode) {
+                OutputMode.SINGLE_FILE -> loadExistingAggregatedFile()
+                OutputMode.MULTIPLE_FILES -> loadExistingMultipleFiles()
+            }
         }
     }
 
     override fun generateTests(testSuite: TestSuite) {
+        val suiteName = processSuite(testSuite) ?: return
+
+        when (options.outputMode) {
+            OutputMode.SINGLE_FILE -> writeAggregatedFile()
+            OutputMode.MULTIPLE_FILES -> writeSuiteToFile(resolveWriteTargets(listOf(suiteName)).single())
+        }
+    }
+
+    override fun generateTests(testSuites: List<TestSuite>) {
+        if (testSuites.isEmpty()) return
+
+        when (options.outputMode) {
+            OutputMode.SINGLE_FILE -> {
+                for (testSuite in testSuites) {
+                    processSuite(testSuite)
+                }
+                writeAggregatedFile()
+            }
+
+            OutputMode.MULTIPLE_FILES -> {
+                val suitesToWrite = mutableListOf<String>()
+                for (testSuite in testSuites) {
+                    val suiteName = processSuite(testSuite) ?: continue
+                    suitesToWrite.add(suiteName)
+                }
+                resolveWriteTargets(suitesToWrite).parallelStream().forEach { target ->
+                    writeSuiteToFile(target)
+                }
+            }
+        }
+    }
+
+    private fun processSuite(testSuite: TestSuite): String? {
         val suiteName = testSuite.operationName
         if (suiteName.isNullOrBlank()) {
             log.warn(
                 "TestSuite has no operationName; skipping: path={}, method={}",
                 testSuite.path, testSuite.method
             )
-            return
+            return null
         }
+
+        ensureUniqueOutputPath(suiteName)
 
         when (options.writeMode) {
-            WriteMode.OVERWRITE -> {
-                putSuite(suiteName, testSuite)
-            }
-
-            WriteMode.MERGE -> {
-                mergeSuite(suiteName, testSuite, allowOverwriteSuite = !options.preventOverwriteSuites)
-            }
+            WriteMode.OVERWRITE -> putSuite(suiteName, testSuite)
+            WriteMode.MERGE -> mergeSuite(suiteName, testSuite, allowOverwriteSuite = !options.preventOverwriteSuites)
         }
 
-        when (options.outputMode) {
-            OutputMode.SINGLE_FILE -> writeAggregatedFile()
-            OutputMode.MULTIPLE_FILES -> writeSuiteToFile(suiteName, suites[suiteName])
-        }
+        return suiteName
     }
 
     // --- init helpers
@@ -119,13 +160,6 @@ internal class TestSuiteWriter(
     private fun prepareOutputDir() {
         if (!outputDir.exists() && !outputDir.mkdirs()) {
             log.warn("Failed to create output directory: {}", outputDir.absolutePath)
-        }
-    }
-
-    private fun loadExisting() {
-        when (options.outputMode) {
-            OutputMode.SINGLE_FILE -> loadExistingAggregatedFile()
-            OutputMode.MULTIPLE_FILES -> loadExistingMultipleFiles()
         }
     }
 
@@ -250,7 +284,9 @@ internal class TestSuiteWriter(
             headers = pick("headers", existing.headers, incoming.headers),
             cookie = pick("cookie", existing.cookie, incoming.cookie),
             body = pick("body", existing.body, incoming.body),
+            requestBodyMediaType = pick("requestBodyMediaType", existing.requestBodyMediaType, incoming.requestBodyMediaType),
             expectedBody = pick("expectedBody", existing.expectedBody, incoming.expectedBody),
+            responseBodyMediaType = pick("responseBodyMediaType", existing.responseBodyMediaType, incoming.responseBodyMediaType),
             needToComplete = pick("needToComplete", existing.needToComplete, incoming.needToComplete),
             expectedStatusCode = pick("expectedStatusCode", existing.expectedStatusCode, incoming.expectedStatusCode),
             rule = pick("rule", existing.rule, incoming.rule),
@@ -292,15 +328,62 @@ internal class TestSuiteWriter(
         )
     }
 
-    private fun writeSuiteToFile(operationName: String, suite: TestSuite?) {
-        requireNotNull(suite) { "Suite for operation '$operationName' not found" }
+    private fun ensureUniqueOutputPath(operationName: String) {
+        if (options.outputMode != OutputMode.MULTIPLE_FILES) {
+            return
+        }
+
+        val targetPath = suiteOutputPathKey(operationName)
+        val collidingOperationName = suites.keys.firstOrNull { existingOperationName ->
+            existingOperationName != operationName && suiteOutputPathKey(existingOperationName) == targetPath
+        }
+
+        require(collidingOperationName == null) {
+            "Multiple test suites resolve to the same output file '$targetPath': " +
+                "'$collidingOperationName' and '$operationName'."
+        }
+    }
+
+    private fun resolveWriteTargets(operationNames: Collection<String>): List<SuiteWriteTarget> {
+        val targetsByPath = linkedMapOf<String, SuiteWriteTarget>()
+
+        for (operationName in operationNames.distinct()) {
+            val suite = requireNotNull(suites[operationName]) {
+                "Suite for operation '$operationName' not found"
+            }
+            val outFile = resolveSuiteOutputFile(operationName)
+            val pathKey = outFile.toPath().toAbsolutePath().normalize().toString()
+            val existingTarget = targetsByPath.putIfAbsent(
+                pathKey,
+                SuiteWriteTarget(
+                    operationName = operationName,
+                    suite = suite,
+                    outFile = outFile,
+                ),
+            )
+
+            require(existingTarget == null || existingTarget.operationName == operationName) {
+                "Multiple test suites resolve to the same output file '$pathKey': " +
+                    "'${existingTarget?.operationName}' and '$operationName'."
+            }
+        }
+
+        return targetsByPath.values.sortedBy { it.outFile.name }
+    }
+
+    private fun resolveSuiteOutputFile(operationName: String): File {
         val sanitizedName = sanitizeFileName(operationName)
         val extension = options.format.name.lowercase()
         val fileName = "${options.fileNamePrefix}$sanitizedName.$extension"
-        val outFile = File(outputDir, fileName)
+        return File(outputDir, fileName)
+    }
 
-        writeAtomically(outFile, suite)
-        log.debug("Wrote suite {} to {}", operationName, outFile.absolutePath)
+    private fun suiteOutputPathKey(operationName: String): String =
+        resolveSuiteOutputFile(operationName).toPath().toAbsolutePath().normalize().toString()
+
+    private fun writeSuiteToFile(target: SuiteWriteTarget) {
+        writeAtomically(target.outFile, target.suite)
+        log.debug("Wrote suite {} to {}", target.operationName, target.outFile.absolutePath)
     }
 
     private fun writeAtomically(outFile: File, content: Any) {
@@ -333,4 +416,10 @@ internal class TestSuiteWriter(
         public fun sanitizeFileName(name: String): String =
             name.replace(UNSAFE_FILENAME_CHARS, "_").trim('_')
     }
+
+    private data class SuiteWriteTarget(
+        val operationName: String,
+        val suite: TestSuite,
+        val outFile: File,
+    )
 }

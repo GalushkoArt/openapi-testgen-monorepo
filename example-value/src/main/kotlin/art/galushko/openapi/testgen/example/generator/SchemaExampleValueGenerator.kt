@@ -229,7 +229,7 @@ public class SchemaExampleValueGenerator(
         val propertyNames = collectPropertyNames(required, properties, ctx)
         for (propertyName in propertyNames.sorted()) {
             val property = properties[propertyName]
-                ?: throw IllegalStateException("Required property schema not found ${ctx.name}")
+                ?: throw IllegalStateException("Required $propertyName property schema not found ${ctx.name}")
 
             if (!ctx.options.includeWriteOnly && property.writeOnly == true) {
                 continue

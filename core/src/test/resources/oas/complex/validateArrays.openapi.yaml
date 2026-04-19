@@ -69,8 +69,48 @@ paths:
                 '400':
                     $ref: '#/components/responses/BadRequest'
 
+    /validation/arrays/allof-ref:
+        post:
+            tags: [validation]
+            summary: Validate allOf array ref composition
+            operationId: validateAllOfArrayRef
+            description: Test endpoint for allOf composed array references with inline metadata-only members
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required: [ contactIds ]
+                            properties:
+                                contactIds:
+                                    allOf:
+                                        -   $ref: '#/components/schemas/ContactArnList'
+                                        -   description: Ordered ARNs of contacts to include in the schedule
+            responses:
+                '200':
+                    description: Arrays validated successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ApiResponse'
+
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+
 components:
     schemas:
+        ContactArn:
+            type: string
+            example: "arn:aws:ssm-contacts:us-east-1:123456789012:contact/test-contact"
+
+        ContactArnList:
+            type: array
+            items:
+                $ref: '#/components/schemas/ContactArn'
+            minItems: 1
+            maxItems: 30
+
         ValueArray:
             oneOf:
                 -   type: array

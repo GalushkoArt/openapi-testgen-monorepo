@@ -11,7 +11,7 @@ Documentation lives under `docs/` and is built with MkDocs.
 All documentation pages that are part of the MkDocs site (listed in `mkdocs.yml` under `nav:`) must include YAML frontmatter with a `description` field.
 The description is used to populate `DOCS_MAP.md` and helps readers understand the page's purpose.
 
-Markdown snippets under `docs/includes/` are auto-included via `pymdownx.snippets` and should not have frontmatter (for example, `docs/includes/abbreviations.md`).
+Markdown snippets under `mkdocs/includes/` are auto-included via `pymdownx.snippets` and should not have frontmatter (for example, `mkdocs/includes/abbreviations.md`).
 
 ```yaml
 ---
@@ -36,6 +36,7 @@ python3 skills/project-docs/scripts/sync_docs_map.py
 - Keep examples copy-pastable and aligned with actual code.
   If code changes, update docs in the same PR.
 - Prefer links to reference docs instead of duplicating normative details.
+- Prefer expanding an existing page over creating another thin index or near-duplicate guide.
 
 ## Local preview
 
@@ -59,7 +60,7 @@ mkdocs serve
 
 ## Contribution workflow
 
-1. **Create or edit docs** under `docs/` following the Diataxis structure:
+1. **Create or edit docs** under `docs/` following the existing structure:
    - `getting-started/`: Tutorials and quick start guides
    - `how-to/`: Task-oriented guides for specific goals
    - `concepts/`: Explanatory content for understanding
@@ -68,7 +69,7 @@ mkdocs serve
 
 2. **Preview locally** with `./gradlew docsServe` or `mkdocs serve`
 
-3. **Update navigation** in `mkdocs.yml` if adding new pages
+3. **Update navigation** in `mkdocs.yml` if adding new substantive pages
 
 4. **Cross-reference** related docs instead of duplicating content
 

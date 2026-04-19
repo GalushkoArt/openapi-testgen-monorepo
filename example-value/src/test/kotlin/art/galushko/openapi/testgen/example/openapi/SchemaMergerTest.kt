@@ -8,6 +8,7 @@ import io.qameta.allure.Feature
 import io.swagger.v3.oas.models.SpecVersion
 import io.swagger.v3.oas.models.media.ArraySchema
 import io.swagger.v3.oas.models.media.ComposedSchema
+import io.swagger.v3.oas.models.media.DateTimeSchema
 import io.swagger.v3.oas.models.media.JsonSchema
 import io.swagger.v3.oas.models.media.MapSchema
 import io.swagger.v3.oas.models.media.NumberSchema
@@ -15,9 +16,7 @@ import io.swagger.v3.oas.models.media.ObjectSchema
 import io.swagger.v3.oas.models.media.Schema
 import io.swagger.v3.oas.models.media.StringSchema
 import io.swagger.v3.oas.models.media.XML
-import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatCode
-import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -26,6 +25,7 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.MethodSource
 import java.math.BigDecimal
+import java.time.OffsetDateTime
 import java.util.stream.Stream
 
 @Epic("Example Value Generation")
@@ -997,6 +997,45 @@ class SchemaMergerTest {
         }
 
         @Test
+        @DisplayName("should handle OffsetDateTime examples without serialization errors")
+        fun shouldHandleOffsetDateTimeExamplesWithoutSerializationErrors() {
+            val schema = ComposedSchema().apply {
+                specVersion = SpecVersion.V30
+                oneOf = listOf(
+                    ObjectSchema().apply {
+                        addProperty("end_time", DateTimeSchema().example(OffsetDateTime.parse("2020-06-11T16:32:50-03:00")))
+                    },
+                    ObjectSchema().apply {
+                        addProperty("end_time", DateTimeSchema().example(OffsetDateTime.parse("2020-06-11T16:32:50-03:00")))
+                    },
+                )
+            }
+
+            assertThatCode { merger.getSchemaFlatCombinations(schema) }
+                .doesNotThrowAnyException()
+        }
+
+        @Test
+        @DisplayName("should deduplicate schemas with equivalent OffsetDateTime examples")
+        fun shouldDeduplicateSchemasWithEquivalentOffsetDateTimeExamples() {
+            val schema = ComposedSchema().apply {
+                specVersion = SpecVersion.V30
+                oneOf = listOf(
+                    ObjectSchema().apply {
+                        addProperty("end_time", DateTimeSchema().example(OffsetDateTime.parse("2020-06-11T16:32:50-03:00")))
+                    },
+                    ObjectSchema().apply {
+                        addProperty("end_time", DateTimeSchema().example(OffsetDateTime.parse("2020-06-11T16:32:50-03:00")))
+                    },
+                )
+            }
+
+            val combinations = merger.getSchemaFlatCombinations(schema)
+
+            assertThat(combinations).hasSize(1)
+        }
+
+        @Test
         @DisplayName("should respect max depth limit")
         fun shouldRespectMaxDepthLimit() {
             val options = SchemaMergerOptions(maxMergedSchemaDepth = 1)
@@ -1321,6 +1360,61 @@ class SchemaMergerTest {
             assertThat(merged.uniqueItems).isTrue()
             assertThat(merged.minItems).isEqualTo(1)
             assertThat(merged.maxItems).isEqualTo(20)
+            assertThat(merged.items).isInstanceOf(StringSchema::class.java)
+        }
+
+        @Test
+        @DisplayName("should preserve array items for allOf ref with inline metadata")
+        fun shouldPreserveArrayItemsForAllOfRefWithInlineMetadata() {
+            val source = ComposedSchema().apply {
+                specVersion = SpecVersion.V30
+                allOf = listOf(
+                    Schema<Any>().apply { `$ref` = "#/components/schemas/RotationContactIdList" },
+                    Schema<Any>().apply { description = "Inline docs-only schema member" },
+                )
+            }
+            val resolved = mapOf(
+                "#/components/schemas/RotationContactIdList" to ArraySchema().apply {
+                    specVersion = SpecVersion.V30
+                    items = StringSchema().apply { minLength = 1 }
+                    minItems = 1
+                    maxItems = 30
+                }
+            )
+
+            val merged = merger.mergeWithSubSchemas(source, 0, mutableSetOf()) { schema ->
+                schema.`$ref`?.let { ref -> resolved[ref] } ?: schema
+            }
+
+            assertThat(merged.type).isEqualTo("array")
+            assertThat(merged.items).isInstanceOf(StringSchema::class.java)
+            assertThat((merged.items as StringSchema).minLength).isEqualTo(1)
+            assertThat(merged.minItems).isEqualTo(1)
+            assertThat(merged.maxItems).isEqualTo(30)
+        }
+
+        @Test
+        @DisplayName("should preserve array items when allOf ref member is skipped as visited")
+        fun shouldPreserveArrayItemsWhenAllOfRefMemberIsSkippedAsVisited() {
+            val source = ComposedSchema().apply {
+                specVersion = SpecVersion.V30
+                allOf = listOf(
+                    Schema<Any>().apply { `$ref` = "#/components/schemas/RotationContactIdList" },
+                    Schema<Any>().apply { description = "Inline docs-only schema member" },
+                )
+            }
+            val resolved = mapOf(
+                "#/components/schemas/RotationContactIdList" to ArraySchema().apply {
+                    specVersion = SpecVersion.V30
+                    items = StringSchema()
+                }
+            )
+            val visitedRefs = mutableSetOf("#/components/schemas/RotationContactIdList")
+
+            val merged = merger.mergeWithSubSchemas(source, 0, visitedRefs) { schema ->
+                schema.`$ref`?.let { ref -> resolved[ref] } ?: schema
+            }
+
             assertThat(merged.items).isInstanceOf(StringSchema::class.java)
         }
     }

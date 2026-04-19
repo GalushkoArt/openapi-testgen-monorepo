@@ -225,6 +225,56 @@ internal class TestSuiteWriterTest {
                 assertThat(createUserFile).exists()
             }
         }
+
+        @Test
+        @DisplayName("should write duplicate operationName only once in batch mode")
+        @Description("Verifies that duplicate operationName entries resolve to one output file with the final suite content")
+        fun shouldWriteDuplicateOperationNameOnlyOnceInBatchMode(@TempDir tempDir: Path) {
+            val fileNamePrefix = "tests-"
+            val options = mapOf(
+                "outputFileName" to "",
+                "outputMode" to "MULTIPLE_FILES",
+                "writeMode" to "OVERWRITE",
+                "format" to "JSON",
+                "fileNamePrefix" to fileNamePrefix,
+            )
+
+            val firstSuite = getUserSuite.copy(
+                testCases = listOf(
+                    TestCase(
+                        name = "Old Case",
+                        method = "GET",
+                        path = "/users/{userId}",
+                        expectedStatusCode = 200,
+                    )
+                )
+            )
+            val secondSuite = getUserSuite.copy(
+                testCases = listOf(
+                    TestCase(
+                        name = "New Case",
+                        method = "GET",
+                        path = "/users/{userId}",
+                        expectedStatusCode = 201,
+                    )
+                )
+            )
+
+            step("Write duplicate operationName entries in one batch") {
+                TestSuiteWriter(tempDir.toFile(), options).generateTests(listOf(firstSuite, secondSuite))
+            }
+
+            step("Verify only one output file exists with the final suite content") {
+                val producedFile = tempDir.resolve("${fileNamePrefix}getUser.json").toFile()
+                assertThat(producedFile).exists()
+                assertThat(tempDir.toFile().listFiles().orEmpty().map { it.name }.sorted())
+                    .containsExactly("${fileNamePrefix}getUser.json")
+
+                val produced: TestSuite = readSuiteFile(producedFile, OutputFormat.JSON)
+                assertThat(produced.testCases.map { it.name }).containsExactly("New Case")
+                assertThat(produced.testCases.single().expectedStatusCode).isEqualTo(201)
+            }
+        }
     }
 
     @Nested
@@ -415,6 +465,120 @@ internal class TestSuiteWriterTest {
             assertThat(TestSuiteWriter.sanitizeFileName("a:b*c?d")).isEqualTo("a_b_c_d")
             assertThat(TestSuiteWriter.sanitizeFileName("with spaces")).isEqualTo("with_spaces")
             assertThat(TestSuiteWriter.sanitizeFileName("  trimmed  ")).isEqualTo("trimmed")
+        }
+
+        @Test
+        @DisplayName("should fail fast on sanitization collision in batch mode")
+        @Description("Different operation names that sanitize to the same output path should be rejected before writing files")
+        fun shouldFailFastOnSanitizationCollisionInBatchMode(@TempDir tempDir: Path) {
+            val options = mapOf(
+                "outputFileName" to "",
+                "outputMode" to "MULTIPLE_FILES",
+                "writeMode" to "OVERWRITE",
+                "format" to "JSON",
+                "fileNamePrefix" to "tests-",
+            )
+            val firstSuite = TestSuite(
+                path = "/users/first",
+                method = "GET",
+                operationName = "get/user",
+                testCases = listOf(
+                    TestCase(
+                        name = "First Case",
+                        method = "GET",
+                        path = "/users/first",
+                        expectedStatusCode = 200,
+                    )
+                )
+            )
+            val secondSuite = TestSuite(
+                path = "/users/second",
+                method = "GET",
+                operationName = "get user",
+                testCases = listOf(
+                    TestCase(
+                        name = "Second Case",
+                        method = "GET",
+                        path = "/users/second",
+                        expectedStatusCode = 200,
+                    )
+                )
+            )
+
+            step("Write colliding operation names in one batch") {
+                assertThatThrownBy {
+                    TestSuiteWriter(tempDir.toFile(), options).generateTests(listOf(firstSuite, secondSuite))
+                }
+                    .isInstanceOf(IllegalArgumentException::class.java)
+                    .hasMessageContaining("same output file")
+                    .hasMessageContaining("get/user")
+                    .hasMessageContaining("get user")
+            }
+
+            step("Verify no files were written") {
+                assertThat(tempDir.toFile().listFiles().orEmpty()).isEmpty()
+            }
+        }
+
+        @Test
+        @DisplayName("should fail fast on sanitization collision across sequential writes")
+        @Description("Sequential MULTIPLE_FILES writes should reject later suites that collapse to an existing output path")
+        fun shouldFailFastOnSanitizationCollisionAcrossSequentialWrites(@TempDir tempDir: Path) {
+            val options = mapOf(
+                "outputFileName" to "",
+                "outputMode" to "MULTIPLE_FILES",
+                "writeMode" to "OVERWRITE",
+                "format" to "JSON",
+                "fileNamePrefix" to "tests-",
+            )
+            val firstSuite = TestSuite(
+                path = "/users/first",
+                method = "GET",
+                operationName = "get/user",
+                testCases = listOf(
+                    TestCase(
+                        name = "First Case",
+                        method = "GET",
+                        path = "/users/first",
+                        expectedStatusCode = 200,
+                    )
+                )
+            )
+            val secondSuite = TestSuite(
+                path = "/users/second",
+                method = "GET",
+                operationName = "get user",
+                testCases = listOf(
+                    TestCase(
+                        name = "Second Case",
+                        method = "GET",
+                        path = "/users/second",
+                        expectedStatusCode = 200,
+                    )
+                )
+            )
+
+            val writer = TestSuiteWriter(tempDir.toFile(), options)
+
+            step("Write the first suite successfully") {
+                writer.generateTests(firstSuite)
+                assertThat(tempDir.resolve("tests-get_user.json").toFile()).exists()
+            }
+
+            step("Reject the second suite because it resolves to the same output file") {
+                assertThatThrownBy {
+                    writer.generateTests(secondSuite)
+                }
+                    .isInstanceOf(IllegalArgumentException::class.java)
+                    .hasMessageContaining("same output file")
+                    .hasMessageContaining("get/user")
+                    .hasMessageContaining("get user")
+            }
+
+            step("Verify the original file remains the only output") {
+                assertThat(tempDir.toFile().listFiles().orEmpty().map { it.name }.sorted())
+                    .containsExactly("tests-get_user.json")
+            }
         }
     }
 
@@ -711,8 +875,9 @@ internal class TestSuiteWriterTest {
                 "preventOverwriteCases" to false,
                 "protectedTestCaseFields" to listOf(
                     "name", "method", "path", "queryParams", "pathParams", "headers",
-                    "cookie", "securityValues", "body", "expectedBody", "needToComplete",
-                    "expectedStatusCode", "rule"
+                    "cookie", "securityValues", "body", "requestBodyMediaType",
+                    "expectedBody", "responseBodyMediaType", "needToComplete",
+                    "expectedStatusCode", "rule",
                 ),
             )
 
@@ -1603,6 +1768,373 @@ internal class TestSuiteWriterTest {
     }
 
     @Nested
+    @Story("Batch Generation")
+    @DisplayName("Batch Generation (generateTests(List))")
+    inner class BatchGenerationTests {
+
+        @Test
+        @DisplayName("batch produces same output as sequential in SINGLE_FILE mode")
+        @Description("Verifies that batch call produces identical output to sequential single-suite calls in SINGLE_FILE mode")
+        fun batchProducesSameOutputAsSequentialInSingleFile(
+            @TempDir sequentialDir: Path,
+            @TempDir batchDir: Path,
+        ) {
+            val outputFileName = "test-suites.json"
+            val options = mapOf(
+                "outputFileName" to outputFileName,
+                "outputMode" to "SINGLE_FILE",
+                "writeMode" to "OVERWRITE",
+                "format" to "JSON",
+            )
+
+            step("Write suites sequentially") {
+                TestSuiteWriter(sequentialDir.toFile(), options).also { writer ->
+                    writer.generateTests(createUserSuite)
+                    writer.generateTests(getUserSuite)
+                }
+            }
+
+            step("Write suites via batch") {
+                TestSuiteWriter(batchDir.toFile(), options).also { writer ->
+                    writer.generateTests(listOf(createUserSuite, getUserSuite))
+                }
+            }
+
+            step("Verify outputs are identical") {
+                val sequential: Map<String, TestSuite> =
+                    readAggregatedFile(sequentialDir.resolve(outputFileName).toFile(), OutputFormat.JSON)
+                val batch: Map<String, TestSuite> =
+                    readAggregatedFile(batchDir.resolve(outputFileName).toFile(), OutputFormat.JSON)
+
+                assertThat(batch)
+                    .usingRecursiveComparison()
+                    .isEqualTo(sequential)
+            }
+        }
+
+        @Test
+        @DisplayName("batch produces same output as sequential in MULTIPLE_FILES mode")
+        @Description("Verifies that batch call produces identical output to sequential single-suite calls in MULTIPLE_FILES mode")
+        fun batchProducesSameOutputAsSequentialInMultipleFiles(
+            @TempDir sequentialDir: Path,
+            @TempDir batchDir: Path,
+        ) {
+            val fileNamePrefix = "tests-"
+            val options = mapOf(
+                "outputFileName" to "",
+                "outputMode" to "MULTIPLE_FILES",
+                "writeMode" to "OVERWRITE",
+                "format" to "JSON",
+                "fileNamePrefix" to fileNamePrefix,
+            )
+
+            step("Write suites sequentially") {
+                TestSuiteWriter(sequentialDir.toFile(), options).also { writer ->
+                    writer.generateTests(createUserSuite)
+                    writer.generateTests(getUserSuite)
+                }
+            }
+
+            step("Write suites via batch") {
+                TestSuiteWriter(batchDir.toFile(), options).also { writer ->
+                    writer.generateTests(listOf(createUserSuite, getUserSuite))
+                }
+            }
+
+            step("Verify outputs are identical") {
+                val seqCreateUser: TestSuite =
+                    readSuiteFile(sequentialDir.resolve("${fileNamePrefix}createUser.json").toFile(), OutputFormat.JSON)
+                val seqGetUser: TestSuite =
+                    readSuiteFile(sequentialDir.resolve("${fileNamePrefix}getUser.json").toFile(), OutputFormat.JSON)
+
+                val batchCreateUser: TestSuite =
+                    readSuiteFile(batchDir.resolve("${fileNamePrefix}createUser.json").toFile(), OutputFormat.JSON)
+                val batchGetUser: TestSuite =
+                    readSuiteFile(batchDir.resolve("${fileNamePrefix}getUser.json").toFile(), OutputFormat.JSON)
+
+                assertThat(batchCreateUser)
+                    .usingRecursiveComparison()
+                    .isEqualTo(seqCreateUser)
+                assertThat(batchGetUser)
+                    .usingRecursiveComparison()
+                    .isEqualTo(seqGetUser)
+            }
+        }
+
+        @Test
+        @DisplayName("batch writes aggregated file with all suites")
+        @Description("Verifies that a batch call writes a single aggregated file containing all suites")
+        fun batchWritesAggregatedFileWithAllSuites(@TempDir tempDir: Path) {
+            val outputFileName = "test-suites.json"
+            val options = mapOf(
+                "outputFileName" to outputFileName,
+                "outputMode" to "SINGLE_FILE",
+                "writeMode" to "OVERWRITE",
+                "format" to "JSON",
+            )
+
+            step("Write two suites via batch") {
+                TestSuiteWriter(tempDir.toFile(), options).also { writer ->
+                    writer.generateTests(listOf(createUserSuite, getUserSuite))
+                }
+            }
+
+            step("Verify output contains both suites") {
+                val outputFile = tempDir.resolve(outputFileName).toFile()
+                assertThat(outputFile).exists()
+
+                val produced: Map<String, TestSuite> = readAggregatedFile(outputFile, OutputFormat.JSON)
+                assertThat(produced).hasSize(2)
+                assertThat(produced).containsKey("createUser")
+                assertThat(produced).containsKey("getUser")
+            }
+        }
+
+        @Test
+        @DisplayName("batch handles empty list without writing")
+        @Description("Verifies that an empty list does not create any output file")
+        fun batchHandlesEmptyListWithoutWriting(@TempDir tempDir: Path) {
+            val outputFileName = "test-suites.json"
+            val options = mapOf(
+                "outputFileName" to outputFileName,
+                "outputMode" to "SINGLE_FILE",
+                "writeMode" to "OVERWRITE",
+                "format" to "JSON",
+            )
+
+            step("Call batch with empty list") {
+                TestSuiteWriter(tempDir.toFile(), options).also { writer ->
+                    writer.generateTests(emptyList())
+                }
+            }
+
+            step("Verify no file is created") {
+                val outputFile = tempDir.resolve(outputFileName).toFile()
+                assertThat(outputFile).doesNotExist()
+            }
+        }
+
+        @Test
+        @DisplayName("batch skips blank operationName suites")
+        @Description("Verifies that suites with null or blank operationName are skipped in batch mode")
+        fun batchSkipsBlankOperationNameSuites(@TempDir tempDir: Path) {
+            val outputFileName = "test-suites.json"
+            val options = mapOf(
+                "outputFileName" to outputFileName,
+                "outputMode" to "SINGLE_FILE",
+                "writeMode" to "OVERWRITE",
+                "format" to "JSON",
+            )
+
+            val blankSuite = TestSuite(
+                path = "/blank",
+                method = "GET",
+                operationName = "   ",
+                testCases = listOf(
+                    TestCase(name = "Test", method = "GET", path = "/blank", expectedStatusCode = 200)
+                ),
+            )
+            val nullSuite = TestSuite(
+                path = "/null",
+                method = "GET",
+                operationName = null,
+                testCases = listOf(
+                    TestCase(name = "Test", method = "GET", path = "/null", expectedStatusCode = 200)
+                ),
+            )
+
+            step("Call batch with mix of valid and invalid suites") {
+                TestSuiteWriter(tempDir.toFile(), options).also { writer ->
+                    writer.generateTests(listOf(blankSuite, createUserSuite, nullSuite, getUserSuite))
+                }
+            }
+
+            step("Verify only valid suites in output") {
+                val outputFile = tempDir.resolve(outputFileName).toFile()
+                assertThat(outputFile).exists()
+
+                val produced: Map<String, TestSuite> = readAggregatedFile(outputFile, OutputFormat.JSON)
+                assertThat(produced).hasSize(2)
+                assertThat(produced.keys).containsExactly("createUser", "getUser")
+            }
+        }
+
+        @Test
+        @DisplayName("batch merges with existing file in MERGE mode")
+        @Description("Verifies that batch call merges with pre-existing file content")
+        fun batchMergesWithExistingFileInMergeMode(@TempDir tempDir: Path) {
+            val outputFileName = "test-suites.json"
+            val outputFile = tempDir.resolve(outputFileName).toFile()
+
+            step("Pre-populate existing file") {
+                val existingContent = loadResourceAsString("merge-existing-single-file.json")
+                outputFile.writeText(existingContent)
+            }
+
+            val options = mapOf(
+                "outputFileName" to outputFileName,
+                "outputMode" to "SINGLE_FILE",
+                "writeMode" to "MERGE",
+                "format" to "JSON",
+                "preventOverwriteSuites" to false,
+                "preventOverwriteCases" to false,
+            )
+
+            step("Batch write new suites with MERGE mode") {
+                TestSuiteWriter(tempDir.toFile(), options).also { writer ->
+                    writer.generateTests(listOf(createUserSuite))
+                }
+            }
+
+            step("Verify output contains both existing and new suites") {
+                val produced: Map<String, TestSuite> = readAggregatedFile(outputFile, OutputFormat.JSON)
+                val expected: Map<String, TestSuite> = loadExpectedAggregatedResource("expected-merged-single-file.json")
+
+                assertThat(produced)
+                    .usingRecursiveComparison()
+                    .isEqualTo(expected)
+            }
+        }
+
+        @Test
+        @DisplayName("batch maintains deterministic ordering")
+        @Description("Verifies that suites written via batch are ordered alphabetically by key")
+        fun batchMaintainsDeterministicOrdering(@TempDir tempDir: Path) {
+            val outputFileName = "test-suites.json"
+            val options = mapOf(
+                "outputFileName" to outputFileName,
+                "outputMode" to "SINGLE_FILE",
+                "writeMode" to "OVERWRITE",
+                "format" to "JSON",
+            )
+
+            val zSuite = TestSuite(
+                path = "/z", method = "GET", operationName = "zOperation",
+                testCases = listOf(
+                    TestCase(name = "Z Test", method = "GET", path = "/z", expectedStatusCode = 200),
+                    TestCase(name = "A Test", method = "GET", path = "/z", expectedStatusCode = 200),
+                ),
+            )
+            val aSuite = TestSuite(
+                path = "/a", method = "GET", operationName = "aOperation",
+                testCases = listOf(
+                    TestCase(name = "M Case", method = "GET", path = "/a", expectedStatusCode = 200),
+                    TestCase(name = "B Case", method = "GET", path = "/a", expectedStatusCode = 200),
+                ),
+            )
+            val mSuite = TestSuite(
+                path = "/m", method = "GET", operationName = "mOperation",
+                testCases = listOf(
+                    TestCase(name = "Y Test", method = "GET", path = "/m", expectedStatusCode = 200),
+                ),
+            )
+
+            step("Write suites in non-alphabetical order via batch") {
+                TestSuiteWriter(tempDir.toFile(), options).also { writer ->
+                    writer.generateTests(listOf(zSuite, aSuite, mSuite))
+                }
+            }
+
+            step("Verify suites and test cases are ordered alphabetically") {
+                val outputFile = tempDir.resolve(outputFileName).toFile()
+                val produced: Map<String, TestSuite> = readAggregatedFile(outputFile, OutputFormat.JSON)
+
+                assertThat(produced.keys.toList()).containsExactly(
+                    "aOperation", "mOperation", "zOperation",
+                )
+                assertThat(produced["aOperation"]?.testCases?.map { it.name })
+                    .containsExactly("B Case", "M Case")
+                assertThat(produced["zOperation"]?.testCases?.map { it.name })
+                    .containsExactly("A Test", "Z Test")
+            }
+        }
+
+        @Test
+        @DisplayName("batch writes individual files in MULTIPLE_FILES mode")
+        @Description("Verifies that batch call creates one file per suite in MULTIPLE_FILES mode")
+        fun batchWritesIndividualFilesInMultipleFilesMode(@TempDir tempDir: Path) {
+            val fileNamePrefix = "tests-"
+            val options = mapOf(
+                "outputFileName" to "",
+                "outputMode" to "MULTIPLE_FILES",
+                "writeMode" to "OVERWRITE",
+                "format" to "JSON",
+                "fileNamePrefix" to fileNamePrefix,
+            )
+
+            step("Write suites via batch") {
+                TestSuiteWriter(tempDir.toFile(), options).also { writer ->
+                    writer.generateTests(listOf(createUserSuite, getUserSuite))
+                }
+            }
+
+            step("Verify individual files created with correct content") {
+                val createUserFile = tempDir.resolve("${fileNamePrefix}createUser.json").toFile()
+                val getUserFile = tempDir.resolve("${fileNamePrefix}getUser.json").toFile()
+
+                assertThat(createUserFile).exists()
+                assertThat(getUserFile).exists()
+
+                val producedCreateUser: TestSuite = readSuiteFile(createUserFile, OutputFormat.JSON)
+                val producedGetUser: TestSuite = readSuiteFile(getUserFile, OutputFormat.JSON)
+
+                assertThat(producedCreateUser.operationName).isEqualTo("createUser")
+                assertThat(producedGetUser.operationName).isEqualTo("getUser")
+                assertThat(producedCreateUser.testCases).hasSize(2)
+                assertThat(producedGetUser.testCases).hasSize(2)
+            }
+        }
+
+        @Test
+        @DisplayName("batch parallel writes produce correct output for many suites")
+        @Description("Verifies that parallel writes in MULTIPLE_FILES mode produce correct output for 10+ suites")
+        fun batchParallelWritesProduceCorrectOutput(@TempDir tempDir: Path) {
+            val fileNamePrefix = "tests-"
+            val options = mapOf(
+                "outputFileName" to "",
+                "outputMode" to "MULTIPLE_FILES",
+                "writeMode" to "OVERWRITE",
+                "format" to "JSON",
+                "fileNamePrefix" to fileNamePrefix,
+            )
+
+            val suites = (1..15).map { i ->
+                TestSuite(
+                    path = "/resource$i",
+                    method = "GET",
+                    operationName = "operation$i",
+                    testCases = listOf(
+                        TestCase(
+                            name = "Test $i",
+                            method = "GET",
+                            path = "/resource$i",
+                            expectedStatusCode = 200,
+                        ),
+                    ),
+                )
+            }
+
+            step("Write 15 suites via batch") {
+                TestSuiteWriter(tempDir.toFile(), options).also { writer ->
+                    writer.generateTests(suites)
+                }
+            }
+
+            step("Verify all 15 files created with correct content") {
+                for (i in 1..15) {
+                    val file = tempDir.resolve("${fileNamePrefix}operation$i.json").toFile()
+                    assertThat(file).exists()
+
+                    val produced: TestSuite = readSuiteFile(file, OutputFormat.JSON)
+                    assertThat(produced.operationName).isEqualTo("operation$i")
+                    assertThat(produced.testCases).hasSize(1)
+                    assertThat(produced.testCases.first().name).isEqualTo("Test $i")
+                }
+            }
+        }
+    }
+
+    @Nested
     @Story("Options Validation")
     @DisplayName("transformAndValidateWriterOptions")
     inner class OptionsValidationTests {
@@ -1927,8 +2459,9 @@ internal class TestSuiteWriterTest {
         fun shouldAcceptAllValidTestCaseFieldNames() {
             val allFields = listOf(
                 "name", "method", "path", "queryParams", "pathParams", "headers",
-                "cookie", "securityValues", "body", "expectedBody", "needToComplete",
-                "expectedStatusCode", "rule"
+                "cookie", "securityValues", "body", "requestBodyMediaType",
+                "expectedBody", "responseBodyMediaType", "needToComplete",
+                "expectedStatusCode", "rule",
             )
 
             val options = transformAndValidateWriterOptions(

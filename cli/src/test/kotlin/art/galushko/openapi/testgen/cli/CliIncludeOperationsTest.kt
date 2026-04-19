@@ -15,7 +15,7 @@ class CliIncludeOperationsTest {
 
     @Test
     fun `should filter operations using includeOperations via setting`(@TempDir tmp: Path) {
-        val spec = requireNotNull(this::class.java.classLoader.getResource("openapi.yaml")).toURI()
+        val spec = requireNotNull(this::class.java.classLoader.getResource("openapi-31.yaml")).toURI()
         val out = tmp.resolve("out-include-setting")
         Files.createDirectories(out)
 
@@ -39,7 +39,7 @@ class CliIncludeOperationsTest {
 
     @Test
     fun `should filter operations using includeOperations via config file`(@TempDir tmp: Path) {
-        val spec = requireNotNull(this::class.java.classLoader.getResource("openapi.yaml")).toURI()
+        val spec = requireNotNull(this::class.java.classLoader.getResource("openapi-31.yaml")).toURI()
         val specPath = Path.of(spec).toString()
         val out = tmp.resolve("out-include-config")
         Files.createDirectories(out)
@@ -77,7 +77,7 @@ class CliIncludeOperationsTest {
 
     @Test
     fun `should support wildcard path with specific method`(@TempDir tmp: Path) {
-        val spec = requireNotNull(this::class.java.classLoader.getResource("openapi.yaml")).toURI()
+        val spec = requireNotNull(this::class.java.classLoader.getResource("openapi-31.yaml")).toURI()
         val out = tmp.resolve("out-include-wildcard-path")
         Files.createDirectories(out)
 
@@ -92,13 +92,13 @@ class CliIncludeOperationsTest {
         assertEquals(0, exitCode)
 
         val suites = readSuites(out.resolve("generated.json"))
-        assertEquals(setOf("listUsers", "getUser", "listOrders"), suites.keys)
+        assertEquals(setOf("debugParams", "downloadFile", "getPayment", "getUser", "health", "listOrders", "listUsers"), suites.keys)
         assertTrue(suites.values.all { it.method == "GET" }, "Expected only GET operations for wildcard path")
     }
 
     @Test
     fun `should support wildcard method for specific path`(@TempDir tmp: Path) {
-        val spec = requireNotNull(this::class.java.classLoader.getResource("openapi.yaml")).toURI()
+        val spec = requireNotNull(this::class.java.classLoader.getResource("openapi-31.yaml")).toURI()
         val out = tmp.resolve("out-include-wildcard-method")
         Files.createDirectories(out)
 

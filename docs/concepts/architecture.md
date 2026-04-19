@@ -1,5 +1,5 @@
 ---
-description: System architecture of OpenAPI Test Generator, covering module dependencies, data flow, core abstractions, and extension points. This is the primary reference for understanding how the generator is structured and how its components interact.
+description: System architecture including module dependencies, data flow, provider-rule model, budget controls, determinism guarantees, and extension points. The primary reference for understanding how the generator is structured.
 ---
 
 # Architecture
@@ -40,7 +40,7 @@ requests are processed.
 
 - Documentation index: [docs home](../index.md)
 - Getting started: [Getting started](../getting-started/index.md)
-- How-to guides: [How-to](../how-to/index.md)
+- How-to guides: [Configuration](../how-to/configuration.md), [Generators](../how-to/generators.md), [Negative testing](../how-to/negative-testing.md)
 - Development: [development setup](../contributing/development-setup.md)
 - Core module: [core](../modules/core.md)
 - Reference:
@@ -138,34 +138,60 @@ This layering enables standalone use of `pattern-value` for regex-based string g
 
 1. **Entry point**: CLI or Gradle creates a `TestGenerationRunner` (via `withDefaults()` or builder) with an environment-specific `TestGenerationReporter`.
 2. **Configuration resolution**: `TestGenerationRunner.execute()` calls `TestGeneratorExecutionOptionsFactory.fromConfig` to merge overrides over YAML config
-   and
-   apply defaults.
+   and apply defaults.
 3. **Parse OpenAPI**: `OpenApiSpecParser.parseOpenApi` loads and resolves the OpenAPI document with `ParseOptions().apply { isResolveFully = true }`.
-4. **Build generation pipeline**: `TestGenerationEngine.createProcessor` wires schema merging, value providers, rules, and providers via
+4. **Filter operations**: If `includeOperations` is set, the engine filters paths/methods before generation. `ignoreTestCases` is applied later, after suites
+   are assembled.
+5. **Build generation pipeline**: `TestGenerationEngine.createProcessor` wires schema merging, value providers, rules, and providers via
    `TestGeneratorConfigurer`.
-5. **Generate suites per operation**:
+6. **Generate suites per operation** (from `paths`):
     - `ValidCaseBuilder` constructs a baseline valid test case from operation parameters, request body, and security requirements.
     - `TestGenerationContext` wraps the valid case, OpenAPI model, and helper services (data providers, schema merger).
     - `ProviderOrchestrator` executes providers in fixed order (auth -> parameters -> request body).
     - Each provider applies rules to generate negative test cases expecting 400/401/403 status codes.
     - `OutcomeAggregator` collects provider results, merging test cases and errors.
+    - If `includeValidCase` is enabled, the baseline valid case (with 2xx expected status) is prepended to the test list.
     - `TestCaseBudgetValidator` enforces per-operation limits on generated test cases.
-6. **Report outcomes**: `GenerationReport` captures successes, partials, and failures with `GenerationError` metadata. `TestGenerationRunner` formats and logs
+    - Budgets and error handling determine whether the result is success, partial success, or failure.
+   OpenAPI `webhooks` are parsed but are currently out of scope for suite generation.
+7. **Report outcomes**: `GenerationReport` captures successes, partials, and failures with `GenerationError` metadata. `TestGenerationRunner` formats and logs
    the report via its reporter.
-7. **Emit artifacts**: `TestGenerationEngine.createArtifactGenerator` builds a generator by id (`test-suite-writer` or `template`) and writes files.
-8. **Return result**: `TestGenerationRunner` returns `TestGenerationResult.Success` or `TestGenerationResult.Failure` for CLI/Gradle to handle appropriately.
+8. **Emit artifacts**: `TestGenerationEngine.createArtifactGenerator` builds a generator by id (`test-suite-writer` or `template`) and writes files.
+9. **Return result**: `TestGenerationRunner` returns `TestGenerationResult.Success` or `TestGenerationResult.Failure` for CLI/Gradle to handle appropriately.
+
+### Outputs
+
+- `TestSuite`: operation-level container (`operationName` is the stable identifier).
+- `TestCase`: individual scenario (request inputs + expected status/body).
+- `GenerationReport`: aggregated suites + errors + summary (success/partial/failure/not-tested).
 
 ## Core Abstractions
 
 ### Provider-Rule Architecture Pattern
 
-- **Providers** implement `TestCaseProvider<T>` and operate on OpenAPI elements (operations,
-  parameters, request bodies). They are orchestrated in a fixed order by `ProviderOrchestrator`.
-- **Rules** encode constraints:
-    - `SchemaValidationRule` produces `RuleValue` entries that providers turn into test cases.
-    - `AuthValidationRule` produces complete `TestCase` objects for security scenarios.
-- **Composition** for array/object schemas is handled through `ArrayItemSchemaValidationRule` and `ObjectItemSchemaValidationRule` using a `RuleContainer`.
-- **Registry**: `ManualRuleRegistry` wires `BuiltInRules` plus any extra rules, ensuring deterministic ordering.
+The generator separates **what to vary** (providers) from **how to vary** it (rules).
+
+For each OpenAPI operation, `ValidCaseBuilder` constructs a baseline *valid* `TestCase` that includes only what is required: required parameters, first
+supported request body media type, and security values. For required parameters, schema resolution uses `schema` first; if `schema` is absent, it falls back
+to `content` schema. If both `schema` and `content` are defined for a parameter, `schema` is used and a warning is logged.
+
+**Providers** decide what to vary for a given operation:
+
+- Auth provider: derives auth-negative cases (missing/invalid credentials, scope variations).
+- Parameter provider: derives parameter-negative cases (missing required params, schema violations).
+- Request body provider: derives request-body-negative cases (missing body, schema violations).
+
+Providers implement `TestCaseProvider<T>`, return `Outcome<List<TestCase>>`, and must be pure (no mutation of inputs). They are orchestrated in a fixed order
+by `ProviderOrchestrator`.
+
+**Rules** decide how to vary a specific schema or security constraint:
+
+- `SchemaValidationRule` produces `Sequence<RuleValue>` (lazy, deterministic). A provider turns each `RuleValue` into a negative `TestCase`.
+- `AuthValidationRule` produces `Sequence<TestCase>` because auth variations often span multiple request fields and expected status codes (401/403).
+
+**Composition** for array/object schemas is handled through `ArrayItemSchemaValidationRule` and `ObjectItemSchemaValidationRule` using a `RuleContainer`.
+
+**Registry**: `ManualRuleRegistry` wires `BuiltInRules` plus any extra rules, ensuring deterministic ordering.
 
 ### Generator Extensibility Model
 
@@ -191,36 +217,34 @@ This layering enables standalone use of `pattern-value` for regex-based string g
 - **Note**: The merge is deep for nested maps in `generatorOptions` and `testGenerationSettings`. Collections are replaced (not merged), and map/non-map
   mismatches prefer the override value (no fail-fast).
 
-### Test Suite Generation Pipeline
+### Budget Controls
 
-This is an architecture-level summary of how the generator turns an OpenAPI operation into a `TestSuite` and artifacts.
-For the canonical, step-by-step breakdown, see [Test generation flow](test-generation-flow.md).
-See also [Budget controls](budget-controls.md) and the [TestCase reference](../reference/model/test-case.md) for output field semantics.
+OpenAPI schemas can be deeply nested or contain combinatorial compositions (`allOf`/`anyOf`/`oneOf`). Budget controls cap worst-case behavior and keep
+generation tractable.
 
-#### ValidCaseBuilder
+| Budget | Description |
+|--------|-------------|
+| `maxSchemaDepth` | Recursion limit when traversing schemas for validation |
+| `maxMergedSchemaDepth` | Recursion limit when merging composed schemas into a flattened view |
+| `maxSchemaCombinations` | Cap on composed-schema combinations (prevents `anyOf`/`oneOf` explosion) |
+| `maxTestCasesPerOperation` | Maximum test cases generated for a single operation |
+| `maxErrors` | Cap on collected errors when using `COLLECT_ALL` mode |
 
-Builds the baseline valid `TestCase` for each operation, used as the seed for generating negative cases.
-See [Test generation flow](test-generation-flow.md).
+Defaults and types are documented in [Distribution settings](../reference/distribution-settings.md#budget-controls).
 
-#### Response Example Resolution
+#### What happens when a budget is exceeded
 
-Resolves expected responses from explicit OpenAPI examples, with deterministic fallbacks when examples are missing.
-See [TestCase reference](../reference/model/test-case.md) and [Module: `example-value`](../modules/example-value.md).
+Some budget violations are converted into structured generation errors (via provider boundaries), while others may stop generation for a specific operation
+depending on where the limit is enforced. When a budget is exceeded, the error includes the operation path and method, the current count vs. the limit, and
+suggested solutions (increase limit, simplify schema, or use ignore rules).
 
-#### TestGenerationContext
+#### How to tune budgets
 
-Carries the OpenAPI model, operation, valid case, and shared helpers (schema merger, example value generator, budgets) through generation.
-See [Test generation flow](test-generation-flow.md).
+- **Increase budgets** when your schemas are legitimately complex and you need more coverage.
+- **Decrease budgets** in CI when you prefer faster feedback.
+- Consider using [ignore rules](../how-to/configuration.md#ignore-rules) for problematic operations instead of globally increasing limits.
 
-#### Provider Execution Order
-
-Runs providers in a fixed order (auth → parameters → request body) and aggregates outcomes into a `TestSuite`.
-See [Test generation flow](test-generation-flow.md) and [Provider-rule model](provider-rule-model.md).
-
-#### Budget Controls
-
-Budgets cap schema depth/combinations and maximum test cases per operation to keep generation tractable.
-See [Budget controls](budget-controls.md).
+For configuration keys, defaults, and where to set them (YAML vs CLI vs Gradle), see [Distribution settings](../reference/distribution-settings.md#budget-controls) and [YAML config](../how-to/configuration.md#yaml-configuration).
 
 ### Schema Processing
 
@@ -258,10 +282,10 @@ Common starting points:
 
 - [core](../modules/core.md)
 - [distribution-bundle](../modules/distribution-bundle.md)
-- [plugin](../modules/plugin.md)
-- [cli](../modules/cli.md)
-- [example-value](../modules/example-value.md)
-- [pattern-support](../modules/pattern-support.md)
+- [plugin](../modules/index.md#plugin)
+- [cli](../modules/index.md#cli)
+- [example-value](../modules/index.md#example-value)
+- [pattern-support](../modules/index.md#pattern-support)
 
 ## Cross-Cutting Concerns
 
@@ -271,8 +295,8 @@ Test case and rule filtering is controlled via `TestGenerationSettings`:
 
 - **ignoreTestCases**: Map of exact paths to operation/test case filters. Supports wildcard path (`*`) and wildcard method (`*`); test case names are exact
   matches.
-- **ignoreSchemaValidationRules**: Set of rule names to skip (e.g., `"OutOfMinimumLengthString"`).
-- **ignoreAuthValidationRules**: Set of auth rule names to skip.
+- **ignoreSchemaValidationRules**: Set of fully qualified schema rule class names to skip.
+- **ignoreAuthValidationRules**: Set of fully qualified auth rule class names to skip.
 
 `IgnoreConfigHandler` applies filters during generation:
 
@@ -292,10 +316,18 @@ Filtering is applied deterministically after test case generation to ensure stab
 
 ### Determinism Guarantees
 
-- Rules and generators are registered and sorted deterministically (`BuiltInRules`, `ManualRuleRegistry`, `BuiltInGenerators`).
-- `TestGenerationEngine` validates and sorts modules by id to ensure stable ordering.
-- `ExampleValueSettings.providers` defines provider precedence; missing providers are logged, and fallback ordering is deterministic.
-- `TestSuiteWriter` sorts suite keys and test cases during merge to stabilize output.
+The generator produces stable outputs for the same inputs: the same set of test cases, in a stable order, with stable names and expected status codes.
+
+- **Providers**: execute in a fixed order (auth → parameters → request body).
+- **Rules**: registered and sorted deterministically (`BuiltInRules`, `ManualRuleRegistry`, `BuiltInGenerators`); ignore filters are applied after sorting.
+- **Modules**: `TestGenerationEngine` validates and sorts modules by id and then class name to ensure stable ordering.
+- **Value providers**: `ExampleValueSettings.providers` defines provider precedence; missing providers are logged, and fallback ordering is deterministic.
+- **Writers**: `TestSuiteWriter` sorts suite keys and test cases during merge to stabilize output; merges preserve deterministic ordering.
+
+#### Common pitfalls
+
+- Unordered maps/sets in configuration can cause unstable output if iterated directly. Prefer stable iteration order or explicit sorting at boundaries.
+- Time/randomness must not affect test case names or values.
 
 ### Error Handling Philosophy
 

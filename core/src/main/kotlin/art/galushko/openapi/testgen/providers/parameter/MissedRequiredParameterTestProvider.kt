@@ -5,7 +5,7 @@ import art.galushko.openapi.testgen.generation.TestGenerationContext
 import art.galushko.openapi.testgen.model.TestCase
 import art.galushko.openapi.testgen.model.error.Outcome
 import art.galushko.openapi.testgen.spi.TestCaseProvider
-import art.galushko.openapi.testgen.testdata.extractExpectedResponseExample
+import art.galushko.openapi.testgen.testdata.extractExpectedResponseExampleWithMediaType
 import art.galushko.openapi.testgen.util.Consts.BAD_REQUEST_CODE
 import art.galushko.openapi.testgen.util.buildParameterContext
 import art.galushko.openapi.testgen.util.exceptions.UnsupportedParameterType
@@ -47,10 +47,12 @@ internal class MissedRequiredParameterTestProvider : TestCaseProvider<Parameter>
      */
     public fun getTestcaseWithInvalidValue(context: TestGenerationContext, parameter: Parameter): TestCase {
         val validCase = context.validCase
+        val expectedResponse = context.responseExampleExtractor.extractExpectedResponseExampleWithMediaType(context, BAD_REQUEST_CODE)
         val common = validCase.copy(
             rule = MissedRequiredParameterTestProvider::class.java.name,
             expectedStatusCode = BAD_REQUEST_CODE,
-            expectedBody = context.responseExampleExtractor.extractExpectedResponseExample(context, BAD_REQUEST_CODE),
+            expectedBody = expectedResponse.body,
+            responseBodyMediaType = expectedResponse.mediaType,
         )
         return when (parameter) {
             is QueryParameter -> common.copy(

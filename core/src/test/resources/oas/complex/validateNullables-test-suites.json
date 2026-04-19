@@ -1,257 +1,291 @@
 {
-    "validateNullables": {
-        "path": "/validation/nullables",
-        "method": "POST",
-        "operationName": "validateNullables",
-        "testCases": [
+    "validateNullables" : {
+        "path" : "/validation/nullables",
+        "method" : "POST",
+        "operationName" : "validateNullables",
+        "testCases" : [
             {
-                "name": "Incorrect Request Body: Object Property alternateEmail Wrong Email Format",
-                "method": "POST",
-                "path": "/validation/nullables",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property alternateEmail Wrong Email Format",
+                "method" : "POST",
+                "path" : "/validation/nullables",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "alternateEmail": "invalid.email@example"
+                "body" : {
+                    "alternateEmail" : "invalid.email@example"
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Authorization header security",
-                "method": "POST",
-                "path": "/validation/nullables",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Invalid Authorization header security",
+                "method" : "POST",
+                "path" : "/validation/nullables",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "bearer some_really_invalid_authorization_header"
+                        "key" : "authorization",
+                        "value" : "bearer some_really_invalid_authorization_header"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "bearer some_really_invalid_authorization_header"
+                            "key" : "authorization",
+                            "value" : "bearer some_really_invalid_authorization_header"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {},
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+                "body" : {
+                    "description" : null,
+                    "alternateEmail" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
             },
             {
-                "name": "Invalid Query optionalEmail parameter: Out Of Minimum Length String",
-                "method": "POST",
-                "path": "/validation/nullables",
-                "queryParams": {
-                    "optionalEmail": ""
+                "name" : "Invalid Query optionalEmail parameter: Out Of Minimum Length String",
+                "method" : "POST",
+                "path" : "/validation/nullables",
+                "queryParams" : {
+                    "optionalEmail" : ""
                 },
-                "pathParams": {},
-                "headers": [
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {},
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
+                "body" : {
+                    "description" : null,
+                    "alternateEmail" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
             },
             {
-                "name": "Invalid Query optionalEmail parameter: Wrong Email Format",
-                "method": "POST",
-                "path": "/validation/nullables",
-                "queryParams": {
-                    "optionalEmail": "invalid.email@example"
+                "name" : "Invalid Query optionalEmail parameter: Wrong Email Format",
+                "method" : "POST",
+                "path" : "/validation/nullables",
+                "queryParams" : {
+                    "optionalEmail" : "invalid.email@example"
                 },
-                "pathParams": {},
-                "headers": [
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {},
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.WrongEmailFormatSchemaValidationRule"
+                "body" : {
+                    "description" : null,
+                    "alternateEmail" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.WrongEmailFormatSchemaValidationRule"
             },
             {
-                "name": "Invalid X-API-Key API key security",
-                "method": "POST",
-                "path": "/validation/nullables",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Invalid X-API-Key API key security",
+                "method" : "POST",
+                "path" : "/validation/nullables",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-API-Key",
-                        "value": "some_really_invalid_api_key"
+                        "key" : "X-API-Key",
+                        "value" : "some_really_invalid_api_key"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         },
                         {
-                            "key": "X-API-Key",
-                            "value": "some_really_invalid_api_key"
+                            "key" : "X-API-Key",
+                            "value" : "some_really_invalid_api_key"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {},
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+                "body" : {
+                    "description" : null,
+                    "alternateEmail" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
             },
             {
-                "name": "No security values provided",
-                "method": "POST",
-                "path": "/validation/nullables",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "No security values provided",
+                "method" : "POST",
+                "path" : "/validation/nullables",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {},
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+                "body" : {
+                    "description" : null,
+                    "alternateEmail" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
             },
             {
-                "name": "Required Request Body is missing",
-                "method": "POST",
-                "path": "/validation/nullables",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Required Request Body is missing",
+                "method" : "POST",
+                "path" : "/validation/nullables",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+                "body" : null,
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
             },
             {
-                "name": "Test Valid Case",
-                "method": "POST",
-                "path": "/validation/nullables",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Test Valid Case",
+                "method" : "POST",
+                "path" : "/validation/nullables",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {},
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : {
+                    "description" : null,
+                    "alternateEmail" : null
                 },
-                "needToComplete": true,
-                "expectedStatusCode": 200,
-                "rule": null
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : true,
+                "expectedStatusCode" : 200,
+                "rule" : null
             }
         ]
     }

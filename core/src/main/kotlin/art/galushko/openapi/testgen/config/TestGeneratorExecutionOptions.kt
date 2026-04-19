@@ -22,6 +22,7 @@ public data class TestGeneratorExecutionOptions(
     val testGenerationSettings: TestGenerationSettings,
     val alwaysWriteTests: Boolean,
     val moduleSettings: ModuleSettings = ModuleSettings.EMPTY,
+    val parserSettings: ParserSettings = ParserSettings(),
 )
 
 /**
@@ -39,6 +40,7 @@ public data class TestGeneratorOverrides(
     val generatorOptions: Map<String, Any?> = emptyMap(),
     val testGenerationSettings: Map<String, Any?> = emptyMap(),
     val alwaysWriteTests: Boolean? = null,
+    val parserSettings: Map<String, Any?> = emptyMap(),
 )
 
 /**
@@ -101,6 +103,14 @@ public object TestGeneratorExecutionOptionsFactory {
         val alwaysWriteTests: Boolean =
             overrides.alwaysWriteTests ?: config?.alwaysWriteTests ?: false
 
+        // Merge parserSettings from config and overrides
+        val mergedParserSettings = ConfigMerger.merge(
+            base = config?.parserSettings ?: emptyMap(),
+            overrides = overrides.parserSettings,
+            rootField = "parserSettings",
+        )
+        val parserSettings = ParserSettings.fromMap(mergedParserSettings)
+
         val result = TestGeneratorExecutionOptions(
             specFile = specFile,
             outputDir = outputDir,
@@ -109,6 +119,7 @@ public object TestGeneratorExecutionOptionsFactory {
             testGenerationSettings = testGenerationSettings,
             alwaysWriteTests = alwaysWriteTests,
             moduleSettings = ModuleSettings(moduleSettingsMap),
+            parserSettings = parserSettings,
         )
 
         if (logger.isDebugEnabled) {

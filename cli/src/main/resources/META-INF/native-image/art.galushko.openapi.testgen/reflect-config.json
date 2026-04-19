@@ -24,6 +24,9 @@
   "name":"[Lcom.fasterxml.jackson.databind.ser.Serializers;"
 },
 {
+  "name":"[Lio.swagger.v3.oas.models.media.Schema;"
+},
+{
   "name":"[Ljava.lang.Object;"
 },
 {
@@ -65,7 +68,7 @@
   "name":"art.galushko.openapi.testgen.generator.template.GenericMethodTemplateContext",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "methods":[{"name":"escapeString","parameterTypes":[] }, {"name":"getExpectedResponseBody","parameterTypes":[] }, {"name":"getExpectedStatusCode","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getHttpMethod","parameterTypes":[] }, {"name":"getMethodName","parameterTypes":[] }, {"name":"getPath","parameterTypes":[] }, {"name":"getPathParams","parameterTypes":[] }, {"name":"getQueryParams","parameterTypes":[] }, {"name":"getRequestBody","parameterTypes":[] }, {"name":"getShouldHaveBody","parameterTypes":[] }, {"name":"getTestCaseName","parameterTypes":[] }]
+  "methods":[{"name":"escapeString","parameterTypes":[] }, {"name":"getExpectedResponseBody","parameterTypes":[] }, {"name":"getExpectedStatusCode","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getHttpMethod","parameterTypes":[] }, {"name":"getMethodName","parameterTypes":[] }, {"name":"getPath","parameterTypes":[] }, {"name":"getPathParams","parameterTypes":[] }, {"name":"getQueryParams","parameterTypes":[] }, {"name":"getRequestBody","parameterTypes":[] }, {"name":"getRequestBodyMediaType","parameterTypes":[] }, {"name":"getResponseBodyMediaType","parameterTypes":[] }, {"name":"getShouldHaveBody","parameterTypes":[] }, {"name":"getTestCaseName","parameterTypes":[] }]
 },
 {
   "name":"art.galushko.openapi.testgen.generator.template.GenericParamContext",
@@ -95,7 +98,7 @@
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
   "queryAllDeclaredMethods":true,
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.lang.String","java.util.Map","java.util.Map","java.util.List","java.util.List","art.galushko.openapi.testgen.model.SecurityValues","java.lang.Object","java.lang.Object","boolean","int","java.lang.String"] }, {"name":"getBody","parameterTypes":[] }, {"name":"getCookie","parameterTypes":[] }, {"name":"getExpectedBody","parameterTypes":[] }, {"name":"getExpectedStatusCode","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getMethod","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getNeedToComplete","parameterTypes":[] }, {"name":"getPath","parameterTypes":[] }, {"name":"getPathParams","parameterTypes":[] }, {"name":"getQueryParams","parameterTypes":[] }, {"name":"getRule","parameterTypes":[] }, {"name":"getSecurityValues","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.lang.String","java.util.Map","java.util.Map","java.util.List","java.util.List","art.galushko.openapi.testgen.model.SecurityValues","java.lang.Object","java.lang.Object","boolean","int","java.lang.String"] }, {"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.lang.String","java.util.Map","java.util.Map","java.util.List","java.util.List","art.galushko.openapi.testgen.model.SecurityValues","java.lang.Object","java.lang.String","java.lang.Object","java.lang.String","boolean","int","java.lang.String"] }, {"name":"getBody","parameterTypes":[] }, {"name":"getCookie","parameterTypes":[] }, {"name":"getExpectedBody","parameterTypes":[] }, {"name":"getExpectedStatusCode","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getMethod","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getNeedToComplete","parameterTypes":[] }, {"name":"getPath","parameterTypes":[] }, {"name":"getPathParams","parameterTypes":[] }, {"name":"getQueryParams","parameterTypes":[] }, {"name":"getRequestBodyMediaType","parameterTypes":[] }, {"name":"getResponseBodyMediaType","parameterTypes":[] }, {"name":"getRule","parameterTypes":[] }, {"name":"getSecurityValues","parameterTypes":[] }]
 },
 {
   "name":"art.galushko.openapi.testgen.model.TestSuite",
@@ -140,6 +143,9 @@
   "methods":[{"name":"valueOf","parameterTypes":["java.lang.String"] }]
 },
 {
+  "name":"com.fasterxml.jackson.annotation.JsonIgnore"
+},
+{
   "name":"com.fasterxml.jackson.databind.ext.Java7SupportImpl",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
@@ -152,6 +158,10 @@
 },
 {
   "name":"io.swagger.v3.core.jackson.ApiResponsesSerializer",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.core.jackson.CallbackSerializer",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
@@ -198,35 +208,51 @@
   "name":"io.swagger.v3.oas.models.ExternalDocumentation",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
-  "queryAllDeclaredConstructors":true
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getUrl","parameterTypes":[] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setUrl","parameterTypes":["java.lang.String"] }]
 },
 {
   "name":"io.swagger.v3.oas.models.Operation",
   "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allPublicConstructors":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getCallbacks","parameterTypes":[] }, {"name":"getDeprecated","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getExternalDocs","parameterTypes":[] }, {"name":"getOperationId","parameterTypes":[] }, {"name":"getParameters","parameterTypes":[] }, {"name":"getRequestBody","parameterTypes":[] }, {"name":"getResponses","parameterTypes":[] }, {"name":"getSecurity","parameterTypes":[] }, {"name":"getServers","parameterTypes":[] }, {"name":"getSummary","parameterTypes":[] }, {"name":"getTags","parameterTypes":[] }, {"name":"setOperationId","parameterTypes":["java.lang.String"] }, {"name":"setParameters","parameterTypes":["java.util.List"] }, {"name":"setRequestBody","parameterTypes":["io.swagger.v3.oas.models.parameters.RequestBody"] }, {"name":"setResponses","parameterTypes":["io.swagger.v3.oas.models.responses.ApiResponses"] }, {"name":"setSummary","parameterTypes":["java.lang.String"] }, {"name":"setTags","parameterTypes":["java.util.List"] }]
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getCallbacks","parameterTypes":[] }, {"name":"getDeprecated","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getExternalDocs","parameterTypes":[] }, {"name":"getOperationId","parameterTypes":[] }, {"name":"getParameters","parameterTypes":[] }, {"name":"getRequestBody","parameterTypes":[] }, {"name":"getResponses","parameterTypes":[] }, {"name":"getSecurity","parameterTypes":[] }, {"name":"getServers","parameterTypes":[] }, {"name":"getSummary","parameterTypes":[] }, {"name":"getTags","parameterTypes":[] }, {"name":"setCallbacks","parameterTypes":["java.util.Map"] }, {"name":"setDeprecated","parameterTypes":["java.lang.Boolean"] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setExternalDocs","parameterTypes":["io.swagger.v3.oas.models.ExternalDocumentation"] }, {"name":"setOperationId","parameterTypes":["java.lang.String"] }, {"name":"setParameters","parameterTypes":["java.util.List"] }, {"name":"setRequestBody","parameterTypes":["io.swagger.v3.oas.models.parameters.RequestBody"] }, {"name":"setResponses","parameterTypes":["io.swagger.v3.oas.models.responses.ApiResponses"] }, {"name":"setSecurity","parameterTypes":["java.util.List"] }, {"name":"setServers","parameterTypes":["java.util.List"] }, {"name":"setSummary","parameterTypes":["java.lang.String"] }, {"name":"setTags","parameterTypes":["java.util.List"] }]
 },
 {
   "name":"io.swagger.v3.oas.models.PathItem",
   "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allPublicConstructors":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"getDelete","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getGet","parameterTypes":[] }, {"name":"getHead","parameterTypes":[] }, {"name":"getOptions","parameterTypes":[] }, {"name":"getParameters","parameterTypes":[] }, {"name":"getPatch","parameterTypes":[] }, {"name":"getPost","parameterTypes":[] }, {"name":"getPut","parameterTypes":[] }, {"name":"getServers","parameterTypes":[] }, {"name":"getSummary","parameterTypes":[] }, {"name":"getTrace","parameterTypes":[] }, {"name":"setGet","parameterTypes":["io.swagger.v3.oas.models.Operation"] }, {"name":"setPost","parameterTypes":["io.swagger.v3.oas.models.Operation"] }, {"name":"setServers","parameterTypes":["java.util.List"] }]
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"getDelete","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getGet","parameterTypes":[] }, {"name":"getHead","parameterTypes":[] }, {"name":"getOptions","parameterTypes":[] }, {"name":"getParameters","parameterTypes":[] }, {"name":"getPatch","parameterTypes":[] }, {"name":"getPost","parameterTypes":[] }, {"name":"getPut","parameterTypes":[] }, {"name":"getServers","parameterTypes":[] }, {"name":"getSummary","parameterTypes":[] }, {"name":"getTrace","parameterTypes":[] }, {"name":"set$ref","parameterTypes":["java.lang.String"] }, {"name":"setDelete","parameterTypes":["io.swagger.v3.oas.models.Operation"] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setGet","parameterTypes":["io.swagger.v3.oas.models.Operation"] }, {"name":"setHead","parameterTypes":["io.swagger.v3.oas.models.Operation"] }, {"name":"setOptions","parameterTypes":["io.swagger.v3.oas.models.Operation"] }, {"name":"setParameters","parameterTypes":["java.util.List"] }, {"name":"setPatch","parameterTypes":["io.swagger.v3.oas.models.Operation"] }, {"name":"setPost","parameterTypes":["io.swagger.v3.oas.models.Operation"] }, {"name":"setServers","parameterTypes":["java.util.List"] }, {"name":"setSummary","parameterTypes":["java.lang.String"] }, {"name":"setTrace","parameterTypes":["io.swagger.v3.oas.models.Operation"] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.SpecVersion"
+},
+{
+  "name":"io.swagger.v3.oas.models.callbacks.Callback",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allPublicConstructors":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
 },
 {
   "name":"io.swagger.v3.oas.models.examples.Example",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getExternalValue","parameterTypes":[] }, {"name":"getSummary","parameterTypes":[] }, {"name":"getValue","parameterTypes":[] }, {"name":"setValue","parameterTypes":["java.lang.Object"] }]
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getExternalValue","parameterTypes":[] }, {"name":"getSummary","parameterTypes":[] }, {"name":"getValue","parameterTypes":[] }, {"name":"set$ref","parameterTypes":["java.lang.String"] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setExternalValue","parameterTypes":["java.lang.String"] }, {"name":"setSummary","parameterTypes":["java.lang.String"] }, {"name":"setValue","parameterTypes":["java.lang.Object"] }]
 },
 {
   "name":"io.swagger.v3.oas.models.headers.Header",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"getContent","parameterTypes":[] }, {"name":"getDeprecated","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExample","parameterTypes":[] }, {"name":"getExamples","parameterTypes":[] }, {"name":"getExplode","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getRequired","parameterTypes":[] }, {"name":"getSchema","parameterTypes":[] }, {"name":"getStyle","parameterTypes":[] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setExplode","parameterTypes":["java.lang.Boolean"] }, {"name":"setSchema","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setStyle","parameterTypes":["io.swagger.v3.oas.models.headers.Header$StyleEnum"] }]
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"getContent","parameterTypes":[] }, {"name":"getDeprecated","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExample","parameterTypes":[] }, {"name":"getExamples","parameterTypes":[] }, {"name":"getExplode","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getRequired","parameterTypes":[] }, {"name":"getSchema","parameterTypes":[] }, {"name":"getStyle","parameterTypes":[] }, {"name":"set$ref","parameterTypes":["java.lang.String"] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setExplode","parameterTypes":["java.lang.Boolean"] }, {"name":"setSchema","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setStyle","parameterTypes":["io.swagger.v3.oas.models.headers.Header$StyleEnum"] }]
 },
 {
   "name":"io.swagger.v3.oas.models.headers.Header$StyleEnum",
@@ -236,12 +262,23 @@
 {
   "name":"io.swagger.v3.oas.models.links.Link",
   "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allPublicConstructors":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getOperationId","parameterTypes":[] }, {"name":"getOperationRef","parameterTypes":[] }, {"name":"getParameters","parameterTypes":[] }, {"name":"getRequestBody","parameterTypes":[] }, {"name":"getServer","parameterTypes":[] }, {"name":"set$ref","parameterTypes":["java.lang.String"] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setOperationId","parameterTypes":["java.lang.String"] }, {"name":"setOperationRef","parameterTypes":["java.lang.String"] }, {"name":"setParameters","parameterTypes":["java.util.Map"] }, {"name":"setServer","parameterTypes":["io.swagger.v3.oas.models.servers.Server"] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.media.ComposedSchema",
+  "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true
 },
 {
   "name":"io.swagger.v3.oas.models.media.Content",
   "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allPublicConstructors":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
@@ -250,13 +287,20 @@
   "name":"io.swagger.v3.oas.models.media.Discriminator",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
-  "queryAllDeclaredConstructors":true
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getMapping","parameterTypes":[] }, {"name":"getPropertyName","parameterTypes":[] }, {"name":"setMapping","parameterTypes":["java.util.Map"] }, {"name":"setPropertyName","parameterTypes":["java.lang.String"] }]
 },
 {
   "name":"io.swagger.v3.oas.models.media.Encoding",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
-  "queryAllDeclaredConstructors":true
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getAllowReserved","parameterTypes":[] }, {"name":"getContentType","parameterTypes":[] }, {"name":"getExplode","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getStyle","parameterTypes":[] }, {"name":"setContentType","parameterTypes":["java.lang.String"] }, {"name":"setExplode","parameterTypes":["java.lang.Boolean"] }, {"name":"setHeaders","parameterTypes":["java.util.Map"] }, {"name":"setStyle","parameterTypes":["io.swagger.v3.oas.models.media.Encoding$StyleEnum"] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.media.Encoding$StyleEnum",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
 },
 {
   "name":"io.swagger.v3.oas.models.media.JsonSchema",
@@ -268,22 +312,52 @@
 {
   "name":"io.swagger.v3.oas.models.media.MediaType",
   "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allPublicConstructors":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getEncoding","parameterTypes":[] }, {"name":"getExample","parameterTypes":[] }, {"name":"getExamples","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getSchema","parameterTypes":[] }, {"name":"setExamples","parameterTypes":["java.util.Map"] }, {"name":"setSchema","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }]
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getEncoding","parameterTypes":[] }, {"name":"getExample","parameterTypes":[] }, {"name":"getExamples","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getSchema","parameterTypes":[] }, {"name":"setEncoding","parameterTypes":["java.util.Map"] }, {"name":"setExamples","parameterTypes":["java.util.Map"] }, {"name":"setSchema","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.media.ObjectSchema",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
 },
 {
   "name":"io.swagger.v3.oas.models.media.Schema",
   "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredClasses":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"get$anchor","parameterTypes":[] }, {"name":"get$comment","parameterTypes":[] }, {"name":"get$dynamicAnchor","parameterTypes":[] }, {"name":"get$dynamicRef","parameterTypes":[] }, {"name":"get$id","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"get$schema","parameterTypes":[] }, {"name":"get$vocabulary","parameterTypes":[] }, {"name":"getAdditionalItems","parameterTypes":[] }, {"name":"getAdditionalProperties","parameterTypes":[] }, {"name":"getAllOf","parameterTypes":[] }, {"name":"getAnyOf","parameterTypes":[] }, {"name":"getConst","parameterTypes":[] }, {"name":"getContains","parameterTypes":[] }, {"name":"getContentEncoding","parameterTypes":[] }, {"name":"getContentMediaType","parameterTypes":[] }, {"name":"getContentSchema","parameterTypes":[] }, {"name":"getDefault","parameterTypes":[] }, {"name":"getDependentRequired","parameterTypes":[] }, {"name":"getDependentSchemas","parameterTypes":[] }, {"name":"getDeprecated","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getDiscriminator","parameterTypes":[] }, {"name":"getElse","parameterTypes":[] }, {"name":"getEnum","parameterTypes":[] }, {"name":"getExample","parameterTypes":[] }, {"name":"getExamples","parameterTypes":[] }, {"name":"getExclusiveMaximumValue","parameterTypes":[] }, {"name":"getExclusiveMinimumValue","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getExternalDocs","parameterTypes":[] }, {"name":"getFormat","parameterTypes":[] }, {"name":"getIf","parameterTypes":[] }, {"name":"getItems","parameterTypes":[] }, {"name":"getMaxContains","parameterTypes":[] }, {"name":"getMaxItems","parameterTypes":[] }, {"name":"getMaxLength","parameterTypes":[] }, {"name":"getMaxProperties","parameterTypes":[] }, {"name":"getMaximum","parameterTypes":[] }, {"name":"getMinContains","parameterTypes":[] }, {"name":"getMinItems","parameterTypes":[] }, {"name":"getMinLength","parameterTypes":[] }, {"name":"getMinProperties","parameterTypes":[] }, {"name":"getMinimum","parameterTypes":[] }, {"name":"getMultipleOf","parameterTypes":[] }, {"name":"getNot","parameterTypes":[] }, {"name":"getOneOf","parameterTypes":[] }, {"name":"getPattern","parameterTypes":[] }, {"name":"getPatternProperties","parameterTypes":[] }, {"name":"getPrefixItems","parameterTypes":[] }, {"name":"getProperties","parameterTypes":[] }, {"name":"getPropertyNames","parameterTypes":[] }, {"name":"getReadOnly","parameterTypes":[] }, {"name":"getRequired","parameterTypes":[] }, {"name":"getThen","parameterTypes":[] }, {"name":"getTitle","parameterTypes":[] }, {"name":"getTypes","parameterTypes":[] }, {"name":"getUnevaluatedItems","parameterTypes":[] }, {"name":"getUnevaluatedProperties","parameterTypes":[] }, {"name":"getUniqueItems","parameterTypes":[] }, {"name":"getWriteOnly","parameterTypes":[] }, {"name":"getXml","parameterTypes":[] }, {"name":"set$ref","parameterTypes":["java.lang.String"] }, {"name":"setDefault","parameterTypes":["java.lang.Object"] }, {"name":"setEnum","parameterTypes":["java.util.List"] }, {"name":"setExample","parameterTypes":["java.lang.Object"] }, {"name":"setFormat","parameterTypes":["java.lang.String"] }, {"name":"setItems","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setMaxLength","parameterTypes":["java.lang.Integer"] }, {"name":"setMaximum","parameterTypes":["java.math.BigDecimal"] }, {"name":"setMinItems","parameterTypes":["java.lang.Integer"] }, {"name":"setMinLength","parameterTypes":["java.lang.Integer"] }, {"name":"setMinimum","parameterTypes":["java.math.BigDecimal"] }, {"name":"setPattern","parameterTypes":["java.lang.String"] }, {"name":"setProperties","parameterTypes":["java.util.Map"] }, {"name":"setRequired","parameterTypes":["java.util.List"] }]
+  "methods":[{"name":"addExtension","parameterTypes":["java.lang.String","java.lang.Object"] }, {"name":"get$anchor","parameterTypes":[] }, {"name":"get$comment","parameterTypes":[] }, {"name":"get$dynamicAnchor","parameterTypes":[] }, {"name":"get$dynamicRef","parameterTypes":[] }, {"name":"get$id","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"get$schema","parameterTypes":[] }, {"name":"get$vocabulary","parameterTypes":[] }, {"name":"getAdditionalItems","parameterTypes":[] }, {"name":"getAdditionalProperties","parameterTypes":[] }, {"name":"getAllOf","parameterTypes":[] }, {"name":"getAnyOf","parameterTypes":[] }, {"name":"getBooleanSchemaValue","parameterTypes":[] }, {"name":"getConst","parameterTypes":[] }, {"name":"getContains","parameterTypes":[] }, {"name":"getContentEncoding","parameterTypes":[] }, {"name":"getContentMediaType","parameterTypes":[] }, {"name":"getContentSchema","parameterTypes":[] }, {"name":"getDefault","parameterTypes":[] }, {"name":"getDependentRequired","parameterTypes":[] }, {"name":"getDependentSchemas","parameterTypes":[] }, {"name":"getDeprecated","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getDiscriminator","parameterTypes":[] }, {"name":"getElse","parameterTypes":[] }, {"name":"getEnum","parameterTypes":[] }, {"name":"getExample","parameterTypes":[] }, {"name":"getExampleSetFlag","parameterTypes":[] }, {"name":"getExamples","parameterTypes":[] }, {"name":"getExclusiveMaximum","parameterTypes":[] }, {"name":"getExclusiveMaximumValue","parameterTypes":[] }, {"name":"getExclusiveMinimum","parameterTypes":[] }, {"name":"getExclusiveMinimumValue","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getExternalDocs","parameterTypes":[] }, {"name":"getFormat","parameterTypes":[] }, {"name":"getIf","parameterTypes":[] }, {"name":"getItems","parameterTypes":[] }, {"name":"getJsonSchema","parameterTypes":[] }, {"name":"getJsonSchemaImpl","parameterTypes":[] }, {"name":"getMaxContains","parameterTypes":[] }, {"name":"getMaxItems","parameterTypes":[] }, {"name":"getMaxLength","parameterTypes":[] }, {"name":"getMaxProperties","parameterTypes":[] }, {"name":"getMaximum","parameterTypes":[] }, {"name":"getMinContains","parameterTypes":[] }, {"name":"getMinItems","parameterTypes":[] }, {"name":"getMinLength","parameterTypes":[] }, {"name":"getMinProperties","parameterTypes":[] }, {"name":"getMinimum","parameterTypes":[] }, {"name":"getMultipleOf","parameterTypes":[] }, {"name":"getNot","parameterTypes":[] }, {"name":"getNullable","parameterTypes":[] }, {"name":"getOneOf","parameterTypes":[] }, {"name":"getPattern","parameterTypes":[] }, {"name":"getPatternProperties","parameterTypes":[] }, {"name":"getPrefixItems","parameterTypes":[] }, {"name":"getProperties","parameterTypes":[] }, {"name":"getPropertyNames","parameterTypes":[] }, {"name":"getReadOnly","parameterTypes":[] }, {"name":"getRequired","parameterTypes":[] }, {"name":"getThen","parameterTypes":[] }, {"name":"getTitle","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }, {"name":"getTypes","parameterTypes":[] }, {"name":"getUnevaluatedItems","parameterTypes":[] }, {"name":"getUnevaluatedProperties","parameterTypes":[] }, {"name":"getUniqueItems","parameterTypes":[] }, {"name":"getWriteOnly","parameterTypes":[] }, {"name":"getXml","parameterTypes":[] }, {"name":"set$comment","parameterTypes":["java.lang.String"] }, {"name":"set$id","parameterTypes":["java.lang.String"] }, {"name":"set$ref","parameterTypes":["java.lang.String"] }, {"name":"set$schema","parameterTypes":["java.lang.String"] }, {"name":"setAllOf","parameterTypes":["java.util.List"] }, {"name":"setAnyOf","parameterTypes":["java.util.List"] }, {"name":"setConst","parameterTypes":["java.lang.Object"] }, {"name":"setContains","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setContentEncoding","parameterTypes":["java.lang.String"] }, {"name":"setContentMediaType","parameterTypes":["java.lang.String"] }, {"name":"setDefault","parameterTypes":["java.lang.Object"] }, {"name":"setDependentRequired","parameterTypes":["java.util.Map"] }, {"name":"setDependentSchemas","parameterTypes":["java.util.Map"] }, {"name":"setDeprecated","parameterTypes":["java.lang.Boolean"] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setDiscriminator","parameterTypes":["io.swagger.v3.oas.models.media.Discriminator"] }, {"name":"setElse","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setEnum","parameterTypes":["java.util.List"] }, {"name":"setExample","parameterTypes":["java.lang.Object"] }, {"name":"setExamples","parameterTypes":["java.util.List"] }, {"name":"setExclusiveMaximumValue","parameterTypes":["java.math.BigDecimal"] }, {"name":"setExclusiveMinimumValue","parameterTypes":["java.math.BigDecimal"] }, {"name":"setFormat","parameterTypes":["java.lang.String"] }, {"name":"setIf","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setItems","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setMaxContains","parameterTypes":["java.lang.Integer"] }, {"name":"setMaxItems","parameterTypes":["java.lang.Integer"] }, {"name":"setMaxLength","parameterTypes":["java.lang.Integer"] }, {"name":"setMaxProperties","parameterTypes":["java.lang.Integer"] }, {"name":"setMaximum","parameterTypes":["java.math.BigDecimal"] }, {"name":"setMinContains","parameterTypes":["java.lang.Integer"] }, {"name":"setMinItems","parameterTypes":["java.lang.Integer"] }, {"name":"setMinLength","parameterTypes":["java.lang.Integer"] }, {"name":"setMinProperties","parameterTypes":["java.lang.Integer"] }, {"name":"setMinimum","parameterTypes":["java.math.BigDecimal"] }, {"name":"setMultipleOf","parameterTypes":["java.math.BigDecimal"] }, {"name":"setNot","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setOneOf","parameterTypes":["java.util.List"] }, {"name":"setPattern","parameterTypes":["java.lang.String"] }, {"name":"setPatternProperties","parameterTypes":["java.util.Map"] }, {"name":"setPrefixItems","parameterTypes":["java.util.List"] }, {"name":"setProperties","parameterTypes":["java.util.Map"] }, {"name":"setPropertyNames","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setReadOnly","parameterTypes":["java.lang.Boolean"] }, {"name":"setRequired","parameterTypes":["java.util.List"] }, {"name":"setThen","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setTitle","parameterTypes":["java.lang.String"] }, {"name":"setUnevaluatedItems","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setUnevaluatedProperties","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setUniqueItems","parameterTypes":["java.lang.Boolean"] }, {"name":"setWriteOnly","parameterTypes":["java.lang.Boolean"] }, {"name":"setXml","parameterTypes":["io.swagger.v3.oas.models.media.XML"] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.media.Schema$BynaryStringConversion"
+},
+{
+  "name":"io.swagger.v3.oas.models.media.Schema$SchemaResolution"
+},
+{
+  "name":"io.swagger.v3.oas.models.media.StringSchema",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
 },
 {
   "name":"io.swagger.v3.oas.models.media.XML",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
-  "queryAllDeclaredConstructors":true
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getAttribute","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getNamespace","parameterTypes":[] }, {"name":"getPrefix","parameterTypes":[] }, {"name":"getWrapped","parameterTypes":[] }, {"name":"setName","parameterTypes":["java.lang.String"] }, {"name":"setWrapped","parameterTypes":["java.lang.Boolean"] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.parameters.CookieParameter",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getIn","parameterTypes":[] }, {"name":"setIn","parameterTypes":["java.lang.String"] }]
 },
 {
   "name":"io.swagger.v3.oas.models.parameters.HeaderParameter",
@@ -297,7 +371,7 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"get$ref","parameterTypes":[] }, {"name":"getAllowEmptyValue","parameterTypes":[] }, {"name":"getAllowReserved","parameterTypes":[] }, {"name":"getContent","parameterTypes":[] }, {"name":"getDeprecated","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExample","parameterTypes":[] }, {"name":"getExamples","parameterTypes":[] }, {"name":"getExplode","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getIn","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getRequired","parameterTypes":[] }, {"name":"getSchema","parameterTypes":[] }, {"name":"getStyle","parameterTypes":[] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setExplode","parameterTypes":["java.lang.Boolean"] }, {"name":"setName","parameterTypes":["java.lang.String"] }, {"name":"setRequired","parameterTypes":["java.lang.Boolean"] }, {"name":"setSchema","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setStyle","parameterTypes":["io.swagger.v3.oas.models.parameters.Parameter$StyleEnum"] }]
+  "methods":[{"name":"get$ref","parameterTypes":[] }, {"name":"getAllowEmptyValue","parameterTypes":[] }, {"name":"getAllowReserved","parameterTypes":[] }, {"name":"getContent","parameterTypes":[] }, {"name":"getDeprecated","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExample","parameterTypes":[] }, {"name":"getExamples","parameterTypes":[] }, {"name":"getExplode","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getIn","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getRequired","parameterTypes":[] }, {"name":"getSchema","parameterTypes":[] }, {"name":"getStyle","parameterTypes":[] }, {"name":"setAllowEmptyValue","parameterTypes":["java.lang.Boolean"] }, {"name":"setAllowReserved","parameterTypes":["java.lang.Boolean"] }, {"name":"setContent","parameterTypes":["io.swagger.v3.oas.models.media.Content"] }, {"name":"setDeprecated","parameterTypes":["java.lang.Boolean"] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setExample","parameterTypes":["java.lang.Object"] }, {"name":"setExamples","parameterTypes":["java.util.Map"] }, {"name":"setExplode","parameterTypes":["java.lang.Boolean"] }, {"name":"setName","parameterTypes":["java.lang.String"] }, {"name":"setRequired","parameterTypes":["java.lang.Boolean"] }, {"name":"setSchema","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setStyle","parameterTypes":["io.swagger.v3.oas.models.parameters.Parameter$StyleEnum"] }]
 },
 {
   "name":"io.swagger.v3.oas.models.parameters.Parameter$StyleEnum",
@@ -321,28 +395,56 @@
 {
   "name":"io.swagger.v3.oas.models.parameters.RequestBody",
   "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allPublicConstructors":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"getContent","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getRequired","parameterTypes":[] }, {"name":"setContent","parameterTypes":["io.swagger.v3.oas.models.media.Content"] }, {"name":"setRequired","parameterTypes":["java.lang.Boolean"] }]
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"getContent","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getRequired","parameterTypes":[] }, {"name":"set$ref","parameterTypes":["java.lang.String"] }, {"name":"setContent","parameterTypes":["io.swagger.v3.oas.models.media.Content"] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setRequired","parameterTypes":["java.lang.Boolean"] }]
 },
 {
   "name":"io.swagger.v3.oas.models.responses.ApiResponse",
   "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allPublicConstructors":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"getContent","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getLinks","parameterTypes":[] }, {"name":"set$ref","parameterTypes":["java.lang.String"] }, {"name":"setContent","parameterTypes":["io.swagger.v3.oas.models.media.Content"] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setHeaders","parameterTypes":["java.util.Map"] }]
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"getContent","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getLinks","parameterTypes":[] }, {"name":"set$ref","parameterTypes":["java.lang.String"] }, {"name":"setContent","parameterTypes":["io.swagger.v3.oas.models.media.Content"] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setHeaders","parameterTypes":["java.util.Map"] }, {"name":"setLinks","parameterTypes":["java.util.Map"] }]
 },
 {
   "name":"io.swagger.v3.oas.models.responses.ApiResponses",
   "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allPublicConstructors":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.swagger.v3.oas.models.security.OAuthFlow",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getAuthorizationUrl","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getRefreshUrl","parameterTypes":[] }, {"name":"getScopes","parameterTypes":[] }, {"name":"getTokenUrl","parameterTypes":[] }, {"name":"setAuthorizationUrl","parameterTypes":["java.lang.String"] }, {"name":"setRefreshUrl","parameterTypes":["java.lang.String"] }, {"name":"setScopes","parameterTypes":["io.swagger.v3.oas.models.security.Scopes"] }, {"name":"setTokenUrl","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.security.OAuthFlows",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getAuthorizationCode","parameterTypes":[] }, {"name":"getClientCredentials","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getImplicit","parameterTypes":[] }, {"name":"getPassword","parameterTypes":[] }, {"name":"setAuthorizationCode","parameterTypes":["io.swagger.v3.oas.models.security.OAuthFlow"] }, {"name":"setClientCredentials","parameterTypes":["io.swagger.v3.oas.models.security.OAuthFlow"] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.security.Scopes",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"io.swagger.v3.oas.models.security.SecurityRequirement",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
-  "queryAllDeclaredConstructors":true
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"io.swagger.v3.oas.models.security.SecurityScheme",
@@ -366,19 +468,21 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getUrl","parameterTypes":[] }, {"name":"getVariables","parameterTypes":[] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setUrl","parameterTypes":["java.lang.String"] }]
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getUrl","parameterTypes":[] }, {"name":"getVariables","parameterTypes":[] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setUrl","parameterTypes":["java.lang.String"] }, {"name":"setVariables","parameterTypes":["io.swagger.v3.oas.models.servers.ServerVariables"] }]
 },
 {
   "name":"io.swagger.v3.oas.models.servers.ServerVariable",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
-  "queryAllDeclaredConstructors":true
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getDefault","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getEnum","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"setDefault","parameterTypes":["java.lang.String"] }]
 },
 {
   "name":"io.swagger.v3.oas.models.servers.ServerVariables",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
-  "queryAllDeclaredConstructors":true
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"java.beans.Introspector"
@@ -406,6 +510,11 @@
 {
   "name":"java.lang.Comparable",
   "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.lang.Deprecated",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"forRemoval","parameterTypes":[] }, {"name":"since","parameterTypes":[] }]
 },
 {
   "name":"java.lang.Double",
@@ -577,6 +686,11 @@
   "queryAllDeclaredMethods":true
 },
 {
+  "name":"java.util.AbstractSet",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
   "name":"java.util.Arrays$ArrayList",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
@@ -596,6 +710,12 @@
 },
 {
   "name":"java.util.Collections$SingletonMap",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"java.util.Collections$SingletonSet",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true
@@ -646,7 +766,8 @@
   "queryAllDeclaredMethods":true
 },
 {
-  "name":"java.util.Set"
+  "name":"java.util.Set",
+  "queryAllDeclaredMethods":true
 },
 {
   "name":"java.util.Spliterator"
@@ -694,6 +815,9 @@
   "name":"kotlin.Boolean"
 },
 {
+  "name":"kotlin.Deprecated"
+},
+{
   "name":"kotlin.Int"
 },
 {
@@ -719,6 +843,18 @@
 },
 {
   "name":"kotlin.Unit"
+},
+{
+  "name":"kotlin.annotation.AnnotationTarget"
+},
+{
+  "name":"kotlin.annotation.MustBeDocumented",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"kotlin.annotation.Target",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"allowedTargets","parameterTypes":[] }]
 },
 {
   "name":"kotlin.collections.Collection"

@@ -26,8 +26,14 @@ internal data class GenericMethodTemplateContext(
     val queryParams: List<GenericParamContext>,
     val cookies: List<GenericParamContext>,
     val requestBody: GenericBodyContext?,
+    val requestBodyMediaType: String?,
     val expectedResponseBody: GenericBodyContext?,
+    val responseBodyMediaType: String?,
+    val assertJsonResponseBody: Boolean,
+    val requestBodyTodoComment: String?,
+    val responseAssertionTodoComment: String?,
     val needToComplete: Boolean,
+    val notes: List<String>,
     val customVariables: Map<String, Any?>,
     val shouldHaveBody: Boolean = httpMethod.uppercase() in listOf("POST", "PUT", "PATCH"),
 ) {
@@ -37,9 +43,13 @@ internal data class GenericMethodTemplateContext(
 internal data class GenericParamContext(
     val key: String,
     val value: String,
-)
+) {
+    val escapedValue: String = escapeStringLiteral(value)
+}
 
 internal data class GenericBodyContext(
     val rawBody: String,
     val body: Any,
-)
+) {
+    val escapedRawBody: String = escapeStringLiteral(rawBody)
+}

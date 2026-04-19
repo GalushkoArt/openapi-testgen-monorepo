@@ -5,13 +5,13 @@ import art.galushko.openapi.testgen.example.openapi.SchemaMerger
 import art.galushko.openapi.testgen.example.response.ResponseExampleExtractor
 import art.galushko.openapi.testgen.example.util.CombinationBudget
 import art.galushko.openapi.testgen.model.TestCase
-import art.galushko.openapi.testgen.openapi.SchemaStructureHasher
 import art.galushko.openapi.testgen.openapi.SkipReason
 import art.galushko.openapi.testgen.testdata.BasicTestDataProvider
 import art.galushko.openapi.testgen.testdata.SecurityValueProvider
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.Operation
 import io.swagger.v3.oas.models.media.Schema
+import java.util.*
 
 /**
  * SPI-facing context for rule/provider evaluation during test generation.
@@ -79,7 +79,8 @@ public interface TestGenerationContext {
     public fun withVisitedSchema(schema: Schema<*>, name: String): TestGenerationContext?
 }
 
-internal data class DefaultTestGenerationContext(
+@Suppress("LongParameterList")
+internal class DefaultTestGenerationContext(
     override val openAPI: OpenAPI,
     override val operation: Operation,
     override val validCase: TestCase,
@@ -91,7 +92,7 @@ internal data class DefaultTestGenerationContext(
     override val maxDepth: Int,
     override val combinationBudget: CombinationBudget?,
     override val visitedSchemaRefs: Set<String> = emptySet(),
-    private val visitedStructures: Set<Int> = emptySet(),
+    private val visitedSchemaInstances: IdentitySchemaSet = IdentitySchemaSet.empty(),
     override val depth: Int = 0,
     override val schemaPath: List<String> = emptyList(),
 ) : TestGenerationContext {
@@ -100,14 +101,9 @@ internal data class DefaultTestGenerationContext(
         if (depth >= maxDepth) return SkipReason.DEPTH_EXCEEDED
 
         val ref = schema.`$ref`
-        if (ref != null && ref in visitedSchemaRefs) {
-            return SkipReason.CYCLE_DETECTED
-        }
+        if (ref != null && ref in visitedSchemaRefs) return SkipReason.CYCLE_DETECTED
 
-        val hash = SchemaStructureHasher(maxDepth).computeSchemaStructureHash(schema, depth)
-        if (hash in visitedStructures) {
-            return SkipReason.CYCLE_DETECTED
-        }
+        if (schema in visitedSchemaInstances) return SkipReason.CYCLE_DETECTED
 
         return null
     }
@@ -117,16 +113,47 @@ internal data class DefaultTestGenerationContext(
 
         val newDepth = depth + 1
         val ref = schema.`$ref`
-        val hash = SchemaStructureHasher(maxDepth).computeSchemaStructureHash(schema, newDepth)
-
         val newVisitedSchemas = if (ref != null) visitedSchemaRefs + ref else visitedSchemaRefs
 
-        return copy(
+        return DefaultTestGenerationContext(
+            openAPI = openAPI,
+            operation = operation,
+            validCase = validCase,
+            basicTestData = basicTestData,
+            securityValueProvider = securityValueProvider,
+            schemaExampleValueGenerator = schemaExampleValueGenerator,
+            responseExampleExtractor = responseExampleExtractor,
+            schemaMerger = schemaMerger,
+            maxDepth = maxDepth,
+            combinationBudget = combinationBudget,
             visitedSchemaRefs = newVisitedSchemas,
-            visitedStructures = visitedStructures + hash,
+            visitedSchemaInstances = visitedSchemaInstances + schema,
             depth = newDepth,
             schemaPath = schemaPath + name,
         )
+    }
+
+    override fun toString(): String =
+        "DefaultTestGenerationContext(depth=$depth, path=$schemaPath, refs=$visitedSchemaRefs, instances=${visitedSchemaInstances.size})"
+}
+
+internal class IdentitySchemaSet private constructor(
+    private val schemas: IdentityHashMap<Schema<*>, Unit>,
+) {
+    val size: Int
+        get() = schemas.size
+
+    operator fun contains(schema: Schema<*>): Boolean = schemas.containsKey(schema)
+
+    operator fun plus(schema: Schema<*>): IdentitySchemaSet {
+        if (schema in this) return this
+        val copy = IdentityHashMap(schemas)
+        copy[schema] = Unit
+        return IdentitySchemaSet(copy)
+    }
+
+    companion object {
+        fun empty(): IdentitySchemaSet = IdentitySchemaSet(IdentityHashMap())
     }
 }
 

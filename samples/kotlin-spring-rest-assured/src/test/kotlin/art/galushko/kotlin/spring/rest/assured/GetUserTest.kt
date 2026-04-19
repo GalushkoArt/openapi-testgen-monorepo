@@ -23,7 +23,7 @@ class GetUserTest {
         RestAssured.baseURI = "http://localhost:8080/v1"
     }
 
-    private fun assertExpectedBody(expectedBodyJson: String, responseBody: String) {
+    private fun assertExpectedJsonBody(expectedBodyJson: String, responseBody: String) {
         val expectedNode = objectMapper.readTree(expectedBodyJson)
         val actualNode = try {
             objectMapper.readTree(responseBody)
@@ -42,13 +42,14 @@ class GetUserTest {
     @DisplayName("No security values provided")
     fun noSecurityValuesProvided() {
         val requestSpec = RestAssured.given()
+        requestSpec.header("Accept", "application/json")
         requestSpec.pathParam("userId", "wha_262laxjwhyaz8")
 
         val response = requestSpec.get("/users/{userId}")
         response.then().statusCode(401)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"unauthorized\",\"message\":\"API key required\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -56,13 +57,14 @@ class GetUserTest {
     fun invalidXAPIKeyAPIKeySecurity() {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "new_invalid_api_key")
+        requestSpec.header("Accept", "application/json")
         requestSpec.pathParam("userId", "wha_262laxjwhyaz8")
 
         val response = requestSpec.get("/users/{userId}")
         response.then().statusCode(401)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"unauthorized\",\"message\":\"API key required\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
     @Test
@@ -70,13 +72,14 @@ class GetUserTest {
     fun invalidPathUserIdParameterInvalidPattern() {
         val requestSpec = RestAssured.given()
         requestSpec.header("X-API-Key", "test-api-key-123")
+        requestSpec.header("Accept", "application/json")
         requestSpec.pathParam("userId", "AE.")
 
         val response = requestSpec.get("/users/{userId}")
         response.then().statusCode(400)
         val responseBody = response.body.asString()
         val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
-        assertExpectedBody(expectedBodyJson, responseBody)
+        assertExpectedJsonBody(expectedBodyJson, responseBody)
     }
 
 }

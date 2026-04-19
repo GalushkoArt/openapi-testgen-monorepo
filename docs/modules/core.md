@@ -64,18 +64,18 @@ Budget controls prevent combinatorial explosion:
 
 Core behavior is configured primarily via `TestGenerationSettings` (budgets, ignore filters, example value settings, and module-owned settings).
 
-See: [YAML config](../how-to/configuration/yaml-config.md) and [Distribution settings](../reference/distribution-settings.md).
+See: [YAML config](../how-to/configuration.md#yaml-configuration) and [Distribution settings](../reference/distribution-settings.md).
 
 ## Extension points
 
 - **Rules**: implement `SimpleSchemaValidationRule` or `AuthValidationRule` and contribute via `TestGenerationModule`.
-  See: [SPI](../reference/spi/index.md) and [rules catalog](../reference/catalogs/rules-catalog.md).
+  See: [SPI](../reference/spi.md) and [rules catalog](../reference/catalogs/rules-catalog.md).
 - **Providers**: implement `TestCaseProvider<T>`.
-  See: [SPI](../reference/spi/index.md) and [providers catalog](../reference/catalogs/providers-catalog.md).
+  See: [SPI](../reference/spi.md) and [providers catalog](../reference/catalogs/providers-catalog.md).
 - **Generators**: implement `ArtifactGeneratorFactory` and `ArtifactGenerator`.
-  See: [test-suite-writer generator](../how-to/generators/test-suite-writer.md) and the generator SPI docs.
+  See: [test-suite-writer generator](../how-to/generators.md#test-suite-writer-generator) and the generator SPI docs.
 - **Schema values**: implement `SchemaValueProvider` in `example-value` and contribute via a `TestGenerationModule`.
-  See: [example-value module](example-value.md).
+  See: [module catalog](index.md#example-value).
 - **Module settings**: implement `ModuleSettingsExtractor` to parse module-specific settings from `testGenerationSettings`.
 
 ## Testing and fixtures
@@ -92,14 +92,14 @@ See: [YAML config](../how-to/configuration/yaml-config.md) and [Distribution set
 
 - Concepts:
   - [Architecture](../concepts/architecture.md)
-  - [Test generation flow](../concepts/test-generation-flow.md)
-  - [Provider-rule model](../concepts/provider-rule-model.md)
+  - [Test generation flow](../concepts/architecture.md#data-flow)
+  - [Provider-rule model](../concepts/architecture.md#provider-rule-architecture-pattern)
 - Reference:
   - [Distribution settings](../reference/distribution-settings.md)
   - [Rules catalog](../reference/catalogs/rules-catalog.md)
   - [Providers catalog](../reference/catalogs/providers-catalog.md)
   - [API reference](../reference/api.md)
 - How-to:
-  - [Test-suite-writer](../how-to/generators/test-suite-writer.md)
-  - [Template generator](../how-to/generators/template-generator.md)
-  - [Ignore rules](../how-to/configuration/ignore-rules.md)
+  - [Test-suite-writer](../how-to/generators.md#test-suite-writer-generator)
+  - [Template generator](../how-to/generators.md#template-generator)
+  - [Ignore rules](../how-to/configuration.md#ignore-rules)

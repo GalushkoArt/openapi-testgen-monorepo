@@ -12,7 +12,7 @@ import art.galushko.openapi.testgen.openapi.SecurityHelpers.isAuthSchemeWithScop
 import art.galushko.openapi.testgen.openapi.SecurityHelpers.testCaseWithoutSecurityValues
 import art.galushko.openapi.testgen.spi.AuthValidationRule
 import art.galushko.openapi.testgen.spi.SecuritySchemeToScope
-import art.galushko.openapi.testgen.testdata.extractExpectedResponseExample
+import art.galushko.openapi.testgen.testdata.extractExpectedResponseExampleWithMediaType
 import art.galushko.openapi.testgen.util.Consts.FORBIDDEN_CODE
 import art.galushko.openapi.testgen.util.Consts.UNAUTHORIZED_CODE
 import art.galushko.openapi.testgen.util.getSubsetsOfValues
@@ -97,6 +97,7 @@ internal class InvalidSecurityValuesAuthValidationRule : AuthValidationRule {
             .asSequence()
             .flatMap { securityRequirement ->
                 getSubsetsOfValues(securityRequirement, includeCompleteSet = true).asSequence().map { providedSecurityRequirement ->
+                    val expectedResponse = context.responseExampleExtractor.extractExpectedResponseExampleWithMediaType(context, UNAUTHORIZED_CODE)
                     applySecurityRequirementToTestCase(
                         context.validCase,
                         providedSecurityRequirement,
@@ -106,7 +107,8 @@ internal class InvalidSecurityValuesAuthValidationRule : AuthValidationRule {
                         name = "Invalid ${describeSecurityRequirements(providedSecurityRequirement)} security",
                         rule = InvalidSecurityValuesAuthValidationRule::class.java.name,
                         expectedStatusCode = UNAUTHORIZED_CODE,
-                        expectedBody = context.responseExampleExtractor.extractExpectedResponseExample(context, UNAUTHORIZED_CODE),
+                        expectedBody = expectedResponse.body,
+                        responseBodyMediaType = expectedResponse.mediaType,
                     )
                 }
             }
@@ -143,6 +145,7 @@ internal class InsufficientScopesAuthValidationRule : AuthValidationRule {
         return generateMissingScopeCombinations(group)
             .asSequence()
             .map { (name, requiredSecurityWithMissedScope) ->
+                val expectedResponse = context.responseExampleExtractor.extractExpectedResponseExampleWithMediaType(context, FORBIDDEN_CODE)
                 applySecurityRequirementToTestCase(
                     basicTestCase,
                     requiredSecurityWithMissedScope,
@@ -150,7 +153,8 @@ internal class InsufficientScopesAuthValidationRule : AuthValidationRule {
                     context.securityValueProvider::getAuthorizationSchemaValue,
                 ).copy(
                     expectedStatusCode = FORBIDDEN_CODE,
-                    expectedBody = context.responseExampleExtractor.extractExpectedResponseExample(context, FORBIDDEN_CODE),
+                    expectedBody = expectedResponse.body,
+                    responseBodyMediaType = expectedResponse.mediaType,
                     rule = InsufficientScopesAuthValidationRule::class.java.name,
                     name = name,
                 )
@@ -236,6 +240,7 @@ internal class IncorrectScopesAuthValidationRule : AuthValidationRule {
         return group.asSequence()
             .filter(SecurityHelpers::isAuthSchemeWithScope)
             .map { security ->
+                val expectedResponse = context.responseExampleExtractor.extractExpectedResponseExampleWithMediaType(context, FORBIDDEN_CODE)
                 val modifiableGroup = group.toMutableList()
                 modifiableGroup.remove(security)
                 modifiableGroup.add(security.copy(scopes = listOf(context.basicTestData.invalidSecurityScope())))
@@ -246,7 +251,8 @@ internal class IncorrectScopesAuthValidationRule : AuthValidationRule {
                     context.securityValueProvider::getAuthorizationSchemaValue,
                 ).copy(
                     expectedStatusCode = FORBIDDEN_CODE,
-                    expectedBody = context.responseExampleExtractor.extractExpectedResponseExample(context, FORBIDDEN_CODE),
+                    expectedBody = expectedResponse.body,
+                    responseBodyMediaType = expectedResponse.mediaType,
                     rule = IncorrectScopesAuthValidationRule::class.java.name,
                     name = "${security.name} security scheme has invalid scope",
                 )

@@ -332,10 +332,25 @@ public final class art/galushko/openapi/testgen/example/providers/UuidValueProvi
 public final class art/galushko/openapi/testgen/example/providers/UuidValueProvider$Companion {
 }
 
+public final class art/galushko/openapi/testgen/example/response/ExtractedResponseExample {
+	public fun <init> (Ljava/lang/Object;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/Object;Ljava/lang/String;)Lart/galushko/openapi/testgen/example/response/ExtractedResponseExample;
+	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/example/response/ExtractedResponseExample;Ljava/lang/Object;Ljava/lang/String;ILjava/lang/Object;)Lart/galushko/openapi/testgen/example/response/ExtractedResponseExample;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBody ()Ljava/lang/Object;
+	public final fun getMediaType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class art/galushko/openapi/testgen/example/response/ResponseExampleExtractor {
 	public fun <init> (Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGenerator;)V
 	public final fun extractExpectedResponseExample (Lio/swagger/v3/oas/models/Operation;Lio/swagger/v3/oas/models/OpenAPI;I)Ljava/lang/Object;
 	public final fun extractExpectedResponseExample (Lio/swagger/v3/oas/models/Operation;Lio/swagger/v3/oas/models/OpenAPI;ILjava/lang/String;)Ljava/lang/Object;
+	public final fun extractExpectedResponseExampleWithMediaType (Lio/swagger/v3/oas/models/Operation;Lio/swagger/v3/oas/models/OpenAPI;I)Lart/galushko/openapi/testgen/example/response/ExtractedResponseExample;
+	public final fun extractExpectedResponseExampleWithMediaType (Lio/swagger/v3/oas/models/Operation;Lio/swagger/v3/oas/models/OpenAPI;ILjava/lang/String;)Lart/galushko/openapi/testgen/example/response/ExtractedResponseExample;
 }
 
 public abstract interface class art/galushko/openapi/testgen/example/spi/SchemaValueProvider {
@@ -358,5 +373,25 @@ public final class art/galushko/openapi/testgen/example/util/FormatConsts {
 	public static final field EMAIL Ljava/lang/String;
 	public static final field INSTANCE Lart/galushko/openapi/testgen/example/util/FormatConsts;
 	public static final field UUID Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/example/util/MediaTypeHelperKt {
+	public static final field APPLICATION_JSON Ljava/lang/String;
+	public static final field APPLICATION_JSON_SUFFIX Ljava/lang/String;
+	public static final field APPLICATION_JWT Ljava/lang/String;
+	public static final field APPLICATION_JWT_SUFFIX Ljava/lang/String;
+	public static final field APPLICATION_XML Ljava/lang/String;
+	public static final field APPLICATION_XML_SUFFIX Ljava/lang/String;
+	public static final field APPLICATION_XWWW_FORM_URLENCODED Ljava/lang/String;
+	public static final field APPLICATION_YAML Ljava/lang/String;
+	public static final field PLAIN_XML Ljava/lang/String;
+	public static final field TEXT_JSON Ljava/lang/String;
+	public static final fun normalizeMediaTypeName (Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class art/galushko/openapi/testgen/example/util/MediaTypePrioritizer {
+	public static final field INSTANCE Lart/galushko/openapi/testgen/example/util/MediaTypePrioritizer;
+	public final fun isExpectedStructuredSchema (Ljava/lang/String;)Z
+	public final fun orderedMediaTypeKeys (Lio/swagger/v3/oas/models/media/Content;)Ljava/util/List;
 }
 

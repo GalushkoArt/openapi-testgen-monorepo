@@ -1,9 +1,9 @@
 package art.galushko.openapi.testgen.example.response
 
 import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGenerator
-import art.galushko.openapi.testgen.example.generator.internal.MediaTypePrioritizer
 import art.galushko.openapi.testgen.example.openapi.SchemaTypeHelpers.resolveExampleRef
 import art.galushko.openapi.testgen.example.openapi.SchemaTypeHelpers.resolveResponseByStatus
+import art.galushko.openapi.testgen.example.util.MediaTypePrioritizer
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.Operation
 import io.swagger.v3.oas.models.media.Content
@@ -12,13 +12,24 @@ import io.swagger.v3.oas.models.media.Schema
 import org.slf4j.LoggerFactory
 
 /**
+ * Result of expected response extraction with selected media type.
+ *
+ * @property body extracted response body example or null when unavailable
+ * @property mediaType response media type used to extract [body], or null when unavailable
+ */
+public data class ExtractedResponseExample(
+    val body: Any?,
+    val mediaType: String?,
+)
+
+/**
  * Extracts expected response examples from OpenAPI operations.
  *
  * This class handles the extraction of response examples from OpenAPI specifications,
  * using a defined selection order:
  * - Response: exact status -> range (e.g. 2XX) -> default
- * - Media types: JSON-like -> XML -> other (alphabetical)
- * - Example selection: explicit examples are chosen by media type priority; schema-derived fallback is JSON-like only
+ * - Media types: JSON/JWT-like -> XML -> other (alphabetical)
+ * - Example selection: explicit examples are chosen by media type priority; schema-derived fallback is JSON/JWT-like only
  *
  * @property schemaExampleValueGenerator generator for deriving examples from schemas
  */
@@ -55,9 +66,39 @@ public class ResponseExampleExtractor(
         openAPI: OpenAPI,
         statusCode: Int,
         exampleName: String?,
-    ): Any? {
-        val resp = resolveResponseByStatus(operation, openAPI, statusCode) ?: return null
-        val content = resp.content ?: return null
+    ): Any? = extractExpectedResponseExampleWithMediaType(operation, openAPI, statusCode, exampleName).body
+
+    /**
+     * Extracts expected response example and media type from an operation for the given status code.
+     *
+     * @param operation the OpenAPI operation
+     * @param openAPI the OpenAPI specification
+     * @param statusCode the HTTP status code to look for
+     * @return extracted response body and selected media type, if any
+     */
+    public fun extractExpectedResponseExampleWithMediaType(
+        operation: Operation,
+        openAPI: OpenAPI,
+        statusCode: Int,
+    ): ExtractedResponseExample = extractExpectedResponseExampleWithMediaType(operation, openAPI, statusCode, null)
+
+    /**
+     * Extracts expected response example and media type from an operation for the given status code and example name.
+     *
+     * @param operation the OpenAPI operation
+     * @param openAPI the OpenAPI specification
+     * @param statusCode the HTTP status code to look for
+     * @param exampleName optional named example to select from examples map
+     * @return extracted response body and selected media type, if any
+     */
+    public fun extractExpectedResponseExampleWithMediaType(
+        operation: Operation,
+        openAPI: OpenAPI,
+        statusCode: Int,
+        exampleName: String?,
+    ): ExtractedResponseExample {
+        val resp = resolveResponseByStatus(operation, openAPI, statusCode) ?: return ExtractedResponseExample(body = null, mediaType = null)
+        val content = resp.content ?: return ExtractedResponseExample(body = null, mediaType = null)
         val orderedMediaTypes = MediaTypePrioritizer.orderedMediaTypeKeys(content)
 
         if (!exampleName.isNullOrBlank()) {
@@ -68,23 +109,25 @@ public class ResponseExampleExtractor(
         return extractFromMediaTypes(content, orderedMediaTypes, openAPI)
     }
 
-    private fun extractFromMediaTypes(content: Content, orderedMediaTypes: List<String>, openAPI: OpenAPI): Any? {
-        val mediaTypes = orderedMediaTypes
-            .asSequence()
-            .mapNotNull { key -> content[key]?.let { key to it } }
-            .toList()
+    private fun extractFromMediaTypes(content: Content, orderedMediaTypes: List<String>, openAPI: OpenAPI): ExtractedResponseExample {
+        val mediaTypes = orderedMediaTypes.mapNotNull { key -> content[key]?.let { key to it } }
 
         val explicitExample = mediaTypes
-            .asSequence()
-            .firstNotNullOfOrNull { (_, mediaType) ->
-                extractExampleFromMediaType(mediaType, openAPI)
+            .firstNotNullOfOrNull { (mediaTypeName, mediaType) ->
+                extractExampleFromMediaType(mediaType, openAPI)?.let { ExtractedResponseExample(it, mediaTypeName) }
             }
         if (explicitExample != null) return explicitExample
 
-        val jsonFallback = mediaTypes.firstOrNull { (key, mediaType) ->
-            mediaType.schema != null && MediaTypePrioritizer.isJsonLike(key)
+        val structuredSchema = mediaTypes.firstOrNull { (key, mediaType) ->
+            mediaType.schema != null && MediaTypePrioritizer.isExpectedStructuredSchema(key)
         }
-        return jsonFallback?.let { safeResponseExampleValue(it.second.schema, openAPI) }
+        if (structuredSchema != null) {
+            val fallbackBody = safeResponseExampleValue(structuredSchema.second.schema, openAPI)
+            if (fallbackBody != null) {
+                return ExtractedResponseExample(body = fallbackBody, mediaType = structuredSchema.first)
+            }
+        }
+        return ExtractedResponseExample(body = null, mediaType = null)
     }
 
     private fun findNamedExample(
@@ -92,13 +135,17 @@ public class ResponseExampleExtractor(
         orderedMediaTypes: List<String>,
         openAPI: OpenAPI,
         exampleName: String,
-    ): Any? {
-        val namedExamples = orderedMediaTypes.asSequence()
-            .mapNotNull { content[it]?.examples?.get(exampleName) }
-            .toList()
-        if (namedExamples.isEmpty()) return null
+    ): ExtractedResponseExample? {
+        val namedExamplesByMediaType = orderedMediaTypes.mapNotNull { mediaTypeName ->
+            content[mediaTypeName]?.examples?.get(exampleName)?.let { mediaTypeName to it }
+        }
+        if (namedExamplesByMediaType.isEmpty()) return null
 
-        val resolved = namedExamples.firstNotNullOfOrNull { extractExampleValue(resolveExampleRef(it, openAPI)) }
+        val resolved = namedExamplesByMediaType.firstNotNullOfOrNull { (mediaTypeName, example) ->
+            extractExampleValue(resolveExampleRef(example, openAPI))?.let { value ->
+                ExtractedResponseExample(body = value, mediaType = mediaTypeName)
+            }
+        }
         if (resolved == null) {
             log.debug("Named example '{}' found but has no usable value; falling back to default selection", exampleName)
         }

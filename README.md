@@ -18,6 +18,71 @@ Automatically generate test cases from your OpenAPI specifications to validate *
 - **Authentication tests**: Missing credentials, invalid tokens, wrong security schemes
 - **Deterministic output**: Same spec always produces the same tests (reproducible builds)
 
+## Current Scope
+
+- Generation currently processes operations under `paths`.
+- OpenAPI `webhooks` are parsed but are not yet converted into generated test suites.
+- For webhook-only specs (no `paths`), generation completes successfully with zero suites.
+
+## See It in Action
+
+Given this OpenAPI spec with a `page` query parameter (`minimum: 1`):
+
+```yaml
+paths:
+  /users:
+    get:
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+```
+
+Run the generator:
+
+```bash
+openapi-testgen \
+  --spec-file openapi.yaml \
+  --output-dir ./generated \
+  --generator test-suite-writer \
+  --generator-option format=json \
+  --generator-option outputFileName=test-suites.json
+```
+
+Generated output (`test-suites.json`):
+
+```json
+{
+    "listUsers": {
+        "path": "/users",
+        "method": "GET",
+        "operationName": "listUsers",
+        "testCases": [
+            {
+                "name": "Invalid Query page parameter: Out Of Minimum Boundary Number",
+                "method": "GET",
+                "path": "/users",
+                "queryParams": { "page": 0 },
+                "headers": [{ "key": "X-API-Key", "value": "test-api-key-123" }],
+                "expectedStatusCode": 400
+            },
+            {
+                "name": "Invalid Query page parameter: Integer Breaking",
+                "method": "GET",
+                "path": "/users",
+                "queryParams": { "page": 1.5 },
+                "headers": [{ "key": "X-API-Key", "value": "test-api-key-123" }],
+                "expectedStatusCode": 400
+            }
+        ]
+    }
+}
+```
+
+These tests catch APIs that accept `page=0` (below minimum) or `page=1.5` (non-integer) when the spec says `integer, minimum: 1`. Without these tests, clients might receive wrong data instead of a 400 error.
+
 ## Installation
 
 ### Gradle Plugin
@@ -26,9 +91,11 @@ Add the plugin to your `build.gradle.kts`:
 
 ```kotlin
 plugins {
-    id("art.galushko.openapi-test-generator") version "0.9.2"
+    id("art.galushko.openapi-test-generator") version "<version>"
 }
 ```
+
+See the [installation guide](https://docs.galushko.art/openapi-test-generator/getting-started/installation/#version-placeholders) for where to look up `<version>`.
 
 [View on Gradle Plugin Portal](https://plugins.gradle.org/plugin/art.galushko.openapi-test-generator)
 
@@ -41,16 +108,17 @@ npm install -g @openapi-testgen/cli
 openapi-testgen --help
 ```
 
-Native binaries are automatically used when available. Falls back to JAR (requires Java 21+) on unsupported platforms.
+Native binaries are automatically used when available. Falls back to the bundled JAR (requires Java 21+) on unsupported platforms.
 
-Also available via pnpm, yarn, or bun. See [npm Installation](https://docs.galushko.art/openapi-test-generator/getting-started/npm-installation/) for details.
+Also available via pnpm, yarn, or bun. See [Installation](https://docs.galushko.art/openapi-test-generator/getting-started/installation/#cli-via-npm) for platform notes and npm-wrapper behavior.
 
 ### CLI (Manual)
 
 Download from [GitHub Releases](https://github.com/GalushkoArt/openapi-testgen-monorepo/releases):
 
 - **Native binary** (fastest, no JVM required): `openapi-testgen-<version>-<platform>.zip`
-- **Fat JAR** (portable): `openapi-testgen-<version>.jar`
+- **JVM distribution** (portable): `openapi-testgen-<version>.zip`
+  - Contains launcher scripts and `openapi-testgen-<version>-all.jar`
 
 Or build from source:
 
@@ -94,7 +162,8 @@ openapi-testgen \
   --output-dir ./generated-tests \
   --generator template \
   --generator-option templateSet=restassured-java \
-  --generator-option templateVariables.package=com.example.generated
+  --generator-option templateVariables.package=com.example.generated \
+  --generator-option templateVariables.baseUrl=http://localhost:8080
 ```
 
 Generate JSON test suites for data-driven frameworks:
@@ -153,11 +222,11 @@ Skip specific test cases or rules:
 testGenerationSettings {
     ignoreTestCases.putAll(
         mapOf(
-            "/internal/*" to mapOf("*" to listOf("*")),           // Skip all /internal/ tests
-            "/pets/{id}" to mapOf("DELETE" to listOf("*")),       // Skip DELETE tests
+            "/internal" to "*",                                   // Skip all tests for /internal
+            "/pets/{id}" to mapOf("DELETE" to "*"),               // Skip all DELETE tests for that path
         )
     )
-    ignoreSchemaValidationRules.add("InvalidEnumValue")       // Skip specific rule
+    ignoreSchemaValidationRules.add("art.galushko.openapi.testgen.rules.schema.InvalidEnumValueSchemaValidationRule")
 }
 ```
 
@@ -199,7 +268,7 @@ Extend the generator with custom components:
 - **Modules**: `TestGenerationModule`
 - **Templates**: Custom Mustache templates for code generation
 
-See the [SPI documentation](https://docs.galushko.art/openapi-test-generator/reference/spi/) and [Custom templates guide](https://docs.galushko.art/openapi-test-generator/how-to/generators/custom-templates/).
+See the [SPI documentation](https://docs.galushko.art/openapi-test-generator/reference/spi/) and the [Custom templates guide](https://docs.galushko.art/openapi-test-generator/how-to/generators/#custom-mustache-templates).
 
 ## Samples
 
@@ -212,8 +281,8 @@ Working examples in the `samples/` directory:
 ## Documentation
 
 - [Getting Started Guide](https://docs.galushko.art/openapi-test-generator/getting-started/)
-- [How-To Guides](https://docs.galushko.art/openapi-test-generator/how-to/)
-- [Configuration Reference](https://docs.galushko.art/openapi-test-generator/reference/)
+- [Configuration Guide](https://docs.galushko.art/openapi-test-generator/how-to/configuration/)
+- [Generators Guide](https://docs.galushko.art/openapi-test-generator/how-to/generators/)
 - [Architecture Concepts](https://docs.galushko.art/openapi-test-generator/concepts/architecture/)
 - [API Reference (Dokka)](https://docs.galushko.art/openapi-test-generator/api/)
 
@@ -237,7 +306,7 @@ Requirements:
 
 ## Contributing
 
-Contributions are welcome! Please see the [Contributing Guide](https://docs.galushko.art/openapi-test-generator/contributing/) for:
+Contributions are welcome! Please start with [Development setup](https://docs.galushko.art/openapi-test-generator/contributing/development-setup/) and [Publishing artifacts](https://docs.galushko.art/openapi-test-generator/contributing/publishing/) for:
 
 - Development setup
 - Code style guidelines

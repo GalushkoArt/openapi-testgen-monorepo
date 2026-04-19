@@ -5,9 +5,11 @@ import art.galushko.openapi.testgen.generation.TestGeneratorConfigurer
 import art.galushko.openapi.testgen.generation.createBasicTestCase
 import art.galushko.openapi.testgen.generation.createTestContext
 import art.galushko.openapi.testgen.generation.step
+import art.galushko.openapi.testgen.logging.TestLogCapture
 import art.galushko.openapi.testgen.rules.ValidationRuleTest
 import art.galushko.openapi.testgen.spi.RuleValue
 import io.qameta.allure.Description
+import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.Operation
 import io.swagger.v3.oas.models.media.ArraySchema
@@ -17,6 +19,7 @@ import io.swagger.v3.oas.models.media.Schema
 import io.swagger.v3.oas.models.media.StringSchema
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -101,6 +104,44 @@ class ObjectItemSchemaValidationRuleTest : ValidationRuleTest() {
         val resultList = step("Call apply") { rule.apply(schema, createTestContext(createBasicTestCase(), Operation(), OpenAPI())).toList() }
         assertThat(resultList).`is`(ruleAppliedTo(expected))
     }
-}
 
+    @Test
+    @DisplayName("Object Item Schema: allOf wrappers should not trigger false cycle detection")
+    fun shouldHandleAllOfWrappedReferencesWithoutFalseCycleDetection() {
+        val openApi = OpenAPI().components(
+            Components().schemas(
+                mapOf(
+                    "Plan" to ObjectSchema().addProperty("Stages", allOfRef("StagesList", "stages"))
+                        .addProperty("RotationIds", allOfRef("RotationIdsList", "rotationIds")),
+                    "StagesList" to ArraySchema().items(StringSchema().minLength(3).example("stage")),
+                    "RotationIdsList" to ArraySchema().items(StringSchema().minLength(3).example("rotation")),
+                )
+            )
+        )
+        val rootSchema = ObjectSchema().addProperty("Plan", allOfRef("Plan", "plan"))
+        val context = createTestContext(
+            validCase = createBasicTestCase(),
+            operation = Operation().operationId("CreateContact"),
+            openAPI = openApi,
+        )
+
+        val (result, logs) = TestLogCapture.capture {
+            rule.apply(rootSchema, context).toList()
+        }
+        val descriptions = result.map { it.buildDescription() }
+
+        assertThat(logs).doesNotContain("Skipping nested property 'Stages'")
+        assertThat(logs).doesNotContain("Skipping nested property 'RotationIds'")
+        assertThat(descriptions).anyMatch { it.contains("Object Property Plan Object Property Stages") }
+        assertThat(descriptions).anyMatch { it.contains("Object Property Plan Object Property RotationIds") }
+    }
+
+    private fun allOfRef(schemaName: String, description: String): Schema<Any> =
+        Schema<Any>().allOf(
+            listOf(
+                Schema<Any>().apply { `$ref` = "#/components/schemas/$schemaName" },
+                Schema<Any>().apply { this.description = description },
+            )
+        )
+}
 

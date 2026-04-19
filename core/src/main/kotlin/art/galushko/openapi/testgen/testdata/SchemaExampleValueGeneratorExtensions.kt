@@ -1,5 +1,6 @@
 package art.galushko.openapi.testgen.testdata
 
+import art.galushko.openapi.testgen.example.response.ExtractedResponseExample
 import art.galushko.openapi.testgen.example.response.ResponseExampleExtractor
 import art.galushko.openapi.testgen.generation.TestGenerationContext
 import io.swagger.v3.oas.models.Operation
@@ -28,6 +29,30 @@ public fun ResponseExampleExtractor.extractExpectedResponseExample(
     statusCode: Int,
     exampleName: String?,
 ): Any? = extractExpectedResponseExample(context.operation, context.openAPI, statusCode, exampleName)
+
+/**
+ * Extracts expected response example with selected media type using TestGenerationContext.
+ *
+ * @param context test generation context containing operation details
+ * @param statusCode HTTP status code to resolve
+ */
+public fun ResponseExampleExtractor.extractExpectedResponseExampleWithMediaType(
+    context: TestGenerationContext,
+    statusCode: Int,
+): ExtractedResponseExample = extractExpectedResponseExampleWithMediaType(context.operation, context.openAPI, statusCode)
+
+/**
+ * Extracts expected response example with selected media type using TestGenerationContext and a named example.
+ *
+ * @param context test generation context containing operation details
+ * @param statusCode HTTP status code to resolve
+ * @param exampleName optional example name to select from named examples
+ */
+public fun ResponseExampleExtractor.extractExpectedResponseExampleWithMediaType(
+    context: TestGenerationContext,
+    statusCode: Int,
+    exampleName: String?,
+): ExtractedResponseExample = extractExpectedResponseExampleWithMediaType(context.operation, context.openAPI, statusCode, exampleName)
 
 /**
  * Attempts to generate an example value, throwing an exception if it fails.

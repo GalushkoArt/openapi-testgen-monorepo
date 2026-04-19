@@ -1,0 +1,50 @@
+openapi: 3.0.0
+info:
+  title: False Positive Cycle Detection Test
+  version: 1.0.0
+paths:
+  /email:
+    post:
+      operationId: createEmailMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailMessage'
+      responses:
+        '201':
+          description: Created
+components:
+  schemas:
+    Recipient:
+      type: string
+      format: email
+      minLength: 5
+      maxLength: 100
+    EmailMessage:
+      type: object
+      required: [to, subject]
+      properties:
+        to:
+          anyOf:
+            - $ref: '#/components/schemas/Recipient'
+            - type: array
+              items:
+                $ref: '#/components/schemas/Recipient'
+        cc:
+          anyOf:
+            - $ref: '#/components/schemas/Recipient'
+            - type: array
+              items:
+                $ref: '#/components/schemas/Recipient'
+        bcc:
+          anyOf:
+            - $ref: '#/components/schemas/Recipient'
+            - type: array
+              items:
+                $ref: '#/components/schemas/Recipient'
+        subject:
+          type: string
+          minLength: 1
+          maxLength: 200

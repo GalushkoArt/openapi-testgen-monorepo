@@ -1,1189 +1,1279 @@
 {
-    "createLinkedList": {
-        "path": "/linked-list",
-        "method": "POST",
-        "operationName": "createLinkedList",
-        "testCases": [
+    "createLinkedList" : {
+        "path" : "/linked-list",
+        "method" : "POST",
+        "operationName" : "createLinkedList",
+        "testCases" : [
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties priority",
-                "method": "POST",
-                "path": "/linked-list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Missed Required Object Properties priority",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "value": "aa"
+                "body" : {
+                    "value" : "aa"
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties value",
-                "method": "POST",
-                "path": "/linked-list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Missed Required Object Properties value",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "priority": 1
+                "body" : {
+                    "priority" : 1
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property next Missed Required Object Properties priority",
-                "method": "POST",
-                "path": "/linked-list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property next Missed Required Object Properties priority",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "priority": 1,
-                    "value": "aa",
-                    "next": {
-                        "value": "aa"
+                "body" : {
+                    "priority" : 1,
+                    "value" : "aa",
+                    "next" : {
+                        "value" : "aa"
                     }
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property next Missed Required Object Properties value",
-                "method": "POST",
-                "path": "/linked-list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property next Missed Required Object Properties value",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "priority": 1,
-                    "value": "aa",
-                    "next": {
-                        "priority": 1
+                "body" : {
+                    "priority" : 1,
+                    "value" : "aa",
+                    "next" : {
+                        "priority" : 1
                     }
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property next Object Property priority Integer Breaking",
-                "method": "POST",
-                "path": "/linked-list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property next Object Property priority Integer Breaking",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "priority": 1,
-                    "value": "aa",
-                    "next": {
-                        "priority": 1.5,
-                        "value": "aa"
+                "body" : {
+                    "priority" : 1,
+                    "value" : "aa",
+                    "next" : {
+                        "priority" : 1.5,
+                        "value" : "aa"
                     }
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property next Object Property priority Invalid Type",
-                "method": "POST",
-                "path": "/linked-list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property next Object Property priority Invalid Type",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "priority": 1,
-                    "value": "aa",
-                    "next": {
-                        "priority": "abc",
-                        "value": "aa"
+                "body" : {
+                    "priority" : 1,
+                    "value" : "aa",
+                    "next" : {
+                        "priority" : "abc",
+                        "value" : "aa"
                     }
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property next Object Property priority Out Of Maximum Boundary Number",
-                "method": "POST",
-                "path": "/linked-list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property next Object Property priority Out Of Maximum Boundary Number",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "priority": 1,
-                    "value": "aa",
-                    "next": {
-                        "priority": 11,
-                        "value": "aa"
+                "body" : {
+                    "priority" : 1,
+                    "value" : "aa",
+                    "next" : {
+                        "priority" : 11,
+                        "value" : "aa"
                     }
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property next Object Property priority Out Of Minimum Boundary Number",
-                "method": "POST",
-                "path": "/linked-list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property next Object Property priority Out Of Minimum Boundary Number",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "priority": 1,
-                    "value": "aa",
-                    "next": {
-                        "priority": 0,
-                        "value": "aa"
+                "body" : {
+                    "priority" : 1,
+                    "value" : "aa",
+                    "next" : {
+                        "priority" : 0,
+                        "value" : "aa"
                     }
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property next Object Property value Out Of Minimum Length String",
-                "method": "POST",
-                "path": "/linked-list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property next Object Property value Out Of Minimum Length String",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "priority": 1,
-                    "value": "aa",
-                    "next": {
-                        "priority": 1,
-                        "value": ""
+                "body" : {
+                    "priority" : 1,
+                    "value" : "aa",
+                    "next" : {
+                        "priority" : 1,
+                        "value" : ""
                     }
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property priority Integer Breaking",
-                "method": "POST",
-                "path": "/linked-list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property priority Integer Breaking",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "priority": 1.5,
-                    "value": "aa"
+                "body" : {
+                    "priority" : 1.5,
+                    "value" : "aa"
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property priority Invalid Type",
-                "method": "POST",
-                "path": "/linked-list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property priority Invalid Type",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "priority": "abc",
-                    "value": "aa"
+                "body" : {
+                    "priority" : "abc",
+                    "value" : "aa"
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property priority Out Of Maximum Boundary Number",
-                "method": "POST",
-                "path": "/linked-list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property priority Out Of Maximum Boundary Number",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "priority": 11,
-                    "value": "aa"
+                "body" : {
+                    "priority" : 11,
+                    "value" : "aa"
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property priority Out Of Minimum Boundary Number",
-                "method": "POST",
-                "path": "/linked-list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property priority Out Of Minimum Boundary Number",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "priority": 0,
-                    "value": "aa"
+                "body" : {
+                    "priority" : 0,
+                    "value" : "aa"
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property value Out Of Minimum Length String",
-                "method": "POST",
-                "path": "/linked-list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property value Out Of Minimum Length String",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "priority": 1,
-                    "value": ""
+                "body" : {
+                    "priority" : 1,
+                    "value" : ""
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Required Request Body is missing",
-                "method": "POST",
-                "path": "/linked-list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Required Request Body is missing",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+                "body" : null,
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
             },
             {
-                "name": "Test Valid Case",
-                "method": "POST",
-                "path": "/linked-list",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Test Valid Case",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "priority": 1,
-                    "value": "aa"
+                "body" : {
+                    "priority" : 1,
+                    "value" : "aa"
                 },
-                "expectedBody": null,
-                "needToComplete": true,
-                "expectedStatusCode": 201,
-                "rule": null
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : true,
+                "expectedStatusCode" : 201,
+                "rule" : null
             }
         ]
     },
-    "createTree": {
-        "path": "/tree",
-        "method": "POST",
-        "operationName": "createTree",
-        "testCases": [
+    "createTree" : {
+        "path" : "/tree",
+        "method" : "POST",
+        "operationName" : "createTree",
+        "testCases" : [
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties value",
-                "method": "POST",
-                "path": "/tree",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Missed Required Object Properties value",
+                "method" : "POST",
+                "path" : "/tree",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {},
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "body" : { },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property children Array Item Missed Required Object Properties value",
-                "method": "POST",
-                "path": "/tree",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property children Array Item Missed Required Object Properties value",
+                "method" : "POST",
+                "path" : "/tree",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "value": "aa",
-                    "children": [
-                        {}
+                "body" : {
+                    "value" : "aa",
+                    "children" : [
+                        { }
                     ]
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property children Array Item Object Property value Out Of Minimum Length String",
-                "method": "POST",
-                "path": "/tree",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property children Array Item Object Property value Out Of Minimum Length String",
+                "method" : "POST",
+                "path" : "/tree",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "value": "aa",
-                    "children": [
+                "body" : {
+                    "value" : "aa",
+                    "children" : [
                         {
-                            "value": ""
+                            "value" : ""
                         }
                     ]
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property metadata Object Property parent Missed Required Object Properties value",
-                "method": "POST",
-                "path": "/tree",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property metadata Object Property parent Missed Required Object Properties value",
+                "method" : "POST",
+                "path" : "/tree",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "value": "aa",
-                    "metadata": {
-                        "parent": {}
+                "body" : {
+                    "value" : "aa",
+                    "metadata" : {
+                        "parent" : { }
                     }
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property metadata Object Property parent Object Property value Out Of Minimum Length String",
-                "method": "POST",
-                "path": "/tree",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property metadata Object Property parent Object Property value Out Of Minimum Length String",
+                "method" : "POST",
+                "path" : "/tree",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "value": "aa",
-                    "metadata": {
-                        "parent": {
-                            "value": ""
+                "body" : {
+                    "value" : "aa",
+                    "metadata" : {
+                        "parent" : {
+                            "value" : ""
                         }
                     }
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property value Out Of Minimum Length String",
-                "method": "POST",
-                "path": "/tree",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Incorrect Request Body: Object Property value Out Of Minimum Length String",
+                "method" : "POST",
+                "path" : "/tree",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "value": ""
+                "body" : {
+                    "value" : ""
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Required Request Body is missing",
-                "method": "POST",
-                "path": "/tree",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Required Request Body is missing",
+                "method" : "POST",
+                "path" : "/tree",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+                "body" : null,
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
             },
             {
-                "name": "Test Valid Case",
-                "method": "POST",
-                "path": "/tree",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Test Valid Case",
+                "method" : "POST",
+                "path" : "/tree",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "value": "aa"
+                "body" : {
+                    "value" : "aa"
                 },
-                "expectedBody": null,
-                "needToComplete": true,
-                "expectedStatusCode": 201,
-                "rule": null
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : true,
+                "expectedStatusCode" : 201,
+                "rule" : null
             }
         ]
     },
-    "listPersons": {
-        "path": "/persons",
-        "method": "GET",
-        "operationName": "listPersons",
-        "testCases": [
+    "listPersons" : {
+        "path" : "/persons",
+        "method" : "GET",
+        "operationName" : "listPersons",
+        "testCases" : [
             {
-                "name": "Invalid Query person parameter: Missed Required Object Properties age",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "name" : "Invalid Query person parameter: Missed Required Object Properties age",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Missed Required Object Properties name",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 0
+                "name" : "Invalid Query person parameter: Missed Required Object Properties name",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property address Missed Required Object Properties city",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 0,
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                        "address": {
-                            "street": "aa"
+                "name" : "Invalid Query person parameter: Object Property address Missed Required Object Properties city",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "address" : {
+                            "street" : "aa"
                         }
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property address Missed Required Object Properties street",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 0,
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                        "address": {
-                            "city": "a"
+                "name" : "Invalid Query person parameter: Object Property address Missed Required Object Properties street",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "address" : {
+                            "city" : "a"
                         }
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property address Object Property resident Missed Required Object Properties age",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 0,
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                        "address": {
-                            "city": "a",
-                            "street": "aa",
-                            "resident": {
-                                "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "name" : "Invalid Query person parameter: Object Property address Object Property resident Missed Required Object Properties age",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "address" : {
+                            "city" : "a",
+                            "street" : "aa",
+                            "resident" : {
+                                "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                             }
                         }
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property address Object Property resident Missed Required Object Properties name",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 0,
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                        "address": {
-                            "city": "a",
-                            "street": "aa",
-                            "resident": {
-                                "age": 0
+                "name" : "Invalid Query person parameter: Object Property address Object Property resident Missed Required Object Properties name",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "address" : {
+                            "city" : "a",
+                            "street" : "aa",
+                            "resident" : {
+                                "age" : 0
                             }
                         }
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property address Object Property resident Object Property age Integer Breaking",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 0,
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                        "address": {
-                            "city": "a",
-                            "street": "aa",
-                            "resident": {
-                                "age": 1.5,
-                                "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "name" : "Invalid Query person parameter: Object Property address Object Property resident Object Property age Integer Breaking",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "address" : {
+                            "city" : "a",
+                            "street" : "aa",
+                            "resident" : {
+                                "age" : 1.5,
+                                "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                             }
                         }
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property address Object Property resident Object Property age Invalid Type",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 0,
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                        "address": {
-                            "city": "a",
-                            "street": "aa",
-                            "resident": {
-                                "age": "abc",
-                                "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "name" : "Invalid Query person parameter: Object Property address Object Property resident Object Property age Invalid Type",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "address" : {
+                            "city" : "a",
+                            "street" : "aa",
+                            "resident" : {
+                                "age" : "abc",
+                                "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                             }
                         }
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property address Object Property resident Object Property age Out Of Maximum Boundary Number",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 0,
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                        "address": {
-                            "city": "a",
-                            "street": "aa",
-                            "resident": {
-                                "age": 151,
-                                "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "name" : "Invalid Query person parameter: Object Property address Object Property resident Object Property age Out Of Maximum Boundary Number",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "address" : {
+                            "city" : "a",
+                            "street" : "aa",
+                            "resident" : {
+                                "age" : 151,
+                                "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                             }
                         }
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property address Object Property resident Object Property age Out Of Minimum Boundary Number",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 0,
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                        "address": {
-                            "city": "a",
-                            "street": "aa",
-                            "resident": {
-                                "age": -1,
-                                "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "name" : "Invalid Query person parameter: Object Property address Object Property resident Object Property age Out Of Minimum Boundary Number",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "address" : {
+                            "city" : "a",
+                            "street" : "aa",
+                            "resident" : {
+                                "age" : -1,
+                                "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                             }
                         }
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property address Object Property resident Object Property name Out Of Maximum Length String",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 0,
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                        "address": {
-                            "city": "a",
-                            "street": "aa",
-                            "resident": {
-                                "age": 0,
-                                "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "name" : "Invalid Query person parameter: Object Property address Object Property resident Object Property name Out Of Maximum Length String",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "address" : {
+                            "city" : "a",
+                            "street" : "aa",
+                            "resident" : {
+                                "age" : 0,
+                                "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                             }
                         }
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property address Object Property resident Object Property name Out Of Minimum Length String",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 0,
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                        "address": {
-                            "city": "a",
-                            "street": "aa",
-                            "resident": {
-                                "age": 0,
-                                "name": ""
+                "name" : "Invalid Query person parameter: Object Property address Object Property resident Object Property name Out Of Minimum Length String",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "address" : {
+                            "city" : "a",
+                            "street" : "aa",
+                            "resident" : {
+                                "age" : 0,
+                                "name" : ""
                             }
                         }
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property address Object Property street Out Of Minimum Length String",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 0,
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                        "address": {
-                            "city": "a",
-                            "street": ""
+                "name" : "Invalid Query person parameter: Object Property address Object Property street Out Of Minimum Length String",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "address" : {
+                            "city" : "a",
+                            "street" : ""
                         }
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property age Integer Breaking",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 1.5,
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "name" : "Invalid Query person parameter: Object Property age Integer Breaking",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 1.5,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property age Invalid Type",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": "abc",
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "name" : "Invalid Query person parameter: Object Property age Invalid Type",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : "abc",
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property age Out Of Maximum Boundary Number",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 151,
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "name" : "Invalid Query person parameter: Object Property age Out Of Maximum Boundary Number",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 151,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property age Out Of Minimum Boundary Number",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": -1,
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "name" : "Invalid Query person parameter: Object Property age Out Of Minimum Boundary Number",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : -1,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property name Out Of Maximum Length String",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 0,
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "name" : "Invalid Query person parameter: Object Property name Out Of Maximum Length String",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query person parameter: Object Property name Out Of Minimum Length String",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 0,
-                        "name": ""
+                "name" : "Invalid Query person parameter: Object Property name Out Of Minimum Length String",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : ""
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Missed Required Query Parameter person",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "Missed Required Query Parameter person",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
             },
             {
-                "name": "Test Valid Case",
-                "method": "GET",
-                "path": "/persons",
-                "queryParams": {
-                    "person": {
-                        "age": 0,
-                        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "name" : "Test Valid Case",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                     }
                 },
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": [],
-                "needToComplete": true,
-                "expectedStatusCode": 200,
-                "rule": null
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : [ ],
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : true,
+                "expectedStatusCode" : 200,
+                "rule" : null
             }
         ]
     }

@@ -26,7 +26,7 @@ public class ListOrdersTest {
         RestAssured.baseURI = "http://localhost:8080/v1";
     }
 
-    private void assertExpectedBody(String expectedBodyJson, String responseBody) {
+    private void assertExpectedJsonBody(String expectedBodyJson, String responseBody) {
         JsonNode expectedNode;
         try {
             expectedNode = objectMapper.readTree(expectedBodyJson);
@@ -55,13 +55,14 @@ public class ListOrdersTest {
     @DisplayName("No security values provided")
     public void noSecurityValuesProvided() {
         RequestSpecification requestSpec = RestAssured.given();
+        requestSpec.header("Accept", "application/json");
 
         Response response = requestSpec.get("/orders");
         response.then().statusCode(401);
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"unauthorized\",\"message\":\"API key required\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -69,13 +70,14 @@ public class ListOrdersTest {
     public void invalidXAPIKeyAPIKeySecurity() {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "new_invalid_api_key");
+        requestSpec.header("Accept", "application/json");
 
         Response response = requestSpec.get("/orders");
         response.then().statusCode(401);
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"unauthorized\",\"message\":\"API key required\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -83,6 +85,7 @@ public class ListOrdersTest {
     public void invalidQueryPageParameterIntegerBreaking() {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
+        requestSpec.header("Accept", "application/json");
         requestSpec.queryParam("page", "1.5");
 
         Response response = requestSpec.get("/orders");
@@ -90,7 +93,7 @@ public class ListOrdersTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -98,6 +101,7 @@ public class ListOrdersTest {
     public void invalidQueryPageParameterOutOfMinimumBoundaryNumber() {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
+        requestSpec.header("Accept", "application/json");
         requestSpec.queryParam("page", "0");
 
         Response response = requestSpec.get("/orders");
@@ -105,7 +109,7 @@ public class ListOrdersTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -113,6 +117,7 @@ public class ListOrdersTest {
     public void invalidQueryPageSizeParameterIntegerBreaking() {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
+        requestSpec.header("Accept", "application/json");
         requestSpec.queryParam("pageSize", "1.5");
 
         Response response = requestSpec.get("/orders");
@@ -120,7 +125,7 @@ public class ListOrdersTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -128,6 +133,7 @@ public class ListOrdersTest {
     public void invalidQueryPageSizeParameterOutOfMaximumBoundaryNumber() {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
+        requestSpec.header("Accept", "application/json");
         requestSpec.queryParam("pageSize", "101");
 
         Response response = requestSpec.get("/orders");
@@ -135,7 +141,7 @@ public class ListOrdersTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -143,6 +149,7 @@ public class ListOrdersTest {
     public void invalidQueryPageSizeParameterOutOfMinimumBoundaryNumber() {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
+        requestSpec.header("Accept", "application/json");
         requestSpec.queryParam("pageSize", "0");
 
         Response response = requestSpec.get("/orders");
@@ -150,7 +157,7 @@ public class ListOrdersTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
 }

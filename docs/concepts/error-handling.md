@@ -1,5 +1,5 @@
 ---
-description: Describes the error handling strategy using explicit result types (Outcome, GenerationReport) to support best-effort behavior without hiding failures. Covers error modes, error aggregation, and the alwaysWriteTests option.
+description: Error handling strategy using explicit result types (Outcome, GenerationReport) to support best-effort behavior without hiding failures. Covers error modes, error aggregation, and the alwaysWriteTests option.
 ---
 
 # Error handling
@@ -34,7 +34,8 @@ Across the whole spec, results are aggregated into a `GenerationReport`:
 ## alwaysWriteTests
 
 By default, artifacts are written only when generation succeeds.
-If you want outputs even on failures, enable `alwaysWriteTests` (CLI: `--always-write-test`).
+If you want outputs even when the report contains errors, enable `alwaysWriteTests` (CLI: `--always-write-test`).
+When enabled, artifact writing becomes the success condition for CLI/Gradle execution, while the generated report and logs still include the underlying errors.
 
 ## Example errors
 
@@ -88,6 +89,6 @@ The `summary` section provides a quick overview of which operations succeeded, p
 
 ## Related docs
 
-- [Model: Errors](../reference/model/errors.md) - Complete error type hierarchy
-- [Budget controls](budget-controls.md) - Tuning budget limits
+- [Model: Error types](../reference/model.md#error-types) - Complete error type hierarchy
+- [Budget controls](architecture.md#budget-controls) - Tuning budget limits
 - [Troubleshooting](../how-to/troubleshooting.md) - Common error resolution

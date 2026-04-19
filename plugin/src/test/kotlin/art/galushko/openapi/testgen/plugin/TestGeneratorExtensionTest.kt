@@ -32,6 +32,8 @@ class TestGeneratorExtensionTest {
         assertThat(extension.alwaysWriteTests.orNull).isNull()
         assertThat(extension.logLevel.orNull).isNull()
         assertThat(extension.testGenerationSettings).isNotNull()
+        assertThat(extension.parserSettings).isNotNull()
+        assertThat(extension.parserSettings.buildParserSettingsMap()).isEmpty()
     }
 
     @Nested
@@ -155,6 +157,39 @@ class TestGeneratorExtensionTest {
             @Suppress("UNCHECKED_CAST")
             val ignoreMap = extension.testGenerationSettings.ignoreTestCases.get()["/users"] as Map<String, List<String>>
             assertThat(ignoreMap["GET"]).containsExactly("Test*")
+        }
+    }
+
+    @Nested
+    @DisplayName("parserSettings DSL")
+    inner class ParserSettingsDslTest {
+
+        @Test
+        @DisplayName("should configure parser settings via lambda")
+        fun shouldConfigureParserSettingsViaLambda() {
+            extension.parserSettings {
+                yamlCodePointLimit.set(10_000_000)
+                yamlNestingDepthLimit.set(100)
+            }
+
+            assertThat(extension.parserSettings.buildParserSettingsMap())
+                .containsEntry("yamlCodePointLimit", 10_000_000)
+                .containsEntry("yamlNestingDepthLimit", 100)
+        }
+
+        @Test
+        @DisplayName("should configure parser settings via action")
+        fun shouldConfigureParserSettingsViaAction() {
+            extension.parserSettings(
+                org.gradle.api.Action {
+                    it.yamlMaxAliasesForCollections.set(75)
+                    it.yamlAllowRecursiveKeys.set(false)
+                },
+            )
+
+            assertThat(extension.parserSettings.buildParserSettingsMap())
+                .containsEntry("yamlMaxAliasesForCollections", 75)
+                .containsEntry("yamlAllowRecursiveKeys", false)
         }
     }
 }

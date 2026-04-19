@@ -164,6 +164,24 @@ class OpenApiTestGeneratorPluginTest {
 
             assertThat(task.logLevel.get()).isEqualTo("DEBUG")
         }
+
+        @Test
+        @DisplayName("should wire parserSettings from extension to task")
+        fun shouldWireParserSettings() {
+            project.pluginManager.apply(OpenApiTestGeneratorPlugin::class.java)
+            val extension = project.extensions.getByType(TestGeneratorExtension::class.java)
+            extension.parserSettings.yamlCodePointLimit.set(7_000_000)
+            extension.parserSettings.yamlMaxAliasesForCollections.set(75)
+            extension.parserSettings.yamlAllowRecursiveKeys.set(false)
+            extension.parserSettings.yamlNestingDepthLimit.set(25)
+
+            val task = project.tasks.getByName("generateOpenApiTests") as OpenApiTestGeneratorTask
+
+            assertThat(task.parserSettings.yamlCodePointLimit.get()).isEqualTo(7_000_000)
+            assertThat(task.parserSettings.yamlMaxAliasesForCollections.get()).isEqualTo(75)
+            assertThat(task.parserSettings.yamlAllowRecursiveKeys.get()).isFalse()
+            assertThat(task.parserSettings.yamlNestingDepthLimit.get()).isEqualTo(25)
+        }
     }
 
     @Nested

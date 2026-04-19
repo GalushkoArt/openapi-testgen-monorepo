@@ -6,7 +6,7 @@ description: Overview of sample projects demonstrating OpenAPI Test Generator in
 
 The repository includes runnable sample projects demonstrating how to integrate OpenAPI Test Generator with different generators and configurations.
 
-[View samples on GitHub](https://github.com/GalushkoArt/openapi-testgen-monorepo/tree/master/samples){ .md-button }
+[View samples on GitHub](https://github.com/GalushkoArt/openapi-testgen-monorepo/tree/main/samples){ .md-button }
 
 ## Available samples
 
@@ -20,10 +20,10 @@ The repository includes runnable sample projects demonstrating how to integrate 
 
 All samples share:
 
-- **Spring Boot 3.3.4** with validation
+- **Spring Boot 3.x** with validation
 - **Java 21** toolchain
 - **OpenAPI Generator** for server-side Spring interfaces
-- **Shared OpenAPI spec**: [`samples/openapi.yaml`](https://github.com/GalushkoArt/openapi-testgen-monorepo/blob/master/samples/openapi.yaml)
+- **Shared OpenAPI spec**: [`samples/openapi.yaml`](https://github.com/GalushkoArt/openapi-testgen-monorepo/blob/main/samples/openapi.yaml)
 
 The shared spec defines a simple Users & Orders API with:
 

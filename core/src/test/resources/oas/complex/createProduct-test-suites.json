@@ -1,1086 +1,1148 @@
 {
-    "createProduct": {
-        "path": "/products",
-        "method": "POST",
-        "operationName": "createProduct",
-        "testCases": [
+    "createProduct" : {
+        "path" : "/products",
+        "method" : "POST",
+        "operationName" : "createProduct",
+        "testCases" : [
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties downloadUrl",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties downloadUrl",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "id": "a",
-                    "name": "a",
-                    "price": 0,
-                    "type": "digital"
+                "body" : {
+                    "id" : "a",
+                    "name" : "a",
+                    "price" : 0,
+                    "type" : "digital"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties duration",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties duration",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "id": "a",
-                    "name": "a",
-                    "price": 0,
-                    "type": "service"
+                "body" : {
+                    "id" : "a",
+                    "name" : "a",
+                    "price" : 0,
+                    "type" : "service"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties id",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties id",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "name": "a",
-                    "price": 0,
-                    "type": "physical",
-                    "weight": 1
+                "body" : {
+                    "name" : "a",
+                    "price" : 0,
+                    "type" : "physical",
+                    "weight" : 1
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties id",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties id",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "downloadUrl": "a",
-                    "name": "a",
-                    "price": 0,
-                    "type": "digital"
+                "body" : {
+                    "downloadUrl" : "a",
+                    "name" : "a",
+                    "price" : 0,
+                    "type" : "digital"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties id",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties id",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "duration": 1,
-                    "name": "a",
-                    "price": 0,
-                    "type": "service"
+                "body" : {
+                    "duration" : 1,
+                    "name" : "a",
+                    "price" : 0,
+                    "type" : "service"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties name",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties name",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "id": "a",
-                    "price": 0,
-                    "type": "physical",
-                    "weight": 1
+                "body" : {
+                    "id" : "a",
+                    "price" : 0,
+                    "type" : "physical",
+                    "weight" : 1
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties name",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties name",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "downloadUrl": "a",
-                    "id": "a",
-                    "price": 0,
-                    "type": "digital"
+                "body" : {
+                    "downloadUrl" : "a",
+                    "id" : "a",
+                    "price" : 0,
+                    "type" : "digital"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties name",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties name",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "duration": 1,
-                    "id": "a",
-                    "price": 0,
-                    "type": "service"
+                "body" : {
+                    "duration" : 1,
+                    "id" : "a",
+                    "price" : 0,
+                    "type" : "service"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties price",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties price",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "id": "a",
-                    "name": "a",
-                    "type": "physical",
-                    "weight": 1
+                "body" : {
+                    "id" : "a",
+                    "name" : "a",
+                    "type" : "physical",
+                    "weight" : 1
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties price",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties price",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "downloadUrl": "a",
-                    "id": "a",
-                    "name": "a",
-                    "type": "digital"
+                "body" : {
+                    "downloadUrl" : "a",
+                    "id" : "a",
+                    "name" : "a",
+                    "type" : "digital"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties price",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties price",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "duration": 1,
-                    "id": "a",
-                    "name": "a",
-                    "type": "service"
+                "body" : {
+                    "duration" : 1,
+                    "id" : "a",
+                    "name" : "a",
+                    "type" : "service"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties type",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties type",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "id": "a",
-                    "name": "a",
-                    "price": 0,
-                    "weight": 1
+                "body" : {
+                    "id" : "a",
+                    "name" : "a",
+                    "price" : 0,
+                    "weight" : 1
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties type",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties type",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "downloadUrl": "a",
-                    "id": "a",
-                    "name": "a",
-                    "price": 0
+                "body" : {
+                    "downloadUrl" : "a",
+                    "id" : "a",
+                    "name" : "a",
+                    "price" : 0
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties type",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties type",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "duration": 1,
-                    "id": "a",
-                    "name": "a",
-                    "price": 0
+                "body" : {
+                    "duration" : 1,
+                    "id" : "a",
+                    "name" : "a",
+                    "price" : 0
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Missed Required Object Properties weight",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Missed Required Object Properties weight",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "id": "a",
-                    "name": "a",
-                    "price": 0,
-                    "type": "physical"
+                "body" : {
+                    "id" : "a",
+                    "name" : "a",
+                    "price" : 0,
+                    "type" : "physical"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property duration Integer Breaking",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property duration Integer Breaking",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "duration": 1.5,
-                    "id": "a",
-                    "name": "a",
-                    "price": 0,
-                    "type": "service"
+                "body" : {
+                    "duration" : 1.5,
+                    "id" : "a",
+                    "name" : "a",
+                    "price" : 0,
+                    "type" : "service"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property fileSize Integer Breaking",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property fileSize Integer Breaking",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "downloadUrl": "a",
-                    "id": "a",
-                    "name": "a",
-                    "price": 0,
-                    "type": "digital",
-                    "fileSize": 1.5
+                "body" : {
+                    "downloadUrl" : "a",
+                    "id" : "a",
+                    "name" : "a",
+                    "price" : 0,
+                    "type" : "digital",
+                    "fileSize" : 1.5
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property format Invalid Enum Value",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property format Invalid Enum Value",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "downloadUrl": "a",
-                    "id": "a",
-                    "name": "a",
-                    "price": 0,
-                    "type": "digital",
-                    "format": "invalid_enum1"
+                "body" : {
+                    "downloadUrl" : "a",
+                    "id" : "a",
+                    "name" : "a",
+                    "price" : 0,
+                    "type" : "digital",
+                    "format" : "invalid_enum1"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property location Invalid Enum Value",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property location Invalid Enum Value",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "duration": 1,
-                    "id": "a",
-                    "name": "a",
-                    "price": 0,
-                    "type": "service",
-                    "location": "invalid_enum1"
+                "body" : {
+                    "duration" : 1,
+                    "id" : "a",
+                    "name" : "a",
+                    "price" : 0,
+                    "type" : "service",
+                    "location" : "invalid_enum1"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property price Out Of Minimum Boundary Number",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property price Out Of Minimum Boundary Number",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "id": "a",
-                    "name": "a",
-                    "price": -1,
-                    "type": "physical",
-                    "weight": 1
+                "body" : {
+                    "id" : "a",
+                    "name" : "a",
+                    "price" : -1,
+                    "type" : "physical",
+                    "weight" : 1
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property price Out Of Minimum Boundary Number",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property price Out Of Minimum Boundary Number",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "downloadUrl": "a",
-                    "id": "a",
-                    "name": "a",
-                    "price": -1,
-                    "type": "digital"
+                "body" : {
+                    "downloadUrl" : "a",
+                    "id" : "a",
+                    "name" : "a",
+                    "price" : -1,
+                    "type" : "digital"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Incorrect Request Body: Object Property price Out Of Minimum Boundary Number",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Incorrect Request Body: Object Property price Out Of Minimum Boundary Number",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "duration": 1,
-                    "id": "a",
-                    "name": "a",
-                    "price": -1,
-                    "type": "service"
+                "body" : {
+                    "duration" : 1,
+                    "id" : "a",
+                    "name" : "a",
+                    "price" : -1,
+                    "type" : "service"
                 },
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Authorization header security",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Invalid Authorization header security",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "bearer some_really_invalid_authorization_header"
+                        "key" : "authorization",
+                        "value" : "bearer some_really_invalid_authorization_header"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "bearer some_really_invalid_authorization_header"
+                            "key" : "authorization",
+                            "value" : "bearer some_really_invalid_authorization_header"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "id": "a",
-                    "name": "a",
-                    "price": 0,
-                    "type": "physical",
-                    "weight": 1
+                "body" : {
+                    "id" : "prod-456",
+                    "name" : "E-book",
+                    "price" : 19.99,
+                    "type" : "digital",
+                    "downloadUrl" : "https://example.com/download/ebook.pdf",
+                    "fileSize" : 5242880,
+                    "format" : "pdf"
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
             },
             {
-                "name": "Invalid X-API-Key API key security",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Invalid X-API-Key API key security",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-API-Key",
-                        "value": "some_really_invalid_api_key"
+                        "key" : "X-API-Key",
+                        "value" : "some_really_invalid_api_key"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         },
                         {
-                            "key": "X-API-Key",
-                            "value": "some_really_invalid_api_key"
+                            "key" : "X-API-Key",
+                            "value" : "some_really_invalid_api_key"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "id": "a",
-                    "name": "a",
-                    "price": 0,
-                    "type": "physical",
-                    "weight": 1
+                "body" : {
+                    "id" : "prod-456",
+                    "name" : "E-book",
+                    "price" : 19.99,
+                    "type" : "digital",
+                    "downloadUrl" : "https://example.com/download/ebook.pdf",
+                    "fileSize" : 5242880,
+                    "format" : "pdf"
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
             },
             {
-                "name": "No security values provided",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "name" : "No security values provided",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "id": "a",
-                    "name": "a",
-                    "price": 0,
-                    "type": "physical",
-                    "weight": 1
+                "body" : {
+                    "id" : "prod-456",
+                    "name" : "E-book",
+                    "price" : 19.99,
+                    "type" : "digital",
+                    "downloadUrl" : "https://example.com/download/ebook.pdf",
+                    "fileSize" : 5242880,
+                    "format" : "pdf"
                 },
-                "expectedBody": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
             },
             {
-                "name": "Required Request Body is missing",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Required Request Body is missing",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
             },
             {
-                "name": "Test Valid Case",
-                "method": "POST",
-                "path": "/products",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Test Valid Case",
+                "method" : "POST",
+                "path" : "/products",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": {
-                    "id": "a",
-                    "name": "a",
-                    "price": 0,
-                    "type": "physical",
-                    "weight": 1
+                "body" : {
+                    "id" : "prod-456",
+                    "name" : "E-book",
+                    "price" : 19.99,
+                    "type" : "digital",
+                    "downloadUrl" : "https://example.com/download/ebook.pdf",
+                    "fileSize" : 5242880,
+                    "format" : "pdf"
                 },
-                "expectedBody": {
-                    "data": {
-                        "id": "a",
-                        "name": "a",
-                        "price": 0,
-                        "type": "physical",
-                        "weight": 1
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : {
+                        "id" : "a",
+                        "name" : "a",
+                        "price" : 0,
+                        "type" : "physical",
+                        "weight" : 1
                     },
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "needToComplete": true,
-                "expectedStatusCode": 201,
-                "rule": null
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : true,
+                "expectedStatusCode" : 201,
+                "rule" : null
             }
         ]
     }

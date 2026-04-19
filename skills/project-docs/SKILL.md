@@ -1,273 +1,116 @@
 ---
 name: project-docs
-description: Create and maintain project documentation. Covers site docs (`docs/`), repo docs (`README.md`, `CLAUDE.md`), and navigation sync.
+description: Create and maintain project documentation from actual source code. Use this skill whenever the user mentions writing, creating, or updating docs — including site docs (`docs/`), repo docs (`README.md`, `CLAUDE.md`), module pages, how-to guides, or navigation sync. Also use when user references DOCS_MAP.md, mkdocs.yml, or asks to document a feature, module, or API.
 ---
 
-# Project Documentation (project-docs)
+# Project Documentation
 
-End-to-end workflow for creating and maintaining project documentation.
+Write accurate documentation derived from source code. Every claim in a doc page — class names, method signatures, default values, CLI flags, config keys — must be verified against the actual code before writing.
 
-## When to Offer This Skill
+## Step 1: Read the Code
 
-- User mentions writing/creating documentation
-- User wants to document a new feature or module
-- User asks about updating docs
-- User mentions DOCS_MAP.md or mkdocs.yml
-- User wants to update repository docs (README, CLAUDE.md, AGENTS.md)
+Before writing or editing any documentation, read the relevant source code. This is the most important step because READMEs and existing docs can be stale or wrong.
 
----
+**What to read (pick what applies):**
+- Source files: `<module>/src/main/kotlin/**/*.kt` for classes, APIs, method signatures
+- Public API surface: `<module>/api/<module>.api` for exported symbols
+- Build config: `<module>/build.gradle.kts` for dependency coordinates and module name
+- Tests: `<module>/src/test/kotlin/**/*.kt` for real usage patterns and expected behavior
+- CLI flags: `cli/src/main/kotlin/**/Main.kt` for picocli-annotated options
 
-## Step 1: Gather Context (Doc Brief)
+**Verify, don't trust:**
+- READMEs may have wrong class names, stale defaults, or missing parameters
+- Existing docs may reference renamed or removed APIs
+- Import paths matter: check whether classes are top-level or nested (read the actual file, check the `package` declaration and class declaration scope)
 
-Before writing, collect this information from the user:
+Build a mental model of what the code actually does before writing a single line of documentation.
 
-```
-Goal:
-Audience:
-Doc type (getting-started / how-to / concepts / reference / modules / contributing / repo):
-Where should readers start (entry page or command):
-Concrete artifacts (flags, keys, classes, file paths, sample output):
-Examples needed:
-Glossary terms (new or existing):
-Related pages to cross-link:
-```
+## Step 2: Check What Already Exists
 
-**Key questions to ask upfront:**
-1. What changed / what needs documenting?
-2. Who is the audience (CLI users, plugin users, extension authors, contributors)?
-3. What concrete artifacts exist (CLI flags, config keys, classes, sample output)?
+Read `DOCS_MAP.md` and scan `mkdocs.yml` nav to understand what's already documented. Then read any existing pages that cover related topics.
 
----
+**Before creating a new page**, verify:
+- No existing page already covers this topic (check `DOCS_MAP.md`)
+- No existing page has a section that should be expanded instead of creating a new page
 
-## Step 2: Choose a Workflow
+**Before updating an existing page**, verify:
+- The page actually needs changes — compare the current docs content against the source code you read in Step 1
+- If the docs already match the code, don't change anything. Making unnecessary edits risks introducing regressions
 
-Use the smallest workflow that still updates navigation + inventory correctly.
+**Deduplication rule:** Each piece of information should live in exactly one place. When another page already covers something (e.g., distribution-settings.md covers config options, rules-catalog.md covers built-in rules), link to it instead of repeating it. Use the pattern `[Topic name](../relative/path.md)` or `[Topic name](../relative/path.md#anchor)`.
 
-| If you need to... | Use workflow |
-|-------------------|--------------|
-| **Add a new page** under `docs/` (or split a long page) | [Add / Split Site Page](#workflow-add--split-site-page) |
-| **Update an existing page** without structural changes | [Update Site Page](#workflow-update-site-page) |
-| **Reorganize navigation** or rename/move pages | [Structure / Sync](#workflow-structure--sync) |
-| **Document a new module** (site + module README) | [New Module Docs](#workflow-new-module-docs) |
-| **Update repo-level docs** (README, CLAUDE.md, AGENTS.md) | [Repo Docs](#workflow-repo-docs) |
+## Step 3: Write the Documentation
 
-If unclear, ask: *What should readers be able to do after reading this?* (install? configure? extend? understand architecture?)
+### Page placement
 
----
+Pick the category based on what the reader needs to do:
 
-## Source of Truth
+| Category | Path | Reader goal |
+|----------|------|-------------|
+| Tutorials | `getting-started/` | Get first success |
+| Task guides | `how-to/` | Solve a specific problem |
+| Explanation | `concepts/` | Understand why/how |
+| Lookup | `reference/` | Find a setting, flag, or SPI |
+| Module docs | `modules/` | Understand a module's API and role |
+| Contributor | `contributing/` | Contribute to the project |
 
-| File | Role | Editable? |
-|------|------|-----------|
-| `mkdocs.yml` (`nav:`) | Canonical site structure | Yes |
-| `DOCS_MAP.md` | Inventory aligned with mkdocs.yml | Generated (see [Sync Checklist](#sync-checklist)) |
-| `docs/includes/**` | Snippet files (no frontmatter) | Yes |
-| `docs/api/**` | Dokka output | No (regenerated by `./gradlew docsServe`) |
+For repo-level docs (`README.md`, `CLAUDE.md`, `AGENTS.md`, `<module>/README.md`), edit the file directly without mkdocs.yml changes.
 
----
+### Required frontmatter
 
-## Workflow: Add / Split Site Page
+Every site page under `docs/` (except `docs/includes/**`) needs:
 
-**Use when:** Creating a new page under `docs/`, or splitting a long page into smaller ones.
-
-**First, confirm:**
-- Diataxis category and file path
-- Page title and frontmatter description
-
-**Steps:**
-
-1. Pick the Diataxis category:
-   | Category | Path | Content type |
-   |----------|------|--------------|
-   | Tutorials | `getting-started/` | First success, learning-oriented |
-   | Task guides | `how-to/` | Problem → solution |
-   | Explanation | `concepts/` | Why/how it works |
-   | Lookup | `reference/` | Settings, catalogs, SPI |
-   | Module docs | `modules/` | Per-module technical details |
-   | Contributor | `contributing/` | Contributor workflows |
-
-2. Create `docs/<category>/<page-name>.md` with required frontmatter:
-   ```yaml
-   ---
-   description: Concise description of what the reader will learn/do (1–4 sentences).
-   ---
-
-   # Page Title
-   ```
-
-3. Draft content using the appropriate [outline template](#outline-templates).
-
-4. Add the page to `mkdocs.yml` under `nav:` in the correct section.
-
-5. Run the [Sync Checklist](#sync-checklist).
-
-6. Preview locally and verify links.
-
----
-
-## Workflow: Update Site Page
-
-**Use when:** Editing an existing page without changing site structure.
-
-**First, confirm:**
-- Which page(s) need updates
-- Whether the page's purpose/scope is changing
-
-**Steps:**
-
-1. Read the target page and at least one neighbor page (same section) to keep voice/terminology consistent.
-
-2. Make minimal edits; keep examples aligned with current code/config.
-
-3. If the page's purpose changed, update the frontmatter `description`.
-
-4. Run sync check only:
-   ```bash
-   python3 skills/project-docs/scripts/sync_docs_map.py --check
-   ```
-
-5. Preview locally (`mkdocs serve`).
-
----
-
-## Workflow: Structure / Sync
-
-**Use when:** Adding/removing/renaming pages in navigation, or when `DOCS_MAP.md` drifted from `mkdocs.yml`.
-
-**First, confirm:**
-- What pages are being added/removed/renamed
-- New navigation structure
-
-**Steps:**
-
-1. Make structure changes in `mkdocs.yml` (`nav:`) and the corresponding files in `docs/`.
-
-2. Ensure every page in `nav:` exists and has frontmatter `description` (except `docs/includes/**`).
-
-3. Run the [Sync Checklist](#sync-checklist).
-
-4. Preview locally to catch strict-mode failures.
-
----
-
-## Workflow: New Module Docs
-
-**Use when:** Documenting a new module or major expansion of an existing one.
-
-**First, confirm:**
-- Module name and purpose
-- Target audience (users vs. contributors)
-- Key configuration options and APIs
-
-**Steps:**
-
-1. Create `docs/modules/<module>.md` covering:
-   - Purpose and when to use
-   - Installation (dependency coordinates)
-   - Configuration options (link to reference pages)
-   - Minimal working example
-   - Links to SPI/how-to/concepts as needed
-
-2. Create or update `<module>/README.md`:
-   - Keep it short (quick start only)
-   - Link to the full docs page
-
-3. Add the page to `mkdocs.yml` nav.
-
-4. Run the [Sync Checklist](#sync-checklist).
-
----
-
-## Workflow: Repo Docs
-
-**Use when:** Updating docs outside `docs/` (not part of MkDocs site).
-
-| File | Purpose |
-|------|---------|
-| `README.md` | Project entry point and quick start |
-| `CLAUDE.md` | Contributor/assistant workflow, architecture, build commands |
-| `AGENTS.md` | Agent/repo guidelines |
-| `<module>/README.md` | Module quick start (link to `docs/modules/<module>.md`) |
-| `samples/*/README.md` | Runnable examples quick start |
-
-**Note:** If a repo doc change introduces/renames a concept also used in site docs, add a cross-link and consider updating `docs/concepts/glossary.md`.
-
----
-
-## Sync Checklist
-
-Run after any change that affects `mkdocs.yml` or page frontmatter:
-
-```bash
-# 1. Check if DOCS_MAP.md is in sync
-python3 skills/project-docs/scripts/sync_docs_map.py --check
-
-# 2. If check fails, regenerate DOCS_MAP.md
-python3 skills/project-docs/scripts/sync_docs_map.py
-
-# 3. Preview locally
-mkdocs serve
-# or with Dokka API docs regeneration:
-./gradlew docsServe
-```
-
-**First-time setup:**
-```bash
-python -m pip install -r requirements.txt
-```
-
----
-
-## Outline Templates
-
-Use these structures based on doc type:
-
-| Doc type | Outline |
-|----------|---------|
-| **Getting started** | Prerequisites → Step-by-step → Verify output → Next steps |
-| **How-to** | Goal → Preconditions → Steps → Examples → Troubleshooting |
-| **Concepts** | What/why → How it works → Key components → Trade-offs → Related |
-| **Reference** | What this covers → Options/table → Defaults → Examples → Related |
-| **Modules** | Purpose → When to use → Installation → Configuration → API/SPI surface → Example → Links |
-
----
-
-## Conventions
-
-Full details: `docs/contributing/documentation-guide.md`
-
-- Active voice, consistent terminology, hierarchical headings
-- Code blocks specify language (e.g., `kotlin`, `yaml`, `bash`)
-- Use admonitions (`!!! note`, `!!! warning`, `!!! tip`) for callouts
-- Link to related docs instead of duplicating content
-
-**Required frontmatter for site pages:**
 ```yaml
 ---
-description: What the reader will learn/do on this page.
+description: What the reader will learn or do on this page (1–4 sentences).
 ---
+
+# Page Title
 ```
 
----
+### Structure rules
 
-## Definition of Done
+- Keep headings flat: h1 for the page title, h2 for major sections, h3 only when genuinely needed. Avoid h4+.
+- Pages can be long — a single comprehensive page is better than many thin pages that force readers to jump around.
+- Start with "when to use this" or "what this covers" so readers can bail early if it's not what they need.
+- End with a "Related docs" section linking to connected pages.
 
-Before merging docs changes:
+### Content rules
 
-- [ ] All pages in `mkdocs.yml` exist and build (`mkdocs serve` shows no errors)
-- [ ] All site pages have frontmatter `description` (except `docs/includes/**`)
-- [ ] `python3 skills/project-docs/scripts/sync_docs_map.py --check` passes
-- [ ] Examples are copy/pastable and match current behavior
+- Every code example must be derived from actual source code — correct class names, correct import paths, correct method signatures, correct default values.
+- Show Kotlin code blocks with language tag: ` ```kotlin `
+- Use admonitions sparingly: `!!! note` for important context, `!!! warning` for gotchas, `!!! tip` for shortcuts.
+- Active voice: "Configure the generator" not "The generator can be configured".
+- When documenting options/settings, use a table with columns: Name, Type/Default, Description.
+
+### Outline by doc type
+
+| Doc type | Sections |
+|----------|----------|
+| **Getting started** | Prerequisites → Steps → Verify output → Next steps |
+| **How-to** | Goal → Prerequisites → Steps → Examples → Related docs |
+| **Concepts** | What/why → How it works → Key components → Trade-offs → Related docs |
+| **Reference** | What this covers → Options table → Defaults → Examples → Related docs |
+| **Modules** | Purpose → When to use → Depends on / Used by → Installation → Key types and API → Usage examples → Related docs |
+
+## Step 4: Update Navigation
+
+If you created a new page:
+1. Add it to `mkdocs.yml` under `nav:` in the correct section
+2. Run `python3 skills/project-docs/scripts/sync_docs_map.py` to regenerate `DOCS_MAP.md`
+
+If you only edited an existing page, run the check to make sure nothing drifted:
+```bash
+python3 skills/project-docs/scripts/sync_docs_map.py --check
+```
+
+## Verification Checklist
+
+Before finishing:
+- [ ] Every class name, method signature, and default value in the docs matches the source code
+- [ ] Import paths reference the correct package (top-level vs. nested classes verified)
+- [ ] Code examples would compile against the actual API
+- [ ] No content is duplicated from other docs pages — cross-links used instead
+- [ ] Frontmatter `description` is present on all site pages
+- [ ] New pages are in `mkdocs.yml` nav and `DOCS_MAP.md` is in sync
 - [ ] Terminology matches `docs/concepts/glossary.md`
-- [ ] New pages are in nav and cross-linked from related pages
-
----
-
-## Key References
-
-| Resource | Purpose |
-|----------|---------|
-| `docs/contributing/documentation-guide.md` | Canonical style + workflow |
-| `mkdocs.yml` | Site navigation |
-| `DOCS_MAP.md` | Generated inventory |
-| `docs/concepts/glossary.md` | Terminology |

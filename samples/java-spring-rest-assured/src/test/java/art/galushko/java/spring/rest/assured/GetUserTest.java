@@ -26,7 +26,7 @@ public class GetUserTest {
         RestAssured.baseURI = "http://localhost:8080/v1";
     }
 
-    private void assertExpectedBody(String expectedBodyJson, String responseBody) {
+    private void assertExpectedJsonBody(String expectedBodyJson, String responseBody) {
         JsonNode expectedNode;
         try {
             expectedNode = objectMapper.readTree(expectedBodyJson);
@@ -55,6 +55,7 @@ public class GetUserTest {
     @DisplayName("No security values provided")
     public void noSecurityValuesProvided() {
         RequestSpecification requestSpec = RestAssured.given();
+        requestSpec.header("Accept", "application/json");
         requestSpec.pathParam("userId", "wha_262laxjwhyaz8");
 
         Response response = requestSpec.get("/users/{userId}");
@@ -62,7 +63,7 @@ public class GetUserTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"unauthorized\",\"message\":\"API key required\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -70,6 +71,7 @@ public class GetUserTest {
     public void invalidXAPIKeyAPIKeySecurity() {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "new_invalid_api_key");
+        requestSpec.header("Accept", "application/json");
         requestSpec.pathParam("userId", "wha_262laxjwhyaz8");
 
         Response response = requestSpec.get("/users/{userId}");
@@ -77,7 +79,7 @@ public class GetUserTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"unauthorized\",\"message\":\"API key required\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
     @Test
@@ -85,6 +87,7 @@ public class GetUserTest {
     public void invalidPathUserIdParameterInvalidPattern() {
         RequestSpecification requestSpec = RestAssured.given();
         requestSpec.header("X-API-Key", "test-api-key-123");
+        requestSpec.header("Accept", "application/json");
         requestSpec.pathParam("userId", "AE.");
 
         Response response = requestSpec.get("/users/{userId}");
@@ -92,7 +95,7 @@ public class GetUserTest {
 
         String responseBody = response.getBody().asString();
         String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
-        assertExpectedBody(expectedBodyJson, responseBody);
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
     }
 
 }

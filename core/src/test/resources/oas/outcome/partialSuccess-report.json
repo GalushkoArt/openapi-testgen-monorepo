@@ -20,7 +20,9 @@
                         "other": {}
                     },
                     "body": null,
+                    "requestBodyMediaType": null,
                     "expectedBody": null,
+                    "responseBodyMediaType": null,
                     "needToComplete": false,
                     "expectedStatusCode": 400,
                     "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
@@ -42,7 +44,9 @@
                         "other": {}
                     },
                     "body": null,
+                    "requestBodyMediaType": null,
                     "expectedBody": null,
+                    "responseBodyMediaType": null,
                     "needToComplete": false,
                     "expectedStatusCode": 400,
                     "rule": "art.galushko.openapi.testgen.rules.schema.InvalidEnumValueSchemaValidationRule"
@@ -74,7 +78,9 @@
                             "valueA": "aa"
                         }
                     },
+                    "requestBodyMediaType": "application/json",
                     "expectedBody": null,
+                    "responseBodyMediaType": null,
                     "needToComplete": false,
                     "expectedStatusCode": 400,
                     "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
@@ -101,7 +107,9 @@
                             "valueA": "aa"
                         }
                     },
+                    "requestBodyMediaType": "application/json",
                     "expectedBody": null,
+                    "responseBodyMediaType": null,
                     "needToComplete": false,
                     "expectedStatusCode": 400,
                     "rule": "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
@@ -128,7 +136,9 @@
                             "valueA": "aa"
                         }
                     },
+                    "requestBodyMediaType": "application/json",
                     "expectedBody": null,
+                    "responseBodyMediaType": null,
                     "needToComplete": false,
                     "expectedStatusCode": 400,
                     "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
@@ -155,7 +165,9 @@
                             "valueA": "aa"
                         }
                     },
+                    "requestBodyMediaType": "application/json",
                     "expectedBody": null,
+                    "responseBodyMediaType": null,
                     "needToComplete": false,
                     "expectedStatusCode": 400,
                     "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
@@ -177,7 +189,9 @@
                         "other": {}
                     },
                     "body": null,
+                    "requestBodyMediaType": "application/json",
                     "expectedBody": null,
+                    "responseBodyMediaType": null,
                     "needToComplete": false,
                     "expectedStatusCode": 400,
                     "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"

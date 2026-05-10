@@ -11,6 +11,7 @@ type-specific generation, format hints (email, date, uuid), and extensibility vi
 - Type-aware value generation (string, number, boolean, array, object)
 - Format support: `email`, `date`, `date-time`, `uuid`, `uri`, `hostname`
 - Schema constraint awareness: `enum`, `const`, `default`, `example`
+- Full example mode for populating optional object properties and non-empty arrays
 - Configurable generation depth for nested schemas
 - Extensible via `SchemaValueProvider` SPI
 

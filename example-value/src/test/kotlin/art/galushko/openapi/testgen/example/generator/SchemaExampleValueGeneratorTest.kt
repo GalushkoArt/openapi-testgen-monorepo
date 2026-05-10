@@ -2237,4 +2237,215 @@ class SchemaExampleValueGeneratorTest {
         // Should gracefully return null instead of throwing
         assertThat(result).isNull()
     }
+
+    @Test
+    @DisplayName("fullExample should include all optional properties without explicit examples")
+    fun fullExampleShouldIncludeAllOptionalProperties() {
+        val fullGenerator = SchemaExampleValueGeneratorFactory().create(
+            ExampleValueSettings(fullExample = true)
+        )
+        val schema = ObjectSchema().apply {
+            addProperty("req", StringSchema().example("required"))
+            addProperty("optA", StringSchema())
+            addProperty("optB", IntegerSchema())
+            required = listOf("req")
+        }
+
+        val result = fullGenerator.getExampleObject("obj", schema, OpenAPI())
+
+        assertThat(result).isEqualTo(
+            mapOf(
+                "optA" to "a",
+                "optB" to BigDecimal.ONE,
+                "req" to "required"
+            )
+        )
+    }
+
+    @Test
+    @DisplayName("fullExample should ignore partial object-level examples and populate declared properties")
+    fun fullExampleShouldIgnorePartialObjectLevelExamples() {
+        val fullGenerator = SchemaExampleValueGeneratorFactory().create(
+            ExampleValueSettings(fullExample = true)
+        )
+        val schema = ObjectSchema().apply {
+            example(mapOf("req" to "partial"))
+            addProperty("req", StringSchema().example("required"))
+            addProperty("opt", StringSchema())
+            required = listOf("req")
+        }
+
+        val result = fullGenerator.getExampleValue("obj", schema, OpenAPI())
+
+        assertThat(result).isEqualTo(
+            mapOf(
+                "opt" to "a",
+                "req" to "required"
+            )
+        )
+    }
+
+    @Test
+    @DisplayName("fullExample should still exclude writeOnly when includeWriteOnly=false")
+    fun fullExampleShouldExcludeWriteOnlyWhenDisabled() {
+        val fullGenerator = SchemaExampleValueGeneratorFactory().create(
+            ExampleValueSettings(fullExample = true, includeWriteOnly = false)
+        )
+        val schema = ObjectSchema().apply {
+            addProperty("visible", StringSchema())
+            addProperty("secret", StringSchema().writeOnly(true))
+            required = emptyList()
+        }
+
+        val result = fullGenerator.getExampleObject("obj", schema, OpenAPI())
+
+        assertThat(result).isEqualTo(mapOf("visible" to "a"))
+    }
+
+    @Test
+    @DisplayName("fullExample should populate arrays with at least one item when minItems is null or 0")
+    fun fullExampleShouldPopulateArrayWithAtLeastOneItem() {
+        val fullGenerator = SchemaExampleValueGeneratorFactory().create(
+            ExampleValueSettings(fullExample = true)
+        )
+        val schema = ArraySchema().items(StringSchema().example("item"))
+
+        val result = fullGenerator.getExampleArrayValues("items", schema, OpenAPI())
+
+        assertThat(result).containsExactly("item")
+    }
+
+    @Test
+    @DisplayName("fullExample should ignore empty array-level examples and generate an item")
+    fun fullExampleShouldIgnoreEmptyArrayLevelExamples() {
+        val fullGenerator = SchemaExampleValueGeneratorFactory().create(
+            ExampleValueSettings(fullExample = true)
+        )
+        val schema = ArraySchema().apply {
+            example(emptyList<Any>())
+            items = StringSchema().example("item")
+        }
+
+        val result = fullGenerator.getExampleValue("items", schema, OpenAPI())
+
+        assertThat(result).isEqualTo(listOf("item"))
+    }
+
+    @Test
+    @DisplayName("fullExample should not populate arrays when maxItems is zero")
+    fun fullExampleShouldNotPopulateArrayWhenMaxItemsIsZero() {
+        val fullGenerator = SchemaExampleValueGeneratorFactory().create(
+            ExampleValueSettings(fullExample = true)
+        )
+        val schema = ArraySchema().apply {
+            items = StringSchema().example("item")
+            maxItems = 0
+        }
+
+        val result = fullGenerator.getExampleArrayValues("items", schema, OpenAPI())
+
+        assertThat(result).isEmpty()
+    }
+
+    @Test
+    @DisplayName("fullExample should respect declared minItems when larger than one")
+    fun fullExampleShouldRespectDeclaredMinItemsWhenLargerThanOne() {
+        val fullGenerator = SchemaExampleValueGeneratorFactory().create(
+            ExampleValueSettings(fullExample = true)
+        )
+        val schema = ArraySchema().apply {
+            items = StringSchema().example("x")
+            minItems = 3
+        }
+
+        val result = fullGenerator.getExampleArrayValues("items", schema, OpenAPI())
+
+        assertThat(result).containsExactly("x", "x", "x")
+    }
+
+    @Test
+    @DisplayName("fullExample with oneOf should still produce a single variant")
+    fun fullExampleWithOneOfShouldProduceSingleVariant() {
+        val fullGenerator = SchemaExampleValueGeneratorFactory().create(
+            ExampleValueSettings(fullExample = true)
+        )
+        val schema = ComposedSchema().apply {
+            type = "object"
+            oneOf = listOf(
+                ObjectSchema().apply {
+                    addProperty("alpha", StringSchema().example("a"))
+                    required = listOf("alpha")
+                },
+                ObjectSchema().apply {
+                    addProperty("beta", StringSchema().example("b"))
+                    required = listOf("beta")
+                },
+            )
+        }
+
+        val result = fullGenerator.getExampleValue("variant", schema, OpenAPI())
+
+        assertThat(result).isEqualTo(mapOf("alpha" to "a"))
+    }
+
+    @Test
+    @DisplayName("fullExample should produce full response body including optional fields and non-empty array")
+    fun fullExampleShouldProduceFullResponseBody() {
+        val fullGenerator = SchemaExampleValueGeneratorFactory().create(
+            ExampleValueSettings(fullExample = true, includeWriteOnly = false)
+        )
+        val extractor = ResponseExampleExtractor(fullGenerator)
+        val schema = ObjectSchema().apply {
+            addProperty("id", StringSchema().example("the-id"))
+            addProperty("nickname", StringSchema())
+            addProperty(
+                "tags",
+                ArraySchema().items(StringSchema().example("tag"))
+            )
+            addProperty("secret", StringSchema().writeOnly(true))
+            required = listOf("id")
+        }
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType("application/json", MediaType().schema(schema))
+        )
+
+        val result = extractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+
+        assertThat(result).isEqualTo(
+            mapOf(
+                "id" to "the-id",
+                "nickname" to "a",
+                "tags" to listOf("tag")
+            )
+        )
+    }
+
+    @Test
+    @DisplayName("fullExample response fallback should ignore partial object-level examples")
+    fun fullExampleResponseFallbackShouldIgnorePartialObjectLevelExamples() {
+        val fullGenerator = SchemaExampleValueGeneratorFactory().create(
+            ExampleValueSettings(fullExample = true, includeWriteOnly = false)
+        )
+        val extractor = ResponseExampleExtractor(fullGenerator)
+        val schema = ObjectSchema().apply {
+            example(mapOf("id" to "partial"))
+            addProperty("id", StringSchema().example("the-id"))
+            addProperty("nickname", StringSchema())
+            required = listOf("id")
+        }
+        val operation = createOperationWithResponse(
+            200,
+            Content().addMediaType("application/json", MediaType().schema(schema))
+        )
+
+        val result = extractor.extractExpectedResponseExample(operation, createOpenAPI(), 200)
+
+        assertThat(result).isEqualTo(
+            mapOf(
+                "id" to "the-id",
+                "nickname" to "a"
+            )
+        )
+    }
 }

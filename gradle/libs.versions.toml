@@ -1,6 +1,6 @@
 [versions]
 # Project
-openapi-testgen = "0.10.0"
+openapi-testgen = "0.11.0"
 
 # Kotlin
 kotlin = "2.2.10"

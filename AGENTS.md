@@ -23,7 +23,7 @@ Standard layout is used across modules:
 - `./gradlew :core:test` / `:plugin:test` / `:cli:test`: run module tests
 - `./gradlew :core:test --tests "ValidCaseBuilderTest"`: run a single test class/method
 - `./gradlew detekt`: run Kotlin linting/formatting rules
-- `./gradlew apiCheck`: verify binary compatibility for public APIs
+- `./gradlew :example-value:apiCheck`: verify binary compatibility for a module's public APIs
 - `./gradlew :cli:installDist`: build the CLI distribution under `cli/build/install/`
 - `./gradlew :cli:run --args="--help"`: run the CLI from Gradle
 - `./gradlew :cli:nativeCompile`: build the GraalVM native CLI (if installed)

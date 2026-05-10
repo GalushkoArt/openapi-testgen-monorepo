@@ -28,6 +28,7 @@ class ExampleValueSettingsTest {
         assertThat(settings.includeOptionalExampleProperties).isFalse()
         assertThat(settings.includeWriteOnly).isTrue()
         assertThat(settings.useSchemaExampleFallback).isFalse()
+        assertThat(settings.fullExample).isFalse()
     }
 
     @Test
@@ -85,6 +86,7 @@ class ExampleValueSettingsTest {
                 "includeOptionalExampleProperties" to true,
                 "includeWriteOnly" to false,
                 "useSchemaExampleFallback" to true,
+                "fullExample" to true,
                 "email" to mapOf("template" to "user%s@mycompany.com"),
                 "date" to mapOf("startDate" to "2025-01-01"),
                 "dateTime" to mapOf(
@@ -100,6 +102,7 @@ class ExampleValueSettingsTest {
         assertThat(settings.includeOptionalExampleProperties).isTrue()
         assertThat(settings.includeWriteOnly).isFalse()
         assertThat(settings.useSchemaExampleFallback).isTrue()
+        assertThat(settings.fullExample).isTrue()
         assertThat(settings.email.template).isEqualTo("user%s@mycompany.com")
         assertThat(settings.date.startDate).isEqualTo("2025-01-01")
         assertThat(settings.dateTime.startDate).isEqualTo("2025-01-01")

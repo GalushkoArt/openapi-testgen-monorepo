@@ -87,7 +87,8 @@ openapi-testgen \
   --generator template \
   --setting exampleValues.includeOptionalExampleProperties=true \
   --setting exampleValues.includeWriteOnly=false \
-  --setting exampleValues.useSchemaExampleFallback=true
+  --setting exampleValues.useSchemaExampleFallback=true \
+  --setting exampleValues.fullExample=true
 ```
 
 ### Parser settings and parse options

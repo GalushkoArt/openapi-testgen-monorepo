@@ -82,6 +82,7 @@ openApiTestGenerator {
                 "includeOptionalExampleProperties" to true,
                 "includeWriteOnly" to false,
                 "useSchemaExampleFallback" to true,
+                "fullExample" to true,
             )
         )
     }

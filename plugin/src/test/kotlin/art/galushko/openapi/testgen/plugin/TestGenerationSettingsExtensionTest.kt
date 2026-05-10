@@ -82,6 +82,7 @@ class TestGenerationSettingsExtensionTest {
                 "includeOptionalExampleProperties" to true,
                 "includeWriteOnly" to false,
                 "useSchemaExampleFallback" to true,
+                "fullExample" to true,
                 "email" to mapOf("template" to "user%s@mycompany.com"),
                 "date" to mapOf("startDate" to "2025-01-01"),
                 "dateTime" to mapOf(
@@ -120,7 +121,8 @@ class TestGenerationSettingsExtensionTest {
                 "email=EmailProviderSettings(template=user%s@mycompany.com), " +
                 "date=DateProviderSettings(startDate=2025-01-01), " +
                 "dateTime=DateTimeProviderSettings(startDate=2025-01-01, timeSuffixTemplate=%sT00:00:00Z), " +
-                "plainString=PlainStringProviderSettings(validChars=abc123)))"
+                "plainString=PlainStringProviderSettings(validChars=abc123), " +
+                "fullExample=true))"
         ).isEqualTo(
             parsedSettings.toString()
         )

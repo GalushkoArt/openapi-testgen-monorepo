@@ -127,6 +127,32 @@ class SchemaExampleValueGeneratorFactoryTest {
 
             assertThat(result).isEqualTo("fallback")
         }
+
+        @Test
+        @DisplayName("should produce full example when fullExample is enabled")
+        fun shouldProduceFullExampleWhenEnabled() {
+            val generator = factory.create(
+                ExampleValueSettings(fullExample = true)
+            )
+
+            val schema = ObjectSchema().apply {
+                addProperty("req", StringSchema().example("required"))
+                addProperty("opt", StringSchema())
+                addProperty(
+                    "tags",
+                    io.swagger.v3.oas.models.media.ArraySchema().items(StringSchema().example("tag"))
+                )
+                required = listOf("req")
+            }
+
+            val result = generator.getExampleObject("obj", schema, OpenAPI())
+
+            assertThat(result).containsOnlyKeys("req", "opt", "tags")
+            assertThat(result["req"]).isEqualTo("required")
+            assertThat(result["opt"]).isEqualTo("a")
+            @Suppress("UNCHECKED_CAST")
+            assertThat(result["tags"] as List<Any>).containsExactly("tag")
+        }
     }
 
     @Nested

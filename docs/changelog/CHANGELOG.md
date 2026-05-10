@@ -9,6 +9,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.11.0
+
+### Added
+
+- **Full schema examples**: `ExampleValueSettings.fullExample` and `SchemaExampleValueGeneratorOptions.fullExample`
+  can now generate schema-derived examples that populate every declared object property and produce non-empty arrays when schema constraints allow it
+
+### Changed
+
+- **BREAKING**: `ExampleValueSettings` and `SchemaExampleValueGeneratorOptions` data-class constructor,
+  `copy`, and `componentN` signatures changed to include `fullExample`; use named arguments where possible
+
+### Documentation
+
+- Added `fullExample` to the distribution settings, CLI, Gradle plugin, and example-value module docs
+
 ## 0.10.0
 
 ### Added

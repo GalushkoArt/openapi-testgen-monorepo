@@ -63,6 +63,13 @@ public data class ExampleValueSettings(
 
     /** Plain string provider settings. */
     val plainString: PlainStringProviderSettings = PlainStringProviderSettings(),
+
+    /**
+     * When true, generated examples are "full": every declared property is populated (required and optional,
+     * regardless of explicit examples) and every array contains at least one item. Composed schemas collapse
+     * to a single variant. `includeWriteOnly` and depth/cycle guards still apply.
+     */
+    val fullExample: Boolean = SchemaExampleValueGeneratorOptions.DEFAULT_FULL_EXAMPLE,
 ) {
     init {
         require(maxExampleDepth > 0) { "maxExampleDepth must be positive, was $maxExampleDepth" }
@@ -138,6 +145,8 @@ public data class ExampleValueSettings(
                 ?: default.includeWriteOnly
             val useSchemaExampleFallback = extractBoolean("useSchemaExampleFallback", mutableMap)
                 ?: default.useSchemaExampleFallback
+            val fullExample = extractBoolean("fullExample", mutableMap)
+                ?: default.fullExample
 
             val uuidMap = extractStringAnyNullableMap("uuid", mutableMap) ?: emptyMap()
             val emailMap = extractStringAnyNullableMap("email", mutableMap) ?: emptyMap()
@@ -151,6 +160,7 @@ public data class ExampleValueSettings(
                 includeOptionalExampleProperties = includeOptionalExampleProperties,
                 includeWriteOnly = includeWriteOnly,
                 useSchemaExampleFallback = useSchemaExampleFallback,
+                fullExample = fullExample,
                 uuid = UuidProviderSettings.fromMap(uuidMap, default.uuid),
                 email = EmailProviderSettings.fromMap(emailMap, default.email),
                 date = DateProviderSettings.fromMap(dateMap, default.date),

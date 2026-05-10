@@ -139,17 +139,26 @@ public class SchemaExampleValueGenerator(
     private fun generateExampleValue(schema: Schema<*>, ctx: ExampleGenerationContext): Any {
         ctx.registerVisited(schema.`$ref`)
         val dereferenced = tryGetSchemaFromRef(schema, ctx.openAPI)
-
-        if (ctx.variationIndex == 0) {
-            dereferenced.example?.let { return it }
-            if (ctx.options.useSchemaExampleFallback) {
-                dereferenced.examples?.firstOrNull()?.let { return it }
-                dereferenced.default?.let { return it }
-            }
+        val explicitExample = explicitSchemaExample(dereferenced, ctx)
+        if (explicitExample != null && !ctx.options.fullExample) {
+            return explicitExample
         }
 
-        val mergedSchema = schemaMerger.mergeWithSubSchemas(dereferenced, ctx.depth, ctx.visitedRefs) {
-            tryGetSchemaFromRef(it, ctx.openAPI)
+        var merged: Schema<*>? = null
+
+        fun mergedSchema(): Schema<*> {
+            val existing = merged
+            if (existing != null) return existing
+            val resolved = schemaMerger.mergeWithSubSchemas(dereferenced, ctx.depth, ctx.visitedRefs) {
+                tryGetSchemaFromRef(it, ctx.openAPI)
+            }
+            merged = resolved
+            return resolved
+        }
+
+        val mergedSchema = mergedSchema()
+        if (explicitExample != null && !isStructuralSchema(mergedSchema)) {
+            return explicitExample
         }
 
         if (isArray(mergedSchema)) {
@@ -188,7 +197,12 @@ public class SchemaExampleValueGenerator(
         }
 
         val result = ArrayList<Any>()
-        val minimumSize = arraySchema.minItems ?: 0
+        val declaredMin = arraySchema.minItems ?: 0
+        val minimumSize = when {
+            !ctx.options.fullExample -> declaredMin
+            arraySchema.maxItems == 0 -> 0
+            else -> maxOf(declaredMin, 1)
+        }
         val requiresUniqueItems = arraySchema.uniqueItems == true
         var variationIndex = 0
 
@@ -262,7 +276,9 @@ public class SchemaExampleValueGenerator(
         val propertyNames = LinkedHashSet<String>()
         propertyNames.addAll(required)
 
-        if (ctx.options.includeOptionalExampleProperties) {
+        if (ctx.options.fullExample) {
+            propertyNames.addAll(properties.keys)
+        } else if (ctx.options.includeOptionalExampleProperties) {
             properties.filterKeys { it !in required }
                 .filter { (_, propSchema) ->
                     hasExplicitExample(propSchema, ctx.openAPI, ctx.options.useSchemaExampleFallback)
@@ -281,3 +297,16 @@ public class SchemaExampleValueGenerator(
         return false
     }
 }
+
+private fun explicitSchemaExample(schema: Schema<*>, ctx: ExampleGenerationContext): Any? {
+    if (ctx.variationIndex != 0) return null
+
+    schema.example?.let { return it }
+    if (!ctx.options.useSchemaExampleFallback) return null
+
+    schema.examples?.firstOrNull()?.let { return it }
+    return schema.default
+}
+
+private fun isStructuralSchema(schema: Schema<*>): Boolean =
+    isArray(schema) || isObject(schema)

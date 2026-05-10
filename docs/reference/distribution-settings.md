@@ -179,17 +179,18 @@ testGenerationSettings:
 
 Configuration for schema-derived example value generation.
 
-| Setting                            | Type               | Default   | Description                                                             |
-|------------------------------------|--------------------|-----------|-------------------------------------------------------------------------|
-| `providers`                        | List&lt;String&gt; | See below | Ordered provider list; first match wins                                 |
-| `maxExampleDepth`                  | Integer            | 50        | Maximum recursion depth for example generation                          |
-| `includeOptionalExampleProperties` | Boolean            | false     | Include optional properties that define examples/defaults               |
-| `includeWriteOnly`                 | Boolean            | true      | Include `writeOnly` properties in generated examples                    |
-| `useSchemaExampleFallback`         | Boolean            | false     | Use `schema.examples`/`schema.default` when `schema.example` is missing |
+| Setting                            | Type               | Default   | Description                                                                  |
+|------------------------------------|--------------------|-----------|------------------------------------------------------------------------------|
+| `providers`                        | List&lt;String&gt; | See below | Ordered provider list; first match wins                                      |
+| `maxExampleDepth`                  | Integer            | 50        | Maximum recursion depth for example generation                               |
+| `includeOptionalExampleProperties` | Boolean            | false     | Include optional properties that define examples/defaults                    |
+| `includeWriteOnly`                 | Boolean            | true      | Include `writeOnly` properties in generated examples                         |
+| `useSchemaExampleFallback`         | Boolean            | false     | Use `schema.examples`/`schema.default` when `schema.example` is missing      |
+| `fullExample`                      | Boolean            | false     | Populate all declared properties and non-empty arrays when constraints allow |
 
 Note: These flags affect request/parameter example generation. Response `expectedBody` uses response defaults
 (`includeOptionalExampleProperties = true`, `includeWriteOnly = false`, `useSchemaExampleFallback = true`);
-`maxExampleDepth` still applies.
+`fullExample` and `maxExampleDepth` still apply.
 
 Default provider order:
 
@@ -254,6 +255,7 @@ testGenerationSettings:
         includeOptionalExampleProperties: true
         includeWriteOnly: false
         useSchemaExampleFallback: true
+        fullExample: true
         uuid:
             template: "test-uuid-%s"
         email:

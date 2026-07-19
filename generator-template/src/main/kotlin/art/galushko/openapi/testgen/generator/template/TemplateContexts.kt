@@ -11,7 +11,7 @@ internal data class GenericClassTemplateContext(
     val customVariables: Map<String, Any?>,
     val fileHeaderComment: String?,
 ) {
-    fun escapeString(): Function<Object, Object> = Function(escapeString)
+    fun escapeString(): Function<Any, Any> = Function(escapeString)
 }
 
 internal data class GenericMethodTemplateContext(
@@ -37,7 +37,7 @@ internal data class GenericMethodTemplateContext(
     val customVariables: Map<String, Any?>,
     val shouldHaveBody: Boolean = httpMethod.uppercase() in listOf("POST", "PUT", "PATCH"),
 ) {
-    fun escapeString(): Function<Object, Object> = Function(escapeString)
+    fun escapeString(): Function<Any, Any> = Function(escapeString)
 }
 
 internal data class GenericParamContext(

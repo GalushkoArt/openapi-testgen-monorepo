@@ -5,6 +5,8 @@ description: Generate negative test cases that verify your API rejects invalid i
 # Negative testing
 
 Generate negative test cases that verify your API rejects invalid input according to your OpenAPI spec.
+This page is the catalog of generated negative cases by input location (path, query, header, request body, auth).
+For the complementary baseline valid (2xx) case, see [Positive testing](positive-testing.md).
 
 ## What gets tested
 

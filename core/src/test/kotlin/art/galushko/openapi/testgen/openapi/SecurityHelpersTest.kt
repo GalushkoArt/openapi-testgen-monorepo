@@ -85,6 +85,16 @@ class SecurityHelpersTest {
     }
 
     @Test
+    @DisplayName("getSecurityRequirementSchemas(security, openAPI) throws for unknown schemes when components are absent")
+    fun getSecurityRequirementSchemas_throwsOnUnknownWithoutComponents() {
+        val unknownSecurity = listOf(SecurityRequirement().addList("unknown"))
+
+        assertThatThrownBy { getSecurityRequirementSchemas(unknownSecurity, OpenAPI()) }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessageContaining("Unknown security schemes: [unknown]")
+    }
+
+    @Test
     @DisplayName("getSecurityRequirementSchemas(operation, openAPI) returns empty when none defined")
     fun getSecurityRequirementSchemas_operationVariant_empty() {
         val result = step("Act: no op or root security") { getSecurityRequirementSchemas(Operation(), OpenAPI()) }
@@ -101,6 +111,16 @@ class SecurityHelpersTest {
         val mapped = step("Act: map op security") { getSecurityRequirementSchemas(operation, openAPI) }
         assertThat(mapped).hasSize(1)
         assertThat(mapped.first().map { it.name }).containsExactly("api_key")
+    }
+
+    @Test
+    @DisplayName("findSingleApiKeyRequirementSchemes returns empty when components are absent")
+    fun findSingleApiKeyRequirementSchemes_returnsEmptyWithoutComponents() {
+        val requirements = listOf(SecurityRequirement().addList("api_key"))
+
+        val result = SecurityHelpers.findSingleApiKeyRequirementSchemes(requirements, OpenAPI())
+
+        assertThat(result).isEmpty()
     }
 
     @Test

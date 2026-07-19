@@ -14,8 +14,8 @@ package art.galushko.openapi.testgen.model.error
  *    processing immediately. There's no partial result that makes sense.
  *
  * 2. **Deep recursion context**: Budget checks occur deep in recursive schema traversal
- *    ([SchemaMerger], [CombinationBudget]). Propagating [Outcome] at each recursion level
- *    would be verbose and error-prone.
+ *    (`SchemaMerger` in example-value, `CombinationBudget` in core — both outside this module).
+ *    Propagating [Outcome] at each recursion level would be verbose and error-prone.
  *
  * 3. **Clear boundary**: Exceptions bubble up naturally through the call stack and are caught
  *    at well-defined provider boundaries by `runProviderSafely`, which converts them to

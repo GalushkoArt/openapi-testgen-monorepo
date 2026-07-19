@@ -136,6 +136,38 @@ class CreateUserTest {
     }
 
     @Test
+    @DisplayName("Incorrect Request Body: Null For Required Property email")
+    fun incorrectRequestBodyNullForRequiredPropertyEmail() {
+        val requestSpec = RestAssured.given()
+        requestSpec.header("X-API-Key", "test-api-key-123")
+        requestSpec.header("Content-Type", "application/json")
+        val requestBody = "{\"email\":null,\"name\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}"
+        requestSpec.body(requestBody)
+
+        val response = requestSpec.post("/users")
+        response.then().statusCode(400)
+        val responseBody = response.body.asString()
+        val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
+        assertExpectedBody(expectedBodyJson, responseBody)
+    }
+
+    @Test
+    @DisplayName("Incorrect Request Body: Null For Required Property name")
+    fun incorrectRequestBodyNullForRequiredPropertyName() {
+        val requestSpec = RestAssured.given()
+        requestSpec.header("X-API-Key", "test-api-key-123")
+        requestSpec.header("Content-Type", "application/json")
+        val requestBody = "{\"email\":\"test0@example.com\",\"name\":null}"
+        requestSpec.body(requestBody)
+
+        val response = requestSpec.post("/users")
+        response.then().statusCode(400)
+        val responseBody = response.body.asString()
+        val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
+        assertExpectedBody(expectedBodyJson, responseBody)
+    }
+
+    @Test
     @DisplayName("Incorrect Request Body: Object Property id Wrong UUID Format")
     fun incorrectRequestBodyObjectPropertyIdWrongUUIDFormat() {
         val requestSpec = RestAssured.given()

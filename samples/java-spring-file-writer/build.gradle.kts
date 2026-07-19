@@ -3,9 +3,9 @@ import art.galushko.openapi.testgen.plugin.OpenApiTestGeneratorTask
 
 plugins {
     id("java")
-    id("org.springframework.boot") version "3.3.4"
-    id("io.spring.dependency-management") version "1.1.6"
-    id("org.openapi.generator") version "7.7.0"
+    id("org.springframework.boot") version "3.5.16"
+    id("io.spring.dependency-management") version "1.1.7"
+    id("org.openapi.generator") version "7.23.0"
     id("art.galushko.openapi-test-generator")
 }
 
@@ -23,11 +23,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
     implementation("art.galushko.openapi.testgen:model")
-    implementation("org.openapitools:jackson-databind-nullable:0.2.6")
-    implementation("io.swagger.core.v3:swagger-annotations:2.2.35")
+    implementation("org.openapitools:jackson-databind-nullable:0.2.10")
+    implementation("io.swagger.core.v3:swagger-annotations:2.2.52")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("io.rest-assured:rest-assured:5.5.0")
+    testImplementation("io.rest-assured:rest-assured:5.5.7")
     testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.19.1")
 }
 
@@ -106,7 +106,7 @@ tasks.named<Copy>("processTestResources") {
 
 // Additional generation in yaml format
 tasks.register<OpenApiTestGeneratorTask>("generateOpenApiTestsYaml") {
-    configFile.set("open-api-test-generation-config.yaml")
+    configFile.set(layout.projectDirectory.file("open-api-test-generation-config.yaml"))
     testGenerationSettings {
         validSecurityValues.putAll(mapOf("ApiKeyAuth" to "test-api-key-12")) // optional pass to override
     }

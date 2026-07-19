@@ -12,7 +12,7 @@ You can provide a YAML config file that mirrors execution options (used by both 
 
 The config filename is arbitrary; examples use `openapi-testgen.yaml`.
 
-### Example config
+### Example openapi-testgen.yaml
 
 ```yaml
 specFile: "openapi.yaml"
@@ -36,7 +36,7 @@ logLevel: "INFO"
 
 ### Using the config
 
-#### CLI
+#### Load the config file with the CLI
 
 ```bash
 openapi-testgen \
@@ -44,7 +44,7 @@ openapi-testgen \
   --spec-file ./src/test/resources/openapi.yaml
 ```
 
-#### Gradle plugin
+#### Load the config file with the Gradle plugin
 
 ```kotlin
 openApiTestGenerator {
@@ -123,7 +123,7 @@ If you don't have the CLI installed yet, see [Installation](../getting-started/i
 
 ### Include configuration
 
-#### YAML config
+#### Target operations in the YAML config
 
 ```yaml
 # openapi-testgen.yaml
@@ -141,7 +141,7 @@ testGenerationSettings:
     "/users/{userId}": ["GET"]
 ```
 
-#### CLI
+#### Target operations with CLI settings
 
 Using a config file:
 
@@ -179,7 +179,7 @@ openapi-testgen \
   --setting 'includeOperations.*[]=GET'
 ```
 
-#### Gradle DSL
+#### Target operations in the Gradle DSL
 
 Add `includeOperations` inside the `testGenerationSettings` block (see [Gradle integration](../getting-started/gradle-integration.md) for full plugin setup):
 
@@ -473,8 +473,9 @@ openapi-testgen \
 ## Security values
 
 The generator uses `validSecurityValues` to build a baseline valid case (and to generate auth-related negative cases).
+Keys are security scheme names from `components.securitySchemes` (e.g. `ApiKeyAuth`), not header names.
 
-### YAML config
+### Set security values in the YAML config
 
 ```yaml
 testGenerationSettings:
@@ -482,7 +483,7 @@ testGenerationSettings:
     ApiKeyAuth: "test-api-key-123"
 ```
 
-### CLI override
+### Set security values with the CLI
 
 `--setting` keys map directly to `TestGenerationSettings` fields:
 
@@ -494,7 +495,7 @@ openapi-testgen \
   --setting validSecurityValues.ApiKeyAuth=test-api-key-123
 ```
 
-### Gradle DSL
+### Set security values in the Gradle DSL
 
 ```kotlin
 openApiTestGenerator {
@@ -515,34 +516,10 @@ See [TestCase](../reference/model.md#authorizationscopes) for the canonical sche
 ## Positive testing
 
 By default, the generator produces only negative test cases that validate error handling (4xx responses).
-To also test that valid requests succeed with 2xx responses, enable the `includeValidCase` option.
-
-### YAML
-```yaml
-testGenerationSettings:
-    includeValidCase: true
-```
-
-### CLI
-```bash
-openapi-testgen --setting includeValidCase=true ...
-```
-
-### Gradle
-```kotlin
-openApiTestGenerator {
-    testGenerationSettings {
-        includeValidCase.set(true)
-    }
-}
-```
-
-### What you get
-
-Enabling `includeValidCase` adds a single baseline positive test case (named "Test Valid Case") to each generated suite.
-The expected status code is derived from the first 2xx response defined in the OpenAPI spec for the operation.
-
-See: [Distribution settings - Output options](../reference/distribution-settings.md#output-options)
+Setting `includeValidCase: true` adds a single baseline positive test case (named "Test Valid Case",
+expecting the operation's 2xx status) to each generated suite. See
+[Positive testing](positive-testing.md) for how the valid case is built, security and example-value
+prerequisites, generated output, and limitations.
 
 ---
 

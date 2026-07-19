@@ -158,6 +158,42 @@ public class CreateOrderTest {
     }
 
     @Test
+    @DisplayName("Incorrect Request Body: Null For Required Property items")
+    public void incorrectRequestBodyNullForRequiredPropertyItems() {
+        RequestSpecification requestSpec = RestAssured.given();
+        requestSpec.header("X-API-Key", "test-api-key-123");
+        requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
+        String requestBody = "{\"items\":null,\"userId\":\"a\"}";
+        requestSpec.body(requestBody);
+
+        Response response = requestSpec.post("/orders");
+        response.then().statusCode(400);
+
+        String responseBody = response.getBody().asString();
+        String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
+    }
+
+    @Test
+    @DisplayName("Incorrect Request Body: Null For Required Property userId")
+    public void incorrectRequestBodyNullForRequiredPropertyUserId() {
+        RequestSpecification requestSpec = RestAssured.given();
+        requestSpec.header("X-API-Key", "test-api-key-123");
+        requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
+        String requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":\"a\"}],\"userId\":null}";
+        requestSpec.body(requestBody);
+
+        Response response = requestSpec.post("/orders");
+        response.then().statusCode(400);
+
+        String responseBody = response.getBody().asString();
+        String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
+    }
+
+    @Test
     @DisplayName("Incorrect Request Body: Object Property items Below Min Items Array")
     public void incorrectRequestBodyObjectPropertyItemsBelowMinItemsArray() {
         RequestSpecification requestSpec = RestAssured.given();
@@ -219,6 +255,78 @@ public class CreateOrderTest {
         requestSpec.header("Content-Type", "application/json");
         requestSpec.header("Accept", "application/json");
         String requestBody = "{\"items\":[{\"price\":0,\"quantity\":1}],\"userId\":\"a\"}";
+        requestSpec.body(requestBody);
+
+        Response response = requestSpec.post("/orders");
+        response.then().statusCode(400);
+
+        String responseBody = response.getBody().asString();
+        String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
+    }
+
+    @Test
+    @DisplayName("Incorrect Request Body: Object Property items Array Item Null For Required Property price")
+    public void incorrectRequestBodyObjectPropertyItemsArrayItemNullForRequiredPropertyPrice() {
+        RequestSpecification requestSpec = RestAssured.given();
+        requestSpec.header("X-API-Key", "test-api-key-123");
+        requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
+        String requestBody = "{\"items\":[{\"price\":null,\"quantity\":1,\"sku\":\"a\"}],\"userId\":\"a\"}";
+        requestSpec.body(requestBody);
+
+        Response response = requestSpec.post("/orders");
+        response.then().statusCode(400);
+
+        String responseBody = response.getBody().asString();
+        String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
+    }
+
+    @Test
+    @DisplayName("Incorrect Request Body: Object Property items Array Item Null For Required Property quantity")
+    public void incorrectRequestBodyObjectPropertyItemsArrayItemNullForRequiredPropertyQuantity() {
+        RequestSpecification requestSpec = RestAssured.given();
+        requestSpec.header("X-API-Key", "test-api-key-123");
+        requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
+        String requestBody = "{\"items\":[{\"price\":0,\"quantity\":null,\"sku\":\"a\"}],\"userId\":\"a\"}";
+        requestSpec.body(requestBody);
+
+        Response response = requestSpec.post("/orders");
+        response.then().statusCode(400);
+
+        String responseBody = response.getBody().asString();
+        String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
+    }
+
+    @Test
+    @DisplayName("Incorrect Request Body: Object Property items Array Item Null For Required Property sku")
+    public void incorrectRequestBodyObjectPropertyItemsArrayItemNullForRequiredPropertySku() {
+        RequestSpecification requestSpec = RestAssured.given();
+        requestSpec.header("X-API-Key", "test-api-key-123");
+        requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
+        String requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":null}],\"userId\":\"a\"}";
+        requestSpec.body(requestBody);
+
+        Response response = requestSpec.post("/orders");
+        response.then().statusCode(400);
+
+        String responseBody = response.getBody().asString();
+        String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
+    }
+
+    @Test
+    @DisplayName("Incorrect Request Body: Object Property items Array Item Unexpected Additional Property")
+    public void incorrectRequestBodyObjectPropertyItemsArrayItemUnexpectedAdditionalProperty() {
+        RequestSpecification requestSpec = RestAssured.given();
+        requestSpec.header("X-API-Key", "test-api-key-123");
+        requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
+        String requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":\"a\",\"unexpectedProperty\":\"unexpected-additional-property-value\"}],\"userId\":\"a\"}";
         requestSpec.body(requestBody);
 
         Response response = requestSpec.post("/orders");

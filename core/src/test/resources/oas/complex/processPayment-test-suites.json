@@ -147,6 +147,151 @@
                 "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Null For Required Property amount",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : null,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cardNumber" : "a",
+                        "cvv" : "a",
+                        "expiryDate" : "a",
+                        "method" : "credit_card"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property currency",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : null,
+                    "paymentMethod" : {
+                        "cardNumber" : "a",
+                        "cvv" : "a",
+                        "expiryDate" : "a",
+                        "method" : "credit_card"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property paymentMethod",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property amount Out Of Minimum Boundary Number",
                 "method" : "POST",
                 "path" : "/payments",
@@ -716,6 +861,500 @@
                     "paymentMethod" : {
                         "cryptocurrency" : "BTC",
                         "method" : "crypto"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property paymentMethod Null For Required Property accountNumber",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "accountNumber" : null,
+                        "method" : "bank_transfer",
+                        "routingNumber" : "a"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property paymentMethod Null For Required Property cardNumber",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cardNumber" : null,
+                        "cvv" : "a",
+                        "expiryDate" : "a",
+                        "method" : "credit_card"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property paymentMethod Null For Required Property cryptocurrency",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cryptocurrency" : null,
+                        "method" : "crypto",
+                        "walletAddress" : "a"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property paymentMethod Null For Required Property cvv",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cardNumber" : "a",
+                        "cvv" : null,
+                        "expiryDate" : "a",
+                        "method" : "credit_card"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property paymentMethod Null For Required Property expiryDate",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cardNumber" : "a",
+                        "cvv" : "a",
+                        "expiryDate" : null,
+                        "method" : "credit_card"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property paymentMethod Null For Required Property method",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cardNumber" : "a",
+                        "cvv" : "a",
+                        "expiryDate" : "a",
+                        "method" : null
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property paymentMethod Null For Required Property method",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "accountNumber" : "a",
+                        "method" : null,
+                        "routingNumber" : "a"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property paymentMethod Null For Required Property method",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cryptocurrency" : "BTC",
+                        "method" : null,
+                        "walletAddress" : "a"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property paymentMethod Null For Required Property routingNumber",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "accountNumber" : "a",
+                        "method" : "bank_transfer",
+                        "routingNumber" : null
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property paymentMethod Null For Required Property walletAddress",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    },
+                    {
+                        "key" : "X-Idempotency-Key",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.01,
+                    "currency" : "USD",
+                    "paymentMethod" : {
+                        "cryptocurrency" : "BTC",
+                        "method" : "crypto",
+                        "walletAddress" : null
                     }
                 },
                 "requestBodyMediaType" : "application/json",

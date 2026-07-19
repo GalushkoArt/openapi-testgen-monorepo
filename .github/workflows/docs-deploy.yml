@@ -1,0 +1,50 @@
+name: Docs Deploy
+
+# Builds the MkDocs site (with Dokka API docs and sitemap) and deploys it to GitHub Pages.
+# The custom domain (docs.galushko.art) is configured in the repository Pages settings.
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: docs-deploy
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build docs site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # git-revision-date-localized needs full history for correct page dates.
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v5
+      - run: chmod +x ./gradlew
+      - name: Build site (strict) with Dokka and sitemap
+        run: ./gradlew docsFullBuild
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/docs-site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

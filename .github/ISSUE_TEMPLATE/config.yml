@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Documentation
+    url: https://docs.galushko.art/openapi-test-generator/
+    about: Guides, configuration reference, and extension points
+  - name: Security report
+    url: https://github.com/GalushkoArt/openapi-testgen-monorepo/security/advisories/new
+    about: Report vulnerabilities privately (please do not open public issues)

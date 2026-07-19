@@ -1,0 +1,455 @@
+{
+    "addPetLabel" : {
+        "path" : "/pets/{petId}/labels",
+        "method" : "POST",
+        "operationName" : "addPetLabel",
+        "testCases" : [
+            {
+                "name" : "Incorrect Request Body: Missed Required Object Properties label",
+                "method" : "POST",
+                "path" : "/pets/{petId}/labels",
+                "queryParams" : { },
+                "pathParams" : {
+                    "petId" : "a"
+                },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : { },
+                "requestBodyMediaType" : "application/x-www-form-urlencoded",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property label",
+                "method" : "POST",
+                "path" : "/pets/{petId}/labels",
+                "queryParams" : { },
+                "pathParams" : {
+                    "petId" : "a"
+                },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "label" : null
+                },
+                "requestBodyMediaType" : "application/x-www-form-urlencoded",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property label Out Of Minimum Length String",
+                "method" : "POST",
+                "path" : "/pets/{petId}/labels",
+                "queryParams" : { },
+                "pathParams" : {
+                    "petId" : "a"
+                },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "label" : "a"
+                },
+                "requestBodyMediaType" : "application/x-www-form-urlencoded",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Required Request Body is missing",
+                "method" : "POST",
+                "path" : "/pets/{petId}/labels",
+                "queryParams" : { },
+                "pathParams" : {
+                    "petId" : "a"
+                },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : "application/x-www-form-urlencoded",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+            }
+        ]
+    },
+    "createPet" : {
+        "path" : "/pets",
+        "method" : "POST",
+        "operationName" : "createPet",
+        "testCases" : [
+            {
+                "name" : "Incorrect Request Body: Missed Required Object Properties name",
+                "method" : "POST",
+                "path" : "/pets",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-Api-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-Api-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : { },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property name",
+                "method" : "POST",
+                "path" : "/pets",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-Api-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-Api-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "name" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property name Out Of Minimum Length String",
+                "method" : "POST",
+                "path" : "/pets",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-Api-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-Api-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "name" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid X-Api-Key API key security",
+                "method" : "POST",
+                "path" : "/pets",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-Api-Key",
+                        "value" : "some_really_invalid_api_key"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-Api-Key",
+                            "value" : "some_really_invalid_api_key"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "name" : "Bella"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+            },
+            {
+                "name" : "No security values provided",
+                "method" : "POST",
+                "path" : "/pets",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "name" : "Bella"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+            },
+            {
+                "name" : "Required Request Body is missing",
+                "method" : "POST",
+                "path" : "/pets",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-Api-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-Api-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+            }
+        ]
+    },
+    "listPets" : {
+        "path" : "/pets",
+        "method" : "GET",
+        "operationName" : "listPets",
+        "testCases" : [
+            {
+                "name" : "Invalid Query limit parameter: Integer Breaking",
+                "method" : "GET",
+                "path" : "/pets",
+                "queryParams" : {
+                    "limit" : 1.5
+                },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query limit parameter: Invalid Type",
+                "method" : "GET",
+                "path" : "/pets",
+                "queryParams" : {
+                    "limit" : "abc"
+                },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.InvalidTypeValidationRule"
+            },
+            {
+                "name" : "Invalid Query limit parameter: Out Of Maximum Boundary Number",
+                "method" : "GET",
+                "path" : "/pets",
+                "queryParams" : {
+                    "limit" : 101
+                },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query limit parameter: Out Of Minimum Boundary Number",
+                "method" : "GET",
+                "path" : "/pets",
+                "queryParams" : {
+                    "limit" : 0
+                },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query limit parameter: Wrong Int32 Format",
+                "method" : "GET",
+                "path" : "/pets",
+                "queryParams" : {
+                    "limit" : 2147483648
+                },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.WrongInt32FormatSchemaValidationRule"
+            },
+            {
+                "name" : "Missed Required Query Parameter limit",
+                "method" : "GET",
+                "path" : "/pets",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
+            }
+        ]
+    }
+}

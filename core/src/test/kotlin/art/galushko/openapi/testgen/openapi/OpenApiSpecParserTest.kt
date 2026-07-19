@@ -102,7 +102,8 @@ class OpenApiSpecParserTest {
             )
         }
             .isInstanceOf(IllegalArgumentException::class.java)
-            .hasMessage("Parsed OpenAPI model is null")
+            .hasMessageContaining("Parsed unknown OpenAPI/Swagger version model is null")
+            .hasMessageContaining("Unable to read location")
 
         assertThat(snapshotOptions(DeserializationUtils.getOptions())).isEqualTo(customOptions)
     }

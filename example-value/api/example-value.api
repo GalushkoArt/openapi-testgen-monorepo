@@ -92,7 +92,10 @@ public final class art/galushko/openapi/testgen/example/config/ExampleValueSetti
 	public final fun component9 ()Lart/galushko/openapi/testgen/example/config/DateTimeProviderSettings;
 	public final fun copy (Ljava/util/List;IZZZLart/galushko/openapi/testgen/example/config/UuidProviderSettings;Lart/galushko/openapi/testgen/example/config/EmailProviderSettings;Lart/galushko/openapi/testgen/example/config/DateProviderSettings;Lart/galushko/openapi/testgen/example/config/DateTimeProviderSettings;Lart/galushko/openapi/testgen/example/config/PlainStringProviderSettings;Z)Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;
 	public static synthetic fun copy$default (Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;Ljava/util/List;IZZZLart/galushko/openapi/testgen/example/config/UuidProviderSettings;Lart/galushko/openapi/testgen/example/config/EmailProviderSettings;Lart/galushko/openapi/testgen/example/config/DateProviderSettings;Lart/galushko/openapi/testgen/example/config/DateTimeProviderSettings;Lart/galushko/openapi/testgen/example/config/PlainStringProviderSettings;ZILjava/lang/Object;)Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;
+	public static final fun defaults ()Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;
 	public fun equals (Ljava/lang/Object;)Z
+	public static final fun fromMap (Ljava/util/Map;)Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;
+	public static final fun fromMap (Ljava/util/Map;Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;)Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;
 	public final fun getDate ()Lart/galushko/openapi/testgen/example/config/DateProviderSettings;
 	public final fun getDateTime ()Lart/galushko/openapi/testgen/example/config/DateTimeProviderSettings;
 	public final fun getEmail ()Lart/galushko/openapi/testgen/example/config/EmailProviderSettings;
@@ -109,6 +112,8 @@ public final class art/galushko/openapi/testgen/example/config/ExampleValueSetti
 }
 
 public final class art/galushko/openapi/testgen/example/config/ExampleValueSettings$Companion {
+	public final fun defaults ()Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;
+	public final fun fromMap (Ljava/util/Map;)Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;
 	public final fun fromMap (Ljava/util/Map;Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;)Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;
 	public static synthetic fun fromMap$default (Lart/galushko/openapi/testgen/example/config/ExampleValueSettings$Companion;Ljava/util/Map;Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;ILjava/lang/Object;)Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;
 	public final fun getDEFAULT_PROVIDER_ORDER ()Ljava/util/List;
@@ -152,22 +157,30 @@ public final class art/galushko/openapi/testgen/example/config/UuidProviderSetti
 }
 
 public final class art/galushko/openapi/testgen/example/generator/SchemaExampleValueGenerator {
+	public fun <init> (Ljava/util/List;)V
+	public fun <init> (Ljava/util/List;Lart/galushko/openapi/testgen/example/openapi/SchemaMerger;)V
 	public fun <init> (Ljava/util/List;Lart/galushko/openapi/testgen/example/openapi/SchemaMerger;Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorOptions;)V
 	public synthetic fun <init> (Ljava/util/List;Lart/galushko/openapi/testgen/example/openapi/SchemaMerger;Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorOptions;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getExampleArrayValues (Ljava/lang/String;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/OpenAPI;)Ljava/util/List;
+	public final fun getExampleArrayValuesByItem (Ljava/lang/String;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/OpenAPI;)Ljava/util/List;
+	public final fun getExampleArrayValuesByItem (Ljava/lang/String;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/OpenAPI;I)Ljava/util/List;
 	public final fun getExampleArrayValuesByItem (Ljava/lang/String;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/OpenAPI;ILjava/util/Set;)Ljava/util/List;
 	public static synthetic fun getExampleArrayValuesByItem$default (Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGenerator;Ljava/lang/String;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/OpenAPI;ILjava/util/Set;ILjava/lang/Object;)Ljava/util/List;
 	public final fun getExampleObject (Ljava/lang/String;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/OpenAPI;)Ljava/util/Map;
+	public final fun getExampleValue (Ljava/lang/String;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/OpenAPI;)Ljava/lang/Object;
 	public final fun getExampleValue (Ljava/lang/String;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/OpenAPI;I)Ljava/lang/Object;
 	public static synthetic fun getExampleValue$default (Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGenerator;Ljava/lang/String;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/OpenAPI;IILjava/lang/Object;)Ljava/lang/Object;
+	public final fun getExampleValueWithOptions (Ljava/lang/String;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/OpenAPI;Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorOptions;)Ljava/lang/Object;
 	public final fun getExampleValueWithOptions (Ljava/lang/String;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/OpenAPI;Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorOptions;I)Ljava/lang/Object;
 	public static synthetic fun getExampleValueWithOptions$default (Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGenerator;Ljava/lang/String;Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/OpenAPI;Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorOptions;IILjava/lang/Object;)Ljava/lang/Object;
 }
 
 public final class art/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorFactory {
 	public fun <init> ()V
+	public fun <init> (Lart/galushko/openapi/testgen/example/openapi/SchemaMerger;)V
 	public fun <init> (Lart/galushko/openapi/testgen/example/openapi/SchemaMerger;Ljava/util/Map;)V
 	public synthetic fun <init> (Lart/galushko/openapi/testgen/example/openapi/SchemaMerger;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun create ()Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGenerator;
 	public final fun create (Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;)Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGenerator;
 	public static synthetic fun create$default (Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorFactory;Lart/galushko/openapi/testgen/example/config/ExampleValueSettings;ILjava/lang/Object;)Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGenerator;
 }
@@ -179,6 +192,8 @@ public final class art/galushko/openapi/testgen/example/generator/SchemaExampleV
 	public static final field DEFAULT_INCLUDE_WRITE_ONLY Z
 	public static final field DEFAULT_MAX_EXAMPLE_DEPTH I
 	public static final field DEFAULT_USE_SCHEMA_EXAMPLE_FALLBACK Z
+	public static final field REQUEST_DEFAULTS Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorOptions;
+	public static final field RESPONSE_DEFAULTS Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorOptions;
 	public fun <init> ()V
 	public fun <init> (IZZZZ)V
 	public synthetic fun <init> (IZZZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -197,11 +212,14 @@ public final class art/galushko/openapi/testgen/example/generator/SchemaExampleV
 	public final fun getUseSchemaExampleFallback ()Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+	public final fun withFullExample (Z)Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorOptions;
+	public final fun withIncludeOptionalExampleProperties (Z)Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorOptions;
+	public final fun withIncludeWriteOnly (Z)Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorOptions;
+	public final fun withMaxExampleDepth (I)Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorOptions;
+	public final fun withUseSchemaExampleFallback (Z)Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorOptions;
 }
 
 public final class art/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorOptions$Companion {
-	public final fun getREQUEST_DEFAULTS ()Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorOptions;
-	public final fun getRESPONSE_DEFAULTS ()Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGeneratorOptions;
 }
 
 public final class art/galushko/openapi/testgen/example/openapi/SchemaMerger {
@@ -209,10 +227,16 @@ public final class art/galushko/openapi/testgen/example/openapi/SchemaMerger {
 	public fun <init> (Lart/galushko/openapi/testgen/example/openapi/SchemaMergerOptions;)V
 	public synthetic fun <init> (Lart/galushko/openapi/testgen/example/openapi/SchemaMergerOptions;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getOneOfAnyOfCombinations (Lio/swagger/v3/oas/models/media/Schema;Ljava/util/Set;)Ljava/util/List;
+	public final fun getSchemaFlatCombinations (Lio/swagger/v3/oas/models/media/Schema;)Ljava/util/List;
+	public final fun getSchemaFlatCombinations (Lio/swagger/v3/oas/models/media/Schema;I)Ljava/util/List;
+	public final fun getSchemaFlatCombinations (Lio/swagger/v3/oas/models/media/Schema;ILjava/util/Set;)Ljava/util/List;
+	public final fun getSchemaFlatCombinations (Lio/swagger/v3/oas/models/media/Schema;ILjava/util/Set;Lart/galushko/openapi/testgen/example/util/CombinationBudget;)Ljava/util/List;
 	public final fun getSchemaFlatCombinations (Lio/swagger/v3/oas/models/media/Schema;ILjava/util/Set;Lart/galushko/openapi/testgen/example/util/CombinationBudget;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
 	public static synthetic fun getSchemaFlatCombinations$default (Lart/galushko/openapi/testgen/example/openapi/SchemaMerger;Lio/swagger/v3/oas/models/media/Schema;ILjava/util/Set;Lart/galushko/openapi/testgen/example/util/CombinationBudget;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/util/List;
 	public final fun merge (Lio/swagger/v3/oas/models/media/Schema;Ljava/util/List;ILjava/util/Set;Lkotlin/jvm/functions/Function1;)Lio/swagger/v3/oas/models/media/Schema;
+	public final fun mergeWithSubSchemas (Lio/swagger/v3/oas/models/media/Schema;ILjava/util/Set;)Lio/swagger/v3/oas/models/media/Schema;
 	public final fun mergeWithSubSchemas (Lio/swagger/v3/oas/models/media/Schema;ILjava/util/Set;Lkotlin/jvm/functions/Function1;)Lio/swagger/v3/oas/models/media/Schema;
+	public final fun mergeWithSubSchemas (Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/OpenAPI;)Lio/swagger/v3/oas/models/media/Schema;
 	public static synthetic fun mergeWithSubSchemas$default (Lart/galushko/openapi/testgen/example/openapi/SchemaMerger;Lio/swagger/v3/oas/models/media/Schema;ILjava/util/Set;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lio/swagger/v3/oas/models/media/Schema;
 }
 
@@ -245,6 +269,7 @@ public final class art/galushko/openapi/testgen/example/openapi/SchemaTypeHelper
 	public static final fun isString (Lio/swagger/v3/oas/models/media/Schema;)Z
 	public static final fun resolveExampleRef (Lio/swagger/v3/oas/models/examples/Example;Lio/swagger/v3/oas/models/OpenAPI;)Lio/swagger/v3/oas/models/examples/Example;
 	public static final fun resolveResponseByStatus (Lio/swagger/v3/oas/models/Operation;Lio/swagger/v3/oas/models/OpenAPI;I)Lio/swagger/v3/oas/models/responses/ApiResponse;
+	public static final fun resolveSchemaRef (Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/OpenAPI;)Lio/swagger/v3/oas/models/media/Schema;
 	public static final fun tryGetParametersFromRef (Lio/swagger/v3/oas/models/parameters/Parameter;Lio/swagger/v3/oas/models/OpenAPI;)Lio/swagger/v3/oas/models/parameters/Parameter;
 	public static final fun tryGetRequestBodyFromRef (Lio/swagger/v3/oas/models/parameters/RequestBody;Lio/swagger/v3/oas/models/OpenAPI;)Lio/swagger/v3/oas/models/parameters/RequestBody;
 	public static final fun tryGetSchemaFromRef (Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/OpenAPI;)Lio/swagger/v3/oas/models/media/Schema;
@@ -350,8 +375,13 @@ public final class art/galushko/openapi/testgen/example/response/ExtractedRespon
 	public fun toString ()Ljava/lang/String;
 }
 
+public abstract interface class art/galushko/openapi/testgen/example/response/ResponseBodyGenerator {
+	public abstract fun generate (Lio/swagger/v3/oas/models/media/Schema;Lio/swagger/v3/oas/models/OpenAPI;)Ljava/lang/Object;
+}
+
 public final class art/galushko/openapi/testgen/example/response/ResponseExampleExtractor {
 	public fun <init> (Lart/galushko/openapi/testgen/example/generator/SchemaExampleValueGenerator;)V
+	public fun <init> (Lart/galushko/openapi/testgen/example/response/ResponseBodyGenerator;)V
 	public final fun extractExpectedResponseExample (Lio/swagger/v3/oas/models/Operation;Lio/swagger/v3/oas/models/OpenAPI;I)Ljava/lang/Object;
 	public final fun extractExpectedResponseExample (Lio/swagger/v3/oas/models/Operation;Lio/swagger/v3/oas/models/OpenAPI;ILjava/lang/String;)Ljava/lang/Object;
 	public final fun extractExpectedResponseExampleWithMediaType (Lio/swagger/v3/oas/models/Operation;Lio/swagger/v3/oas/models/OpenAPI;I)Lart/galushko/openapi/testgen/example/response/ExtractedResponseExample;

@@ -1,350 +1,350 @@
 {
-    "listUsers": {
-        "path": "/users",
-        "method": "GET",
-        "operationName": "listUsers",
-        "testCases": [
+    "listUsers" : {
+        "path" : "/users",
+        "method" : "GET",
+        "operationName" : "listUsers",
+        "testCases" : [
             {
-                "name": "Invalid Authorization header security",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Invalid Authorization header security",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "X-Request-ID",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Request-ID",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     },
                     {
-                        "key": "authorization",
-                        "value": "bearer some_really_invalid_authorization_header"
+                        "key" : "authorization",
+                        "value" : "bearer some_really_invalid_authorization_header"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "bearer some_really_invalid_authorization_header"
+                            "key" : "authorization",
+                            "value" : "bearer some_really_invalid_authorization_header"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": null,
-                "responseBodyMediaType": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
             },
             {
-                "name": "Invalid Header X-Request-ID parameter: Wrong UUID Format",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Invalid Header X-Request-ID parameter: Wrong UUID Format",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Request-ID",
-                        "value": "8e258b27-c787-49ef-9539-11461b251ffg"
+                        "key" : "X-Request-ID",
+                        "value" : "8e258b27-c787-49ef-9539-11461b251ffg"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "responseBodyMediaType": "application/json",
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.WrongUuidFormatSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.WrongUuidFormatSchemaValidationRule"
             },
             {
-                "name": "Invalid Query filter parameter: Out Of Minimum Boundary Number",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {
-                    "filter": -1
+                "name" : "Invalid Query filter parameter: Out Of Minimum Boundary Number",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : {
+                    "filter" : -1
                 },
-                "pathParams": {},
-                "headers": [
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Request-ID",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Request-ID",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "responseBodyMediaType": "application/json",
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
             },
             {
-                "name": "Invalid Query filter parameter: Out Of Minimum Length String",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {
-                    "filter": ""
+                "name" : "Invalid Query filter parameter: Out Of Minimum Length String",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : {
+                    "filter" : ""
                 },
-                "pathParams": {},
-                "headers": [
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Request-ID",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Request-ID",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "responseBodyMediaType": "application/json",
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
             },
             {
-                "name": "Invalid Query role parameter: Invalid Enum Value",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {
-                    "role": "invalid_enum1"
+                "name" : "Invalid Query role parameter: Invalid Enum Value",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : {
+                    "role" : "invalid_enum1"
                 },
-                "pathParams": {},
-                "headers": [
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Request-ID",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Request-ID",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "responseBodyMediaType": "application/json",
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.InvalidEnumValueSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.InvalidEnumValueSchemaValidationRule"
             },
             {
-                "name": "Invalid Query search parameter: Out Of Maximum Length String",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {
-                    "search": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "name" : "Invalid Query search parameter: Out Of Maximum Length String",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : {
+                    "search" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 },
-                "pathParams": {},
-                "headers": [
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Request-ID",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Request-ID",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "responseBodyMediaType": "application/json",
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumLengthStringSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.OutOfMaximumLengthStringSchemaValidationRule"
             },
             {
-                "name": "Invalid Query search parameter: Out Of Minimum Length String",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {
-                    "search": "aaaa"
+                "name" : "Invalid Query search parameter: Out Of Minimum Length String",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : {
+                    "search" : "aaaa"
                 },
-                "pathParams": {},
-                "headers": [
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Request-ID",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Request-ID",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "responseBodyMediaType": "application/json",
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
             },
             {
-                "name": "Invalid Query sortBy parameter: Out Of Minimum Length String",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {
-                    "sortBy": ""
+                "name" : "Invalid Query sortBy parameter: Out Of Minimum Length String",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : {
+                    "sortBy" : ""
                 },
-                "pathParams": {},
-                "headers": [
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Request-ID",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Request-ID",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "responseBodyMediaType": "application/json",
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule"
             },
             {
-                "name": "Invalid Query tags parameter: Above Max Items Array",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {
-                    "tags": [
+                "name" : "Invalid Query tags parameter: Above Max Items Array",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : {
+                    "tags" : [
                         "aaaaaaaaaaaaaaaaaaaa",
                         "aaaaaaaaaaaaaaaaaaab",
                         "aaaaaaaaaaaaaaaaaaac",
@@ -358,369 +358,369 @@
                         "aaaaaaaaaaaaaaaaaaak"
                     ]
                 },
-                "pathParams": {},
-                "headers": [
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Request-ID",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Request-ID",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "responseBodyMediaType": "application/json",
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.AboveMaxItemsArraySchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.AboveMaxItemsArraySchemaValidationRule"
             },
             {
-                "name": "Invalid Query tags parameter: Array Item Out Of Maximum Length String",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {
-                    "tags": [
+                "name" : "Invalid Query tags parameter: Array Item Out Of Maximum Length String",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : {
+                    "tags" : [
                         "aaaaaaaaaaaaaaaaaaaaa"
                     ]
                 },
-                "pathParams": {},
-                "headers": [
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Request-ID",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Request-ID",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "responseBodyMediaType": "application/json",
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ArrayItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ArrayItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query tags parameter: Array Item Out Of Minimum Length String",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {
-                    "tags": [
+                "name" : "Invalid Query tags parameter: Array Item Out Of Minimum Length String",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : {
+                    "tags" : [
                         "a"
                     ]
                 },
-                "pathParams": {},
-                "headers": [
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Request-ID",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Request-ID",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "responseBodyMediaType": "application/json",
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.composed.ArrayItemSchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ArrayItemSchemaValidationRule"
             },
             {
-                "name": "Invalid Query tags parameter: Below Min Items Array",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {
-                    "tags": []
+                "name" : "Invalid Query tags parameter: Below Min Items Array",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : {
+                    "tags" : [ ]
                 },
-                "pathParams": {},
-                "headers": [
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Request-ID",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Request-ID",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "responseBodyMediaType": "application/json",
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.BelowMinItemsArraySchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.BelowMinItemsArraySchemaValidationRule"
             },
             {
-                "name": "Invalid Query tags parameter: Non Unique Items Array",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {
-                    "tags": [
+                "name" : "Invalid Query tags parameter: Non Unique Items Array",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : {
+                    "tags" : [
                         "aaaaaaaaaaaaaaaaaaaa",
                         "aaaaaaaaaaaaaaaaaaaa"
                     ]
                 },
-                "pathParams": {},
-                "headers": [
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Request-ID",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Request-ID",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "responseBodyMediaType": "application/json",
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.rules.schema.NonUniqueItemsArraySchemaValidationRule"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NonUniqueItemsArraySchemaValidationRule"
             },
             {
-                "name": "Invalid X-API-Key API key security",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Invalid X-API-Key API key security",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Request-ID",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Request-ID",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     },
                     {
-                        "key": "X-API-Key",
-                        "value": "some_really_invalid_api_key"
+                        "key" : "X-API-Key",
+                        "value" : "some_really_invalid_api_key"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         },
                         {
-                            "key": "X-API-Key",
-                            "value": "some_really_invalid_api_key"
+                            "key" : "X-API-Key",
+                            "value" : "some_really_invalid_api_key"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": null,
-                "responseBodyMediaType": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.InvalidSecurityValuesAuthValidationRule"
             },
             {
-                "name": "Missed Required Header Parameter X-Request-ID",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Missed Required Header Parameter X-Request-ID",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "responseBodyMediaType": "application/json",
-                "needToComplete": false,
-                "expectedStatusCode": 400,
-                "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
             },
             {
-                "name": "No security values provided",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "No security values provided",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "X-Request-ID",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Request-ID",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "other": {}
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": null,
-                "responseBodyMediaType": null,
-                "needToComplete": false,
-                "expectedStatusCode": 401,
-                "rule": "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 401,
+                "rule" : "art.galushko.openapi.testgen.rules.auth.AllSecurityMissedAuthValidationRule"
             },
             {
-                "name": "Test Valid Case",
-                "method": "GET",
-                "path": "/users",
-                "queryParams": {},
-                "pathParams": {},
-                "headers": [
+                "name" : "Test Valid Case",
+                "method" : "GET",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
                     {
-                        "key": "authorization",
-                        "value": "<valid_BearerAuth_placeholder>"
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
                     },
                     {
-                        "key": "X-Request-ID",
-                        "value": "d5a5495b-cbdc-4237-a66e-000000000000"
+                        "key" : "X-Request-ID",
+                        "value" : "d5a5495b-cbdc-4237-a66e-000000000000"
                     }
                 ],
-                "cookie": [],
-                "securityValues": {
-                    "queryParams": {},
-                    "headers": [
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
                         {
-                            "key": "authorization",
-                            "value": "<valid_BearerAuth_placeholder>"
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
                         }
                     ],
-                    "cookie": [],
-                    "other": {}
+                    "cookie" : [ ],
+                    "other" : { }
                 },
-                "body": null,
-                "requestBodyMediaType": null,
-                "expectedBody": {
-                    "data": {},
-                    "requestId": "d5a5495b-cbdc-4237-a66e-000000000000",
-                    "status": "success",
-                    "timestamp": "2025-05-05T17:32:28Z"
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
                 },
-                "responseBodyMediaType": "application/json",
-                "needToComplete": true,
-                "expectedStatusCode": 200,
-                "rule": null
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : true,
+                "expectedStatusCode" : 200,
+                "rule" : null
             }
         ]
     }

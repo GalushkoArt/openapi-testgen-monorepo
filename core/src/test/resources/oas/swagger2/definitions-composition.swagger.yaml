@@ -1,0 +1,100 @@
+swagger: "2.0"
+info:
+  title: Swagger Definitions API
+  version: "1.0"
+host: api.example.test
+basePath: /v2
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /owners/{ownerId}/pets:
+    parameters:
+      - name: ownerId
+        in: path
+        required: true
+        type: string
+        minLength: 3
+    post:
+      operationId: createOwnerPet
+      parameters:
+        - name: pet
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Pet"
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: "#/definitions/PetResponse"
+          examples:
+            application/json:
+              id: pet-1
+              ownerId: owner-1
+              name: Milo
+              type: cat
+        "400":
+          description: Bad request
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              message: invalid pet
+definitions:
+  BasePet:
+    type: object
+    required:
+      - name
+      - type
+    properties:
+      name:
+        type: string
+        minLength: 2
+        maxLength: 20
+      type:
+        type: string
+        enum:
+          - cat
+          - dog
+  Pet:
+    allOf:
+      - $ref: "#/definitions/BasePet"
+      - type: object
+        required:
+          - age
+        properties:
+          age:
+            type: integer
+            minimum: 0
+            maximum: 30
+          tags:
+            type: array
+            minItems: 1
+            items:
+              type: string
+              enum:
+                - indoor
+                - outdoor
+  PetResponse:
+    allOf:
+      - $ref: "#/definitions/BasePet"
+      - type: object
+        required:
+          - id
+          - ownerId
+        properties:
+          id:
+            type: string
+          ownerId:
+            type: string
+  Error:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        type: string

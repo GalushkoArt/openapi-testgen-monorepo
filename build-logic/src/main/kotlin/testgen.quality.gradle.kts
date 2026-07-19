@@ -70,6 +70,23 @@ tasks.withType<Test>().configureEach {
     finalizedBy("koverXmlReport", "koverHtmlReport")
 }
 
+// Jackson must stay on the 2.x line (swagger modules do not fully support Jackson 3) and all
+// Jackson modules on the runtime classpath must resolve to the version-catalog pins.
+plugins.withId("java") {
+    val jacksonCompatibilityCheck = tasks.register<JacksonCompatibilityCheckTask>("checkJacksonCompatibility") {
+        group = "verification"
+        description = "Verify resolved Jackson modules stay on the 2.x line and match the version catalog."
+        rootComponent.set(
+            configurations.named("runtimeClasspath").flatMap { it.incoming.resolutionResult.rootComponent },
+        )
+        expectedJacksonVersion.set(catalog.findVersion("jackson-lib").get().requiredVersion)
+        expectedAnnotationsVersion.set(catalog.findVersion("jackson-annotations").get().requiredVersion)
+    }
+    tasks.named("check") {
+        dependsOn(jacksonCompatibilityCheck)
+    }
+}
+
 tasks.named("check") {
     dependsOn("detekt", "apiCheck", "projectHealth", "koverVerify")
 }

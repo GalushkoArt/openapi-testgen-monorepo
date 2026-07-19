@@ -21,6 +21,7 @@ class TestGeneratorExtensionTest {
     }
 
     @Test
+    @Suppress("DEPRECATION")
     @DisplayName("Extension should have default values for all properties except testGenerationSettings")
     fun testDefaultValues() {
         assertThat(extension.configFile.orNull).isNull()
@@ -101,6 +102,7 @@ class TestGeneratorExtensionTest {
         }
 
         @Test
+        @Suppress("DEPRECATION")
         @DisplayName("should set logLevel")
         fun shouldSetLogLevel() {
             extension.logLevel.set("DEBUG")

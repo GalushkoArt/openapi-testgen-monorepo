@@ -74,7 +74,7 @@ Note: this sample uses `open-api-test-generation-config.yaml`, but the filename 
 
 ```kotlin
 tasks.register<OpenApiTestGeneratorTask>("generateOpenApiTestsYaml") {
-    configFile.set("open-api-test-generation-config.yaml")
+    configFile.set(layout.projectDirectory.file("open-api-test-generation-config.yaml"))
     testGenerationSettings {
         validSecurityValues.putAll(mapOf("ApiKeyAuth" to "test-api-key-12"))
     }
@@ -82,6 +82,8 @@ tasks.register<OpenApiTestGeneratorTask>("generateOpenApiTestsYaml") {
 ```
 
 See [`open-api-test-generation-config.yaml`](https://github.com/GalushkoArt/openapi-testgen-monorepo/blob/main/samples/java-spring-file-writer/open-api-test-generation-config.yaml) for the YAML config example.
+Its output is kept under `build/generated/test-suites/yaml` so the task does not declare the
+project source tree as generated output.
 
 ## Output structure
 

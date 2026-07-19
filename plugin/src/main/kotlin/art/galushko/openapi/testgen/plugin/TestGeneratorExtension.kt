@@ -21,7 +21,7 @@ public open class TestGeneratorExtension @Inject constructor(
     @get:Input
     public val configFile: Property<String> = objects.property(String::class.java)
 
-    /** Path to the OpenAPI specification file (relative to project root or absolute). */
+    /** Path to the OpenAPI 3.x or Swagger 2.0 specification file (relative to project root or absolute). */
     @get:Input
     public val specFile: Property<String> = objects.property(String::class.java)
 
@@ -35,7 +35,7 @@ public open class TestGeneratorExtension @Inject constructor(
 
     /** Options passed to the underlying generator. */
     @get:Input
-    public val generatorOptions: MapProperty<String, Any?> = objects.mapProperty(String::class.java, Any::class.java)
+    public val generatorOptions: MapProperty<String, Any> = objects.mapProperty(String::class.java, Any::class.java)
 
     /** Type-safe test generation settings. */
     @get:Nested
@@ -68,7 +68,14 @@ public open class TestGeneratorExtension @Inject constructor(
     @get:Input
     public val alwaysWriteTests: Property<Boolean> = objects.property(Boolean::class.java).convention(null)
 
-    /** Log level for generator logs (SLF4J backend). */
+    /**
+     * Log level for generator logs.
+     *
+     * Inside the Gradle daemon SLF4J is bound to Gradle's own logging backend, so this property
+     * has no effect; use Gradle's `--info`/`--debug` instead. The value is still validated and
+     * an invalid level fails the task.
+     */
+    @Deprecated("Has no effect inside Gradle; use Gradle's --info/--debug instead.")
     @get:Input
     @get:Optional
     public val logLevel: Property<String> = objects.property(String::class.java).convention(null)

@@ -121,18 +121,18 @@ This layering enables standalone use of `pattern-value` for regex-based string g
 
 ### Module Responsibilities
 
-| Module                  | Responsibility                                  | Key Types                                                                   |
-|-------------------------|-------------------------------------------------|-----------------------------------------------------------------------------|
-| **build-logic**         | Convention plugins for centralized build config | `testgen.kotlin-base`, `testgen.quality`, `testgen.library`                 |
-| **model**               | Data classes, error types                       | `TestCase`, `TestSuite`, `Outcome`, `GenerationError`                       |
-| **example-value**       | Schema value generation SPI + builtins          | `SchemaValueProvider`, `SchemaExampleValueGenerator`, `SchemaMerger`        |
-| **core**                | Parsing, generation, orchestration              | `TestGenerationEngine`, providers, rules, `TestSuiteWriter`                 |
-| **pattern-value**       | Regex-based value generation                    | `PatternGenerationOptions`, `PatternValueGenerator`, `PatternValueProvider` |
-| **pattern-support**     | Pattern integration module                      | `PatternSupportModule`, `PatternModuleSettingsExtractor`                    |
-| **generator-template**  | Mustache-based code generation                  | `TemplateGeneratorModule`, `TemplateArtifactGenerator`                      |
-| **distribution-bundle** | Bundles modules, execution wiring               | `TestGenerationRunner`, `TestGenerationReporter`, `DistributionDefaults`    |
-| **plugin**              | Gradle build integration                        | `OpenApiTestGeneratorPlugin`, `OpenApiTestGeneratorTask`                    |
-| **cli**                 | Command-line interface + native                 | `GenerateCommand`, Picocli wiring                                           |
+| Module                  | Responsibility                                  | Key Types                                                                                        |
+|-------------------------|-------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| **build-logic**         | Convention plugins for centralized build config | `testgen.kotlin-base`, `testgen.quality`, `testgen.library`                                      |
+| **model**               | Data classes, error types                       | `TestCase`, `TestSuite`, `Outcome`, `GenerationError`                                            |
+| **example-value**       | Schema value generation SPI + builtins          | `SchemaValueProvider`, `SchemaExampleValueGenerator`, `SchemaMerger`, `ResponseExampleExtractor` |
+| **core**                | Parsing, generation, orchestration              | `TestGenerationEngine`, providers, rules, `TestSuiteWriter`                                      |
+| **pattern-value**       | Regex-based value generation                    | `PatternGenerationOptions`, `PatternValueGenerator`, `PatternValueProvider`                      |
+| **pattern-support**     | Pattern integration module                      | `PatternSupportModule`, `PatternModuleSettingsExtractor`                                         |
+| **generator-template**  | Mustache-based code generation                  | `TemplateGeneratorModule`, `TemplateArtifactGenerator`                                           |
+| **distribution-bundle** | Bundles modules, execution wiring               | `TestGenerationRunner`, `TestGenerationReporter`, `DistributionDefaults`                         |
+| **plugin**              | Gradle build integration                        | `OpenApiTestGeneratorPlugin`, `OpenApiTestGeneratorTask`                                         |
+| **cli**                 | Command-line interface + native                 | `GenerateCommand`, Picocli wiring                                                                |
 
 ## Data Flow
 

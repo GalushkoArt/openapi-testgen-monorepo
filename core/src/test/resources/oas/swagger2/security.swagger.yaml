@@ -1,0 +1,39 @@
+swagger: "2.0"
+info:
+  title: Swagger Security API
+  version: "1.0"
+produces:
+  - application/json
+securityDefinitions:
+  ApiKeyAuth:
+    type: apiKey
+    in: header
+    name: X-API-Key
+  BasicAuth:
+    type: basic
+  OAuthAuth:
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: https://auth.example.test/oauth/authorize
+    tokenUrl: https://auth.example.test/oauth/token
+    scopes:
+      read:pets: read pets
+      write:pets: write pets
+security:
+  - ApiKeyAuth: []
+paths:
+  /secure:
+    get:
+      operationId: getSecurePet
+      security:
+        - OAuthAuth:
+            - read:pets
+        - BasicAuth: []
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean

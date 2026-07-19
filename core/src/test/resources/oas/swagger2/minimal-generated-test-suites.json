@@ -1,0 +1,151 @@
+{
+    "listPets" : {
+        "path" : "/pets",
+        "method" : "GET",
+        "operationName" : "listPets",
+        "testCases" : [
+            {
+                "name" : "Invalid Query limit parameter: Integer Breaking",
+                "method" : "GET",
+                "path" : "/pets",
+                "queryParams" : {
+                    "limit" : 1.5
+                },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query limit parameter: Invalid Type",
+                "method" : "GET",
+                "path" : "/pets",
+                "queryParams" : {
+                    "limit" : "abc"
+                },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.InvalidTypeValidationRule"
+            },
+            {
+                "name" : "Invalid Query limit parameter: Out Of Maximum Boundary Number",
+                "method" : "GET",
+                "path" : "/pets",
+                "queryParams" : {
+                    "limit" : 101
+                },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query limit parameter: Out Of Minimum Boundary Number",
+                "method" : "GET",
+                "path" : "/pets",
+                "queryParams" : {
+                    "limit" : 0
+                },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query limit parameter: Wrong Int32 Format",
+                "method" : "GET",
+                "path" : "/pets",
+                "queryParams" : {
+                    "limit" : 2147483648
+                },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.WrongInt32FormatSchemaValidationRule"
+            },
+            {
+                "name" : "Missed Required Query Parameter limit",
+                "method" : "GET",
+                "path" : "/pets",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
+            }
+        ]
+    }
+}

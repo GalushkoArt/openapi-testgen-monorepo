@@ -33,6 +33,69 @@ import java.util.stream.Stream
 class SchemaTypeHelpersTest {
 
     @Nested
+    @DisplayName("resolveSchemaRef")
+    inner class ResolveSchemaRefTest {
+
+        @Test
+        @DisplayName("should return null for null schema")
+        fun shouldReturnNullForNullSchema() {
+            assertThat(SchemaTypeHelpers.resolveSchemaRef(null, OpenAPI())).isNull()
+        }
+
+        @Test
+        @DisplayName("should return same schema when openAPI is null")
+        fun shouldReturnSameSchemaWhenOpenApiIsNull() {
+            val schema = Schema<String>().apply { `$ref` = "#/components/schemas/MySchema" }
+
+            assertThat(SchemaTypeHelpers.resolveSchemaRef(schema, null)).isSameAs(schema)
+        }
+
+        @Test
+        @DisplayName("should return same schema when no ref present")
+        fun shouldReturnSameSchemaWhenNoRefPresent() {
+            val schema = StringSchema()
+
+            assertThat(SchemaTypeHelpers.resolveSchemaRef(schema, OpenAPI())).isSameAs(schema)
+        }
+
+        @Test
+        @DisplayName("should dereference schema ref against components")
+        fun shouldDereferenceSchemaRef() {
+            val referencedSchema = StringSchema().apply { minLength = 5 }
+            val openAPI = OpenAPI().apply {
+                components = Components().apply {
+                    addSchemas("MySchema", referencedSchema)
+                }
+            }
+            val refSchema = Schema<String>().apply { `$ref` = "#/components/schemas/MySchema" }
+
+            assertThat(SchemaTypeHelpers.resolveSchemaRef(refSchema, openAPI)).isSameAs(referencedSchema)
+        }
+
+        @Test
+        @DisplayName("should return original schema when ref not found")
+        fun shouldReturnOriginalSchemaWhenRefNotFound() {
+            val refSchema = Schema<String>().apply { `$ref` = "#/components/schemas/NonExistent" }
+            val openAPI = OpenAPI().apply {
+                components = Components().apply {
+                    addSchemas("SomeOtherSchema", StringSchema())
+                }
+            }
+
+            assertThat(SchemaTypeHelpers.resolveSchemaRef(refSchema, openAPI)).isSameAs(refSchema)
+        }
+
+        @Test
+        @DisplayName("should return original schema when components declare no schemas")
+        fun shouldReturnOriginalSchemaWhenComponentsHaveNoSchemas() {
+            val refSchema = Schema<String>().apply { `$ref` = "#/components/schemas/MySchema" }
+            val openAPI = OpenAPI().apply { components = Components() }
+
+            assertThat(SchemaTypeHelpers.resolveSchemaRef(refSchema, openAPI)).isSameAs(refSchema)
+        }
+    }
+
+    @Nested
     @DisplayName("tryGetSchemaFromRef")
     inner class TryGetSchemaFromRefTest {
 
@@ -45,6 +108,17 @@ class SchemaTypeHelpersTest {
             val result = SchemaTypeHelpers.tryGetSchemaFromRef(schema, openAPI)
 
             assertThat(result).isSameAs(schema)
+        }
+
+        @Test
+        @DisplayName("should return original schema when components declare no schemas")
+        fun shouldReturnOriginalSchemaWhenComponentsHaveNoSchemas() {
+            val refSchema = Schema<String>().apply { `$ref` = "#/components/schemas/MySchema" }
+            val openAPI = OpenAPI().apply { components = Components() }
+
+            val result = SchemaTypeHelpers.tryGetSchemaFromRef(refSchema, openAPI)
+
+            assertThat(result).isSameAs(refSchema)
         }
 
         @Test
@@ -503,6 +577,19 @@ class SchemaTypeHelpersTest {
 
             assertThat(result).isSameAs(refBody)
         }
+
+        @Test
+        @DisplayName("should return original request body when components is null")
+        fun shouldReturnOriginalRequestBodyWhenComponentsNull() {
+            val refBody = RequestBody().apply {
+                `$ref` = "#/components/requestBodies/MyBody"
+            }
+            val openAPI = OpenAPI()
+
+            val result = SchemaTypeHelpers.tryGetRequestBodyFromRef(refBody, openAPI)
+
+            assertThat(result).isSameAs(refBody)
+        }
     }
 
     @Nested
@@ -549,6 +636,19 @@ class SchemaTypeHelpersTest {
                     parameters = emptyMap()
                 }
             }
+
+            val result = SchemaTypeHelpers.tryGetParametersFromRef(refParam, openAPI)
+
+            assertThat(result).isSameAs(refParam)
+        }
+
+        @Test
+        @DisplayName("should return original parameter when components is null")
+        fun shouldReturnOriginalParameterWhenComponentsNull() {
+            val refParam = Parameter().apply {
+                `$ref` = "#/components/parameters/LimitParam"
+            }
+            val openAPI = OpenAPI()
 
             val result = SchemaTypeHelpers.tryGetParametersFromRef(refParam, openAPI)
 

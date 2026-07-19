@@ -8,14 +8,16 @@ public abstract class art/galushko/openapi/testgen/plugin/OpenApiTestGeneratorTa
 	public fun <init> (Lorg/gradle/api/model/ObjectFactory;)V
 	public final fun generate ()V
 	public abstract fun getAlwaysWriteTests ()Lorg/gradle/api/provider/Property;
-	public abstract fun getConfigFile ()Lorg/gradle/api/provider/Property;
+	public abstract fun getConfigFile ()Lorg/gradle/api/file/RegularFileProperty;
 	public abstract fun getGenerator ()Lorg/gradle/api/provider/Property;
 	public abstract fun getGeneratorOptions ()Lorg/gradle/api/provider/MapProperty;
+	protected abstract fun getLayout ()Lorg/gradle/api/file/ProjectLayout;
 	public abstract fun getLogLevel ()Lorg/gradle/api/provider/Property;
 	public abstract fun getOutputDir ()Lorg/gradle/api/file/DirectoryProperty;
 	public final fun getParserSettings ()Lart/galushko/openapi/testgen/plugin/ParserSettingsExtension;
 	public abstract fun getSpecFile ()Lorg/gradle/api/provider/Property;
 	public final fun getTestGenerationSettings ()Lart/galushko/openapi/testgen/plugin/TestGenerationSettingsExtension;
+	public abstract fun getTrackedSpecFiles ()Lorg/gradle/api/file/ConfigurableFileCollection;
 	public final fun parserSettings (Lkotlin/jvm/functions/Function1;)V
 	public final fun testGenerationSettings (Lkotlin/jvm/functions/Function1;)V
 }

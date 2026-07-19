@@ -56,7 +56,7 @@
   "name":"art.galushko.openapi.testgen.generator.template.GenericBodyContext",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "methods":[{"name":"getRawBody","parameterTypes":[] }]
+  "methods":[{"name":"getEscapedRawBody","parameterTypes":[] }, {"name":"getRawBody","parameterTypes":[] }]
 },
 {
   "name":"art.galushko.openapi.testgen.generator.template.GenericClassTemplateContext",
@@ -68,13 +68,13 @@
   "name":"art.galushko.openapi.testgen.generator.template.GenericMethodTemplateContext",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "methods":[{"name":"escapeString","parameterTypes":[] }, {"name":"getExpectedResponseBody","parameterTypes":[] }, {"name":"getExpectedStatusCode","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getHttpMethod","parameterTypes":[] }, {"name":"getMethodName","parameterTypes":[] }, {"name":"getPath","parameterTypes":[] }, {"name":"getPathParams","parameterTypes":[] }, {"name":"getQueryParams","parameterTypes":[] }, {"name":"getRequestBody","parameterTypes":[] }, {"name":"getRequestBodyMediaType","parameterTypes":[] }, {"name":"getResponseBodyMediaType","parameterTypes":[] }, {"name":"getShouldHaveBody","parameterTypes":[] }, {"name":"getTestCaseName","parameterTypes":[] }]
+  "methods":[{"name":"escapeString","parameterTypes":[] }, {"name":"getAssertJsonResponseBody","parameterTypes":[] }, {"name":"getExpectedResponseBody","parameterTypes":[] }, {"name":"getExpectedStatusCode","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getHttpMethod","parameterTypes":[] }, {"name":"getMethodName","parameterTypes":[] }, {"name":"getNotes","parameterTypes":[] }, {"name":"getPath","parameterTypes":[] }, {"name":"getPathParams","parameterTypes":[] }, {"name":"getQueryParams","parameterTypes":[] }, {"name":"getRequestBody","parameterTypes":[] }, {"name":"getRequestBodyMediaType","parameterTypes":[] }, {"name":"getRequestBodyTodoComment","parameterTypes":[] }, {"name":"getResponseAssertionTodoComment","parameterTypes":[] }, {"name":"getResponseBodyMediaType","parameterTypes":[] }, {"name":"getShouldHaveBody","parameterTypes":[] }, {"name":"getTestCaseName","parameterTypes":[] }]
 },
 {
   "name":"art.galushko.openapi.testgen.generator.template.GenericParamContext",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
-  "methods":[{"name":"getKey","parameterTypes":[] }, {"name":"getValue","parameterTypes":[] }]
+  "methods":[{"name":"getEscapedValue","parameterTypes":[] }, {"name":"getKey","parameterTypes":[] }, {"name":"getValue","parameterTypes":[] }]
 },
 {
   "name":"art.galushko.openapi.testgen.model.KeyValuePair",
@@ -82,7 +82,7 @@
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
   "queryAllDeclaredMethods":true,
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.Object","java.lang.Object"] }, {"name":"getKey","parameterTypes":[] }, {"name":"getValue","parameterTypes":[] }]
+  "methods":[{"name":"getKey","parameterTypes":[] }, {"name":"getValue","parameterTypes":[] }]
 },
 {
   "name":"art.galushko.openapi.testgen.model.SecurityValues",
@@ -90,7 +90,7 @@
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
   "queryAllDeclaredMethods":true,
-  "methods":[{"name":"<init>","parameterTypes":["java.util.Map","java.util.List","java.util.List","java.util.Map"] }, {"name":"getCookie","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getOther","parameterTypes":[] }, {"name":"getQueryParams","parameterTypes":[] }]
+  "methods":[{"name":"getCookie","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getOther","parameterTypes":[] }, {"name":"getQueryParams","parameterTypes":[] }]
 },
 {
   "name":"art.galushko.openapi.testgen.model.TestCase",
@@ -98,7 +98,7 @@
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
   "queryAllDeclaredMethods":true,
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.lang.String","java.util.Map","java.util.Map","java.util.List","java.util.List","art.galushko.openapi.testgen.model.SecurityValues","java.lang.Object","java.lang.Object","boolean","int","java.lang.String"] }, {"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.lang.String","java.util.Map","java.util.Map","java.util.List","java.util.List","art.galushko.openapi.testgen.model.SecurityValues","java.lang.Object","java.lang.String","java.lang.Object","java.lang.String","boolean","int","java.lang.String"] }, {"name":"getBody","parameterTypes":[] }, {"name":"getCookie","parameterTypes":[] }, {"name":"getExpectedBody","parameterTypes":[] }, {"name":"getExpectedStatusCode","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getMethod","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getNeedToComplete","parameterTypes":[] }, {"name":"getPath","parameterTypes":[] }, {"name":"getPathParams","parameterTypes":[] }, {"name":"getQueryParams","parameterTypes":[] }, {"name":"getRequestBodyMediaType","parameterTypes":[] }, {"name":"getResponseBodyMediaType","parameterTypes":[] }, {"name":"getRule","parameterTypes":[] }, {"name":"getSecurityValues","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.lang.String","java.util.Map","java.util.Map","java.util.List","java.util.List","art.galushko.openapi.testgen.model.SecurityValues","java.lang.Object","java.lang.Object","boolean","int","java.lang.String"] }, {"name":"getBody","parameterTypes":[] }, {"name":"getCookie","parameterTypes":[] }, {"name":"getExpectedBody","parameterTypes":[] }, {"name":"getExpectedStatusCode","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getMethod","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getNeedToComplete","parameterTypes":[] }, {"name":"getPath","parameterTypes":[] }, {"name":"getPathParams","parameterTypes":[] }, {"name":"getQueryParams","parameterTypes":[] }, {"name":"getRequestBodyMediaType","parameterTypes":[] }, {"name":"getResponseBodyMediaType","parameterTypes":[] }, {"name":"getRule","parameterTypes":[] }, {"name":"getSecurityValues","parameterTypes":[] }]
 },
 {
   "name":"art.galushko.openapi.testgen.model.TestSuite",
@@ -106,7 +106,7 @@
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
   "queryAllDeclaredMethods":true,
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.lang.String","java.util.List"] }, {"name":"getMethod","parameterTypes":[] }, {"name":"getOperationName","parameterTypes":[] }, {"name":"getPath","parameterTypes":[] }, {"name":"getTestCases","parameterTypes":[] }]
+  "methods":[{"name":"getMethod","parameterTypes":[] }, {"name":"getOperationName","parameterTypes":[] }, {"name":"getPath","parameterTypes":[] }, {"name":"getTestCases","parameterTypes":[] }]
 },
 {
   "name":"ch.qos.logback.classic.encoder.PatternLayoutEncoder",
@@ -157,6 +157,72 @@
   "name":"groovy.lang.Closure"
 },
 {
+  "name":"io.swagger.models.AbstractModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"getExclusiveMaximum","parameterTypes":[] }, {"name":"getExclusiveMinimum","parameterTypes":[] }, {"name":"getExternalDocs","parameterTypes":[] }, {"name":"getMaxLength","parameterTypes":[] }, {"name":"getMinLength","parameterTypes":[] }, {"name":"getMultipleOf","parameterTypes":[] }, {"name":"getPattern","parameterTypes":[] }, {"name":"getProperties","parameterTypes":[] }, {"name":"getRequired","parameterTypes":[] }, {"name":"getTitle","parameterTypes":[] }, {"name":"getVendorExtensions","parameterTypes":[] }, {"name":"getXml","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.models.Model",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.swagger.models.ModelImpl",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getAdditionalProperties","parameterTypes":[] }, {"name":"getAllowEmptyValue","parameterTypes":[] }, {"name":"getDefaultValue","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getDiscriminator","parameterTypes":[] }, {"name":"getEnum","parameterTypes":[] }, {"name":"getExample","parameterTypes":[] }, {"name":"getFormat","parameterTypes":[] }, {"name":"getMaximum","parameterTypes":[] }, {"name":"getMinimum","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }, {"name":"getUniqueItems","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.models.RefModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"get$ref","parameterTypes":[] }, {"name":"getOriginalRef","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.models.properties.AbstractNumericProperty",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"getExclusiveMaximum","parameterTypes":[] }, {"name":"getExclusiveMinimum","parameterTypes":[] }, {"name":"getMaximum","parameterTypes":[] }, {"name":"getMinimum","parameterTypes":[] }, {"name":"getMultipleOf","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.models.properties.AbstractProperty",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"getAllowEmptyValue","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExample","parameterTypes":[] }, {"name":"getFormat","parameterTypes":[] }, {"name":"getPosition","parameterTypes":[] }, {"name":"getReadOnly","parameterTypes":[] }, {"name":"getTitle","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }, {"name":"getVendorExtensions","parameterTypes":[] }, {"name":"getXml","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.models.properties.ArrayProperty",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getItems","parameterTypes":[] }, {"name":"getMaxItems","parameterTypes":[] }, {"name":"getMinItems","parameterTypes":[] }, {"name":"getUniqueItems","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.models.properties.BaseIntegerProperty",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.swagger.models.properties.LongProperty",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getDefault","parameterTypes":[] }, {"name":"getEnum","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.models.properties.Property",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.swagger.models.properties.StringProperty",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getDefault","parameterTypes":[] }, {"name":"getEnum","parameterTypes":[] }, {"name":"getMaxLength","parameterTypes":[] }, {"name":"getMinLength","parameterTypes":[] }, {"name":"getPattern","parameterTypes":[] }]
+},
+{
   "name":"io.swagger.v3.core.jackson.ApiResponsesSerializer",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
@@ -166,6 +232,12 @@
 },
 {
   "name":"io.swagger.v3.core.jackson.mixin.Discriminator31Mixin",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.swagger.v3.core.jackson.mixin.DiscriminatorMixin",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true
@@ -203,6 +275,11 @@
 {
   "name":"io.swagger.v3.core.jackson.mixin.Schema31Mixin$TypeSerializer",
   "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.core.jackson.mixin.SchemaMixin",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
 },
 {
   "name":"io.swagger.v3.oas.models.ExternalDocumentation",
@@ -269,8 +346,45 @@
   "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getOperationId","parameterTypes":[] }, {"name":"getOperationRef","parameterTypes":[] }, {"name":"getParameters","parameterTypes":[] }, {"name":"getRequestBody","parameterTypes":[] }, {"name":"getServer","parameterTypes":[] }, {"name":"set$ref","parameterTypes":["java.lang.String"] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setOperationId","parameterTypes":["java.lang.String"] }, {"name":"setOperationRef","parameterTypes":["java.lang.String"] }, {"name":"setParameters","parameterTypes":["java.util.Map"] }, {"name":"setServer","parameterTypes":["io.swagger.v3.oas.models.servers.Server"] }]
 },
 {
+  "name":"io.swagger.v3.oas.models.media.ArbitrarySchema",
+  "allDeclaredFields":true,
+  "allPublicConstructors":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.swagger.v3.oas.models.media.ArraySchema",
+  "allDeclaredFields":true,
+  "allPublicConstructors":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.media.BinarySchema",
+  "allDeclaredFields":true,
+  "allPublicConstructors":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.swagger.v3.oas.models.media.BooleanSchema",
+  "allDeclaredFields":true,
+  "allPublicConstructors":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.swagger.v3.oas.models.media.ByteArraySchema",
+  "allDeclaredFields":true,
+  "allPublicConstructors":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
   "name":"io.swagger.v3.oas.models.media.ComposedSchema",
   "allDeclaredFields":true,
+  "allPublicConstructors":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true
 },
@@ -284,11 +398,32 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
+  "name":"io.swagger.v3.oas.models.media.DateSchema",
+  "allDeclaredFields":true,
+  "allPublicConstructors":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.swagger.v3.oas.models.media.DateTimeSchema",
+  "allDeclaredFields":true,
+  "allPublicConstructors":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
   "name":"io.swagger.v3.oas.models.media.Discriminator",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
   "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getMapping","parameterTypes":[] }, {"name":"getPropertyName","parameterTypes":[] }, {"name":"setMapping","parameterTypes":["java.util.Map"] }, {"name":"setPropertyName","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.media.EmailSchema",
+  "allDeclaredFields":true,
+  "allPublicConstructors":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
 },
 {
   "name":"io.swagger.v3.oas.models.media.Encoding",
@@ -303,11 +438,33 @@
   "queryAllDeclaredMethods":true
 },
 {
+  "name":"io.swagger.v3.oas.models.media.FileSchema",
+  "allDeclaredFields":true,
+  "allPublicConstructors":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.swagger.v3.oas.models.media.IntegerSchema",
+  "allDeclaredFields":true,
+  "allPublicConstructors":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"io.swagger.v3.oas.models.media.JsonSchema",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.media.MapSchema",
+  "allDeclaredFields":true,
+  "allPublicConstructors":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
 },
 {
   "name":"io.swagger.v3.oas.models.media.MediaType",
@@ -319,8 +476,24 @@
   "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getEncoding","parameterTypes":[] }, {"name":"getExample","parameterTypes":[] }, {"name":"getExamples","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getSchema","parameterTypes":[] }, {"name":"setEncoding","parameterTypes":["java.util.Map"] }, {"name":"setExamples","parameterTypes":["java.util.Map"] }, {"name":"setSchema","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }]
 },
 {
+  "name":"io.swagger.v3.oas.models.media.NumberSchema",
+  "allDeclaredFields":true,
+  "allPublicConstructors":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
   "name":"io.swagger.v3.oas.models.media.ObjectSchema",
   "allDeclaredFields":true,
+  "allPublicConstructors":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.media.PasswordSchema",
+  "allDeclaredFields":true,
+  "allPublicConstructors":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true
 },
@@ -331,7 +504,7 @@
   "allDeclaredClasses":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"addExtension","parameterTypes":["java.lang.String","java.lang.Object"] }, {"name":"get$anchor","parameterTypes":[] }, {"name":"get$comment","parameterTypes":[] }, {"name":"get$dynamicAnchor","parameterTypes":[] }, {"name":"get$dynamicRef","parameterTypes":[] }, {"name":"get$id","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"get$schema","parameterTypes":[] }, {"name":"get$vocabulary","parameterTypes":[] }, {"name":"getAdditionalItems","parameterTypes":[] }, {"name":"getAdditionalProperties","parameterTypes":[] }, {"name":"getAllOf","parameterTypes":[] }, {"name":"getAnyOf","parameterTypes":[] }, {"name":"getBooleanSchemaValue","parameterTypes":[] }, {"name":"getConst","parameterTypes":[] }, {"name":"getContains","parameterTypes":[] }, {"name":"getContentEncoding","parameterTypes":[] }, {"name":"getContentMediaType","parameterTypes":[] }, {"name":"getContentSchema","parameterTypes":[] }, {"name":"getDefault","parameterTypes":[] }, {"name":"getDependentRequired","parameterTypes":[] }, {"name":"getDependentSchemas","parameterTypes":[] }, {"name":"getDeprecated","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getDiscriminator","parameterTypes":[] }, {"name":"getElse","parameterTypes":[] }, {"name":"getEnum","parameterTypes":[] }, {"name":"getExample","parameterTypes":[] }, {"name":"getExampleSetFlag","parameterTypes":[] }, {"name":"getExamples","parameterTypes":[] }, {"name":"getExclusiveMaximum","parameterTypes":[] }, {"name":"getExclusiveMaximumValue","parameterTypes":[] }, {"name":"getExclusiveMinimum","parameterTypes":[] }, {"name":"getExclusiveMinimumValue","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getExternalDocs","parameterTypes":[] }, {"name":"getFormat","parameterTypes":[] }, {"name":"getIf","parameterTypes":[] }, {"name":"getItems","parameterTypes":[] }, {"name":"getJsonSchema","parameterTypes":[] }, {"name":"getJsonSchemaImpl","parameterTypes":[] }, {"name":"getMaxContains","parameterTypes":[] }, {"name":"getMaxItems","parameterTypes":[] }, {"name":"getMaxLength","parameterTypes":[] }, {"name":"getMaxProperties","parameterTypes":[] }, {"name":"getMaximum","parameterTypes":[] }, {"name":"getMinContains","parameterTypes":[] }, {"name":"getMinItems","parameterTypes":[] }, {"name":"getMinLength","parameterTypes":[] }, {"name":"getMinProperties","parameterTypes":[] }, {"name":"getMinimum","parameterTypes":[] }, {"name":"getMultipleOf","parameterTypes":[] }, {"name":"getNot","parameterTypes":[] }, {"name":"getNullable","parameterTypes":[] }, {"name":"getOneOf","parameterTypes":[] }, {"name":"getPattern","parameterTypes":[] }, {"name":"getPatternProperties","parameterTypes":[] }, {"name":"getPrefixItems","parameterTypes":[] }, {"name":"getProperties","parameterTypes":[] }, {"name":"getPropertyNames","parameterTypes":[] }, {"name":"getReadOnly","parameterTypes":[] }, {"name":"getRequired","parameterTypes":[] }, {"name":"getThen","parameterTypes":[] }, {"name":"getTitle","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }, {"name":"getTypes","parameterTypes":[] }, {"name":"getUnevaluatedItems","parameterTypes":[] }, {"name":"getUnevaluatedProperties","parameterTypes":[] }, {"name":"getUniqueItems","parameterTypes":[] }, {"name":"getWriteOnly","parameterTypes":[] }, {"name":"getXml","parameterTypes":[] }, {"name":"set$comment","parameterTypes":["java.lang.String"] }, {"name":"set$id","parameterTypes":["java.lang.String"] }, {"name":"set$ref","parameterTypes":["java.lang.String"] }, {"name":"set$schema","parameterTypes":["java.lang.String"] }, {"name":"setAllOf","parameterTypes":["java.util.List"] }, {"name":"setAnyOf","parameterTypes":["java.util.List"] }, {"name":"setConst","parameterTypes":["java.lang.Object"] }, {"name":"setContains","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setContentEncoding","parameterTypes":["java.lang.String"] }, {"name":"setContentMediaType","parameterTypes":["java.lang.String"] }, {"name":"setDefault","parameterTypes":["java.lang.Object"] }, {"name":"setDependentRequired","parameterTypes":["java.util.Map"] }, {"name":"setDependentSchemas","parameterTypes":["java.util.Map"] }, {"name":"setDeprecated","parameterTypes":["java.lang.Boolean"] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setDiscriminator","parameterTypes":["io.swagger.v3.oas.models.media.Discriminator"] }, {"name":"setElse","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setEnum","parameterTypes":["java.util.List"] }, {"name":"setExample","parameterTypes":["java.lang.Object"] }, {"name":"setExamples","parameterTypes":["java.util.List"] }, {"name":"setExclusiveMaximumValue","parameterTypes":["java.math.BigDecimal"] }, {"name":"setExclusiveMinimumValue","parameterTypes":["java.math.BigDecimal"] }, {"name":"setFormat","parameterTypes":["java.lang.String"] }, {"name":"setIf","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setItems","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setMaxContains","parameterTypes":["java.lang.Integer"] }, {"name":"setMaxItems","parameterTypes":["java.lang.Integer"] }, {"name":"setMaxLength","parameterTypes":["java.lang.Integer"] }, {"name":"setMaxProperties","parameterTypes":["java.lang.Integer"] }, {"name":"setMaximum","parameterTypes":["java.math.BigDecimal"] }, {"name":"setMinContains","parameterTypes":["java.lang.Integer"] }, {"name":"setMinItems","parameterTypes":["java.lang.Integer"] }, {"name":"setMinLength","parameterTypes":["java.lang.Integer"] }, {"name":"setMinProperties","parameterTypes":["java.lang.Integer"] }, {"name":"setMinimum","parameterTypes":["java.math.BigDecimal"] }, {"name":"setMultipleOf","parameterTypes":["java.math.BigDecimal"] }, {"name":"setNot","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setOneOf","parameterTypes":["java.util.List"] }, {"name":"setPattern","parameterTypes":["java.lang.String"] }, {"name":"setPatternProperties","parameterTypes":["java.util.Map"] }, {"name":"setPrefixItems","parameterTypes":["java.util.List"] }, {"name":"setProperties","parameterTypes":["java.util.Map"] }, {"name":"setPropertyNames","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setReadOnly","parameterTypes":["java.lang.Boolean"] }, {"name":"setRequired","parameterTypes":["java.util.List"] }, {"name":"setThen","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setTitle","parameterTypes":["java.lang.String"] }, {"name":"setUnevaluatedItems","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setUnevaluatedProperties","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setUniqueItems","parameterTypes":["java.lang.Boolean"] }, {"name":"setWriteOnly","parameterTypes":["java.lang.Boolean"] }, {"name":"setXml","parameterTypes":["io.swagger.v3.oas.models.media.XML"] }]
+  "methods":[{"name":"addExtension","parameterTypes":["java.lang.String","java.lang.Object"] }, {"name":"get$anchor","parameterTypes":[] }, {"name":"get$comment","parameterTypes":[] }, {"name":"get$dynamicAnchor","parameterTypes":[] }, {"name":"get$dynamicRef","parameterTypes":[] }, {"name":"get$id","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"get$schema","parameterTypes":[] }, {"name":"get$vocabulary","parameterTypes":[] }, {"name":"getAdditionalItems","parameterTypes":[] }, {"name":"getAdditionalProperties","parameterTypes":[] }, {"name":"getAllOf","parameterTypes":[] }, {"name":"getAnyOf","parameterTypes":[] }, {"name":"getBooleanSchemaValue","parameterTypes":[] }, {"name":"getConst","parameterTypes":[] }, {"name":"getContains","parameterTypes":[] }, {"name":"getContentEncoding","parameterTypes":[] }, {"name":"getContentMediaType","parameterTypes":[] }, {"name":"getContentSchema","parameterTypes":[] }, {"name":"getDefault","parameterTypes":[] }, {"name":"getDependentRequired","parameterTypes":[] }, {"name":"getDependentSchemas","parameterTypes":[] }, {"name":"getDeprecated","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getDiscriminator","parameterTypes":[] }, {"name":"getElse","parameterTypes":[] }, {"name":"getEnum","parameterTypes":[] }, {"name":"getExample","parameterTypes":[] }, {"name":"getExampleSetFlag","parameterTypes":[] }, {"name":"getExamples","parameterTypes":[] }, {"name":"getExclusiveMaximum","parameterTypes":[] }, {"name":"getExclusiveMaximumValue","parameterTypes":[] }, {"name":"getExclusiveMinimum","parameterTypes":[] }, {"name":"getExclusiveMinimumValue","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getExternalDocs","parameterTypes":[] }, {"name":"getFormat","parameterTypes":[] }, {"name":"getIf","parameterTypes":[] }, {"name":"getItems","parameterTypes":[] }, {"name":"getJsonSchema","parameterTypes":[] }, {"name":"getJsonSchemaImpl","parameterTypes":[] }, {"name":"getMaxContains","parameterTypes":[] }, {"name":"getMaxItems","parameterTypes":[] }, {"name":"getMaxLength","parameterTypes":[] }, {"name":"getMaxProperties","parameterTypes":[] }, {"name":"getMaximum","parameterTypes":[] }, {"name":"getMinContains","parameterTypes":[] }, {"name":"getMinItems","parameterTypes":[] }, {"name":"getMinLength","parameterTypes":[] }, {"name":"getMinProperties","parameterTypes":[] }, {"name":"getMinimum","parameterTypes":[] }, {"name":"getMultipleOf","parameterTypes":[] }, {"name":"getNot","parameterTypes":[] }, {"name":"getNullable","parameterTypes":[] }, {"name":"getOneOf","parameterTypes":[] }, {"name":"getPattern","parameterTypes":[] }, {"name":"getPatternProperties","parameterTypes":[] }, {"name":"getPrefixItems","parameterTypes":[] }, {"name":"getProperties","parameterTypes":[] }, {"name":"getPropertyNames","parameterTypes":[] }, {"name":"getReadOnly","parameterTypes":[] }, {"name":"getRequired","parameterTypes":[] }, {"name":"getThen","parameterTypes":[] }, {"name":"getTitle","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }, {"name":"getTypes","parameterTypes":[] }, {"name":"getUnevaluatedItems","parameterTypes":[] }, {"name":"getUnevaluatedProperties","parameterTypes":[] }, {"name":"getUniqueItems","parameterTypes":[] }, {"name":"getWriteOnly","parameterTypes":[] }, {"name":"getXml","parameterTypes":[] }, {"name":"set$comment","parameterTypes":["java.lang.String"] }, {"name":"set$id","parameterTypes":["java.lang.String"] }, {"name":"set$ref","parameterTypes":["java.lang.String"] }, {"name":"set$schema","parameterTypes":["java.lang.String"] }, {"name":"setAllOf","parameterTypes":["java.util.List"] }, {"name":"setAnyOf","parameterTypes":["java.util.List"] }, {"name":"setConst","parameterTypes":["java.lang.Object"] }, {"name":"setContains","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setContentEncoding","parameterTypes":["java.lang.String"] }, {"name":"setContentMediaType","parameterTypes":["java.lang.String"] }, {"name":"setDefault","parameterTypes":["java.lang.Object"] }, {"name":"setDependentRequired","parameterTypes":["java.util.Map"] }, {"name":"setDependentSchemas","parameterTypes":["java.util.Map"] }, {"name":"setDeprecated","parameterTypes":["java.lang.Boolean"] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setDiscriminator","parameterTypes":["io.swagger.v3.oas.models.media.Discriminator"] }, {"name":"setElse","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setEnum","parameterTypes":["java.util.List"] }, {"name":"setExample","parameterTypes":["java.lang.Object"] }, {"name":"setExamples","parameterTypes":["java.util.List"] }, {"name":"setExclusiveMaximumValue","parameterTypes":["java.math.BigDecimal"] }, {"name":"setExclusiveMinimumValue","parameterTypes":["java.math.BigDecimal"] }, {"name":"setFormat","parameterTypes":["java.lang.String"] }, {"name":"setIf","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setItems","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setMaxContains","parameterTypes":["java.lang.Integer"] }, {"name":"setMaxItems","parameterTypes":["java.lang.Integer"] }, {"name":"setMaxLength","parameterTypes":["java.lang.Integer"] }, {"name":"setMaxProperties","parameterTypes":["java.lang.Integer"] }, {"name":"setMaximum","parameterTypes":["java.math.BigDecimal"] }, {"name":"setMinContains","parameterTypes":["java.lang.Integer"] }, {"name":"setMinItems","parameterTypes":["java.lang.Integer"] }, {"name":"setMinLength","parameterTypes":["java.lang.Integer"] }, {"name":"setMinProperties","parameterTypes":["java.lang.Integer"] }, {"name":"setMinimum","parameterTypes":["java.math.BigDecimal"] }, {"name":"setMultipleOf","parameterTypes":["java.math.BigDecimal"] }, {"name":"setNot","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setOneOf","parameterTypes":["java.util.List"] }, {"name":"setPattern","parameterTypes":["java.lang.String"] }, {"name":"setPatternProperties","parameterTypes":["java.util.Map"] }, {"name":"setPrefixItems","parameterTypes":["java.util.List"] }, {"name":"setProperties","parameterTypes":["java.util.Map"] }, {"name":"setPropertyNames","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setReadOnly","parameterTypes":["java.lang.Boolean"] }, {"name":"setRequired","parameterTypes":["java.util.List"] }, {"name":"setThen","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setTitle","parameterTypes":["java.lang.String"] }, {"name":"setType","parameterTypes":["java.lang.String"] }, {"name":"setUnevaluatedItems","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setUnevaluatedProperties","parameterTypes":["io.swagger.v3.oas.models.media.Schema"] }, {"name":"setUniqueItems","parameterTypes":["java.lang.Boolean"] }, {"name":"setWriteOnly","parameterTypes":["java.lang.Boolean"] }, {"name":"setXml","parameterTypes":["io.swagger.v3.oas.models.media.XML"] }]
 },
 {
   "name":"io.swagger.v3.oas.models.media.Schema$BynaryStringConversion"
@@ -342,6 +515,15 @@
 {
   "name":"io.swagger.v3.oas.models.media.StringSchema",
   "allDeclaredFields":true,
+  "allPublicConstructors":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.media.UUIDSchema",
+  "allDeclaredFields":true,
+  "allPublicConstructors":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true
 },
@@ -494,7 +676,9 @@
   "queryAllDeclaredMethods":true
 },
 {
-  "name":"java.lang.Boolean"
+  "name":"java.lang.Boolean",
+  "fields":[{"name":"expectedResponseBody"}, {"name":"expectedResponseBody.escapedRawBody"}],
+  "methods":[{"name":"expectedResponseBody","parameterTypes":[] }, {"name":"expectedResponseBody.escapedRawBody","parameterTypes":[] }, {"name":"getExpectedResponseBody","parameterTypes":[] }, {"name":"getExpectedResponseBody.escapedRawBody","parameterTypes":[] }, {"name":"isExpectedResponseBody","parameterTypes":[] }, {"name":"isExpectedResponseBody.escapedRawBody","parameterTypes":[] }]
 },
 {
   "name":"java.lang.Class",
@@ -816,6 +1000,9 @@
 },
 {
   "name":"kotlin.Deprecated"
+},
+{
+  "name":"kotlin.IgnorableReturnValue"
 },
 {
   "name":"kotlin.Int"

@@ -13,8 +13,6 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.slf4j.LoggerFactory
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
 
 /**
  * Emits test suites as JSON/YAML files.
@@ -387,23 +385,7 @@ internal class TestSuiteWriter(
     }
 
     private fun writeAtomically(outFile: File, content: Any) {
-        if (!outFile.parentFile.exists()) {
-            outFile.parentFile.mkdirs()
-        }
-        val tmpFile = File(outFile.parentFile, outFile.name + ".tmp")
-
-        try {
-            writer().writeValue(tmpFile, content)
-            Files.move(
-                tmpFile.toPath(),
-                outFile.toPath(),
-                StandardCopyOption.REPLACE_EXISTING,
-                StandardCopyOption.ATOMIC_MOVE
-            )
-        } catch (e: Exception) {
-            log.error("Failed to write {} to {}", options.format.name.lowercase(), outFile.absolutePath, e)
-            runCatching { tmpFile.delete() }
-        }
+        AtomicFileWriter.write(outFile) { tmpFile -> writer().writeValue(tmpFile, content) }
     }
 
     public companion object {

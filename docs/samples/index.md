@@ -96,7 +96,7 @@ Samples show how to register additional generation tasks:
 ```kotlin
 // Additional task with YAML config (filename is arbitrary)
 tasks.register<OpenApiTestGeneratorTask>("generateOpenApiTestsYaml") {
-    configFile.set("open-api-test-generation-config.yaml")
+    configFile.set(layout.projectDirectory.file("open-api-test-generation-config.yaml"))
 }
 
 // Wire into build

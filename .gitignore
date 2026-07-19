@@ -41,3 +41,6 @@ out/
 docs/api/
 docs/.cache/
 site/
+
+# Generated during docs builds from the root CHANGELOG.md
+docs/changelog/CHANGELOG.md

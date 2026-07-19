@@ -394,12 +394,13 @@ class TestGeneratorTest {
 
                 val produced: Map<String, TestSuite> = objectMapper.readValue(producedFile)
 
-                // objectMapper.writeValueAsString(produced)
-                val expected: Map<String, TestSuite> = this::class.java.classLoader.getResourceAsStream(spec.outputFileName).use {
-                    objectMapper.readValue(requireNotNull(it))
-                }
+                if (!SnapshotSupport.maybeUpdateSnapshot(producedFile, spec.outputFileName)) {
+                    val expected: Map<String, TestSuite> = this::class.java.classLoader.getResourceAsStream(spec.outputFileName).use {
+                        objectMapper.readValue(requireNotNull(it))
+                    }
 
-                assertThat(produced).usingRecursiveComparison().isEqualTo(expected)
+                    assertThat(produced).usingRecursiveComparison().isEqualTo(expected)
+                }
             }
         }
     }
@@ -508,14 +509,16 @@ class TestGeneratorTest {
 
                 val produced: JsonNode = objectMapper.readTree(producedFile)
 
-                val expected: JsonNode = this::class.java.classLoader.getResourceAsStream(expectedReportFileName).use {
-                    objectMapper.readTree(it)
+                if (!SnapshotSupport.maybeUpdateSnapshot(producedFile, expectedReportFileName)) {
+                    val expected: JsonNode = this::class.java.classLoader.getResourceAsStream(expectedReportFileName).use {
+                        objectMapper.readTree(it)
+                    }
+
+                    expected.get("errors").asSequence().forEach { error -> error.properties().removeAll { it.key == ("exceptionText") } }
+                    produced.get("errors").asSequence().forEach { error -> error.properties().removeAll { it.key == ("exceptionText") } }
+
+                    assertThat(produced).isEqualTo(expected)
                 }
-
-                expected.get("errors").asSequence().forEach { error -> error.properties().removeAll { it.key == ("exceptionText") } }
-                produced.get("errors").asSequence().forEach { error -> error.properties().removeAll { it.key == ("exceptionText") } }
-
-                assertThat(produced).isEqualTo(expected)
             }
         }
     }

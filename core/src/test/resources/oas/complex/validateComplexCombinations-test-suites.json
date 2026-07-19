@@ -44,6 +44,47 @@
                 "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Object Property allOfAnyOf Null For Required Property baseField",
+                "method" : "POST",
+                "path" : "/validation/complex-combinations",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "allOfAnyOf" : {
+                        "baseField" : null
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property allOfAnyOf Object Property optionB Integer Breaking",
                 "method" : "POST",
                 "path" : "/validation/complex-combinations",
@@ -323,6 +364,264 @@
                     "anyOfAllOf" : {
                         "errorData" : { },
                         "id" : "a"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property anyOfAllOf Null For Required Property errorData",
+                "method" : "POST",
+                "path" : "/validation/complex-combinations",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "anyOfAllOf" : {
+                        "errorData" : null,
+                        "id" : "a",
+                        "timestamp" : "2025-05-05T17:32:28Z"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property anyOfAllOf Null For Required Property id",
+                "method" : "POST",
+                "path" : "/validation/complex-combinations",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "anyOfAllOf" : {
+                        "id" : null,
+                        "successData" : { },
+                        "timestamp" : "2025-05-05T17:32:28Z"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property anyOfAllOf Null For Required Property id",
+                "method" : "POST",
+                "path" : "/validation/complex-combinations",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "anyOfAllOf" : {
+                        "errorData" : { },
+                        "id" : null,
+                        "timestamp" : "2025-05-05T17:32:28Z"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property anyOfAllOf Null For Required Property successData",
+                "method" : "POST",
+                "path" : "/validation/complex-combinations",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "anyOfAllOf" : {
+                        "id" : "a",
+                        "successData" : null,
+                        "timestamp" : "2025-05-05T17:32:28Z"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property anyOfAllOf Null For Required Property timestamp",
+                "method" : "POST",
+                "path" : "/validation/complex-combinations",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "anyOfAllOf" : {
+                        "id" : "a",
+                        "successData" : { },
+                        "timestamp" : null
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property anyOfAllOf Null For Required Property timestamp",
+                "method" : "POST",
+                "path" : "/validation/complex-combinations",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "anyOfAllOf" : {
+                        "errorData" : { },
+                        "id" : "a",
+                        "timestamp" : null
                     }
                 },
                 "requestBodyMediaType" : "application/json",
@@ -1137,6 +1436,47 @@
                 },
                 "body" : {
                     "oneOfAnyOf" : { }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "data" : { },
+                    "requestId" : "d5a5495b-cbdc-4237-a66e-000000000000",
+                    "status" : "success",
+                    "timestamp" : "2025-05-05T17:32:28Z"
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property oneOfAnyOf Null For Required Property primaryType",
+                "method" : "POST",
+                "path" : "/validation/complex-combinations",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "oneOfAnyOf" : {
+                        "primaryType" : null
+                    }
                 },
                 "requestBodyMediaType" : "application/json",
                 "expectedBody" : {

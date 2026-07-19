@@ -3,6 +3,8 @@
   "includes":[{
     "pattern":"\\QMETA-INF/services/ch.qos.logback.classic.spi.Configurator\\E"
   }, {
+    "pattern":"\\QMETA-INF/services/io.swagger.parser.SwaggerParserExtension\\E"
+  }, {
     "pattern":"\\QMETA-INF/services/io.swagger.v3.parser.extensions.JsonSchemaParserExtension\\E"
   }, {
     "pattern":"\\QMETA-INF/services/io.swagger.v3.parser.reference.OpenAPIDereferencer\\E"
@@ -23,6 +25,10 @@
   }, {
     "pattern":"\\QMETA-INF/services/org.slf4j.spi.SLF4JServiceProvider\\E"
   }, {
+    "pattern":"\\Qch/qos/logback/classic/logback-classic-version.properties\\E"
+  }, {
+    "pattern":"\\Qch/qos/logback/core/logback-core-version.properties\\E"
+  }, {
     "pattern":"\\Qkotlin/annotation/annotation.kotlin_builtins\\E"
   }, {
     "pattern":"\\Qkotlin/collections/Map/Map.kotlin_builtins\\E"
@@ -30,6 +36,8 @@
     "pattern":"\\Qkotlin/collections/MutableMap/MutableMap.kotlin_builtins\\E"
   }, {
     "pattern":"\\Qkotlin/collections/collections.kotlin_builtins\\E"
+  }, {
+    "pattern":"\\Qkotlin/concurrent/atomics/atomics.kotlin_builtins\\E"
   }, {
     "pattern":"\\Qkotlin/coroutines/coroutines.kotlin_builtins\\E"
   }, {

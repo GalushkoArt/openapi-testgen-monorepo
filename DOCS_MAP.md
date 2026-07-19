@@ -13,8 +13,8 @@ Run `python3 skills/project-docs/scripts/sync_docs_map.py --check` to verify syn
 | File | Purpose |
 |------|---------|
 | `README.md` | Project entry point, installation, quick starts |
-| `CLAUDE.md` | Contributor guide for AI assistants |
-| `AGENTS.md` | Repository guidelines and automation instructions |
+| `CLAUDE.md` | Claude Code entry point; imports `AGENTS.md` plus Claude-specific notes |
+| `AGENTS.md` | Canonical repository guidelines for AI agents and automation |
 
 ### Module READMEs
 
@@ -65,10 +65,12 @@ Run `python3 skills/project-docs/scripts/sync_docs_map.py --check` to verify syn
 
 - `docs/how-to/configuration.md` - Configure test generation using YAML config files, CLI flags, and Gradle DSL. Covers operation filtering, ignore rules, security values, and positive testing.
 - `docs/how-to/negative-testing.md` - Generate negative test cases that verify your API rejects invalid input. Covers path, query, header, and request body validation with OpenAPI examples, generated output, and filtering options.
+- `docs/how-to/positive-testing.md` - Generate a baseline positive (2xx) test case per operation with includeValidCase. Covers enabling it via YAML, CLI, and Gradle, how the valid case is built, security and example-value prerequisites, generated output, and limitations.
 - `docs/how-to/generators.md` - Configure built-in generators (template and test-suite-writer), create custom Mustache templates, and integrate with RestAssured and Spring Boot.
 - `docs/how-to/extending.md` - Extend the test generator with custom validation rules, test case providers, artifact generators, and modules. Includes complete Kotlin examples, registration patterns, and debugging tips.
 - `docs/how-to/ci-cd.md` - GitHub Actions and GitLab CI workflow examples, job patterns for splitting generation and tests, caching, artifact retention, and environment-specific overrides.
-- `docs/how-to/troubleshooting.md` - Solutions for common issues including missing test output, budget exceeded errors, CLI/npm problems, and platform-specific compatibility.
+- `docs/how-to/troubleshooting.md` - Symptom-indexed solutions for generation errors, unexpected output, Gradle-specific issues, and CLI/npm platform problems. Headings quote the exact error messages so you can search for what you see.
+- `docs/how-to/faq.md` - Frequently asked questions about OpenAPI Test Generator - installation, Gradle and CLI usage, security values, filtering, positive tests, customization, budgets, and running generated tests.
 
 ### Concepts
 
@@ -85,6 +87,7 @@ Run `python3 skills/project-docs/scripts/sync_docs_map.py --check` to verify syn
 - `docs/reference/catalogs/providers-catalog.md` - Reference catalog listing all built-in providers with their execution order, expected status codes, budget settings, and extension points.
 
 - `docs/reference/distribution-settings.md` - Comprehensive settings reference shared by CLI and Gradle plugin. Covers budget controls, security configuration, include/ignore filters, example value providers, and module settings.
+- `docs/reference/supported-specifications.md` - Supported OpenAPI and Swagger specification versions, normalization behavior, and known compatibility limits for generation.
 - `docs/reference/model.md` - Reference for the model module's core data types - TestCase, TestSuite, SecurityValues, KeyValuePair, and error handling types (Outcome, GenerationError, GenerationReport, BudgetExceededException).
 - `docs/reference/spi.md` - Core SPI (Service Provider Interface) for extending the generator with custom validation rules, test providers, generators, and value providers. Includes interface definitions, registration, and implementation checklist.
 - `docs/reference/api.md` - Entry point for the Dokka-generated API reference published under this site for all public modules.
@@ -95,7 +98,10 @@ Run `python3 skills/project-docs/scripts/sync_docs_map.py --check` to verify syn
 
 - `docs/modules/index.md` - Module catalog for the OpenAPI Test Generator composite build, covering the dependency flow, thin-module responsibilities, and links to the remaining deep-dive module pages.
 - `docs/modules/core.md` - The core module is the generation engine that parses OpenAPI specifications, builds test suites using providers and rules, enforces budget controls, and produces artifacts through generators. It provides the TestGenerationEngine facade and built-in test-suite-writer generator.
+- `docs/modules/example-value.md` - The example-value module generates example values from OpenAPI schemas, extracts response examples with media-type negotiation, and merges composed schemas. It owns the SchemaValueProvider SPI and offers a Java-friendly API with presets, withers, and SAM-convertible interfaces.
 - `docs/modules/pattern-value.md` - The pattern-value module generates string values from OpenAPI schema regex patterns using the Cornutum regexp-gen library. It implements the SchemaValueProvider SPI from example-value and has no dependency on core.
+- `docs/modules/pattern-support.md` - The pattern-support module bridges pattern-value into the core engine, contributing the `pattern` schema value provider, the InvalidPattern negative rule, and the patternGeneration settings extractor. Covers wiring, configuration ownership, and manual embedding.
+- `docs/modules/generator-template.md` - The generator-template module contributes the Mustache-based `template` generator that renders test suites as Java or Kotlin source files. Covers the module's role, template resolution, output naming, write modes, and how embedders enable it.
 - `docs/modules/distribution-bundle.md` - The distribution-bundle module is the shared product layer used by CLI and Gradle plugin. It bundles core, pattern-support, and generator-template modules, providing TestGenerationRunner as a high-level API for test generation execution.
 
 ### Contributing

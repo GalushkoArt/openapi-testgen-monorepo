@@ -1,239 +1,221 @@
 {
-    "successfulSuites": [
-        {
-            "path": "/simple-operation",
-            "method": "GET",
-            "operationName": "simpleOperation",
-            "testCases": [
-                {
-                    "name": "Missed Required Query Parameter status",
-                    "method": "GET",
-                    "path": "/simple-operation",
-                    "queryParams": {},
-                    "pathParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "securityValues": {
-                        "queryParams": {},
-                        "headers": [],
-                        "cookie": [],
-                        "other": {}
-                    },
-                    "body": null,
-                    "requestBodyMediaType": null,
-                    "expectedBody": null,
-                    "responseBodyMediaType": null,
-                    "needToComplete": false,
-                    "expectedStatusCode": 400,
-                    "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
-                },
-                {
-                    "name": "Invalid Query status parameter: Invalid Enum Value",
-                    "method": "GET",
-                    "path": "/simple-operation",
-                    "queryParams": {
-                        "status": "invalid_enum1"
-                    },
-                    "pathParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "securityValues": {
-                        "queryParams": {},
-                        "headers": [],
-                        "cookie": [],
-                        "other": {}
-                    },
-                    "body": null,
-                    "requestBodyMediaType": null,
-                    "expectedBody": null,
-                    "responseBodyMediaType": null,
-                    "needToComplete": false,
-                    "expectedStatusCode": 400,
-                    "rule": "art.galushko.openapi.testgen.rules.schema.InvalidEnumValueSchemaValidationRule"
-                }
-            ]
-        },
-        {
-            "path": "/partial-success",
-            "method": "POST",
-            "operationName": "partialSuccessOperation",
-            "testCases": [
-                {
-                    "name": "Missed Required Query Parameter simpleParam",
-                    "method": "POST",
-                    "path": "/partial-success",
-                    "queryParams": {},
-                    "pathParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "securityValues": {
-                        "queryParams": {},
-                        "headers": [],
-                        "cookie": [],
-                        "other": {}
-                    },
-                    "body": {
-                        "data": {
-                            "typeA": "typeA",
-                            "valueA": "aa"
-                        }
-                    },
-                    "requestBodyMediaType": "application/json",
-                    "expectedBody": null,
-                    "responseBodyMediaType": null,
-                    "needToComplete": false,
-                    "expectedStatusCode": 400,
-                    "rule": "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
-                },
-                {
-                    "name": "Invalid Query simpleParam parameter: Integer Breaking",
-                    "method": "POST",
-                    "path": "/partial-success",
-                    "queryParams": {
-                        "simpleParam": 1.5
-                    },
-                    "pathParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "securityValues": {
-                        "queryParams": {},
-                        "headers": [],
-                        "cookie": [],
-                        "other": {}
-                    },
-                    "body": {
-                        "data": {
-                            "typeA": "typeA",
-                            "valueA": "aa"
-                        }
-                    },
-                    "requestBodyMediaType": "application/json",
-                    "expectedBody": null,
-                    "responseBodyMediaType": null,
-                    "needToComplete": false,
-                    "expectedStatusCode": 400,
-                    "rule": "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
-                },
-                {
-                    "name": "Invalid Query simpleParam parameter: Out Of Maximum Boundary Number",
-                    "method": "POST",
-                    "path": "/partial-success",
-                    "queryParams": {
-                        "simpleParam": 101
-                    },
-                    "pathParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "securityValues": {
-                        "queryParams": {},
-                        "headers": [],
-                        "cookie": [],
-                        "other": {}
-                    },
-                    "body": {
-                        "data": {
-                            "typeA": "typeA",
-                            "valueA": "aa"
-                        }
-                    },
-                    "requestBodyMediaType": "application/json",
-                    "expectedBody": null,
-                    "responseBodyMediaType": null,
-                    "needToComplete": false,
-                    "expectedStatusCode": 400,
-                    "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
-                },
-                {
-                    "name": "Invalid Query simpleParam parameter: Out Of Minimum Boundary Number",
-                    "method": "POST",
-                    "path": "/partial-success",
-                    "queryParams": {
-                        "simpleParam": 0
-                    },
-                    "pathParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "securityValues": {
-                        "queryParams": {},
-                        "headers": [],
-                        "cookie": [],
-                        "other": {}
-                    },
-                    "body": {
-                        "data": {
-                            "typeA": "typeA",
-                            "valueA": "aa"
-                        }
-                    },
-                    "requestBodyMediaType": "application/json",
-                    "expectedBody": null,
-                    "responseBodyMediaType": null,
-                    "needToComplete": false,
-                    "expectedStatusCode": 400,
-                    "rule": "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
-                },
-                {
-                    "name": "Required Request Body is missing",
-                    "method": "POST",
-                    "path": "/partial-success",
-                    "queryParams": {
-                        "simpleParam": 1
-                    },
-                    "pathParams": {},
-                    "headers": [],
-                    "cookie": [],
-                    "securityValues": {
-                        "queryParams": {},
-                        "headers": [],
-                        "cookie": [],
-                        "other": {}
-                    },
-                    "body": null,
-                    "requestBodyMediaType": "application/json",
-                    "expectedBody": null,
-                    "responseBodyMediaType": null,
-                    "needToComplete": false,
-                    "expectedStatusCode": 400,
-                    "rule": "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
-                }
-            ]
+  "successfulSuites" : [ {
+    "path" : "/simple-operation",
+    "method" : "GET",
+    "operationName" : "simpleOperation",
+    "testCases" : [ {
+      "name" : "Missed Required Query Parameter status",
+      "method" : "GET",
+      "path" : "/simple-operation",
+      "queryParams" : { },
+      "pathParams" : { },
+      "headers" : [ ],
+      "cookie" : [ ],
+      "securityValues" : {
+        "queryParams" : { },
+        "headers" : [ ],
+        "cookie" : [ ],
+        "other" : { }
+      },
+      "body" : null,
+      "requestBodyMediaType" : null,
+      "expectedBody" : null,
+      "responseBodyMediaType" : null,
+      "needToComplete" : false,
+      "expectedStatusCode" : 400,
+      "rule" : "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
+    }, {
+      "name" : "Invalid Query status parameter: Invalid Enum Value",
+      "method" : "GET",
+      "path" : "/simple-operation",
+      "queryParams" : {
+        "status" : "invalid_enum1"
+      },
+      "pathParams" : { },
+      "headers" : [ ],
+      "cookie" : [ ],
+      "securityValues" : {
+        "queryParams" : { },
+        "headers" : [ ],
+        "cookie" : [ ],
+        "other" : { }
+      },
+      "body" : null,
+      "requestBodyMediaType" : null,
+      "expectedBody" : null,
+      "responseBodyMediaType" : null,
+      "needToComplete" : false,
+      "expectedStatusCode" : 400,
+      "rule" : "art.galushko.openapi.testgen.rules.schema.InvalidEnumValueSchemaValidationRule"
+    } ]
+  }, {
+    "path" : "/partial-success",
+    "method" : "POST",
+    "operationName" : "partialSuccessOperation",
+    "testCases" : [ {
+      "name" : "Missed Required Query Parameter simpleParam",
+      "method" : "POST",
+      "path" : "/partial-success",
+      "queryParams" : { },
+      "pathParams" : { },
+      "headers" : [ ],
+      "cookie" : [ ],
+      "securityValues" : {
+        "queryParams" : { },
+        "headers" : [ ],
+        "cookie" : [ ],
+        "other" : { }
+      },
+      "body" : {
+        "data" : {
+          "typeA" : "typeA",
+          "valueA" : "aa"
         }
-    ],
-    "errors": [
-        {
-            "providerClass": "art.galushko.openapi.testgen.providers.body.RequestBodySchemaValidationTestProvider",
-            "message": "Budget exceeded for POST /partial-success:\n  Generated: 5 schema combinations\n  Limit: 3\n\nPossible solutions:\n  1. Increase the limit by setting testGenerationSettings.maxSchemaCombinations to a higher value\n  2. Simplify the OpenAPI schema by reducing nested oneOf/anyOf/allOf structures\n  3. Use ignoreTestCases or ignoreSchemaValidationRules to exclude specific scenarios\n",
-            "context": {
-                "operation": {
-                    "path": "/partial-success",
-                    "method": "POST",
-                    "operationId": "partialSuccessOperation"
-                },
-                "ref": null
-            },
-            "exceptionText": null
+      },
+      "requestBodyMediaType" : "application/json",
+      "expectedBody" : null,
+      "responseBodyMediaType" : null,
+      "needToComplete" : false,
+      "expectedStatusCode" : 400,
+      "rule" : "art.galushko.openapi.testgen.providers.parameter.MissedRequiredParameterTestProvider"
+    }, {
+      "name" : "Invalid Query simpleParam parameter: Integer Breaking",
+      "method" : "POST",
+      "path" : "/partial-success",
+      "queryParams" : {
+        "simpleParam" : 1.5
+      },
+      "pathParams" : { },
+      "headers" : [ ],
+      "cookie" : [ ],
+      "securityValues" : {
+        "queryParams" : { },
+        "headers" : [ ],
+        "cookie" : [ ],
+        "other" : { }
+      },
+      "body" : {
+        "data" : {
+          "typeA" : "typeA",
+          "valueA" : "aa"
         }
-    ],
-    "summary": {
-        "totalOperations": 2,
-        "successfulOperations": [
-            {
-                "operationId": "simpleOperation",
-                "path": "/simple-operation",
-                "method": "GET"
-            }
-        ],
-        "notTestedOperations": [],
-        "partialOperations": [
-            {
-                "operationId": "partialSuccessOperation",
-                "path": "/partial-success",
-                "method": "POST"
-            }
-        ],
-        "failedOperations": [],
-        "totalTestCases": 7,
-        "totalErrors": 1
+      },
+      "requestBodyMediaType" : "application/json",
+      "expectedBody" : null,
+      "responseBodyMediaType" : null,
+      "needToComplete" : false,
+      "expectedStatusCode" : 400,
+      "rule" : "art.galushko.openapi.testgen.rules.schema.IntegerBreakingSchemaValidationRule"
+    }, {
+      "name" : "Invalid Query simpleParam parameter: Out Of Maximum Boundary Number",
+      "method" : "POST",
+      "path" : "/partial-success",
+      "queryParams" : {
+        "simpleParam" : 101
+      },
+      "pathParams" : { },
+      "headers" : [ ],
+      "cookie" : [ ],
+      "securityValues" : {
+        "queryParams" : { },
+        "headers" : [ ],
+        "cookie" : [ ],
+        "other" : { }
+      },
+      "body" : {
+        "data" : {
+          "typeA" : "typeA",
+          "valueA" : "aa"
+        }
+      },
+      "requestBodyMediaType" : "application/json",
+      "expectedBody" : null,
+      "responseBodyMediaType" : null,
+      "needToComplete" : false,
+      "expectedStatusCode" : 400,
+      "rule" : "art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule"
+    }, {
+      "name" : "Invalid Query simpleParam parameter: Out Of Minimum Boundary Number",
+      "method" : "POST",
+      "path" : "/partial-success",
+      "queryParams" : {
+        "simpleParam" : 0
+      },
+      "pathParams" : { },
+      "headers" : [ ],
+      "cookie" : [ ],
+      "securityValues" : {
+        "queryParams" : { },
+        "headers" : [ ],
+        "cookie" : [ ],
+        "other" : { }
+      },
+      "body" : {
+        "data" : {
+          "typeA" : "typeA",
+          "valueA" : "aa"
+        }
+      },
+      "requestBodyMediaType" : "application/json",
+      "expectedBody" : null,
+      "responseBodyMediaType" : null,
+      "needToComplete" : false,
+      "expectedStatusCode" : 400,
+      "rule" : "art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule"
+    }, {
+      "name" : "Required Request Body is missing",
+      "method" : "POST",
+      "path" : "/partial-success",
+      "queryParams" : {
+        "simpleParam" : 1
+      },
+      "pathParams" : { },
+      "headers" : [ ],
+      "cookie" : [ ],
+      "securityValues" : {
+        "queryParams" : { },
+        "headers" : [ ],
+        "cookie" : [ ],
+        "other" : { }
+      },
+      "body" : null,
+      "requestBodyMediaType" : "application/json",
+      "expectedBody" : null,
+      "responseBodyMediaType" : null,
+      "needToComplete" : false,
+      "expectedStatusCode" : 400,
+      "rule" : "art.galushko.openapi.testgen.providers.body.MissedRequiredRequestBodyTestProvider"
+    } ]
+  } ],
+  "errors" : [ {
+    "providerClass" : "art.galushko.openapi.testgen.providers.body.RequestBodySchemaValidationTestProvider",
+    "message" : "Budget exceeded for POST /partial-success:\n  Generated: 5 schema combinations\n  Limit: 3\n\nPossible solutions:\n  1. Increase the limit by setting testGenerationSettings.maxSchemaCombinations to a higher value\n  2. Simplify the OpenAPI schema by reducing nested oneOf/anyOf/allOf structures\n  3. Use ignoreTestCases or ignoreSchemaValidationRules to exclude specific scenarios\n",
+    "context" : {
+      "operation" : {
+        "path" : "/partial-success",
+        "method" : "POST",
+        "operationId" : "partialSuccessOperation"
+      },
+      "ref" : null
     },
-    "hasErrors": true
+    "exceptionText" : null
+  } ],
+  "summary" : {
+    "totalOperations" : 2,
+    "successfulOperations" : [ {
+      "operationId" : "simpleOperation",
+      "path" : "/simple-operation",
+      "method" : "GET"
+    } ],
+    "notTestedOperations" : [ ],
+    "partialOperations" : [ {
+      "operationId" : "partialSuccessOperation",
+      "path" : "/partial-success",
+      "method" : "POST"
+    } ],
+    "failedOperations" : [ ],
+    "totalTestCases" : 7,
+    "totalErrors" : 1
+  },
+  "hasErrors" : true
 }

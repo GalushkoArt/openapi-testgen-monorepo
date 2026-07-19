@@ -1,0 +1,20 @@
+version: 2
+updates:
+  # All dependency versions live in gradle/libs.versions.toml (single version catalog).
+  - package-ecosystem: gradle
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+
+  # npm package manifests under npm/ are version-templated at build time by
+  # npm/scripts/build-packages.sh, so they are deliberately not covered here.

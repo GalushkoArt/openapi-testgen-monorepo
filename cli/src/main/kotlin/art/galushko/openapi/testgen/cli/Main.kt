@@ -1,9 +1,8 @@
 package art.galushko.openapi.testgen.cli
 
-import art.galushko.openapi.testgen.config.GeneratorConfig
-import art.galushko.openapi.testgen.config.GeneratorConfigLoader
 import art.galushko.openapi.testgen.config.TestGeneratorOverrides
 import art.galushko.openapi.testgen.distribution.Slf4jReporter
+import art.galushko.openapi.testgen.distribution.TestGenerationExecution
 import art.galushko.openapi.testgen.distribution.TestGenerationResult
 import art.galushko.openapi.testgen.distribution.TestGenerationRunner
 import ch.qos.logback.classic.Level
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory
 import picocli.CommandLine
 import picocli.CommandLine.Command
 import picocli.CommandLine.Option
-import java.nio.file.Files
 import java.nio.file.Path
 import java.util.concurrent.Callable
 
@@ -30,7 +28,7 @@ public fun main(args: Array<String>) {
 
 @Command(
     name = "openapi-testgen",
-    description = ["Generate tests from an OpenAPI specification"],
+    description = ["Generate tests from an OpenAPI or Swagger specification"],
     mixinStandardHelpOptions = true,
     versionProvider = CliVersionProvider::class,
 )
@@ -40,14 +38,14 @@ public class GenerateCommand : Callable<Int> {
 
     @Option(
         names = ["--log-level"],
-        description = ["Log level for OpenAPI test generator logs: TRACE, DEBUG, INFO, WARN, ERROR (default: INFO)"],
+        description = ["Log level for OpenAPI test generator logs: ALL, TRACE, DEBUG, INFO, WARN, ERROR, OFF (default: INFO)"],
     )
     private var logLevel: String? = null
 
     @Option(names = ["--config-file"], description = ["Path to YAML config file with generator options"])
     public var configFile: String? = null
 
-    @Option(names = ["--spec-file"], description = ["Path to OpenAPI spec file (YAML/JSON)"])
+    @Option(names = ["--spec-file"], description = ["Path to OpenAPI 3.x or Swagger 2.0 spec file (YAML/JSON)"])
     public var specFile: String? = null
 
     @Option(names = ["--output-dir"], description = ["Output directory for generated files"])
@@ -83,16 +81,15 @@ public class GenerateCommand : Callable<Int> {
     public var alwaysWriteTests: Boolean? = null
 
     override fun call(): Int {
-        val config = loadConfig()
+        val config = TestGenerationExecution.loadConfig(configFile?.let { Path.of(it) })
         val overrides = buildOverrides()
-
-        configureLogging(config, overrides)
 
         val runner = TestGenerationRunner.withDefaults(
             reporter = Slf4jReporter(log),
         )
 
-        return when (val result = runner.execute(config, overrides)) {
+        val result = TestGenerationExecution.run(runner, config, overrides, ::applyLogbackRootLevel)
+        return when (result) {
             is TestGenerationResult.Success -> 0
             is TestGenerationResult.Failure -> {
                 System.err.println(result.message)
@@ -101,26 +98,8 @@ public class GenerateCommand : Callable<Int> {
         }
     }
 
-    private fun configureLogging(
-        config: GeneratorConfig?,
-        overrides: TestGeneratorOverrides,
-    ) {
-        val level = (overrides.logLevel ?: config?.logLevel)?.trim()?.uppercase() ?: return
-        val desiredLevel = parseLogbackLevel(level)
-
-        val context = LoggerFactory.getLogger(ROOT_LOGGER_NAME) as? Logger
-        context?.level = desiredLevel
-    }
-
-    private fun parseLogbackLevel(value: String): Level {
-        return try {
-            Level.valueOf(value)
-        } catch (e: IllegalArgumentException) {
-            throw IllegalArgumentException(
-                "Invalid --log-level '$value'. Expected one of Expected one of ALL, TRACE, DEBUG, INFO, WARN, ERROR, OFF.",
-                e,
-            )
-        }
+    private fun applyLogbackRootLevel(level: String) {
+        (LoggerFactory.getLogger(ROOT_LOGGER_NAME) as? Logger)?.level = Level.valueOf(level)
     }
 
     private fun buildOverrides(): TestGeneratorOverrides {
@@ -139,11 +118,6 @@ public class GenerateCommand : Callable<Int> {
             parserSettings = parserOptions,
         )
     }
-
-    private fun loadConfig(): GeneratorConfig? = configFile
-        ?.let { Path.of(it) }
-        ?.also { require(Files.exists(it)) { "Config file does not exist: $it" } }
-        ?.let { GeneratorConfigLoader.load(it) }
 }
 
 public class CliVersionProvider : CommandLine.IVersionProvider {

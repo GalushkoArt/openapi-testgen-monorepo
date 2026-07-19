@@ -2,7 +2,9 @@
 
 [![Gradle Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/art.galushko.openapi-test-generator)](https://plugins.gradle.org/plugin/art.galushko.openapi-test-generator)
 
-Gradle plugin for generating API tests from OpenAPI specifications.
+Gradle plugin that generates API tests from OpenAPI/Swagger specifications and wires them into
+your build: template output lands in the test source set, test-suite-writer output in test
+resources, both compiled and run by the regular `test` task.
 
 ## Installation
 
@@ -13,8 +15,6 @@ plugins {
 ```
 
 See the [installation guide](https://docs.galushko.art/openapi-test-generator/getting-started/installation/#version-placeholders) for where to look up `<version>`.
-
-[View on Gradle Plugin Portal](https://plugins.gradle.org/plugin/art.galushko.openapi-test-generator)
 
 ## Quick Start
 
@@ -37,141 +37,19 @@ openApiTestGenerator {
 ./gradlew generateOpenApiTests
 ```
 
-## Configuration
-
-### Basic Options
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `specFile` | `String` | Path or URI to OpenAPI spec (required) |
-| `outputDir` | `Directory` | Output directory for generated files |
-| `generator` | `String` | Generator id: `template` or `test-suite-writer` |
-| `generatorOptions` | `Map` | Generator-specific options |
-| `configFile` | `String` | Optional YAML config file path |
-| `alwaysWriteTests` | `Boolean` | Write output even on errors (default: `false`) |
-| `manualOnly` | `Boolean` | Disable automatic task wiring (default: `false`) |
-| `logLevel` | `String` | Log level: TRACE, DEBUG, INFO, WARN, ERROR, OFF |
-
-### Test Generation Settings
-
-```kotlin
-openApiTestGenerator {
-    testGenerationSettings {
-        // Budget controls
-        maxSchemaDepth.set(50)
-        maxSchemaCombinations.set(100)
-        maxTestCasesPerOperation.set(1000)
-
-        // Error handling
-        errorMode.set(ErrorMode.COLLECT_ALL)
-        maxErrors.set(100)
-
-        // Security values
-        validSecurityValues.put("ApiKeyAuth", "test-key")
-
-        // Filtering
-        ignoreSchemaValidationRules.add("art.galushko.openapi.testgen.rules.schema.InvalidEnumValueSchemaValidationRule")
-        ignoreTestCases.putAll(mapOf(
-            "/internal" to "*"
-        ))
-
-        // Module settings (raw maps)
-        exampleValues.putAll(mapOf(
-            "providers" to listOf("enum", "const", "pattern", "plain-string"),
-            "maxExampleDepth" to 30,
-        ))
-        patternGeneration.putAll(mapOf(
-            "defaultMinLength" to 10,
-        ))
-    }
-}
-```
-
-### Configuration File
-
-Use a YAML config file with DSL overrides:
-
-```kotlin
-openApiTestGenerator {
-    configFile.set("openapi-testgen.yaml")
-    specFile.set("src/main/resources/openapi.yaml")  // Overrides config file
-}
-```
-
-DSL values override config file values. Nested maps are deep-merged; lists are replaced.
-
-## Task Wiring
-
-The plugin registers `generateOpenApiTests`. Default wiring depends on the generator:
-
-| Generator | Wiring |
-|-----------|--------|
-| `template` | Adds output to test sources; `compileTestJava`/`compileTestKotlin` depends on generation |
-| `test-suite-writer` | `processTestResources` depends on generation |
-
-Disable automatic wiring:
-
-```kotlin
-openApiTestGenerator {
-    manualOnly.set(true)
-}
-```
-
-## Generators
-
-### Template Generator
-
-Generates Java/Kotlin test classes:
-
-```kotlin
-openApiTestGenerator {
-    generator.set("template")
-    generatorOptions.putAll(mapOf(
-        "templateSet" to "restassured-java",  // or "restassured-kotlin"
-        "templateVariables" to mapOf(
-            "package" to "com.example.tests",
-            "baseUrl" to "http://localhost:8080",
-            "springBootTest" to "true",
-        ),
-    ))
-}
-```
-
-### Test Suite Writer
-
-Generates JSON/YAML test data:
-
-```kotlin
-openApiTestGenerator {
-    generator.set("test-suite-writer")
-    generatorOptions.putAll(mapOf(
-        "outputFileName" to "test-suites.json",  // or .yaml
-        "writeMode" to "OVERWRITE",              // or "MERGE"
-        "preventOverwriteCases" to "false",
-    ))
-}
-```
-
-## Multiple Generation Tasks
-
-Register additional tasks with different configurations:
-
-```kotlin
-import art.galushko.openapi.testgen.plugin.OpenApiTestGeneratorTask
-
-tasks.register<OpenApiTestGeneratorTask>("generateOpenApiTestsYaml") {
-    configFile.set("yaml-config.yaml")
-    outputDir.set(layout.projectDirectory.dir("src/test/resources"))
-}
-```
-
 ## Documentation
 
-- [Getting Started](https://docs.galushko.art/openapi-test-generator/getting-started/)
-- [Gradle Plugin Reference](https://docs.galushko.art/openapi-test-generator/reference/gradle-plugin/)
-- [Generators Guide](https://docs.galushko.art/openapi-test-generator/how-to/generators/)
-- [Distribution Settings](https://docs.galushko.art/openapi-test-generator/reference/distribution-settings/)
-- [API Reference (Dokka)](https://docs.galushko.art/openapi-test-generator/api/)
+Everything else — the full DSL field list, `testGenerationSettings`, task wiring, registering
+additional tasks, and generator options — lives on the docs site:
+
+| Topic | Page |
+|-------|------|
+| Extension fields, task wiring, additional tasks | [Gradle plugin reference](https://docs.galushko.art/openapi-test-generator/reference/gradle-plugin/) |
+| Setting keys, defaults, and precedence | [Distribution settings](https://docs.galushko.art/openapi-test-generator/reference/distribution-settings/) |
+| Config file, filtering, security values | [Configuration](https://docs.galushko.art/openapi-test-generator/how-to/configuration/) |
+| Template and test-suite-writer output | [Generators](https://docs.galushko.art/openapi-test-generator/how-to/generators/) |
+| First run, quick starts | [Getting started](https://docs.galushko.art/openapi-test-generator/getting-started/) |
+| API reference (Dokka) | [API reference](https://docs.galushko.art/openapi-test-generator/api/) |
 
 ## Development
 

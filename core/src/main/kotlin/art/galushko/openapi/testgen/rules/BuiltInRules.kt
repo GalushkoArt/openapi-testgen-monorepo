@@ -15,12 +15,15 @@ import art.galushko.openapi.testgen.rules.schema.InvalidTypeValidationRule
 import art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule
 import art.galushko.openapi.testgen.rules.schema.MultipleOfBreakingSchemaValidationRule
 import art.galushko.openapi.testgen.rules.schema.NonUniqueItemsArraySchemaValidationRule
+import art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule
 import art.galushko.openapi.testgen.rules.schema.OutOfMaximumBoundaryNumberSchemaValidationRule
 import art.galushko.openapi.testgen.rules.schema.OutOfMaximumLengthStringSchemaValidationRule
 import art.galushko.openapi.testgen.rules.schema.OutOfMinimumBoundaryNumberSchemaValidationRule
 import art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule
+import art.galushko.openapi.testgen.rules.schema.UnexpectedAdditionalPropertySchemaValidationRule
 import art.galushko.openapi.testgen.rules.schema.WrongEmailFormatSchemaValidationRule
 import art.galushko.openapi.testgen.rules.schema.WrongInt32FormatSchemaValidationRule
+import art.galushko.openapi.testgen.rules.schema.WrongInt64FormatSchemaValidationRule
 import art.galushko.openapi.testgen.rules.schema.WrongUuidFormatSchemaValidationRule
 import art.galushko.openapi.testgen.spi.AuthValidationRule
 import art.galushko.openapi.testgen.spi.SimpleSchemaValidationRule
@@ -89,6 +92,7 @@ public object BuiltInRules {
             IntegerBreakingSchemaValidationRule(),
             InvalidTypeValidationRule(),
             WrongInt32FormatSchemaValidationRule(),
+            WrongInt64FormatSchemaValidationRule(),
 
             // String validation
             OutOfMaximumLengthStringSchemaValidationRule(),
@@ -98,6 +102,8 @@ public object BuiltInRules {
 
             // Object validation
             MissedRequiredObjectPropertiesSchemaValidationRule(),
+            NullForRequiredPropertySchemaValidationRule(),
+            UnexpectedAdditionalPropertySchemaValidationRule(),
         ) +
             // Date validation (parameterized)
             dateValidationRules() +

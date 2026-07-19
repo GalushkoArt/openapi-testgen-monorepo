@@ -117,7 +117,7 @@ Note: this sample uses `open-api-test-generation-config.yaml`, but the filename 
 
 ```kotlin
 tasks.register<OpenApiTestGeneratorTask>("generateOpenApiTestsToSrc") {
-    configFile.set("open-api-test-generation-config.yaml")
+    configFile.set(layout.projectDirectory.file("open-api-test-generation-config.yaml"))
 }
 
 tasks.named("compileTestJava") { dependsOn("generateOpenApiTestsToSrc") }

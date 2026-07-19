@@ -20,6 +20,8 @@ dependencies {
     implementation(libs.jackson.annotations)
     implementation(libs.swagger.parser.core)
     implementation(libs.swagger.parser)
+    implementation(libs.swagger.parser.v1)
+    implementation(libs.swagger.parser.v2.converter)
     implementation(libs.commons.lang3)
 
     // Logging implementation for test (SLF4J backend)

@@ -136,6 +136,38 @@ class CreateOrderTest {
     }
 
     @Test
+    @DisplayName("Incorrect Request Body: Null For Required Property items")
+    fun incorrectRequestBodyNullForRequiredPropertyItems() {
+        val requestSpec = RestAssured.given()
+        requestSpec.header("X-API-Key", "test-api-key-123")
+        requestSpec.header("Content-Type", "application/json")
+        val requestBody = "{\"items\":null,\"userId\":\"a\"}"
+        requestSpec.body(requestBody)
+
+        val response = requestSpec.post("/orders")
+        response.then().statusCode(400)
+        val responseBody = response.body.asString()
+        val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
+        assertExpectedBody(expectedBodyJson, responseBody)
+    }
+
+    @Test
+    @DisplayName("Incorrect Request Body: Null For Required Property userId")
+    fun incorrectRequestBodyNullForRequiredPropertyUserId() {
+        val requestSpec = RestAssured.given()
+        requestSpec.header("X-API-Key", "test-api-key-123")
+        requestSpec.header("Content-Type", "application/json")
+        val requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":\"a\"}],\"userId\":null}"
+        requestSpec.body(requestBody)
+
+        val response = requestSpec.post("/orders")
+        response.then().statusCode(400)
+        val responseBody = response.body.asString()
+        val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
+        assertExpectedBody(expectedBodyJson, responseBody)
+    }
+
+    @Test
     @DisplayName("Incorrect Request Body: Object Property items Below Min Items Array")
     fun incorrectRequestBodyObjectPropertyItemsBelowMinItemsArray() {
         val requestSpec = RestAssured.given()
@@ -190,6 +222,70 @@ class CreateOrderTest {
         requestSpec.header("X-API-Key", "test-api-key-123")
         requestSpec.header("Content-Type", "application/json")
         val requestBody = "{\"items\":[{\"price\":0,\"quantity\":1}],\"userId\":\"a\"}"
+        requestSpec.body(requestBody)
+
+        val response = requestSpec.post("/orders")
+        response.then().statusCode(400)
+        val responseBody = response.body.asString()
+        val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
+        assertExpectedBody(expectedBodyJson, responseBody)
+    }
+
+    @Test
+    @DisplayName("Incorrect Request Body: Object Property items Array Item Null For Required Property price")
+    fun incorrectRequestBodyObjectPropertyItemsArrayItemNullForRequiredPropertyPrice() {
+        val requestSpec = RestAssured.given()
+        requestSpec.header("X-API-Key", "test-api-key-123")
+        requestSpec.header("Content-Type", "application/json")
+        val requestBody = "{\"items\":[{\"price\":null,\"quantity\":1,\"sku\":\"a\"}],\"userId\":\"a\"}"
+        requestSpec.body(requestBody)
+
+        val response = requestSpec.post("/orders")
+        response.then().statusCode(400)
+        val responseBody = response.body.asString()
+        val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
+        assertExpectedBody(expectedBodyJson, responseBody)
+    }
+
+    @Test
+    @DisplayName("Incorrect Request Body: Object Property items Array Item Null For Required Property quantity")
+    fun incorrectRequestBodyObjectPropertyItemsArrayItemNullForRequiredPropertyQuantity() {
+        val requestSpec = RestAssured.given()
+        requestSpec.header("X-API-Key", "test-api-key-123")
+        requestSpec.header("Content-Type", "application/json")
+        val requestBody = "{\"items\":[{\"price\":0,\"quantity\":null,\"sku\":\"a\"}],\"userId\":\"a\"}"
+        requestSpec.body(requestBody)
+
+        val response = requestSpec.post("/orders")
+        response.then().statusCode(400)
+        val responseBody = response.body.asString()
+        val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
+        assertExpectedBody(expectedBodyJson, responseBody)
+    }
+
+    @Test
+    @DisplayName("Incorrect Request Body: Object Property items Array Item Null For Required Property sku")
+    fun incorrectRequestBodyObjectPropertyItemsArrayItemNullForRequiredPropertySku() {
+        val requestSpec = RestAssured.given()
+        requestSpec.header("X-API-Key", "test-api-key-123")
+        requestSpec.header("Content-Type", "application/json")
+        val requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":null}],\"userId\":\"a\"}"
+        requestSpec.body(requestBody)
+
+        val response = requestSpec.post("/orders")
+        response.then().statusCode(400)
+        val responseBody = response.body.asString()
+        val expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}"
+        assertExpectedBody(expectedBodyJson, responseBody)
+    }
+
+    @Test
+    @DisplayName("Incorrect Request Body: Object Property items Array Item Unexpected Additional Property")
+    fun incorrectRequestBodyObjectPropertyItemsArrayItemUnexpectedAdditionalProperty() {
+        val requestSpec = RestAssured.given()
+        requestSpec.header("X-API-Key", "test-api-key-123")
+        requestSpec.header("Content-Type", "application/json")
+        val requestBody = "{\"items\":[{\"price\":0,\"quantity\":1,\"sku\":\"a\",\"unexpectedProperty\":\"unexpected-additional-property-value\"}],\"userId\":\"a\"}"
         requestSpec.body(requestBody)
 
         val response = requestSpec.post("/orders")

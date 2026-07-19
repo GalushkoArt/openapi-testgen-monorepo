@@ -41,8 +41,24 @@ public object SchemaTypeHelpers {
             return schema
         }
         val key = schema.`$ref`.replace("#/components/schemas/", "")
-        val dereferenced = openAPI.components?.schemas[key]
+        val dereferenced = openAPI.components?.schemas?.get(key)
         return dereferenced ?: schema
+    }
+
+    /**
+     * Null-tolerant variant of [tryGetSchemaFromRef] for standard `#/components/schemas/` resolution.
+     * Returns null for a null schema, and the schema unchanged when [openAPI] is null or the
+     * reference cannot be resolved.
+     *
+     * @param schema schema that may contain a `$ref`, or null
+     * @param openAPI OpenAPI document providing component definitions, or null
+     * @return dereferenced schema, the original input, or null when [schema] is null
+     */
+    @JvmStatic
+    public fun resolveSchemaRef(schema: Schema<*>?, openAPI: OpenAPI?): Schema<*>? {
+        if (schema == null) return null
+        if (openAPI == null) return schema
+        return tryGetSchemaFromRef(schema, openAPI)
     }
 
     /**
@@ -107,7 +123,7 @@ public object SchemaTypeHelpers {
             return requestBody
         }
         val key = requestBody.`$ref`.replace("#/components/requestBodies/", "")
-        val dereferenced = openAPI.components.requestBodies[key]
+        val dereferenced = openAPI.components?.requestBodies?.get(key)
         return dereferenced ?: requestBody
     }
 
@@ -125,7 +141,7 @@ public object SchemaTypeHelpers {
             return parameter
         }
         val key = parameter.`$ref`.replace("#/components/parameters/", "")
-        val dereferenced = openAPI.components.parameters[key]
+        val dereferenced = openAPI.components?.parameters?.get(key)
         return dereferenced ?: parameter
     }
 

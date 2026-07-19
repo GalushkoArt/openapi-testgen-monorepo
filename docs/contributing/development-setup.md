@@ -58,7 +58,7 @@ Shared configuration files:
 Common commands:
 
 ```bash
-./gradlew check
+./gradlew check   # aggregates every included build's check plus the samples
 ./gradlew :core:test
 ./gradlew :plugin:test
 ./gradlew :cli:test
@@ -102,8 +102,10 @@ After adding dependencies that rely on reflection or resources, regenerate confi
 ./gradlew :cli:regenerateNativeImageConfig
 ```
 
-The regeneration task runs the native-image tracing agent against a fixture set (baseline OpenAPI,
-OpenAPI 3.0 exclusive bounds, and OpenAPI 3.1 advanced schema keywords) to reduce reflection gaps.
+The regeneration task runs the native-image tracing agent against a fixture set
+(`cli/src/test/resources/openapi-30.yaml`, `openapi-31.yaml`, and `swagger-20.yaml` — covering
+OpenAPI 3.0 keywords, OpenAPI 3.1 schema features, and the Swagger 2.0 conversion path) to reduce
+reflection gaps.
 
 Reflection metadata is exercised by the CLI test suite against the fixture specs above.
 

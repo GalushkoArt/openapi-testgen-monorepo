@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory
  * @param schemaMerger merges composed schemas before generating example values
  * @param extraProviders additional schema value providers keyed by id
  */
-public class SchemaExampleValueGeneratorFactory(
+public class SchemaExampleValueGeneratorFactory @JvmOverloads constructor(
     private val schemaMerger: SchemaMerger = SchemaMerger(),
     private val extraProviders: Map<String, SchemaValueProvider> = emptyMap(),
 ) {
@@ -33,6 +33,7 @@ public class SchemaExampleValueGeneratorFactory(
     /**
      * Creates a [SchemaExampleValueGenerator] configured according to [settings].
      */
+    @JvmOverloads
     public fun create(settings: ExampleValueSettings = ExampleValueSettings()): SchemaExampleValueGenerator {
         val options = SchemaExampleValueGeneratorOptions(
             maxExampleDepth = settings.maxExampleDepth,

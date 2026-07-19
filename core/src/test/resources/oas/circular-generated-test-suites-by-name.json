@@ -53,6 +53,56 @@
                 "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Null For Required Property priority",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "priority" : null,
+                    "value" : "aa"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property value",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "priority" : 1,
+                    "value" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property next Missed Required Object Properties priority",
                 "method" : "POST",
                 "path" : "/linked-list",
@@ -99,6 +149,64 @@
                     "value" : "aa",
                     "next" : {
                         "priority" : 1
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property next Null For Required Property priority",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "priority" : 1,
+                    "value" : "aa",
+                    "next" : {
+                        "priority" : null,
+                        "value" : "aa"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property next Null For Required Property value",
+                "method" : "POST",
+                "path" : "/linked-list",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "priority" : 1,
+                    "value" : "aa",
+                    "next" : {
+                        "priority" : 1,
+                        "value" : null
                     }
                 },
                 "requestBodyMediaType" : "application/json",
@@ -455,6 +563,30 @@
                 "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Null For Required Property value",
+                "method" : "POST",
+                "path" : "/tree",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "value" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property children Array Item Missed Required Object Properties value",
                 "method" : "POST",
                 "path" : "/tree",
@@ -472,6 +604,35 @@
                     "value" : "aa",
                     "children" : [
                         { }
+                    ]
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property children Array Item Null For Required Property value",
+                "method" : "POST",
+                "path" : "/tree",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "value" : "aa",
+                    "children" : [
+                        {
+                            "value" : null
+                        }
                     ]
                 },
                 "requestBodyMediaType" : "application/json",
@@ -528,6 +689,35 @@
                     "value" : "aa",
                     "metadata" : {
                         "parent" : { }
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property metadata Object Property parent Null For Required Property value",
+                "method" : "POST",
+                "path" : "/tree",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "value" : "aa",
+                    "metadata" : {
+                        "parent" : {
+                            "value" : null
+                        }
                     }
                 },
                 "requestBodyMediaType" : "application/json",
@@ -696,6 +886,60 @@
                 "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
+                "name" : "Invalid Query person parameter: Null For Required Property age",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : null,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query person parameter: Null For Required Property name",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : null
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Invalid Query person parameter: Object Property address Missed Required Object Properties city",
                 "method" : "GET",
                 "path" : "/persons",
@@ -735,6 +979,68 @@
                         "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                         "address" : {
                             "city" : "a"
+                        }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query person parameter: Object Property address Null For Required Property city",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "address" : {
+                            "city" : null,
+                            "street" : "aa"
+                        }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query person parameter: Object Property address Null For Required Property street",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "address" : {
+                            "city" : "a",
+                            "street" : null
                         }
                     }
                 },
@@ -802,6 +1108,76 @@
                             "street" : "aa",
                             "resident" : {
                                 "age" : 0
+                            }
+                        }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query person parameter: Object Property address Object Property resident Null For Required Property age",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "address" : {
+                            "city" : "a",
+                            "street" : "aa",
+                            "resident" : {
+                                "age" : null,
+                                "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                            }
+                        }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [ ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [ ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query person parameter: Object Property address Object Property resident Null For Required Property name",
+                "method" : "GET",
+                "path" : "/persons",
+                "queryParams" : {
+                    "person" : {
+                        "age" : 0,
+                        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "address" : {
+                            "city" : "a",
+                            "street" : "aa",
+                            "resident" : {
+                                "age" : 0,
+                                "name" : null
                             }
                         }
                     }

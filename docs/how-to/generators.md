@@ -217,7 +217,7 @@ The `class.mustache` template is the entry point. You can split reusable parts i
 
 ### Configuration
 
-#### Gradle
+#### Configure custom templates in the Gradle DSL
 
 ```kotlin
 openApiTestGenerator {
@@ -240,7 +240,7 @@ openApiTestGenerator {
 }
 ```
 
-#### CLI
+#### Configure custom templates with the CLI
 
 ```bash
 openapi-testgen \
@@ -254,7 +254,7 @@ openapi-testgen \
   --generator-option templateVariables.baseUrl=http://localhost:8080
 ```
 
-#### YAML config
+#### Configure custom templates in the YAML config
 
 ```yaml
 generator: template

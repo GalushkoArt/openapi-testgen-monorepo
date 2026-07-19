@@ -1,0 +1,22 @@
+name: Feature request
+description: Suggest a new capability or improvement
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to achieve that is currently hard or impossible?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: >-
+        How should it work? For new validation rules, include the OpenAPI construct and the
+        negative/positive cases you would expect to be generated.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

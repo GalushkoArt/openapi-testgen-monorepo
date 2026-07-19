@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Map;
@@ -22,6 +23,7 @@ public class GlobalExceptionHandler {
             ConstraintViolationException.class,
             HttpMessageNotReadableException.class,
             MethodArgumentNotValidException.class,
+            HandlerMethodValidationException.class,
             BindException.class
     })
     public ResponseEntity<Map<String, String>> handleBadRequest(Exception ex) {

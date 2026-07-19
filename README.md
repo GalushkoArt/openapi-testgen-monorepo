@@ -1,11 +1,20 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/wordmark-dark.svg">
+    <img src="docs/assets/wordmark.svg" alt="openapi-testgen" width="380">
+  </picture>
+</p>
+
 # OpenAPI Test Generator
 
+[![CI](https://github.com/GalushkoArt/openapi-testgen-monorepo/actions/workflows/ci.yml/badge.svg)](https://github.com/GalushkoArt/openapi-testgen-monorepo/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/GalushkoArt/openapi-testgen-monorepo/branch/main/graph/badge.svg)](https://codecov.io/gh/GalushkoArt/openapi-testgen-monorepo)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Maven Central](https://img.shields.io/maven-central/v/art.galushko.openapi.testgen/core)](https://central.sonatype.com/artifact/art.galushko.openapi.testgen/core)
 [![Gradle Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/art.galushko.openapi-test-generator)](https://plugins.gradle.org/plugin/art.galushko.openapi-test-generator)
 [![npm](https://img.shields.io/npm/v/@openapi-testgen/cli)](https://www.npmjs.com/package/@openapi-testgen/cli)
 
-Automatically generate test cases from your OpenAPI specifications to validate **API contract compliance**. The generator creates negative test cases that verify your controllers properly enforce parameter validation, request body constraints, and authentication as defined in your OpenAPI spec. These tests validate infrastructure-level behavior (input validation, schema enforcement, security) - not business logic.
+Automatically generate test cases from your OpenAPI or Swagger specifications to validate **API contract compliance**. The generator creates negative test cases that verify your controllers properly enforce parameter validation, request body constraints, and authentication as defined in your API spec — plus an optional baseline positive (2xx) case per operation (`includeValidCase`). These tests validate infrastructure-level behavior (input validation, schema enforcement, security) - not business logic.
 
 **[Documentation](https://docs.galushko.art/openapi-test-generator/)** |
 **[Getting Started](https://docs.galushko.art/openapi-test-generator/getting-started/)** |
@@ -16,10 +25,12 @@ Automatically generate test cases from your OpenAPI specifications to validate *
 - **Parameter validation tests**: Missing required params, invalid types, out-of-range values, enum violations
 - **Request body tests**: Schema validation, nested object constraints, array limits
 - **Authentication tests**: Missing credentials, invalid tokens, wrong security schemes
+- **Positive baseline tests**: Optional valid (2xx) request per operation via `includeValidCase`
 - **Deterministic output**: Same spec always produces the same tests (reproducible builds)
 
 ## Current Scope
 
+- OpenAPI 3.0.x, OpenAPI 3.1.x, and Swagger 2.0 input specs are supported.
 - Generation currently processes operations under `paths`.
 - OpenAPI `webhooks` are parsed but are not yet converted into generated test suites.
 - For webhook-only specs (no `paths`), generation completes successfully with zero suites.
@@ -185,7 +196,9 @@ openapi-testgen \
 
 ## Configuration
 
-### YAML Config File
+All settings work identically across the CLI (`--setting`, `--config-file`), the Gradle DSL, and a
+shared YAML config file — for example security credentials for protected endpoints, operation
+filtering, budget limits for complex specs, and the optional positive baseline case:
 
 ```yaml
 specFile: "openapi.yaml"
@@ -197,38 +210,15 @@ generatorOptions:
         package: "com.example.tests"
         baseUrl: "http://localhost:8080"
 testGenerationSettings:
-    maxTestCasesPerOperation: 500
+    includeValidCase: true
     validSecurityValues:
         ApiKeyAuth: "test-key"
 ```
 
 Use with CLI: `openapi-testgen --config-file config.yaml`
 
-### Budget Controls
-
-Prevent runaway generation on complex specs:
-
-| Setting                    | Default | Description                           |
-|----------------------------|---------|---------------------------------------|
-| `maxSchemaDepth`           | 50      | Maximum nested schema depth           |
-| `maxSchemaCombinations`    | 100     | Limit for allOf/anyOf/oneOf expansion |
-| `maxTestCasesPerOperation` | 1000    | Cap per API operation                 |
-
-### Filtering
-
-Skip specific test cases or rules:
-
-```kotlin
-testGenerationSettings {
-    ignoreTestCases.putAll(
-        mapOf(
-            "/internal" to "*",                                   // Skip all tests for /internal
-            "/pets/{id}" to mapOf("DELETE" to "*"),               // Skip all DELETE tests for that path
-        )
-    )
-    ignoreSchemaValidationRules.add("art.galushko.openapi.testgen.rules.schema.InvalidEnumValueSchemaValidationRule")
-}
-```
+- [Configuration guide](https://docs.galushko.art/openapi-test-generator/how-to/configuration/) — config file, operation filtering, ignore rules, security values
+- [Distribution settings](https://docs.galushko.art/openapi-test-generator/reference/distribution-settings/) — every key, default, and precedence rule (including budget controls)
 
 ## Architecture
 
@@ -291,10 +281,10 @@ Working examples in the `samples/` directory:
 Requirements:
 
 - Java 21
-- Kotlin 2.2.x
+- Kotlin 2.3.x
 
 ```bash
-# Run all tests
+# Run all checks (aggregates every included build's `check` plus the samples)
 ./gradlew check
 
 # Build CLI distribution

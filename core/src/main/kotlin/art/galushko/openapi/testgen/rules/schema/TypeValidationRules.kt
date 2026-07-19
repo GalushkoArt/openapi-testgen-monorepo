@@ -6,6 +6,7 @@ import art.galushko.openapi.testgen.example.openapi.SchemaTypeHelpers.tryGetSche
 import art.galushko.openapi.testgen.spi.RuleValue
 import art.galushko.openapi.testgen.spi.SimpleSchemaValidationRule
 import art.galushko.openapi.testgen.util.Consts.INT32_FORMAT
+import art.galushko.openapi.testgen.util.Consts.INT64_FORMAT
 import io.swagger.v3.oas.models.media.Schema
 import java.math.BigDecimal
 
@@ -64,6 +65,24 @@ internal class WrongInt32FormatSchemaValidationRule : SimpleSchemaValidationRule
         val s = tryGetSchemaFromRef(schema, context.openAPI)
         if (!(isInteger(s) && s.format != null && INT32_FORMAT == s.format)) return emptySequence()
         return listOf(RuleValue(getRuleName(), BigDecimal(context.basicTestData.outOfInt32RangeValue()))).asSequence()
+    }
+}
+
+/**
+ * Produces an out-of-range int64 value for integer schemas with `format = int64`.
+ *
+ * Inputs: integer schema with `format = int64`.
+ * Output: single [RuleValue] containing an out-of-range integer value.
+ * Constraints: returns empty when schema is not an int64 integer.
+ * Determinism: deterministic for identical context.
+ * Settings: invalid values come from `TestGenerationSettings.overrideBasicTestData`.
+ */
+internal class WrongInt64FormatSchemaValidationRule : SimpleSchemaValidationRule {
+    override fun getRuleName(): String = "Wrong Int64 Format"
+    override fun apply(schema: Schema<*>, context: TestGenerationContext): Sequence<RuleValue> {
+        val s = tryGetSchemaFromRef(schema, context.openAPI)
+        if (!(isInteger(s) && s.format != null && INT64_FORMAT == s.format)) return emptySequence()
+        return listOf(RuleValue(getRuleName(), BigDecimal(context.basicTestData.outOfInt64RangeValue()))).asSequence()
     }
 }
 

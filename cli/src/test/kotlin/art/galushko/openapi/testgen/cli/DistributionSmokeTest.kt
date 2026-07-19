@@ -31,6 +31,7 @@ internal class DistributionSmokeTest {
     @CsvSource(value = [
         "openapi-31.yaml,openapi-31-test-suites.json",
         "openapi-30.yaml,openapi-30-test-suites.json",
+        "swagger-20.yaml,swagger-20-test-suites.json",
     ])
     fun `fat JAR produces expected output`(spec: String, expected: String, @TempDir tmp: Path) {
         val fatJarPath = System.getenv("TEST_FATJAR_PATH")
@@ -66,6 +67,7 @@ internal class DistributionSmokeTest {
     @CsvSource(value = [
         "openapi-31.yaml,openapi-31-test-suites.json",
         "openapi-30.yaml,openapi-30-test-suites.json",
+        "swagger-20.yaml,swagger-20-test-suites.json",
     ])
     @Tag("native-binary")
     fun `native binary produces expected output`(spec: String, expected: String, @TempDir tmp: Path) {
@@ -98,13 +100,17 @@ internal class DistributionSmokeTest {
         assertEquals(expected.lines(), actual.lines(), "Output mismatch for native binary")
     }
 
-    @Test
+    @ParameterizedTest
+    @CsvSource(value = [
+        "openapi-31.yaml",
+        "swagger-20.yaml",
+    ])
     @Tag("fat-jar")
     @Tag("native-binary")
-    fun `native and fat JAR produce identical output`(@TempDir tmp: Path) {
+    fun `native and fat JAR produce identical output`(spec: String, @TempDir tmp: Path) {
         val fatJarPath = System.getenv("TEST_FATJAR_PATH")
         val nativePath = System.getenv("TEST_NATIVE_PATH")
-        val specPath = resolveTestResource("openapi-31.yaml")
+        val specPath = resolveTestResource(spec)
 
         val fatJarOut = tmp.resolve("fatjar")
         val nativeOut = tmp.resolve("native")

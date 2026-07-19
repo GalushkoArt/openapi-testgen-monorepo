@@ -1,5 +1,6 @@
 package art.galushko.openapi.testgen.generator.template
 
+import art.galushko.openapi.testgen.generator.writer.AtomicFileWriter
 import art.galushko.openapi.testgen.model.TestCase
 import art.galushko.openapi.testgen.model.TestSuite
 import art.galushko.openapi.testgen.spi.ArtifactGenerator
@@ -9,7 +10,6 @@ import com.github.mustachejava.Mustache
 import com.github.mustachejava.reflect.ReflectionObjectHandler
 import org.slf4j.LoggerFactory
 import java.io.File
-import java.io.IOException
 import java.io.StringReader
 import java.io.StringWriter
 
@@ -60,13 +60,8 @@ internal class TemplateArtifactGenerator(
             return
         }
 
-        try {
-            outputFile.parentFile?.mkdirs()
-            outputFile.writeText(generatedClass)
-            log.info("Generated {} artifact: {}", options.templateSet, className)
-        } catch (e: IOException) {
-            log.error("Failed to write artifact: {}.{}", options.templateSet, className, e)
-        }
+        AtomicFileWriter.write(outputFile) { tmpFile -> tmpFile.writeText(generatedClass) }
+        log.info("Generated {} artifact: {}", options.templateSet, className)
     }
 
     private fun generateClassName(testSuite: TestSuite): String {

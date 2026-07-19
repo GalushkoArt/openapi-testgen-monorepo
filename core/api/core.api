@@ -267,6 +267,11 @@ public final class art/galushko/openapi/testgen/generator/GeneratorIds {
 	public static final field TEST_SUITE_WRITER Ljava/lang/String;
 }
 
+public final class art/galushko/openapi/testgen/generator/writer/AtomicFileWriter {
+	public static final field INSTANCE Lart/galushko/openapi/testgen/generator/writer/AtomicFileWriter;
+	public final fun write (Ljava/io/File;Lkotlin/jvm/functions/Function1;)V
+}
+
 public final class art/galushko/openapi/testgen/openapi/SkipReason : java/lang/Enum {
 	public static final field CYCLE_DETECTED Lart/galushko/openapi/testgen/openapi/SkipReason;
 	public static final field DEPTH_EXCEEDED Lart/galushko/openapi/testgen/openapi/SkipReason;
@@ -391,6 +396,7 @@ public final class art/galushko/openapi/testgen/testdata/BasicTestDataProvider {
 	public final fun invalidUuidValue ()Ljava/lang/String;
 	public final fun nonIntegerValue ()Ljava/lang/String;
 	public final fun outOfInt32RangeValue ()Ljava/lang/String;
+	public final fun outOfInt64RangeValue ()Ljava/lang/String;
 	public final fun sixtyMinutesDateTime ()Ljava/lang/String;
 	public final fun sixtyOneSecondsDateTime ()Ljava/lang/String;
 	public final fun thirteenMonthDate ()Ljava/lang/String;
@@ -400,6 +406,7 @@ public final class art/galushko/openapi/testgen/testdata/BasicTestDataProvider {
 	public final fun threeDigitYearDate ()Ljava/lang/String;
 	public final fun threeDigitYearDateTime ()Ljava/lang/String;
 	public final fun twentyFourHourDateTime ()Ljava/lang/String;
+	public final fun unexpectedAdditionalPropertyValue ()Ljava/lang/String;
 	public final fun zeroDayDate ()Ljava/lang/String;
 	public final fun zeroDayDateTime ()Ljava/lang/String;
 	public final fun zeroMonthDate ()Ljava/lang/String;

@@ -2,32 +2,31 @@ package art.galushko.openapi.testgen.plugin
 
 import art.galushko.openapi.testgen.model.error.ErrorMode
 import org.assertj.core.api.Assertions.assertThat
-import org.gradle.api.internal.project.DefaultProject
+import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.plugins.JavaPlugin
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import kotlin.reflect.full.memberProperties
+import kotlin.reflect.jvm.jvmErasure
 
 @DisplayName("OpenApiTestGeneratorPlugin")
 class OpenApiTestGeneratorPluginTest {
 
-    private lateinit var project: DefaultProject
+    private lateinit var project: Project
 
     @BeforeEach
     fun setUp() {
-        project = ProjectBuilder.builder().build() as DefaultProject
+        project = ProjectBuilder.builder().build()
     }
 
-    /**
-     * Helper to trigger project evaluation (afterEvaluate callbacks).
-     */
-    private fun evaluateProject() {
-        // Force evaluation of the project to trigger afterEvaluate callbacks
-        project.evaluate()
-    }
+    private fun dependencyNames(task: Task): List<String> =
+        task.taskDependencies.getDependencies(task).map { it.name }
 
     @Nested
     @DisplayName("plugin application")
@@ -72,7 +71,7 @@ class OpenApiTestGeneratorPluginTest {
 
             val task = project.tasks.findByName("generateOpenApiTests")
 
-            assertThat(task?.description).isEqualTo("Generates tests from an OpenAPI specification")
+            assertThat(task?.description).isEqualTo("Generates tests from an OpenAPI or Swagger specification")
         }
     }
 
@@ -93,7 +92,7 @@ class OpenApiTestGeneratorPluginTest {
         }
 
         @Test
-        @DisplayName("should wire configFile from extension to task")
+        @DisplayName("should wire configFile from extension to task resolved against the project directory")
         fun shouldWireConfigFile() {
             project.pluginManager.apply(OpenApiTestGeneratorPlugin::class.java)
             val extension = project.extensions.getByType(TestGeneratorExtension::class.java)
@@ -101,7 +100,63 @@ class OpenApiTestGeneratorPluginTest {
 
             val task = project.tasks.getByName("generateOpenApiTests") as OpenApiTestGeneratorTask
 
-            assertThat(task.configFile.get()).isEqualTo("config.yaml")
+            assertThat(task.configFile.get().asFile)
+                .isEqualTo(project.layout.projectDirectory.file("config.yaml").asFile)
+        }
+
+        @Test
+        @DisplayName("should track an existing local spec file for up-to-date checks")
+        fun shouldTrackExistingLocalSpecFile() {
+            project.pluginManager.apply(OpenApiTestGeneratorPlugin::class.java)
+            val extension = project.extensions.getByType(TestGeneratorExtension::class.java)
+            val specFile = project.layout.projectDirectory.file("openapi.yaml").asFile
+            specFile.writeText("openapi: 3.0.3")
+            extension.specFile.set("openapi.yaml")
+
+            val task = project.tasks.getByName("generateOpenApiTests") as OpenApiTestGeneratorTask
+
+            assertThat(task.trackedSpecFiles.files).containsExactly(specFile)
+        }
+
+        @Test
+        @DisplayName("should track a local spec declared as a file URI")
+        fun shouldTrackFileUriSpec() {
+            project.pluginManager.apply(OpenApiTestGeneratorPlugin::class.java)
+            val extension = project.extensions.getByType(TestGeneratorExtension::class.java)
+            val specFile = project.layout.projectDirectory.file("openapi.yaml").asFile
+            specFile.writeText("openapi: 3.0.3")
+            extension.specFile.set(specFile.toURI().toString())
+
+            val task = project.tasks.getByName("generateOpenApiTests") as OpenApiTestGeneratorTask
+
+            assertThat(task.trackedSpecFiles.files).containsExactly(specFile)
+        }
+
+        @Test
+        @DisplayName("should track a local spec declared only in the config file")
+        fun shouldTrackConfigFileSpec() {
+            project.pluginManager.apply(OpenApiTestGeneratorPlugin::class.java)
+            val extension = project.extensions.getByType(TestGeneratorExtension::class.java)
+            val specFile = project.layout.projectDirectory.file("openapi.yaml").asFile
+            specFile.writeText("openapi: 3.0.3")
+            project.layout.projectDirectory.file("config.yaml").asFile.writeText("specFile: openapi.yaml")
+            extension.configFile.set("config.yaml")
+
+            val task = project.tasks.getByName("generateOpenApiTests") as OpenApiTestGeneratorTask
+
+            assertThat(task.trackedSpecFiles.files).containsExactly(specFile)
+        }
+
+        @Test
+        @DisplayName("should not track a spec that is not a local file")
+        fun shouldNotTrackNonLocalSpec() {
+            project.pluginManager.apply(OpenApiTestGeneratorPlugin::class.java)
+            val extension = project.extensions.getByType(TestGeneratorExtension::class.java)
+            extension.specFile.set("https://example.com/openapi.yaml")
+
+            val task = project.tasks.getByName("generateOpenApiTests") as OpenApiTestGeneratorTask
+
+            assertThat(task.trackedSpecFiles.files).isEmpty()
         }
 
         @Test
@@ -154,6 +209,7 @@ class OpenApiTestGeneratorPluginTest {
         }
 
         @Test
+        @Suppress("DEPRECATION")
         @DisplayName("should wire logLevel from extension to task")
         fun shouldWireLogLevel() {
             project.pluginManager.apply(OpenApiTestGeneratorPlugin::class.java)
@@ -277,6 +333,63 @@ class OpenApiTestGeneratorPluginTest {
     }
 
     @Nested
+    @DisplayName("wiring completeness drift guard")
+    inner class WiringDriftGuardTest {
+
+        private fun providerPropertyNames(klass: kotlin.reflect.KClass<*>): Set<String> =
+            klass.memberProperties
+                .filter { Provider::class.java.isAssignableFrom(it.returnType.jvmErasure.java) }
+                .map { it.name }
+                .toSet()
+
+        @Test
+        @DisplayName("wireTestGenerationSettings must cover every extension property")
+        fun testGenerationSettingsWiringIsComplete() {
+            assertThat(providerPropertyNames(TestGenerationSettingsExtension::class))
+                .withFailMessage(
+                    "TestGenerationSettingsExtension properties changed. Update " +
+                        "OpenApiTestGeneratorPlugin.wireTestGenerationSettings and " +
+                        "TestGenerationSettingsExtension.buildTestGenerationSettingsMap, " +
+                        "then adjust this guard."
+                )
+                .containsExactlyInAnyOrder(
+                    "includeOperations",
+                    "ignoreTestCases",
+                    "ignoreSchemaValidationRules",
+                    "ignoreAuthValidationRules",
+                    "maxSchemaDepth",
+                    "overrideBasicTestData",
+                    "maxSchemaCombinations",
+                    "maxMergedSchemaDepth",
+                    "maxTestCasesPerOperation",
+                    "validSecurityValues",
+                    "errorMode",
+                    "includeValidCase",
+                    "maxErrors",
+                    "exampleValues",
+                    "patternGeneration",
+                )
+        }
+
+        @Test
+        @DisplayName("wireParserSettings must cover every extension property")
+        fun parserSettingsWiringIsComplete() {
+            assertThat(providerPropertyNames(ParserSettingsExtension::class))
+                .withFailMessage(
+                    "ParserSettingsExtension properties changed. Update " +
+                        "OpenApiTestGeneratorPlugin.wireParserSettings and " +
+                        "ParserSettingsExtension.buildParserSettingsMap, then adjust this guard."
+                )
+                .containsExactlyInAnyOrder(
+                    "yamlCodePointLimit",
+                    "yamlMaxAliasesForCollections",
+                    "yamlAllowRecursiveKeys",
+                    "yamlNestingDepthLimit",
+                )
+        }
+    }
+
+    @Nested
     @DisplayName("template generator wiring with Java plugin")
     inner class TemplateGeneratorJavaWiringTest {
 
@@ -288,9 +401,6 @@ class OpenApiTestGeneratorPluginTest {
             val extension = project.extensions.getByType(TestGeneratorExtension::class.java)
             extension.generator.set("template")
             extension.outputDir.set(project.layout.projectDirectory.dir("generated"))
-
-            // Trigger afterEvaluate
-            evaluateProject()
 
             val sourceSets = project.extensions.getByType(SourceSetContainer::class.java)
             val testSourceSet = sourceSets.getByName("test")
@@ -309,12 +419,9 @@ class OpenApiTestGeneratorPluginTest {
             extension.manualOnly.set(false)
             extension.outputDir.set(project.layout.projectDirectory.dir("generated"))
 
-            evaluateProject()
-
             val compileTestJavaTask = project.tasks.getByName(JavaPlugin.COMPILE_TEST_JAVA_TASK_NAME)
-            val generateTaskProvider = project.tasks.named("generateOpenApiTests")
 
-            assertThat(compileTestJavaTask.dependsOn).contains(generateTaskProvider)
+            assertThat(dependencyNames(compileTestJavaTask)).contains("generateOpenApiTests")
         }
 
         @Test
@@ -327,12 +434,25 @@ class OpenApiTestGeneratorPluginTest {
             extension.manualOnly.set(true)
             extension.outputDir.set(project.layout.projectDirectory.dir("generated"))
 
-            evaluateProject()
-
             val compileTestJavaTask = project.tasks.getByName(JavaPlugin.COMPILE_TEST_JAVA_TASK_NAME)
-            val generateTaskProvider = project.tasks.named("generateOpenApiTests")
 
-            assertThat(compileTestJavaTask.dependsOn).doesNotContain(generateTaskProvider)
+            assertThat(dependencyNames(compileTestJavaTask)).doesNotContain("generateOpenApiTests")
+        }
+
+        @Test
+        @DisplayName("should still add the output directory as a test source dir when manualOnly is true")
+        fun shouldAddSourceDirWhenManualOnly() {
+            project.pluginManager.apply(JavaPlugin::class.java)
+            project.pluginManager.apply(OpenApiTestGeneratorPlugin::class.java)
+            val extension = project.extensions.getByType(TestGeneratorExtension::class.java)
+            extension.generator.set("template")
+            extension.manualOnly.set(true)
+            extension.outputDir.set(project.layout.projectDirectory.dir("generated"))
+
+            val sourceSets = project.extensions.getByType(SourceSetContainer::class.java)
+            val srcDirs = sourceSets.getByName("test").java.srcDirs
+
+            assertThat(srcDirs.map { it.name }).contains("generated")
         }
 
         @Test
@@ -343,8 +463,6 @@ class OpenApiTestGeneratorPluginTest {
             val extension = project.extensions.getByType(TestGeneratorExtension::class.java)
             extension.generator.set("template")
             extension.outputDir.set(project.layout.projectDirectory.dir("generated"))
-
-            evaluateProject()
 
             val compileTestJavaTask = project.tasks.getByName(JavaPlugin.COMPILE_TEST_JAVA_TASK_NAME)
             val generateTask = project.tasks.getByName("generateOpenApiTests")
@@ -368,12 +486,9 @@ class OpenApiTestGeneratorPluginTest {
             extension.manualOnly.set(false)
             extension.outputDir.set(project.layout.projectDirectory.dir("generated"))
 
-            evaluateProject()
-
             val processTestResourcesTask = project.tasks.getByName(JavaPlugin.PROCESS_TEST_RESOURCES_TASK_NAME)
-            val generateTaskProvider = project.tasks.named("generateOpenApiTests")
 
-            assertThat(processTestResourcesTask.dependsOn).contains(generateTaskProvider)
+            assertThat(dependencyNames(processTestResourcesTask)).contains("generateOpenApiTests")
         }
 
         @Test
@@ -386,12 +501,9 @@ class OpenApiTestGeneratorPluginTest {
             extension.manualOnly.set(true)
             extension.outputDir.set(project.layout.projectDirectory.dir("generated"))
 
-            evaluateProject()
-
             val processTestResourcesTask = project.tasks.getByName(JavaPlugin.PROCESS_TEST_RESOURCES_TASK_NAME)
-            val generateTaskProvider = project.tasks.named("generateOpenApiTests")
 
-            assertThat(processTestResourcesTask.dependsOn).doesNotContain(generateTaskProvider)
+            assertThat(dependencyNames(processTestResourcesTask)).doesNotContain("generateOpenApiTests")
         }
 
         @Test
@@ -402,8 +514,6 @@ class OpenApiTestGeneratorPluginTest {
             val extension = project.extensions.getByType(TestGeneratorExtension::class.java)
             extension.generator.set("test-suite-writer")
             extension.outputDir.set(project.layout.projectDirectory.dir("generated"))
-
-            evaluateProject()
 
             val processTestResourcesTask = project.tasks.getByName(JavaPlugin.PROCESS_TEST_RESOURCES_TASK_NAME)
             val generateTask = project.tasks.getByName("generateOpenApiTests")
@@ -424,9 +534,6 @@ class OpenApiTestGeneratorPluginTest {
             val extension = project.extensions.getByType(TestGeneratorExtension::class.java)
             extension.generator.set("template")
             extension.outputDir.set(project.layout.projectDirectory.dir("generated"))
-
-            // Should not throw
-            evaluateProject()
 
             assertThat(project.tasks.findByName("generateOpenApiTests")).isNotNull()
         }

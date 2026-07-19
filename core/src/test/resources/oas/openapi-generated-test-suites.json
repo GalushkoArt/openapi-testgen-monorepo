@@ -201,6 +201,206 @@
                 "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Null For Required Property category",
+                "method" : "POST",
+                "path" : "/projects",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "category" : null,
+                    "description" : "Develop a cross-platform mobile application for customer engagement",
+                    "name" : "Mobile App Development",
+                    "priority" : 2
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property description",
+                "method" : "POST",
+                "path" : "/projects",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "category" : "web_development",
+                    "description" : null,
+                    "name" : "Mobile App Development",
+                    "priority" : 2
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property name",
+                "method" : "POST",
+                "path" : "/projects",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "category" : "web_development",
+                    "description" : "Develop a cross-platform mobile application for customer engagement",
+                    "name" : null,
+                    "priority" : 2
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property priority",
+                "method" : "POST",
+                "path" : "/projects",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "category" : "web_development",
+                    "description" : "Develop a cross-platform mobile application for customer engagement",
+                    "name" : "Mobile App Development",
+                    "priority" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property budget Invalid Type",
                 "method" : "POST",
                 "path" : "/projects",
@@ -2482,6 +2682,106 @@
                 "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Null For Required Property priority",
+                "method" : "POST",
+                "path" : "/projects/{projectId}/tasks",
+                "queryParams" : { },
+                "pathParams" : {
+                    "projectId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "priority" : null,
+                    "title" : "Design user registration flow"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property title",
+                "method" : "POST",
+                "path" : "/projects/{projectId}/tasks",
+                "queryParams" : { },
+                "pathParams" : {
+                    "projectId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "priority" : 2,
+                    "title" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property assigneeId Wrong UUID Format",
                 "method" : "POST",
                 "path" : "/projects/{projectId}/tasks",
@@ -3869,6 +4169,159 @@
                 "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Null For Required Property email",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "email" : null,
+                    "profile" : {
+                        "firstName" : "John",
+                        "lastName" : "Doe"
+                    },
+                    "role" : "developer"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property profile",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "email" : "jane.doe@example.com",
+                    "profile" : null,
+                    "role" : "developer"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property role",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "email" : "jane.doe@example.com",
+                    "profile" : {
+                        "firstName" : "John",
+                        "lastName" : "Doe"
+                    },
+                    "role" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property email Out Of Maximum Length String",
                 "method" : "POST",
                 "path" : "/users",
@@ -4157,6 +4610,110 @@
                     "email" : "jane.doe@example.com",
                     "profile" : {
                         "firstName" : "John"
+                    },
+                    "role" : "developer"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property profile Null For Required Property firstName",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "email" : "jane.doe@example.com",
+                    "profile" : {
+                        "firstName" : null,
+                        "lastName" : "Doe"
+                    },
+                    "role" : "developer"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property profile Null For Required Property lastName",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "email" : "jane.doe@example.com",
+                    "profile" : {
+                        "firstName" : "John",
+                        "lastName" : null
                     },
                     "role" : "developer"
                 },
@@ -6047,6 +6604,240 @@
                 "rule" : "art.galushko.openapi.testgen.rules.composed.ArrayItemSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Array Item Null For Required Property email",
+                "method" : "POST",
+                "path" : "/users/bulk",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : [
+                    {
+                        "email" : null,
+                        "profile" : {
+                            "firstName" : "John",
+                            "lastName" : "Doe"
+                        },
+                        "role" : "developer"
+                    }
+                ],
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : [
+                    {
+                        "index" : 0,
+                        "field" : "email",
+                        "message" : "Email is required",
+                        "code" : "REQUIRED_FIELD",
+                        "rejectedValue" : null,
+                        "constraint" : {
+                            "required" : true
+                        }
+                    },
+                    {
+                        "index" : 1,
+                        "field" : "profile.firstName",
+                        "message" : "First name must match pattern ^[a-zA-Z\\s\\-\\.]+$",
+                        "code" : "PATTERN_MISMATCH",
+                        "rejectedValue" : "John123",
+                        "constraint" : {
+                            "pattern" : "^[a-zA-Z\\s\\-\\.]+$"
+                        }
+                    },
+                    {
+                        "index" : 2,
+                        "field" : "role",
+                        "message" : "Role must be one of: admin, project_manager, developer, designer, tester, viewer",
+                        "code" : "ENUM_MISMATCH",
+                        "rejectedValue" : "super_admin",
+                        "constraint" : {
+                            "enum" : [
+                                "admin",
+                                "project_manager",
+                                "developer",
+                                "designer",
+                                "tester",
+                                "viewer"
+                            ]
+                        }
+                    }
+                ],
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ArrayItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Array Item Null For Required Property profile",
+                "method" : "POST",
+                "path" : "/users/bulk",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : [
+                    {
+                        "email" : "test0@example.com",
+                        "profile" : null,
+                        "role" : "developer"
+                    }
+                ],
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : [
+                    {
+                        "index" : 0,
+                        "field" : "email",
+                        "message" : "Email is required",
+                        "code" : "REQUIRED_FIELD",
+                        "rejectedValue" : null,
+                        "constraint" : {
+                            "required" : true
+                        }
+                    },
+                    {
+                        "index" : 1,
+                        "field" : "profile.firstName",
+                        "message" : "First name must match pattern ^[a-zA-Z\\s\\-\\.]+$",
+                        "code" : "PATTERN_MISMATCH",
+                        "rejectedValue" : "John123",
+                        "constraint" : {
+                            "pattern" : "^[a-zA-Z\\s\\-\\.]+$"
+                        }
+                    },
+                    {
+                        "index" : 2,
+                        "field" : "role",
+                        "message" : "Role must be one of: admin, project_manager, developer, designer, tester, viewer",
+                        "code" : "ENUM_MISMATCH",
+                        "rejectedValue" : "super_admin",
+                        "constraint" : {
+                            "enum" : [
+                                "admin",
+                                "project_manager",
+                                "developer",
+                                "designer",
+                                "tester",
+                                "viewer"
+                            ]
+                        }
+                    }
+                ],
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ArrayItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Array Item Null For Required Property role",
+                "method" : "POST",
+                "path" : "/users/bulk",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : [
+                    {
+                        "email" : "test0@example.com",
+                        "profile" : {
+                            "firstName" : "John",
+                            "lastName" : "Doe"
+                        },
+                        "role" : null
+                    }
+                ],
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : [
+                    {
+                        "index" : 0,
+                        "field" : "email",
+                        "message" : "Email is required",
+                        "code" : "REQUIRED_FIELD",
+                        "rejectedValue" : null,
+                        "constraint" : {
+                            "required" : true
+                        }
+                    },
+                    {
+                        "index" : 1,
+                        "field" : "profile.firstName",
+                        "message" : "First name must match pattern ^[a-zA-Z\\s\\-\\.]+$",
+                        "code" : "PATTERN_MISMATCH",
+                        "rejectedValue" : "John123",
+                        "constraint" : {
+                            "pattern" : "^[a-zA-Z\\s\\-\\.]+$"
+                        }
+                    },
+                    {
+                        "index" : 2,
+                        "field" : "role",
+                        "message" : "Role must be one of: admin, project_manager, developer, designer, tester, viewer",
+                        "code" : "ENUM_MISMATCH",
+                        "rejectedValue" : "super_admin",
+                        "constraint" : {
+                            "enum" : [
+                                "admin",
+                                "project_manager",
+                                "developer",
+                                "designer",
+                                "tester",
+                                "viewer"
+                            ]
+                        }
+                    }
+                ],
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ArrayItemSchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Array Item Object Property email Out Of Maximum Length String",
                 "method" : "POST",
                 "path" : "/users/bulk",
@@ -6471,6 +7262,164 @@
                         "email" : "test0@example.com",
                         "profile" : {
                             "firstName" : "John"
+                        },
+                        "role" : "developer"
+                    }
+                ],
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : [
+                    {
+                        "index" : 0,
+                        "field" : "email",
+                        "message" : "Email is required",
+                        "code" : "REQUIRED_FIELD",
+                        "rejectedValue" : null,
+                        "constraint" : {
+                            "required" : true
+                        }
+                    },
+                    {
+                        "index" : 1,
+                        "field" : "profile.firstName",
+                        "message" : "First name must match pattern ^[a-zA-Z\\s\\-\\.]+$",
+                        "code" : "PATTERN_MISMATCH",
+                        "rejectedValue" : "John123",
+                        "constraint" : {
+                            "pattern" : "^[a-zA-Z\\s\\-\\.]+$"
+                        }
+                    },
+                    {
+                        "index" : 2,
+                        "field" : "role",
+                        "message" : "Role must be one of: admin, project_manager, developer, designer, tester, viewer",
+                        "code" : "ENUM_MISMATCH",
+                        "rejectedValue" : "super_admin",
+                        "constraint" : {
+                            "enum" : [
+                                "admin",
+                                "project_manager",
+                                "developer",
+                                "designer",
+                                "tester",
+                                "viewer"
+                            ]
+                        }
+                    }
+                ],
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ArrayItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Array Item Object Property profile Null For Required Property firstName",
+                "method" : "POST",
+                "path" : "/users/bulk",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : [
+                    {
+                        "email" : "test0@example.com",
+                        "profile" : {
+                            "firstName" : null,
+                            "lastName" : "Doe"
+                        },
+                        "role" : "developer"
+                    }
+                ],
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : [
+                    {
+                        "index" : 0,
+                        "field" : "email",
+                        "message" : "Email is required",
+                        "code" : "REQUIRED_FIELD",
+                        "rejectedValue" : null,
+                        "constraint" : {
+                            "required" : true
+                        }
+                    },
+                    {
+                        "index" : 1,
+                        "field" : "profile.firstName",
+                        "message" : "First name must match pattern ^[a-zA-Z\\s\\-\\.]+$",
+                        "code" : "PATTERN_MISMATCH",
+                        "rejectedValue" : "John123",
+                        "constraint" : {
+                            "pattern" : "^[a-zA-Z\\s\\-\\.]+$"
+                        }
+                    },
+                    {
+                        "index" : 2,
+                        "field" : "role",
+                        "message" : "Role must be one of: admin, project_manager, developer, designer, tester, viewer",
+                        "code" : "ENUM_MISMATCH",
+                        "rejectedValue" : "super_admin",
+                        "constraint" : {
+                            "enum" : [
+                                "admin",
+                                "project_manager",
+                                "developer",
+                                "designer",
+                                "tester",
+                                "viewer"
+                            ]
+                        }
+                    }
+                ],
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ArrayItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Array Item Object Property profile Null For Required Property lastName",
+                "method" : "POST",
+                "path" : "/users/bulk",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : [
+                    {
+                        "email" : "test0@example.com",
+                        "profile" : {
+                            "firstName" : "John",
+                            "lastName" : null
                         },
                         "role" : "developer"
                     }
@@ -11425,6 +12374,110 @@
                 "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Object Property profile Null For Required Property firstName",
+                "method" : "PATCH",
+                "path" : "/users/{userId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "userId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "profile" : {
+                        "firstName" : null,
+                        "lastName" : "Doe"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property profile Null For Required Property lastName",
+                "method" : "PATCH",
+                "path" : "/users/{userId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "userId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "profile" : {
+                        "firstName" : "John",
+                        "lastName" : null
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property profile Object Property bio Out Of Maximum Length String",
                 "method" : "PATCH",
                 "path" : "/users/{userId}",
@@ -12026,6 +13079,55 @@
                 "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Unexpected Additional Property",
+                "method" : "PATCH",
+                "path" : "/users/{userId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "userId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "unexpectedProperty" : "unexpected-additional-property-value"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.UnexpectedAdditionalPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Invalid Path userId parameter: Wrong UUID Format",
                 "method" : "PATCH",
                 "path" : "/users/{userId}",
@@ -12546,6 +13648,330 @@
                 "needToComplete" : false,
                 "expectedStatusCode" : 400,
                 "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property category",
+                "method" : "PUT",
+                "path" : "/projects/{projectId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "projectId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "category" : null,
+                    "description" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "priority" : 2,
+                    "settings" : { },
+                    "status" : "active"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property description",
+                "method" : "PUT",
+                "path" : "/projects/{projectId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "projectId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "category" : "web_development",
+                    "description" : null,
+                    "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "priority" : 2,
+                    "settings" : { },
+                    "status" : "active"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property name",
+                "method" : "PUT",
+                "path" : "/projects/{projectId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "projectId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "category" : "web_development",
+                    "description" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "name" : null,
+                    "priority" : 2,
+                    "settings" : { },
+                    "status" : "active"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property priority",
+                "method" : "PUT",
+                "path" : "/projects/{projectId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "projectId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "category" : "web_development",
+                    "description" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "priority" : null,
+                    "settings" : { },
+                    "status" : "active"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property settings",
+                "method" : "PUT",
+                "path" : "/projects/{projectId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "projectId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "category" : "web_development",
+                    "description" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "priority" : 2,
+                    "settings" : null,
+                    "status" : "active"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property status",
+                "method" : "PUT",
+                "path" : "/projects/{projectId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "projectId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "category" : "web_development",
+                    "description" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "priority" : 2,
+                    "settings" : { },
+                    "status" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
             },
             {
                 "name" : "Incorrect Request Body: Object Property budget Invalid Type",
@@ -16098,6 +17524,55 @@
                 "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Unexpected Additional Property",
+                "method" : "PATCH",
+                "path" : "/tasks/{taskId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "taskId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "unexpectedProperty" : "unexpected-additional-property-value"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.UnexpectedAdditionalPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Invalid Path taskId parameter: Wrong UUID Format",
                 "method" : "PATCH",
                 "path" : "/tasks/{taskId}",
@@ -16494,6 +17969,223 @@
                 "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Null For Required Property email",
+                "method" : "PUT",
+                "path" : "/users/{userId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "userId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "email" : null,
+                    "isActive" : true,
+                    "profile" : {
+                        "firstName" : "John",
+                        "lastName" : "Doe"
+                    },
+                    "role" : "developer"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property isActive",
+                "method" : "PUT",
+                "path" : "/users/{userId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "userId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "email" : "test0@example.com",
+                    "isActive" : null,
+                    "profile" : {
+                        "firstName" : "John",
+                        "lastName" : "Doe"
+                    },
+                    "role" : "developer"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property profile",
+                "method" : "PUT",
+                "path" : "/users/{userId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "userId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "email" : "test0@example.com",
+                    "isActive" : true,
+                    "profile" : null,
+                    "role" : "developer"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property role",
+                "method" : "PUT",
+                "path" : "/users/{userId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "userId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "email" : "test0@example.com",
+                    "isActive" : true,
+                    "profile" : {
+                        "firstName" : "John",
+                        "lastName" : "Doe"
+                    },
+                    "role" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property email Out Of Maximum Length String",
                 "method" : "PUT",
                 "path" : "/users/{userId}",
@@ -16743,6 +18435,116 @@
                     "isActive" : true,
                     "profile" : {
                         "firstName" : "John"
+                    },
+                    "role" : "developer"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property profile Null For Required Property firstName",
+                "method" : "PUT",
+                "path" : "/users/{userId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "userId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "email" : "test0@example.com",
+                    "isActive" : true,
+                    "profile" : {
+                        "firstName" : null,
+                        "lastName" : "Doe"
+                    },
+                    "role" : "developer"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "error" : "Bad Request",
+                    "message" : [
+                        "Email is required",
+                        "Password must be at least 8 characters"
+                    ],
+                    "code" : "VALIDATION_ERROR",
+                    "timestamp" : "2024-01-20T15:30:00Z",
+                    "path" : "/api/v2/users",
+                    "details" : {
+                        "field" : "email",
+                        "rejectedValue" : ""
+                    }
+                },
+                "responseBodyMediaType" : "application/json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property profile Null For Required Property lastName",
+                "method" : "PUT",
+                "path" : "/users/{userId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "userId" : "d5a5495b-cbdc-4237-a66e-000000000000"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "<valid_ApiKeyAuth_api_key_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "email" : "test0@example.com",
+                    "isActive" : true,
+                    "profile" : {
+                        "firstName" : "John",
+                        "lastName" : null
                     },
                     "role" : "developer"
                 },

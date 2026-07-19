@@ -39,7 +39,7 @@ is available when modules are created.
 | Setting            | CLI                   | Gradle             | Type    | Required | Description                                                                                                                                                         |
 |--------------------|-----------------------|--------------------|---------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Config file        | `--config-file`       | `configFile`       | String  | No       | YAML base config path. Can contain other require settings                                                                                                           |
-| Spec file          | `--spec-file`         | `specFile`         | String  | Yes      | OpenAPI specification file path                                                                                                                                     |
+| Spec file          | `--spec-file`         | `specFile`         | String  | Yes      | OpenAPI 3.x or Swagger 2.0 specification file path                                                                                                                  |
 | Output dir         | `--output-dir`        | `outputDir`        | String  | Yes      | Output directory for generated artifacts                                                                                                                            |
 | Generator id       | `--generator`         | `generator`        | String  | Yes      | Generator: `template` or `test-suite-writer`                                                                                                                        |
 | Generator options  | `--generator-option`  | `generatorOptions` | Map     | No       | Generator-specific options (see [Generators](../how-to/generators.md))                                                                                              |
@@ -68,10 +68,13 @@ Core settings for test case generation behavior.
 | `includeValidCase` | Boolean | `false` | Include the baseline valid case (2xx status) in test suites |
 
 When enabled, each test suite includes a "Test Valid Case" entry representing a valid request
-with all required parameters populated. The expected status code is the first 2xx response
-defined in the OpenAPI spec (e.g., 200, 201, 204).
+with all required parameters populated. The expected status code is the lowest numeric 2xx response
+defined in the normalized OpenAPI/Swagger spec (e.g., 200, 201, 204); `2XX` and `default` responses
+fall back to 200.
 
-This is a baseline positive check (one valid case per operation), not a generator for multiple valid permutations.
+This is a baseline positive check (one valid case per operation), not a generator for multiple valid
+permutations. See [Positive testing](../how-to/positive-testing.md) for how the case is built and
+what to do about the `needToComplete` flag.
 
 Example:
 

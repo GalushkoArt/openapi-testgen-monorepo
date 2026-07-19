@@ -188,6 +188,7 @@ tasks.register("regenerateNativeImageConfig") {
     val specFiles = listOf(
         file("src/test/resources/openapi-30.yaml"),
         file("src/test/resources/openapi-31.yaml"),
+        file("src/test/resources/swagger-20.yaml"),
     )
     val sourceConfigDir = file(nativeImageConfigDir)
     val configFiles = listOf(

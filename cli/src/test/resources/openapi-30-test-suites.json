@@ -86,6 +86,130 @@
                 "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Null For Required Property items",
+                "method" : "POST",
+                "path" : "/orders",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "items" : null,
+                    "paymentMethod" : {
+                        "cardToken" : "aaaaaaaaa",
+                        "kind" : "card"
+                    },
+                    "userId" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property paymentMethod",
+                "method" : "POST",
+                "path" : "/orders",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "items" : [
+                        {
+                            "quantity" : 1,
+                            "sku" : "a"
+                        }
+                    ],
+                    "paymentMethod" : null,
+                    "userId" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property userId",
+                "method" : "POST",
+                "path" : "/orders",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "items" : [
+                        {
+                            "quantity" : 1,
+                            "sku" : "a"
+                        }
+                    ],
+                    "paymentMethod" : {
+                        "cardToken" : "aaaaaaaaa",
+                        "kind" : "card"
+                    },
+                    "userId" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property items Array Item Missed Required Object Properties quantity",
                 "method" : "POST",
                 "path" : "/orders",
@@ -156,6 +280,94 @@
                     "items" : [
                         {
                             "quantity" : 1
+                        }
+                    ],
+                    "paymentMethod" : {
+                        "cardToken" : "aaaaaaaaa",
+                        "kind" : "card"
+                    },
+                    "userId" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property items Array Item Null For Required Property quantity",
+                "method" : "POST",
+                "path" : "/orders",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "items" : [
+                        {
+                            "quantity" : null,
+                            "sku" : "a"
+                        }
+                    ],
+                    "paymentMethod" : {
+                        "cardToken" : "aaaaaaaaa",
+                        "kind" : "card"
+                    },
+                    "userId" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property items Array Item Null For Required Property sku",
+                "method" : "POST",
+                "path" : "/orders",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "items" : [
+                        {
+                            "quantity" : 1,
+                            "sku" : null
                         }
                     ],
                     "paymentMethod" : {
@@ -394,6 +606,51 @@
                 "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Object Property items Array Item Unexpected Additional Property",
+                "method" : "POST",
+                "path" : "/orders",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "items" : [
+                        {
+                            "quantity" : 1,
+                            "sku" : "a",
+                            "unexpectedProperty" : "unexpected-additional-property-value"
+                        }
+                    ],
+                    "paymentMethod" : {
+                        "cardToken" : "aaaaaaaaa",
+                        "kind" : "card"
+                    },
+                    "userId" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property items Below Min Items Array",
                 "method" : "POST",
                 "path" : "/orders",
@@ -594,6 +851,182 @@
                     ],
                     "paymentMethod" : {
                         "iban" : "QNL939VPCFR3K96"
+                    },
+                    "userId" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property paymentMethod Null For Required Property cardToken",
+                "method" : "POST",
+                "path" : "/orders",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "items" : [
+                        {
+                            "quantity" : 1,
+                            "sku" : "a"
+                        }
+                    ],
+                    "paymentMethod" : {
+                        "cardToken" : null,
+                        "kind" : "card"
+                    },
+                    "userId" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property paymentMethod Null For Required Property iban",
+                "method" : "POST",
+                "path" : "/orders",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "items" : [
+                        {
+                            "quantity" : 1,
+                            "sku" : "a"
+                        }
+                    ],
+                    "paymentMethod" : {
+                        "iban" : null,
+                        "kind" : "bank"
+                    },
+                    "userId" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property paymentMethod Null For Required Property kind",
+                "method" : "POST",
+                "path" : "/orders",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "items" : [
+                        {
+                            "quantity" : 1,
+                            "sku" : "a"
+                        }
+                    ],
+                    "paymentMethod" : {
+                        "cardToken" : "aaaaaaaaa",
+                        "kind" : null
+                    },
+                    "userId" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property paymentMethod Null For Required Property kind",
+                "method" : "POST",
+                "path" : "/orders",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "items" : [
+                        {
+                            "quantity" : 1,
+                            "sku" : "a"
+                        }
+                    ],
+                    "paymentMethod" : {
+                        "iban" : "QNL939VPCFR3K96",
+                        "kind" : null
                     },
                     "userId" : "a"
                 },
@@ -815,6 +1248,96 @@
                     "paymentMethod" : {
                         "iban" : "QNL939VPCFR3K96",
                         "kind" : "invalid_enum1"
+                    },
+                    "userId" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property paymentMethod Unexpected Additional Property",
+                "method" : "POST",
+                "path" : "/orders",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "items" : [
+                        {
+                            "quantity" : 1,
+                            "sku" : "a"
+                        }
+                    ],
+                    "paymentMethod" : {
+                        "cardToken" : "aaaaaaaaa",
+                        "kind" : "card",
+                        "unexpectedProperty" : "unexpected-additional-property-value"
+                    },
+                    "userId" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property paymentMethod Unexpected Additional Property",
+                "method" : "POST",
+                "path" : "/orders",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "items" : [
+                        {
+                            "quantity" : 1,
+                            "sku" : "a"
+                        }
+                    ],
+                    "paymentMethod" : {
+                        "iban" : "QNL939VPCFR3K96",
+                        "kind" : "bank",
+                        "unexpectedProperty" : "unexpected-additional-property-value"
                     },
                     "userId" : "a"
                 },
@@ -1489,6 +2012,228 @@
                 "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Null For Required Property amount",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : null,
+                    "callbackUrl" : "a",
+                    "metadata" : { },
+                    "method" : {
+                        "cardToken" : "aaaaaaaaa",
+                        "kind" : "card"
+                    },
+                    "note" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "secret" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property metadata",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.00,
+                    "callbackUrl" : "a",
+                    "metadata" : null,
+                    "method" : {
+                        "cardToken" : "aaaaaaaaa",
+                        "kind" : "card"
+                    },
+                    "note" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "secret" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property method",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.00,
+                    "callbackUrl" : "a",
+                    "metadata" : { },
+                    "method" : null,
+                    "note" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "secret" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property note",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.00,
+                    "callbackUrl" : "a",
+                    "metadata" : { },
+                    "method" : {
+                        "cardToken" : "aaaaaaaaa",
+                        "kind" : "card"
+                    },
+                    "note" : null,
+                    "secret" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property secret",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.00,
+                    "callbackUrl" : "a",
+                    "metadata" : { },
+                    "method" : {
+                        "cardToken" : "aaaaaaaaa",
+                        "kind" : "card"
+                    },
+                    "note" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "secret" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property amount Invalid Type",
                 "method" : "POST",
                 "path" : "/payments",
@@ -1845,6 +2590,186 @@
                 "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Object Property method Null For Required Property cardToken",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.00,
+                    "callbackUrl" : "a",
+                    "metadata" : { },
+                    "method" : {
+                        "cardToken" : null,
+                        "kind" : "card"
+                    },
+                    "note" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "secret" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property method Null For Required Property iban",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.00,
+                    "callbackUrl" : "a",
+                    "metadata" : { },
+                    "method" : {
+                        "iban" : null,
+                        "kind" : "bank"
+                    },
+                    "note" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "secret" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property method Null For Required Property kind",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.00,
+                    "callbackUrl" : "a",
+                    "metadata" : { },
+                    "method" : {
+                        "cardToken" : "aaaaaaaaa",
+                        "kind" : null
+                    },
+                    "note" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "secret" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property method Null For Required Property kind",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.00,
+                    "callbackUrl" : "a",
+                    "metadata" : { },
+                    "method" : {
+                        "iban" : "QNL939VPCFR3K96",
+                        "kind" : null
+                    },
+                    "note" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "secret" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property method Object Property cardBrand Invalid Enum Value",
                 "method" : "POST",
                 "path" : "/payments",
@@ -2071,6 +2996,98 @@
                 "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Object Property method Unexpected Additional Property",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.00,
+                    "callbackUrl" : "a",
+                    "metadata" : { },
+                    "method" : {
+                        "cardToken" : "aaaaaaaaa",
+                        "kind" : "card",
+                        "unexpectedProperty" : "unexpected-additional-property-value"
+                    },
+                    "note" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "secret" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property method Unexpected Additional Property",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.00,
+                    "callbackUrl" : "a",
+                    "metadata" : { },
+                    "method" : {
+                        "iban" : "QNL939VPCFR3K96",
+                        "kind" : "bank",
+                        "unexpectedProperty" : "unexpected-additional-property-value"
+                    },
+                    "note" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "secret" : "a"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property note Out Of Maximum Length String",
                 "method" : "POST",
                 "path" : "/payments",
@@ -2114,6 +3131,52 @@
                 "needToComplete" : false,
                 "expectedStatusCode" : 400,
                 "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Unexpected Additional Property",
+                "method" : "POST",
+                "path" : "/payments",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "amount" : 0.00,
+                    "callbackUrl" : "a",
+                    "metadata" : { },
+                    "method" : {
+                        "cardToken" : "aaaaaaaaa",
+                        "kind" : "card"
+                    },
+                    "note" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "secret" : "a",
+                    "unexpectedProperty" : "unexpected-additional-property-value"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.UnexpectedAdditionalPropertySchemaValidationRule"
             },
             {
                 "name" : "Invalid Authorization header security",
@@ -2669,6 +3732,172 @@
                 "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Null For Required Property adjustmentDays",
+                "method" : "POST",
+                "path" : "/refunds",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "adjustmentDays" : null,
+                    "amount" : 0.00,
+                    "reason" : "U1pBKJw92ZDfpj-T-.k-AnONaN syWLsk2pfZFx98NmJ48KeWC6N-gMvfYUUdcAEEEwkwAoWL1YCzY,u_J8JUB5f5DKjnsVkEnzRQNvvwQO",
+                    "tags" : [
+                        "a"
+                    ]
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property amount",
+                "method" : "POST",
+                "path" : "/refunds",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "adjustmentDays" : 0,
+                    "amount" : null,
+                    "reason" : "U1pBKJw92ZDfpj-T-.k-AnONaN syWLsk2pfZFx98NmJ48KeWC6N-gMvfYUUdcAEEEwkwAoWL1YCzY,u_J8JUB5f5DKjnsVkEnzRQNvvwQO",
+                    "tags" : [
+                        "a"
+                    ]
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property reason",
+                "method" : "POST",
+                "path" : "/refunds",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "adjustmentDays" : 0,
+                    "amount" : 0.00,
+                    "reason" : null,
+                    "tags" : [
+                        "a"
+                    ]
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property tags",
+                "method" : "POST",
+                "path" : "/refunds",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "adjustmentDays" : 0,
+                    "amount" : 0.00,
+                    "reason" : "U1pBKJw92ZDfpj-T-.k-AnONaN syWLsk2pfZFx98NmJ48KeWC6N-gMvfYUUdcAEEEwkwAoWL1YCzY,u_J8JUB5f5DKjnsVkEnzRQNvvwQO",
+                    "tags" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property adjustmentDays Integer Breaking",
                 "method" : "POST",
                 "path" : "/refunds",
@@ -3214,6 +4443,49 @@
                 "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Unexpected Additional Property",
+                "method" : "POST",
+                "path" : "/refunds",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "adjustmentDays" : 0,
+                    "amount" : 0.00,
+                    "reason" : "U1pBKJw92ZDfpj-T-.k-AnONaN syWLsk2pfZFx98NmJ48KeWC6N-gMvfYUUdcAEEEwkwAoWL1YCzY,u_J8JUB5f5DKjnsVkEnzRQNvvwQO",
+                    "tags" : [
+                        "a"
+                    ],
+                    "unexpectedProperty" : "unexpected-additional-property-value"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.UnexpectedAdditionalPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Invalid Authorization header security",
                 "method" : "POST",
                 "path" : "/refunds",
@@ -3658,6 +4930,82 @@
                 "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Null For Required Property email",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "email" : null,
+                    "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property name",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "email" : "test0@example.com",
+                    "name" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property email Wrong Email Format",
                 "method" : "POST",
                 "path" : "/users",
@@ -3732,6 +5080,45 @@
                 "needToComplete" : false,
                 "expectedStatusCode" : 400,
                 "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Unexpected Additional Property",
+                "method" : "POST",
+                "path" : "/users",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "email" : "test0@example.com",
+                    "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "unexpectedProperty" : "unexpected-additional-property-value"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid request payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.UnexpectedAdditionalPropertySchemaValidationRule"
             },
             {
                 "name" : "Invalid Authorization header security",
@@ -6707,6 +8094,310 @@
                 "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
+                "name" : "Invalid Query complex parameter: Null For Required Property choice",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : null,
+                        "conditional" : {
+                            "mode" : "token",
+                            "token" : "aa"
+                        },
+                        "dependencyExample" : { },
+                        "fixed" : "fixed",
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : { }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query complex parameter: Null For Required Property conditional",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "a" : 0,
+                            "kind" : "a"
+                        },
+                        "conditional" : null,
+                        "dependencyExample" : { },
+                        "fixed" : "fixed",
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : { }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query complex parameter: Null For Required Property dependencyExample",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "a" : 0,
+                            "kind" : "a"
+                        },
+                        "conditional" : {
+                            "mode" : "token",
+                            "token" : "aa"
+                        },
+                        "dependencyExample" : null,
+                        "fixed" : "fixed",
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : { }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query complex parameter: Null For Required Property fixed",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "a" : 0,
+                            "kind" : "a"
+                        },
+                        "conditional" : {
+                            "mode" : "token",
+                            "token" : "aa"
+                        },
+                        "dependencyExample" : { },
+                        "fixed" : null,
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : { }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query complex parameter: Null For Required Property list",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "a" : 0,
+                            "kind" : "a"
+                        },
+                        "conditional" : {
+                            "mode" : "token",
+                            "token" : "aa"
+                        },
+                        "dependencyExample" : { },
+                        "fixed" : "fixed",
+                        "list" : null,
+                        "regexMap" : { }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query complex parameter: Null For Required Property regexMap",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "a" : 0,
+                            "kind" : "a"
+                        },
+                        "conditional" : {
+                            "mode" : "token",
+                            "token" : "aa"
+                        },
+                        "dependencyExample" : { },
+                        "fixed" : "fixed",
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : null
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Invalid Query complex parameter: Object Property choice Missed Required Object Properties a",
                 "method" : "GET",
                 "path" : "/orders",
@@ -7071,6 +8762,422 @@
                     "complex" : {
                         "choice" : {
                             "b" : "aa"
+                        },
+                        "conditional" : {
+                            "mode" : "token",
+                            "token" : "aa"
+                        },
+                        "dependencyExample" : { },
+                        "fixed" : "fixed",
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : { }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query complex parameter: Object Property choice Null For Required Property a",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "a" : null,
+                            "kind" : "a"
+                        },
+                        "conditional" : {
+                            "mode" : "token",
+                            "token" : "aa"
+                        },
+                        "dependencyExample" : { },
+                        "fixed" : "fixed",
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : { }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query complex parameter: Object Property choice Null For Required Property a",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "a" : null,
+                            "kind" : "a"
+                        },
+                        "conditional" : {
+                            "mode" : "token",
+                            "token" : "aa"
+                        },
+                        "dependencyExample" : { },
+                        "fixed" : "fixed",
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : { }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query complex parameter: Object Property choice Null For Required Property b",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "b" : null,
+                            "kind" : "b"
+                        },
+                        "conditional" : {
+                            "mode" : "token",
+                            "token" : "aa"
+                        },
+                        "dependencyExample" : { },
+                        "fixed" : "fixed",
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : { }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query complex parameter: Object Property choice Null For Required Property b",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "b" : null,
+                            "kind" : "b"
+                        },
+                        "conditional" : {
+                            "mode" : "token",
+                            "token" : "aa"
+                        },
+                        "dependencyExample" : { },
+                        "fixed" : "fixed",
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : { }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query complex parameter: Object Property choice Null For Required Property kind",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "a" : 0,
+                            "kind" : null
+                        },
+                        "conditional" : {
+                            "mode" : "token",
+                            "token" : "aa"
+                        },
+                        "dependencyExample" : { },
+                        "fixed" : "fixed",
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : { }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query complex parameter: Object Property choice Null For Required Property kind",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "b" : "aa",
+                            "kind" : null
+                        },
+                        "conditional" : {
+                            "mode" : "token",
+                            "token" : "aa"
+                        },
+                        "dependencyExample" : { },
+                        "fixed" : "fixed",
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : { }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query complex parameter: Object Property choice Null For Required Property kind",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "a" : 0,
+                            "kind" : null
+                        },
+                        "conditional" : {
+                            "mode" : "token",
+                            "token" : "aa"
+                        },
+                        "dependencyExample" : { },
+                        "fixed" : "fixed",
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : { }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query complex parameter: Object Property choice Null For Required Property kind",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "b" : "aa",
+                            "kind" : null
                         },
                         "conditional" : {
                             "mode" : "token",
@@ -7996,6 +10103,161 @@
                 "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
             },
             {
+                "name" : "Invalid Query complex parameter: Object Property conditional Null For Required Property mode",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "a" : 0,
+                            "kind" : "a"
+                        },
+                        "conditional" : {
+                            "mode" : null,
+                            "token" : "aa"
+                        },
+                        "dependencyExample" : { },
+                        "fixed" : "fixed",
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : { }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query complex parameter: Object Property conditional Null For Required Property mode",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "a" : 0,
+                            "kind" : "a"
+                        },
+                        "conditional" : {
+                            "mode" : null
+                        },
+                        "dependencyExample" : { },
+                        "fixed" : "fixed",
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : { }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query complex parameter: Object Property conditional Null For Required Property token",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "a" : 0,
+                            "kind" : "a"
+                        },
+                        "conditional" : {
+                            "mode" : "token",
+                            "token" : null
+                        },
+                        "dependencyExample" : { },
+                        "fixed" : "fixed",
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : { }
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
                 "name" : "Invalid Query complex parameter: Object Property conditional Object Property mode Invalid Enum Value",
                 "method" : "GET",
                 "path" : "/orders",
@@ -8383,6 +10645,60 @@
                         ],
                         "regexMap" : { },
                         "count" : 2147483648
+                    }
+                },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "authorization",
+                        "value" : "<valid_BearerAuth_placeholder>"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "authorization",
+                            "value" : "<valid_BearerAuth_placeholder>"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : null,
+                "requestBodyMediaType" : null,
+                "expectedBody" : {
+                    "code" : "bad_request",
+                    "message" : "Invalid payload"
+                },
+                "responseBodyMediaType" : "application/problem+json",
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Invalid Query complex parameter: Object Property dependencyExample Unexpected Additional Property",
+                "method" : "GET",
+                "path" : "/orders",
+                "queryParams" : {
+                    "complex" : {
+                        "choice" : {
+                            "a" : 0,
+                            "kind" : "a"
+                        },
+                        "conditional" : {
+                            "mode" : "token",
+                            "token" : "aa"
+                        },
+                        "dependencyExample" : {
+                            "unexpectedProperty" : "unexpected-additional-property-value"
+                        },
+                        "fixed" : "fixed",
+                        "list" : [
+                            "a"
+                        ],
+                        "regexMap" : { }
                     }
                 },
                 "pathParams" : { },
@@ -10392,6 +12708,42 @@
                 "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Null For Required Property status",
+                "method" : "PATCH",
+                "path" : "/payments/{paymentId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "paymentId" : "aaaa"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "status" : null
+                },
+                "requestBodyMediaType" : "application/jwt",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property reason Out Of Minimum Length String",
                 "method" : "PATCH",
                 "path" : "/payments/{paymentId}",
@@ -10463,6 +12815,79 @@
                 "needToComplete" : false,
                 "expectedStatusCode" : 400,
                 "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Unexpected Additional Property",
+                "method" : "PATCH",
+                "path" : "/payments/{paymentId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "paymentId" : "aaaa"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "unexpectedProperty" : "unexpected-additional-property-value"
+                },
+                "requestBodyMediaType" : "application/merge-patch+json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.UnexpectedAdditionalPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Unexpected Additional Property",
+                "method" : "PATCH",
+                "path" : "/payments/{paymentId}",
+                "queryParams" : { },
+                "pathParams" : {
+                    "paymentId" : "aaaa"
+                },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "status" : "pending",
+                    "unexpectedProperty" : "unexpected-additional-property-value"
+                },
+                "requestBodyMediaType" : "application/jwt",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.UnexpectedAdditionalPropertySchemaValidationRule"
             },
             {
                 "name" : "Invalid Authorization header security",
@@ -11189,6 +13614,78 @@
                 "rule" : "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
             },
             {
+                "name" : "Incorrect Request Body: Null For Required Property file",
+                "method" : "POST",
+                "path" : "/files/upload",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "file" : null,
+                    "meta" : {
+                        "filename" : "a"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Null For Required Property meta",
+                "method" : "POST",
+                "path" : "/files/upload",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "file" : "a",
+                    "meta" : null
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+            },
+            {
                 "name" : "Incorrect Request Body: Object Property meta Missed Required Object Properties filename",
                 "method" : "POST",
                 "path" : "/files/upload",
@@ -11222,6 +13719,119 @@
                 "needToComplete" : false,
                 "expectedStatusCode" : 400,
                 "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property meta Null For Required Property filename",
+                "method" : "POST",
+                "path" : "/files/upload",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "file" : "a",
+                    "meta" : {
+                        "filename" : null
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Object Property meta Unexpected Additional Property",
+                "method" : "POST",
+                "path" : "/files/upload",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "file" : "a",
+                    "meta" : {
+                        "filename" : "a",
+                        "unexpectedProperty" : "unexpected-additional-property-value"
+                    }
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+            },
+            {
+                "name" : "Incorrect Request Body: Unexpected Additional Property",
+                "method" : "POST",
+                "path" : "/files/upload",
+                "queryParams" : { },
+                "pathParams" : { },
+                "headers" : [
+                    {
+                        "key" : "X-API-Key",
+                        "value" : "test-api-key-123"
+                    }
+                ],
+                "cookie" : [ ],
+                "securityValues" : {
+                    "queryParams" : { },
+                    "headers" : [
+                        {
+                            "key" : "X-API-Key",
+                            "value" : "test-api-key-123"
+                        }
+                    ],
+                    "cookie" : [ ],
+                    "other" : { }
+                },
+                "body" : {
+                    "file" : "a",
+                    "meta" : {
+                        "filename" : "a"
+                    },
+                    "unexpectedProperty" : "unexpected-additional-property-value"
+                },
+                "requestBodyMediaType" : "application/json",
+                "expectedBody" : null,
+                "responseBodyMediaType" : null,
+                "needToComplete" : false,
+                "expectedStatusCode" : 400,
+                "rule" : "art.galushko.openapi.testgen.rules.schema.UnexpectedAdditionalPropertySchemaValidationRule"
             },
             {
                 "name" : "Invalid Authorization header security",

@@ -125,11 +125,21 @@ public data class ExampleValueSettings(
         private val log = LoggerFactory.getLogger(ExampleValueSettings::class.java)
 
         /**
+         * Returns settings with all values at their defaults.
+         *
+         * Java-friendly entry point equivalent to `ExampleValueSettings()` in Kotlin.
+         */
+        @JvmStatic
+        public fun defaults(): ExampleValueSettings = ExampleValueSettings()
+
+        /**
          * Builds [ExampleValueSettings] from a map-based configuration.
          *
          * @param default default values used for missing entries
          * @throws ConfigurationException if a field has an invalid type
          */
+        @JvmStatic
+        @JvmOverloads
         public fun fromMap(map: Map<String, Any?>, default: ExampleValueSettings = ExampleValueSettings()): ExampleValueSettings {
             val mutableMap = map.toMutableMap()
 

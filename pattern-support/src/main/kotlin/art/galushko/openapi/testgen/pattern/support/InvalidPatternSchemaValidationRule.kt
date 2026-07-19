@@ -1,12 +1,11 @@
 package art.galushko.openapi.testgen.pattern.support
 
+import art.galushko.openapi.testgen.example.openapi.SchemaTypeHelpers
 import art.galushko.openapi.testgen.generation.TestGenerationContext
 import art.galushko.openapi.testgen.spi.RuleValue
 import art.galushko.openapi.testgen.spi.SimpleSchemaValidationRule
 import art.galushko.openapi.testgen.pattern.value.PatternValueGenerator
-import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.media.Schema
-import io.swagger.v3.oas.models.media.StringSchema
 import org.slf4j.LoggerFactory
 
 /**
@@ -34,8 +33,8 @@ internal class InvalidPatternSchemaValidationRule(
     override fun getRuleName(): String = "Invalid Pattern"
 
     override fun apply(schema: Schema<*>, context: TestGenerationContext): Sequence<RuleValue> {
-        val s = tryGetSchemaFromRef(schema, context.openAPI)
-        if (s.pattern == null || !isStringSchema(s)) return emptySequence()
+        val s = SchemaTypeHelpers.tryGetSchemaFromRef(schema, context.openAPI)
+        if (s.pattern == null || !SchemaTypeHelpers.isString(s)) return emptySequence()
 
         val invalidValue = patternValueGenerator.generateInvalidValue(
             pattern = s.pattern,
@@ -49,22 +48,6 @@ internal class InvalidPatternSchemaValidationRule(
         }
 
         return listOf(RuleValue(getRuleName(), invalidValue)).asSequence()
-    }
-
-    private fun tryGetSchemaFromRef(schema: Schema<*>, openAPI: OpenAPI): Schema<*> {
-        if (schema.`$ref` == null) {
-            return schema
-        }
-        val key = schema.`$ref`.replace("#/components/schemas/", "")
-        val dereferenced = openAPI.components?.schemas?.get(key)
-        return dereferenced ?: schema
-    }
-
-    private fun isStringSchema(schema: Schema<*>): Boolean {
-        if (schema is StringSchema) return true
-        val types = schema.types
-        if (types != null && types.contains("string")) return true
-        return schema.type == "string"
     }
 }
 

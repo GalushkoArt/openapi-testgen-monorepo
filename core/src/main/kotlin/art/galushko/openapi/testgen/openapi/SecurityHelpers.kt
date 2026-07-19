@@ -100,9 +100,10 @@ internal object SecurityHelpers {
      */
     @JvmStatic
     public fun getSecurityRequirementSchemas(security: List<SecurityRequirement>, openAPI: OpenAPI): List<List<SecuritySchemeToScope>> {
-        val unknownSecSchemas = security.flatMap { it.keys.filter { key -> openAPI.components.securitySchemes[key] == null } }.distinct()
+        val securitySchemes = openAPI.components?.securitySchemes.orEmpty()
+        val unknownSecSchemas = security.flatMap { it.keys.filter { key -> securitySchemes[key] == null } }.distinct()
         require(unknownSecSchemas.isEmpty()) { "Unknown security schemes: $unknownSecSchemas" }
-        return security.map { it.entries.map { entry -> SecuritySchemeToScope(openAPI.components.securitySchemes[entry.key]!!, entry.key, entry.value) } }
+        return security.map { it.entries.map { entry -> SecuritySchemeToScope(securitySchemes[entry.key]!!, entry.key, entry.value) } }
     }
 
     /**
@@ -149,7 +150,7 @@ internal object SecurityHelpers {
             .filter { it.size == 1 }
             .mapNotNull { req ->
                 val key = req.keys.first()
-                openAPI.components.securitySchemes[key]
+                openAPI.components?.securitySchemes?.get(key)
             }
             .filter { it.type == APIKEY }
             .toList()

@@ -6,6 +6,9 @@ spring:
   jackson:
     deserialization:
       accept-float-as-int: false
+      # The API contract declares additionalProperties: false, so unknown JSON
+      # properties must be rejected (exercised by the Unexpected Additional Property rule).
+      fail-on-unknown-properties: true
 
 app:
   security:

@@ -22,6 +22,7 @@ class CliSmokeTest {
     @CsvSource(value = [
         "openapi-31.yaml,openapi-31-test-suites.json",
         "openapi-30.yaml,openapi-30-test-suites.json",
+        "swagger-20.yaml,swagger-20-test-suites.json",
     ])
     fun generateFromTinySpec(spec: String, expected: String, @TempDir tmp: Path) {
         val spec = requireNotNull(this::class.java.classLoader.getResource(spec)).toURI()
@@ -41,9 +42,40 @@ class CliSmokeTest {
         assertTrue(exitCode == 0)
         val outputFile = out.resolve("generated.json")
         assertTrue(Files.exists(outputFile), "Expected output file at $outputFile")
-        val txt = outputFile.readText().trim()
-        val expected = requireNotNull(this::class.java.classLoader.getResource(expected)).readText().trim()
-        assertEquals(expected.lines(), txt.lines(), "Output file content does not match expected")
+        Snapshots.assertMatchesResource(outputFile, expected)
+    }
+
+    @Test
+    fun generateFromConfigFileWithSwagger2(@TempDir tmp: Path) {
+        val spec = requireNotNull(this::class.java.classLoader.getResource("swagger-20.yaml")).toURI()
+        val specPath = Path.of(spec).toString()
+        val out = tmp.resolve("out-config-swagger2")
+        Files.createDirectories(out)
+
+        val configFile = tmp.resolve("config-swagger2.yaml")
+        Files.writeString(
+            configFile,
+            """
+                specFile: '$specPath'
+                outputDir: '$out'
+                generator: 'test-suite-writer'
+                logLevel: 'INFO'
+                alwaysWriteTests: true
+                generatorOptions:
+                  outputFileName: 'generated.json'
+                testGenerationSettings:
+                  validSecurityValues:
+                    ApiKeyAuth: 'test-api-key-123'
+            """.trimIndent(),
+        )
+
+        val exitCode = picocli.CommandLine(GenerateCommand()).execute(
+            "--config-file", configFile.toString(),
+        )
+        assertTrue(exitCode == 0)
+        val outputFile = out.resolve("generated.json")
+        assertTrue(Files.exists(outputFile), "Expected output file at $outputFile")
+        Snapshots.assertMatchesResource(outputFile, "swagger-20-test-suites.json")
     }
 
     @Test
@@ -80,9 +112,7 @@ class CliSmokeTest {
         assertTrue(exitCode == 0)
         val outputFile = out.resolve("generated.json")
         assertTrue(Files.exists(outputFile), "Expected output file at $outputFile")
-        val txt = outputFile.readText().trim()
-        val expected = requireNotNull(this::class.java.classLoader.getResource("openapi-31-test-suites.json")).readText().trim()
-        assertEquals(expected.lines(), txt.lines(), "Output file content does not match expected")
+        Snapshots.assertMatchesResource(outputFile, "openapi-31-test-suites.json")
     }
 
     @Test
@@ -121,14 +151,12 @@ class CliSmokeTest {
         assertTrue(exitCode == 0)
         val outputFile = out.resolve("generated.json")
         assertTrue(Files.exists(outputFile), "Expected output file at $outputFile")
-        val txt = outputFile.readText().trim()
-        val expected = requireNotNull(this::class.java.classLoader.getResource("openapi-31-test-suites.json")).readText().trim()
-        assertEquals(expected.lines(), txt.lines(), "Output file content does not match expected")
+        Snapshots.assertMatchesResource(outputFile, "openapi-31-test-suites.json")
     }
 
     @Test
     fun generateWithParserOptions(@TempDir tmp: Path) {
-        val spec = requireNotNull(this::class.java.classLoader.getResource("openapi-31.yaml")).toURI()
+        val spec = requireNotNull(this::class.java.classLoader.getResource("swagger-20.yaml")).toURI()
         val out = tmp.resolve("out-parser")
         Files.createDirectories(out)
 
@@ -308,6 +336,35 @@ class CliSmokeTest {
         }
         assertTrue(
             error.message?.contains("Configuration error for 'yamlAllowRecursiveKeys'") == true,
+            "Unexpected exception message: ${error.message}",
+        )
+    }
+
+    @Test
+    fun generateShouldFailFastForUnsupportedSwaggerVersion(@TempDir tmp: Path) {
+        val spec = tmp.resolve("swagger-12.yaml")
+        Files.writeString(
+            spec,
+            """
+                swagger: "1.2"
+                info:
+                  title: Old Swagger
+                  version: "1.0"
+                paths: {}
+            """.trimIndent(),
+        )
+        val command = GenerateCommand().apply {
+            specFile = spec.toString()
+            outputDir = tmp.resolve("out-unsupported-swagger").toString()
+            generator = "test-suite-writer"
+            generatorOptionsRaw = arrayOf("outputFileName=generated.json")
+        }
+
+        val error = assertThrows(IllegalArgumentException::class.java) {
+            command.call()
+        }
+        assertTrue(
+            error.message?.contains("Unsupported Swagger version '1.2'") == true,
             "Unexpected exception message: ${error.message}",
         )
     }

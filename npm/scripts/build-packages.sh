@@ -57,17 +57,20 @@ resolve_fat_jar() {
     return 0
   fi
 
+  # Only accept the jar matching VERSION so a stale build can never be relabeled as this release.
   if [[ -n "$FAT_JAR_DIR" ]]; then
     local candidate
-    candidate=$(find "$FAT_JAR_DIR" -name "openapi-testgen-*-all.jar" | head -1 || true)
+    candidate=$(find "$FAT_JAR_DIR" -name "openapi-testgen-${VERSION}-all.jar" | head -1 || true)
     if [[ -n "$candidate" && -f "$candidate" ]]; then
       FAT_JAR="$candidate"
       return 0
     fi
+    echo "Error: openapi-testgen-${VERSION}-all.jar not found in $FAT_JAR_DIR"
+    return 1
   fi
 
   local from_build
-  from_build=$(find "$ROOT_DIR/cli/build/libs" -name "openapi-testgen-*-all.jar" | head -1 || true)
+  from_build=$(find "$ROOT_DIR/cli/build/libs" -name "openapi-testgen-${VERSION}-all.jar" | head -1 || true)
   if [[ -n "$from_build" && -f "$from_build" ]]; then
     FAT_JAR="$from_build"
     return 0
@@ -80,7 +83,7 @@ if resolve_fat_jar; then
   echo "Using prebuilt fat JAR: $FAT_JAR"
   echo ""
 else
-  echo "Error: Fat JAR not found in cli/build/libs/"
+  echo "Error: openapi-testgen-${VERSION}-all.jar not found in cli/build/libs/"
   exit 1
 fi
 

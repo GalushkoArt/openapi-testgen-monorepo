@@ -10,7 +10,7 @@ This guide covers publishing CLI packages to npm.
 
 - npm account with access to `@openapi-testgen` organization
 - npm authentication configured (`npm login`)
-- All tests passing (`./gradlew check`)
+- Release preflight passing (`./scripts/release-preflight.sh <version>`)
 - `jq` installed for JSON manipulation
 
 ## Package Structure
@@ -40,33 +40,35 @@ The main package includes optional dependencies for native packages. npm automat
 
 ### Native Packages (requires native binaries)
 
-Native packages are built from CI artifacts. To build locally:
+Native packages are usually built by the manual release-candidate workflow. To build one platform locally, stage the native binary into the same artifact layout used by the workflow:
 
 ```bash
 # Build and test fat jar and native binary (requires GraalVM 21)
 ./gradlew :cli:testDistributions
 
-# Prepare npm packages with native binary
-NATIVE_DIR="./cli/build/native/nativeCompile/openapi-testgen" FAT_JAR_DIR="./cli/build/libs" ./npm/scripts/build-packages.sh
+# Example for local Linux x64. Use native-linux-arm64, native-darwin-arm64,
+# or native-win32-x64 for other platforms.
+mkdir -p cli/build/native-artifacts/native-linux-x64
+cp cli/build/native/nativeCompile/openapi-testgen cli/build/native-artifacts/native-linux-x64/
+
+# Prepare npm packages from staged artifacts
+NATIVE_DIR="cli/build/native-artifacts" FAT_JAR_DIR="./cli/build/libs" ./npm/scripts/build-packages.sh <version>
 
 # Output: cli/build/npm/cli-linux-x64/, cli/build/npm/cli-linux-arm64/, cli/build/npm/cli-darwin-arm64/, etc.
 ```
 
-### From CI Artifacts
+### From release-candidate artifacts
 
-Download the `npm-tarballs` artifact from CI and publish directly:
+Run the manual **Release Candidate** workflow from GitHub Actions and download `npm-tarballs-<version>`.
 
 ```bash
-# Download artifact from GitHub Actions
-# Extract to ./tarballs/
+# Extract the workflow artifact to ./tarballs/
 
-# Publish all packages
-cd tarballs
-npm publish openapi-testgen-cli-linux-x64-*.tgz --access public
-npm publish openapi-testgen-cli-linux-arm64-*.tgz --access public
-npm publish openapi-testgen-cli-darwin-arm64-*.tgz --access public
-npm publish openapi-testgen-cli-win32-x64-*.tgz --access public
-npm publish openapi-testgen-cli-[0-9]*.tgz --access public
+# Validate without publishing
+./scripts/publish-npm-tarballs.sh <version> --tarball-dir ./tarballs --dry-run
+
+# Publish after manual review
+./scripts/publish-npm-tarballs.sh <version> --tarball-dir ./tarballs --yes
 ```
 
 ## Version Management
@@ -92,7 +94,7 @@ To override the version:
 
 ```bash
 # Run all checks
-./gradlew check
+./scripts/release-preflight.sh <version>
 
 # Build npm packages
 ./npm/scripts/build-packages.sh
@@ -100,8 +102,13 @@ To override the version:
 # Verify package structure
 ./npm/scripts/verify-packages.sh
 
-# Dry run
-cd cli/build/npm/cli && npm pack --dry-run
+# Create tarballs for the packages that exist locally
+mkdir -p cli/build/npm-tarballs
+for pkg in cli-linux-x64 cli-linux-arm64 cli-darwin-arm64 cli-win32-x64 cli; do
+  if [[ -d "cli/build/npm/$pkg" ]]; then
+    npm pack "cli/build/npm/$pkg" --pack-destination cli/build/npm-tarballs
+  fi
+done
 ```
 
 ### 2. Authenticate with npm
@@ -115,27 +122,16 @@ npm login --scope=@openapi-testgen
 Native packages must be published before the main package (they are dependencies):
 
 ```bash
-cd cli/build/npm
-
-# Linux
-cd cli-linux-x64 && npm publish --access public && cd ..
-
-# Linux ARM64
-cd cli-linux-arm64 && npm publish --access public && cd ..
-
-# macOS
-cd cli-darwin-arm64 && npm publish --access public && cd ..
-
-# Windows
-cd cli-win32-x64 && npm publish --access public && cd ..
+./scripts/publish-npm-tarballs.sh <version> --tarball-dir cli/build/npm-tarballs --dry-run
 ```
 
-### 4. Publish Main Package
+### 4. Publish All Packages
 
 ```bash
-cd cli/build/npm/cli
-npm publish --access public
+./scripts/publish-npm-tarballs.sh <version> --tarball-dir cli/build/npm-tarballs --yes
 ```
+
+The script publishes native packages first and the main package last. Without `--yes`, it prints the publish plan and exits.
 
 ## Testing Locally
 
@@ -175,39 +171,32 @@ docker stop verdaccio && docker rm verdaccio
 npm publish --dry-run --access public
 ```
 
-## CI Integration
+## Release-candidate workflow
 
-The CI workflow (`ci.yml`) automatically:
+The manual release-candidate workflow (`release-candidate.yml`) builds release-ready npm tarballs without publishing them:
 
 1. Builds native binaries on all platforms
 2. Prepares npm packages
 3. Creates packed tarballs ready for publishing
 4. Tests installation on multiple platforms and Node versions
 
-### CI Artifacts
+### Workflow artifacts
 
-| Artifact       | Contents                      | Purpose               |
-|----------------|-------------------------------|-----------------------|
-| `npm-packages` | Unpacked package directories  | Inspection, debugging |
-| `npm-tarballs` | Ready-to-publish `.tgz` files | Direct npm publish    |
+| Artifact                 | Contents                      | Purpose               |
+|--------------------------|-------------------------------|-----------------------|
+| `npm-tarballs-<version>` | Ready-to-publish `.tgz` files | Direct manual publish |
 
-### Publishing from CI Artifacts
+### Publishing with the manual workflow
 
-1. Go to the GitHub Actions run
-2. Download the `npm-tarballs` artifact
-3. Extract and publish:
+Run **Manual Release Publication** with target `npm`, the release version, and the successful Release Candidate run id. The job verifies that the candidate belongs to the same commit, downloads `npm-tarballs-<version>`, and publishes native packages before the main package.
+
+For local recovery, download the artifact from the Release Candidate workflow, extract it, and run:
 
 ```bash
 cd npm-tarballs
 
-# Publish native packages first
-npm publish openapi-testgen-cli-linux-x64-*.tgz --access public
-npm publish openapi-testgen-cli-linux-arm64-*.tgz --access public
-npm publish openapi-testgen-cli-darwin-arm64-*.tgz --access public
-npm publish openapi-testgen-cli-win32-x64-*.tgz --access public
-
-# Publish main package
-npm publish openapi-testgen-cli-[0-9]*.tgz --access public
+../scripts/publish-npm-tarballs.sh <version> --tarball-dir . --dry-run
+../scripts/publish-npm-tarballs.sh <version> --tarball-dir . --yes
 ```
 
 ## Troubleshooting

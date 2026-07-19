@@ -5,6 +5,8 @@ import art.galushko.openapi.testgen.model.error.BudgetExceededException
 import art.galushko.openapi.testgen.model.error.ErrorContext
 import io.qameta.allure.Epic
 import io.qameta.allure.Feature
+import io.swagger.v3.oas.models.Components
+import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.SpecVersion
 import io.swagger.v3.oas.models.media.ArraySchema
 import io.swagger.v3.oas.models.media.ComposedSchema
@@ -36,6 +38,49 @@ class SchemaMergerTest {
     private val merger = SchemaMerger()
 
     private fun resolver(s: Schema<*>): Schema<*> = s
+
+    @Nested
+    @DisplayName("mergeWithSubSchemas(input, openAPI) convenience overload")
+    inner class MergeWithSubSchemasOpenApiOverloadTests {
+
+        @Test
+        @DisplayName("should resolve refs against components and merge allOf members")
+        fun shouldResolveRefsAgainstComponentsAndMerge() {
+            val baseSchema = ObjectSchema().apply {
+                addProperty("id", StringSchema())
+                required = listOf("id")
+            }
+            val openAPI = OpenAPI().apply {
+                components = Components().apply {
+                    addSchemas("Base", baseSchema)
+                }
+            }
+            val input = ObjectSchema().apply {
+                allOf = listOf(
+                    Schema<Any>().apply { `$ref` = "#/components/schemas/Base" },
+                    ObjectSchema().apply {
+                        addProperty("name", StringSchema())
+                        required = listOf("name")
+                    },
+                )
+            }
+
+            val merged = merger.mergeWithSubSchemas(input, openAPI)
+
+            assertThat(merged.properties.keys).containsExactlyInAnyOrder("id", "name")
+            assertThat(merged.required).containsExactlyInAnyOrder("id", "name")
+        }
+
+        @Test
+        @DisplayName("should return input unchanged when no subschemas present")
+        fun shouldReturnInputUnchangedWhenNoSubschemas() {
+            val input = StringSchema().apply { minLength = 3 }
+
+            val merged = merger.mergeWithSubSchemas(input, OpenAPI())
+
+            assertThat(merged).isSameAs(input)
+        }
+    }
 
     @Nested
     @DisplayName("SchemaMergerOptions")

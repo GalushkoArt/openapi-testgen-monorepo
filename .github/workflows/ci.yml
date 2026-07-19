@@ -5,6 +5,10 @@ on:
     branches: [main, master]
   pull_request:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
   JAVA_VERSION: '21'
   NODE_VERSION: '20'
@@ -30,21 +34,41 @@ jobs:
       - uses: gradle/actions/setup-gradle@v5
       - run: chmod +x ./gradlew
       - name: Build and Test All Modules
-        run: |
-          ./gradlew \
-            :model:check \
-            :example-value:check \
-            :core:check \
-            :pattern-value:check \
-            :pattern-support:check \
-            :generator-template:check \
-            :distribution-bundle:check \
-            :plugin:check \
-            :cli:check \
-            :samples:java-spring-file-writer:build \
-            :samples:java-spring-rest-assured:build \
-            :samples:kotlin-spring-rest-assured:build \
-            --scan
+        # Root `build` aggregates every included build's `check` (see root build.gradle.kts)
+        # plus the samples' `build` via task-name matching.
+        run: ./gradlew build --scan
+
+      - name: Upload coverage to Codecov
+        # Tokenless upload for public repos; never fails the build if Codecov is unavailable.
+        uses: codecov/codecov-action@v5
+        with:
+          files: '**/build/reports/kover/report.xml'
+          fail_ci_if_error: false
+
+  compatibility:
+    name: Consumer Compatibility
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: gradle/actions/setup-gradle@v5
+      - run: chmod +x ./gradlew ./scripts/compat-check.sh
+      - name: Consumer compatibility checks
+        # Publishes the full stack to Maven Local, then consumes the published plugin from real
+        # consumer projects across a Gradle version matrix and with consumer-forced Jackson
+        # versions (see plugin/src/functionalTest/.../ConsumerCompatibilityFunctionalTest.kt).
+        run: ./scripts/compat-check.sh
+      - name: Upload compatibility test report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compatibility-test-report
+          path: plugin/build/reports/tests/compatibilityTest/
+          retention-days: 7
 
   build-fat-jar:
     name: Build Fat JAR

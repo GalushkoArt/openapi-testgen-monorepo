@@ -16,7 +16,9 @@ package art.galushko.openapi.testgen.model
  * @property body Request body as any present object, or null if absent.
  * @property requestBodyMediaType Request body media type selected from OpenAPI content, if applicable.
  * @property expectedBody Expected response body example, when available from the OpenAPI spec.
- * @property responseBodyMediaType Response media type used to populate expectedBody, if applicable.
+ * @property responseBodyMediaType Negotiated response media type from OpenAPI content, if declared.
+ *   May be non-null while expectedBody is null when the response declares content but no example
+ *   body could be extracted or generated.
  * @property needToComplete Whether this generated case requires manual completion.
  * @property expectedStatusCode Expected HTTP status code; 0 means unspecified.
  * @property rule Fully qualified rule class name that generated this case, if any.

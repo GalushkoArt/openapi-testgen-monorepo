@@ -5,6 +5,7 @@ import art.galushko.openapi.testgen.example.util.cartesianProduct
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.SpecVersion
 import io.swagger.v3.oas.models.media.ArraySchema
 import io.swagger.v3.oas.models.media.ComposedSchema
@@ -48,6 +49,23 @@ public class SchemaMerger(
     private fun hasSubschemas(input: Schema<*>): Boolean = input.allOf?.isNotEmpty() ?: input.anyOf?.isNotEmpty() ?: input.oneOf?.isNotEmpty() ?: false
 
     /**
+     * Merges a schema with its allOf/anyOf/oneOf subschemas into a single flat schema,
+     * resolving `$ref` schemas against the components of [openAPI].
+     *
+     * Convenience overload of [mergeWithSubSchemas] that installs the standard
+     * `#/components/schemas/` resolver ([SchemaTypeHelpers.tryGetSchemaFromRef]) and starts
+     * with a fresh traversal state.
+     *
+     * @param input the source schema containing composed subschemas
+     * @param openAPI OpenAPI document providing component definitions for `$ref` resolution
+     * @return merged schema with all subschema constraints applied
+     */
+    public fun mergeWithSubSchemas(input: Schema<*>, openAPI: OpenAPI): Schema<*> =
+        mergeWithSubSchemas(input, depth = 0, visitedRefs = mutableSetOf()) {
+            SchemaTypeHelpers.tryGetSchemaFromRef(it, openAPI)
+        }
+
+    /**
      * Merges a schema with its allOf/anyOf/oneOf subschemas into a single flat schema.
      *
      * @param input the source schema containing composed subschemas
@@ -56,6 +74,7 @@ public class SchemaMerger(
      * @param resolve function to dereference `$ref` schemas
      * @return merged schema with all subschema constraints applied
      */
+    @JvmOverloads
     public fun mergeWithSubSchemas(
         input: Schema<*>,
         depth: Int,
@@ -108,6 +127,7 @@ public class SchemaMerger(
      * @param resolve function to dereference `$ref` schemas
      * @return list of flat schemas representing all valid combinations
      */
+    @JvmOverloads
     public fun getSchemaFlatCombinations(
         schema: Schema<*>,
         depth: Int = 0,
@@ -468,7 +488,7 @@ public class SchemaMerger(
     private val jsonMapper by lazy {
         jacksonObjectMapper().apply {
             registerModule(JavaTimeModule())
-            setSerializationInclusion(JsonInclude.Include.NON_NULL)
+            setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL)
         }
     }
 

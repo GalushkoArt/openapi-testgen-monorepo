@@ -1,5 +1,5 @@
 specFile: "../openapi.yaml"
-outputDir: "./"
+outputDir: "build/generated/test-suites/yaml"
 generator: "test-suite-writer"
 generatorOptions:
     outputFileName: "openapi-test-suites.yaml"

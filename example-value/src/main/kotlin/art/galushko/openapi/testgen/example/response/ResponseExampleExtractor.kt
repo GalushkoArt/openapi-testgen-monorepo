@@ -1,6 +1,7 @@
 package art.galushko.openapi.testgen.example.response
 
 import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGenerator
+import art.galushko.openapi.testgen.example.generator.SchemaExampleValueGeneratorOptions
 import art.galushko.openapi.testgen.example.openapi.SchemaTypeHelpers.resolveExampleRef
 import art.galushko.openapi.testgen.example.openapi.SchemaTypeHelpers.resolveResponseByStatus
 import art.galushko.openapi.testgen.example.util.MediaTypePrioritizer
@@ -15,7 +16,9 @@ import org.slf4j.LoggerFactory
  * Result of expected response extraction with selected media type.
  *
  * @property body extracted response body example or null when unavailable
- * @property mediaType response media type used to extract [body], or null when unavailable
+ * @property mediaType negotiated response media type, or null when the response declares no content.
+ *   A non-null [mediaType] with a null [body] means content was declared but nothing extractable
+ *   (no explicit example and no generatable schema body).
  */
 public data class ExtractedResponseExample(
     val body: Any?,
@@ -31,12 +34,37 @@ public data class ExtractedResponseExample(
  * - Media types: JSON/JWT-like -> XML -> other (alphabetical)
  * - Example selection: explicit examples are chosen by media type priority; schema-derived fallback is JSON/JWT-like only
  *
- * @property schemaExampleValueGenerator generator for deriving examples from schemas
+ * The schema-derived fallback slot is pluggable: pass a [ResponseBodyGenerator] to combine the
+ * extractor's explicit-example precedence with a custom body generator.
+ *
+ * @property responseBodyGenerator generator invoked when no usable explicit example exists
  */
 public class ResponseExampleExtractor(
-    private val schemaExampleValueGenerator: SchemaExampleValueGenerator,
+    private val responseBodyGenerator: ResponseBodyGenerator,
 ) {
     private val log = LoggerFactory.getLogger(ResponseExampleExtractor::class.java)
+
+    /**
+     * Creates an extractor whose fallback bodies are derived by [schemaExampleValueGenerator].
+     *
+     * Note: this constructor applies [SchemaExampleValueGeneratorOptions.RESPONSE_DEFAULTS] for the
+     * include/fallback flags (`includeOptionalExampleProperties=true`, `includeWriteOnly=false`,
+     * `useSchemaExampleFallback=true`); only `maxExampleDepth` and `fullExample` are taken from the
+     * generator's configured options. Use the [ResponseBodyGenerator] constructor to keep full control
+     * over generation options.
+     *
+     * @param schemaExampleValueGenerator generator for deriving fallback examples from schemas
+     */
+    public constructor(schemaExampleValueGenerator: SchemaExampleValueGenerator) : this(
+        ResponseBodyGenerator { schema, openAPI ->
+            schemaExampleValueGenerator.getExampleValueWithOptions(
+                name = FALLBACK_GENERATION_NAME,
+                schema = schema,
+                openAPI = openAPI,
+                options = schemaExampleValueGenerator.responseOptions(),
+            )
+        },
+    )
 
     /**
      * Extracts expected response example from an operation for the given status code.
@@ -127,7 +155,7 @@ public class ResponseExampleExtractor(
                 return ExtractedResponseExample(body = fallbackBody, mediaType = structuredSchema.first)
             }
         }
-        return ExtractedResponseExample(body = null, mediaType = null)
+        return ExtractedResponseExample(body = null, mediaType = orderedMediaTypes.firstOrNull())
     }
 
     private fun findNamedExample(
@@ -175,12 +203,7 @@ public class ResponseExampleExtractor(
     private fun safeResponseExampleValue(schema: Schema<*>?, openAPI: OpenAPI): Any? {
         if (schema == null) return null
         return try {
-            schemaExampleValueGenerator.getExampleValueWithOptions(
-                name = "response",
-                schema = schema,
-                openAPI = openAPI,
-                options = schemaExampleValueGenerator.responseOptions(),
-            )
+            responseBodyGenerator.generate(schema, openAPI)
         } catch (e: IllegalStateException) {
             // Expected: schema-related issues (missing properties, invalid structure)
             log.debug("Failed to derive response example from schema: {}", e.message)
@@ -190,5 +213,9 @@ public class ResponseExampleExtractor(
             log.warn("Unexpected error deriving response example from schema", e)
             null
         }
+    }
+
+    private companion object {
+        private const val FALLBACK_GENERATION_NAME = "response"
     }
 }

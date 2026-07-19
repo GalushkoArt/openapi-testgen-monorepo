@@ -3,9 +3,9 @@ import art.galushko.openapi.testgen.plugin.OpenApiTestGeneratorTask
 
 plugins {
     id("java")
-    id("org.springframework.boot") version "3.3.4"
-    id("io.spring.dependency-management") version "1.1.6"
-    id("org.openapi.generator") version "7.7.0"
+    id("org.springframework.boot") version "3.5.16"
+    id("io.spring.dependency-management") version "1.1.7"
+    id("org.openapi.generator") version "7.23.0"
     id("art.galushko.openapi-test-generator")
 }
 
@@ -22,11 +22,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
-    implementation("org.openapitools:jackson-databind-nullable:0.2.6")
-    implementation("io.swagger.core.v3:swagger-annotations:2.2.35")
+    implementation("org.openapitools:jackson-databind-nullable:0.2.10")
+    implementation("io.swagger.core.v3:swagger-annotations:2.2.52")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("io.rest-assured:rest-assured:5.5.0")
+    testImplementation("io.rest-assured:rest-assured:5.5.7")
 }
 
 tasks.test { useJUnitPlatform() }
@@ -98,7 +98,7 @@ openApiTestGenerator {
 
 // Additional generation into src/test/java with a different base package
 tasks.register<OpenApiTestGeneratorTask>("generateOpenApiTestsToSrc") {
-    configFile.set("open-api-test-generation-config.yaml")
+    configFile.set(layout.projectDirectory.file("open-api-test-generation-config.yaml"))
 }
 
 // Ensure compilation and tests depend on the additional generation

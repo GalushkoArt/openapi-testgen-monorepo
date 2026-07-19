@@ -32,7 +32,7 @@ class TemplateContextsTest {
                 fileHeaderComment = null,
             )
 
-            val result = context.escapeString().apply("line1\nline2" as Object)
+            val result = context.escapeString().apply("line1\nline2")
 
             assertThat(result).isEqualTo("line1\\nline2")
         }
@@ -50,7 +50,7 @@ class TemplateContextsTest {
                 fileHeaderComment = null,
             )
 
-            val result = context.escapeString().apply(42 as Object)
+            val result = context.escapeString().apply(42)
 
             assertThat(result).isEqualTo(42)
         }
@@ -67,7 +67,7 @@ class TemplateContextsTest {
         fun shouldEscapeStringValuesOnMethodContext() {
             val context = newMethodContext()
 
-            val result = context.escapeString().apply("a\"b" as Object)
+            val result = context.escapeString().apply("a\"b")
 
             assertThat(result).isEqualTo("a\\\"b")
         }
@@ -78,7 +78,7 @@ class TemplateContextsTest {
         fun shouldPassNonStringValuesThroughOnMethodContext() {
             val context = newMethodContext()
 
-            val result = context.escapeString().apply(true as Object)
+            val result = context.escapeString().apply(true)
 
             assertThat(result).isEqualTo(true)
         }

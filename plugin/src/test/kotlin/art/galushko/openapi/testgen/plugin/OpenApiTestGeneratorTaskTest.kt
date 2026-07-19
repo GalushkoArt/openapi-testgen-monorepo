@@ -2,7 +2,7 @@ package art.galushko.openapi.testgen.plugin
 
 import art.galushko.openapi.testgen.model.error.ErrorMode
 import org.assertj.core.api.Assertions.assertThat
-import org.gradle.api.internal.project.DefaultProject
+import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -12,12 +12,12 @@ import org.junit.jupiter.api.Test
 @DisplayName("OpenApiTestGeneratorTask")
 class OpenApiTestGeneratorTaskTest {
 
-    private lateinit var project: DefaultProject
+    private lateinit var project: Project
     private lateinit var task: OpenApiTestGeneratorTask
 
     @BeforeEach
     fun setUp() {
-        project = ProjectBuilder.builder().build() as DefaultProject
+        project = ProjectBuilder.builder().build()
         task = project.tasks.register("testTask", OpenApiTestGeneratorTask::class.java).get()
     }
 
@@ -43,9 +43,9 @@ class OpenApiTestGeneratorTaskTest {
         @Test
         @DisplayName("should set configFile")
         fun shouldSetConfigFile() {
-            task.configFile.set("config.yaml")
+            task.configFile.set(project.layout.projectDirectory.file("config.yaml"))
 
-            assertThat(task.configFile.get()).isEqualTo("config.yaml")
+            assertThat(task.configFile.get().asFile.name).isEqualTo("config.yaml")
         }
 
         @Test

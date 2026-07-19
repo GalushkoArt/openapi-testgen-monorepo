@@ -2,8 +2,6 @@ plugins {
     id("testgen.library-with-allure")
 }
 
-group = "art.galushko.openapi.testgen"
-version = libs.versions.openapi.testgen.get()
 description = "Mustache-based template generator for OpenAPI Test Generator."
 
 testgenQuality {

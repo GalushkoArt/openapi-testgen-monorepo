@@ -39,6 +39,45 @@ For the canonical contract and helper methods (`buildDescription`, `grow`), see 
   variants because parameterized rules share a class (e.g., "Five Digit Year Date" and "Zero Month Date"
   are both instances of `DateSchemaValidationRule`).
 
+### Disable a rule by fully qualified class name
+
+To turn off a built-in rule, add its fully qualified class name to `ignoreSchemaValidationRules`
+(or `ignoreAuthValidationRules` for auth rules) in the YAML config file:
+
+```yaml
+testGenerationSettings:
+    ignoreSchemaValidationRules:
+        - art.galushko.openapi.testgen.rules.schema.InvalidEnumValueSchemaValidationRule
+        - art.galushko.openapi.testgen.rules.schema.DateSchemaValidationRule
+    ignoreAuthValidationRules:
+        - art.galushko.openapi.testgen.rules.auth.InsufficientScopesAuthValidationRule
+```
+
+The same setting via the CLI's list-append syntax:
+
+```bash
+openapi-testgen \
+  --spec-file openapi.yaml \
+  --output-dir ./generated \
+  --generator test-suite-writer \
+  --setting 'ignoreSchemaValidationRules[]=art.galushko.openapi.testgen.rules.schema.InvalidEnumValueSchemaValidationRule'
+```
+
+And via the Gradle DSL:
+
+```kotlin
+openApiTestGenerator {
+    testGenerationSettings {
+        ignoreSchemaValidationRules.add(
+            "art.galushko.openapi.testgen.rules.schema.InvalidEnumValueSchemaValidationRule"
+        )
+    }
+}
+```
+
+To skip specific test cases (by operation and name) instead of a whole rule, use
+[ignore rules](../../how-to/configuration.md#ignore-rules).
+
 ## Settings and budgets
 Rules interact with settings through the `TestGenerationContext`:
 - `overrideBasicTestData` supplies invalid primitives for schema and auth rules.
@@ -78,6 +117,8 @@ Type/format constraints:
   for integer schemas.
 - `art.galushko.openapi.testgen.rules.schema.WrongInt32FormatSchemaValidationRule` - out-of-range
   int32 value.
+- `art.galushko.openapi.testgen.rules.schema.WrongInt64FormatSchemaValidationRule` - out-of-range
+  int64 value.
 
 String constraints:
 - `art.galushko.openapi.testgen.rules.schema.OutOfMinimumLengthStringSchemaValidationRule` - string
@@ -94,6 +135,11 @@ Object constraints:
 - `art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule` -
   objects with one required property omitted. See [Request Body Schema Tests](../../how-to/negative-testing.md#request-body-schema)
   for request body examples.
+- `art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule` - objects
+  with one required, non-nullable property set to `null` (`nullable: true` in 3.0 and `"null"` type
+  entries in 3.1 are skipped).
+- `art.galushko.openapi.testgen.rules.schema.UnexpectedAdditionalPropertySchemaValidationRule` -
+  objects carrying an undeclared property when the schema sets `additionalProperties: false`.
 
 Date format constraints (parameterized, all share a class):
 - `art.galushko.openapi.testgen.rules.schema.DateSchemaValidationRule`

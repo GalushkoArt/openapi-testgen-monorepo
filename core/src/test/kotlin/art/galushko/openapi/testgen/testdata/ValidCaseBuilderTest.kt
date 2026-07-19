@@ -644,6 +644,29 @@ class ValidCaseBuilderTest {
         }
 
         @Test
+        @DisplayName("should keep negotiated responseBodyMediaType when content is declared but no body is extractable")
+        fun shouldKeepNegotiatedMediaTypeWhenNoBodyExtractable() {
+            val operation = Operation().apply {
+                responses = ApiResponses().apply {
+                    addApiResponse(
+                        "200",
+                        ApiResponse()
+                            .description("OK")
+                            .content(Content().addMediaType("text/plain", MediaType().schema(StringSchema())))
+                    )
+                }
+            }
+            val builder = ValidCaseBuilder("/test", "get", operation, createOpenAPIWithoutSecurity())
+
+            val outcome = builder.generateValidCase()
+
+            assertThat(outcome).isInstanceOf(Outcome.Success::class.java)
+            val testCase = (outcome as Outcome.Success).value
+            assertThat(testCase.expectedBody).isNull()
+            assertThat(testCase.responseBodyMediaType).isEqualTo("text/plain")
+        }
+
+        @Test
         @DisplayName("should populate expectedBody from schema-derived example")
         fun shouldPopulateExpectedBodyFromSchemaDerivedExample() {
             val schema = ObjectSchema().apply {

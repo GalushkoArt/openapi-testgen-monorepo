@@ -1,0 +1,40 @@
+swagger: "2.0"
+info:
+  title: Swagger Parameters API
+  version: "1.0"
+paths:
+  /pets/{petId}:
+    parameters:
+      - name: petId
+        in: path
+        required: true
+        type: string
+        minLength: 3
+    get:
+      operationId: getPet
+      parameters:
+        - name: tags
+          in: query
+          required: true
+          type: array
+          collectionFormat: multi
+          items:
+            type: string
+            enum:
+              - cat
+              - dog
+        - name: colors
+          in: query
+          required: false
+          type: array
+          collectionFormat: pipes
+          items:
+            type: string
+        - name: X-Correlation-Id
+          in: header
+          required: true
+          type: string
+          pattern: "^[A-Z]{3}$"
+      responses:
+        "200":
+          description: OK

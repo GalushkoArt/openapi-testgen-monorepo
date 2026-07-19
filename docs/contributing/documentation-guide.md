@@ -40,11 +40,8 @@ python3 skills/project-docs/scripts/sync_docs_map.py
 
 ## Local preview
 
-Install Python deps:
-
-```bash
-python -m pip install -r requirements.txt
-```
+Gradle docs tasks create an isolated Python environment under `.gradle/docs-python` and install the pinned MkDocs dependencies from `requirements.txt`.
+Use `-PdocsPython=/path/to/python` if you need to choose a specific Python executable.
 
 Run locally:
 
@@ -52,7 +49,13 @@ Run locally:
 ./gradlew docsServe
 ```
 
-Or run MkDocs directly (without regenerating Dokka output):
+For direct MkDocs commands, install the same dependencies into your active Python environment:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Then run MkDocs directly (without regenerating Dokka output):
 
 ```bash
 mkdocs serve

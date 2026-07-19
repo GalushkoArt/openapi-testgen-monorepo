@@ -29,6 +29,8 @@ public class BasicTestDataProvider(
             "invalidSecurityScope",
             "nonIntegerValue",
             "outOfInt32RangeValue",
+            "outOfInt64RangeValue",
+            "unexpectedAdditionalPropertyValue",
             "threeDigitYearDate",
             "fiveDigitYearDate",
             "zeroMonthDate",
@@ -102,6 +104,20 @@ public class BasicTestDataProvider(
      * @return a 32-bit out-of-range integer string
      */
     public fun outOfInt32RangeValue(): String = valueFor("outOfInt32RangeValue", "2147483648")
+
+    /**
+     * Integer string outside the signed 64-bit range.
+     * @return an out-of-int64-range numeric string
+     */
+    public fun outOfInt64RangeValue(): String = valueFor("outOfInt64RangeValue", "9223372036854775808")
+
+    /**
+     * Value used for a property that is not declared in a closed object schema
+     * (`additionalProperties: false`).
+     * @return an unexpected additional property value
+     */
+    public fun unexpectedAdditionalPropertyValue(): String =
+        valueFor("unexpectedAdditionalPropertyValue", "unexpected-additional-property-value")
 
     /**
      * Date with a three-digit year.

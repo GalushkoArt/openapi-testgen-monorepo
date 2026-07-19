@@ -8,6 +8,7 @@ import art.galushko.openapi.testgen.example.openapi.SchemaTypeHelpers.tryGetSche
 import art.galushko.openapi.testgen.example.spi.SchemaValueProvider
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.media.Schema
+import org.slf4j.LoggerFactory
 
 /**
  * Generates synthetic example values from OpenAPI schemas for use in tests.
@@ -18,11 +19,12 @@ import io.swagger.v3.oas.models.media.Schema
  * @property schemaMerger merges composed schemas before generating values
  * @property options configuration options controlling generation behavior
  */
-public class SchemaExampleValueGenerator(
+public class SchemaExampleValueGenerator @JvmOverloads constructor(
     private val valueProviders: List<SchemaValueProvider>,
     private val schemaMerger: SchemaMerger = SchemaMerger(),
     private val options: SchemaExampleValueGeneratorOptions = SchemaExampleValueGeneratorOptions(),
 ) {
+    private val log = LoggerFactory.getLogger(SchemaExampleValueGenerator::class.java)
 
     /**
      * Retrieves the example value for a given parameter based on its schema.
@@ -38,6 +40,7 @@ public class SchemaExampleValueGenerator(
      * @return example value matching the schema
      * @throws IllegalStateException if no provider can generate a value
      */
+    @JvmOverloads
     public fun getExampleValue(name: String, schema: Schema<*>, openAPI: OpenAPI, variationIndex: Int = 0): Any {
         val ctx = ExampleGenerationContext(name, openAPI, options, variationIndex = variationIndex)
         return generateExampleValue(schema, ctx)
@@ -57,6 +60,7 @@ public class SchemaExampleValueGenerator(
      * @return example value matching the schema
      * @throws IllegalStateException if no provider can generate a value
      */
+    @JvmOverloads
     public fun getExampleValueWithOptions(
         name: String,
         schema: Schema<*>,
@@ -69,11 +73,19 @@ public class SchemaExampleValueGenerator(
     }
 
     internal fun responseOptions(): SchemaExampleValueGeneratorOptions {
-        return options.copy(
+        val effective = options.copy(
             includeOptionalExampleProperties = true,
             includeWriteOnly = false,
             useSchemaExampleFallback = true,
         )
+        if (effective != options) {
+            log.debug(
+                "Response extraction overrides configured generator options {} with response defaults {}",
+                options,
+                effective,
+            )
+        }
+        return effective
     }
 
     /**
@@ -101,6 +113,7 @@ public class SchemaExampleValueGenerator(
      * @param visitedRefs set of visited $ref paths for circular reference detection
      * @return list of example items
      */
+    @JvmOverloads
     public fun getExampleArrayValuesByItem(
         name: String,
         arraySchema: Schema<*>,

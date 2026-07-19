@@ -59,6 +59,63 @@ createOrder:
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+  - name: "Incorrect Request Body: Null For Required Property items"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      items: null
+      userId: "a"
+    requestBodyMediaType: "application/json"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    responseBodyMediaType: "application/json"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+  - name: "Incorrect Request Body: Null For Required Property userId"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      items:
+      - price: 0
+        quantity: 1
+        sku: "a"
+      userId: null
+    requestBodyMediaType: "application/json"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    responseBodyMediaType: "application/json"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
   - name: "Incorrect Request Body: Object Property items Array Item Missed Required\
       \ Object Properties price"
     method: "POST"
@@ -140,6 +197,99 @@ createOrder:
       items:
       - price: 0
         quantity: 1
+      userId: "a"
+    requestBodyMediaType: "application/json"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    responseBodyMediaType: "application/json"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+  - name: "Incorrect Request Body: Object Property items Array Item Null For Required\
+      \ Property price"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      items:
+      - price: null
+        quantity: 1
+        sku: "a"
+      userId: "a"
+    requestBodyMediaType: "application/json"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    responseBodyMediaType: "application/json"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+  - name: "Incorrect Request Body: Object Property items Array Item Null For Required\
+      \ Property quantity"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      items:
+      - price: 0
+        quantity: null
+        sku: "a"
+      userId: "a"
+    requestBodyMediaType: "application/json"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    responseBodyMediaType: "application/json"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+  - name: "Incorrect Request Body: Object Property items Array Item Null For Required\
+      \ Property sku"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      items:
+      - price: 0
+        quantity: 1
+        sku: null
       userId: "a"
     requestBodyMediaType: "application/json"
     expectedBody:
@@ -233,6 +383,38 @@ createOrder:
       - price: 0
         quantity: 0
         sku: "a"
+      userId: "a"
+    requestBodyMediaType: "application/json"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    responseBodyMediaType: "application/json"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.composed.ObjectItemSchemaValidationRule"
+  - name: "Incorrect Request Body: Object Property items Array Item Unexpected Additional\
+      \ Property"
+    method: "POST"
+    path: "/orders"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      items:
+      - price: 0
+        quantity: 1
+        sku: "a"
+        unexpectedProperty: "unexpected-additional-property-value"
       userId: "a"
     requestBodyMediaType: "application/json"
     expectedBody:
@@ -448,6 +630,60 @@ createUser:
     needToComplete: false
     expectedStatusCode: 400
     rule: "art.galushko.openapi.testgen.rules.schema.MissedRequiredObjectPropertiesSchemaValidationRule"
+  - name: "Incorrect Request Body: Null For Required Property email"
+    method: "POST"
+    path: "/users"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      email: null
+      name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    requestBodyMediaType: "application/json"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    responseBodyMediaType: "application/json"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
+  - name: "Incorrect Request Body: Null For Required Property name"
+    method: "POST"
+    path: "/users"
+    queryParams: {}
+    pathParams: {}
+    headers:
+    - key: "X-API-Key"
+      value: "test-api-key-12"
+    cookie: []
+    securityValues:
+      queryParams: {}
+      headers:
+      - key: "X-API-Key"
+        value: "test-api-key-12"
+      cookie: []
+      other: {}
+    body:
+      email: "test0@example.com"
+      name: null
+    requestBodyMediaType: "application/json"
+    expectedBody:
+      code: "bad_request"
+      message: "Invalid input"
+    responseBodyMediaType: "application/json"
+    needToComplete: false
+    expectedStatusCode: 400
+    rule: "art.galushko.openapi.testgen.rules.schema.NullForRequiredPropertySchemaValidationRule"
   - name: "Incorrect Request Body: Object Property email Invalid Pattern"
     method: "POST"
     path: "/users"

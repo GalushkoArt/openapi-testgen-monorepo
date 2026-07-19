@@ -17,6 +17,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.io.File
+import java.io.IOException
 import java.nio.file.Path
 import java.util.stream.Stream
 
@@ -666,6 +667,46 @@ class TemplateArtifactGeneratorTest {
                 assertThat(content).doesNotContain("{\\\"name\\\":\\\"John\\\"}")
             }
         }
+
+        @Test
+        @DisplayName("should render slash and dollar values as compilable string literals")
+        @Description("Values containing '/' and '$' (URLs, money amounts) must not use JSON-only escapes in generated source")
+        fun shouldRenderSlashAndDollarValuesAsCompilableLiterals(@TempDir tempDir: Path) {
+            val testCase = TestCase(
+                name = "Url body",
+                method = "POST",
+                path = "/links",
+                expectedStatusCode = 201,
+                body = mapOf(
+                    "url" to "https://example.com/callback",
+                    "label" to "pay $10",
+                ),
+            )
+            val testSuite = TestSuite(
+                path = "/links",
+                method = "POST",
+                operationName = "createLink",
+                testCases = listOf(testCase),
+            )
+
+            step("Generate tests with the Java template set") {
+                TemplateArtifactGenerator(tempDir.toFile(), mapOf("templateSet" to "restassured-java"))
+                    .generateTests(testSuite)
+            }
+            step("Generate tests with the Kotlin template set") {
+                TemplateArtifactGenerator(tempDir.toFile(), mapOf("templateSet" to "restassured-kotlin"))
+                    .generateTests(testSuite)
+            }
+
+            step("Verify slashes stay unescaped and dollars are unicode-escaped in both languages") {
+                for (fileName in listOf("CreateLinkTest.java", "CreateLinkTest.kt")) {
+                    val content = tempDir.resolve(fileName).toFile().readText()
+                    assertThat(content).contains("https://example.com/callback")
+                    assertThat(content).contains("pay \\u002410")
+                    assertThat(content).doesNotContain("\\/")
+                }
+            }
+        }
     }
 
     @Nested
@@ -725,12 +766,11 @@ class TemplateArtifactGeneratorTest {
         }
 
         @Test
-        @DisplayName("should swallow IOException when file write fails")
-        @Description("Verifies that IOException during writeText is logged and does not propagate to the caller")
-        fun shouldSwallowIoExceptionOnWriteFailure(@TempDir tempDir: Path) {
+        @DisplayName("should propagate write failures to the caller")
+        @Description("Verifies that an IOException during artifact writing fails the run instead of being logged and swallowed")
+        fun shouldPropagateWriteFailure(@TempDir tempDir: Path) {
             // Create a regular file at the path the generator will use as its output directory.
-            // When the generator tries to write CreateUserTest.java inside this "directory",
-            // File.writeText triggers the IOException catch branch in generateTests.
+            // Writing CreateUserTest.java inside this "directory" fails with an IOException.
             val fileAsDir = tempDir.resolve("not-a-directory").toFile()
             fileAsDir.writeText("blocker")
             assertThat(fileAsDir.isFile).isTrue
@@ -741,8 +781,9 @@ class TemplateArtifactGeneratorTest {
             )
 
             step("Generate tests into an output path that is actually a file") {
-                // No exception must escape — the generator logs and returns.
-                generator.generateTests(basicTestSuite.copy(testCases = listOf(createMinimalTestCase())))
+                assertThatThrownBy {
+                    generator.generateTests(basicTestSuite.copy(testCases = listOf(createMinimalTestCase())))
+                }.isInstanceOf(IOException::class.java)
             }
 
             step("Verify the blocking file was not replaced by a directory") {

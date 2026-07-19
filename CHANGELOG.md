@@ -9,6 +9,84 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.12.0
+
+### Added
+
+- **New schema validation rules**: `Null For Required Property` (objects with a required, non-nullable property set to `null`; skips `nullable: true`/3.1 `"null"` types — also when declared by a `oneOf`/`anyOf`/`allOf` branch, resolved through `$ref` — and composes through nested objects and arrays), `Unexpected Additional Property` (injects an undeclared property when `additionalProperties: false`), and `Wrong Int64 Format` (out-of-64-bit-range value for `format: int64`). New `overrideBasicTestData` keys: `outOfInt64RangeValue`, `unexpectedAdditionalPropertyValue`
+- Snapshot tests support `UPDATE_SNAPSHOTS=true` to regenerate golden files (`core` and `cli`)
+- **Swagger 2.0 input support**: CLI, Gradle plugin, fat JAR, native binary, and core generation now accept Swagger 2.0 YAML or JSON specs by normalizing them to the existing OpenAPI 3 model pipeline
+- **example-value Java-friendly API**: `ResponseExampleExtractor` accepts a SAM-convertible `ResponseBodyGenerator` so consumers can plug their own fallback body generator while keeping the library's explicit-example precedence; `SchemaTypeHelpers.resolveSchemaRef` (null-tolerant `$ref` resolver) and `SchemaMerger.mergeWithSubSchemas(input, openAPI)` remove `$ref`-resolution boilerplate; `SchemaExampleValueGeneratorOptions` gains `with*` methods; `ExampleValueSettings.defaults()` and a `@JvmOverloads` sweep (generator, factory, merger) make the module usable from Java without positional-argument ceremony. Java interop is pinned by a dedicated Java test suite
+- **Documentation rework**: new how-to guides for positive testing and FAQ, module deep-dive pages
+  for `generator-template` and `pattern-support`, symptom-indexed troubleshooting (headings quote
+  exact error messages), a "choose your path" decision table in getting started, and intent-based
+  snippet headings; `cli/` and `plugin/` READMEs became compact landing pages linking to the
+  canonical site reference; the docs site now serves `llms.txt` (mkdocs-llmstxt); `context7.json`
+  gained project metadata and agent-facing usage rules; `AGENTS.md` is now the canonical
+  tool-neutral agent guide imported by `CLAUDE.md`
+- **Version compatibility checks**:
+    - `checkJacksonCompatibility` runs in every module's `check`: it fails when a Jackson 3 artifact (`tools.jackson*`, not fully supported by the swagger modules) appears on a runtime classpath, or when any resolved `com.fasterxml.jackson*` module drifts from the version-catalog pins (e.g. a swagger bump dragging in a newer Jackson transitively)
+    - Consumer compatibility matrix (`scripts/compat-check.sh`, i.e. `publishAllToMavenLocal` + `:plugin:compatibilityTest`): consumes the published plugin from Maven Local in real consumer projects across Gradle 8.5 / 8.14.5 / 9.6.1 and with consumer-controlled Jackson versions (an older Jackson requested on the buildscript classpath, and Jackson forced down to swagger-parser's own build version 2.21.1). Runs in CI (`Consumer Compatibility` job), in the release-candidate build, and in `scripts/release-preflight.sh`
+    - Root `publishAllToMavenLocal` aggregate task
+
+### Changed
+
+- Parser failures now report the detected OpenAPI/Swagger version where possible; Swagger versions other than 2.0 fail with an explicit unsupported-version message
+- CLI native-image metadata now covers the Swagger 2.0 conversion path: the concrete OpenAPI schema subclasses instantiated by the converter, the v1 model/property classes it serializes reflectively (`io.swagger.models.*`), and the v1 parser's service registration; the native smoke fixture exercises body parameters, `definitions` composition (`allOf`/`$ref`), formData, and `securityDefinitions`
+- Swagger 2.0 parsing honors the configured SnakeYAML parser limits (`ParserSettings`): the limits are applied to the v1 parser used by the conversion path, and version detection reads the spec through swagger-parser's own deserializer, so a large spec parsed with raised limits is routed to the Swagger 2.0 pipeline instead of failing as an unknown version
+- Generated artifacts are now written atomically (temp file + atomic move) via the new `AtomicFileWriter` in core; write failures now fail the generation run instead of being logged and swallowed (applies to both the template generator and the test-suite writer)
+- Root `./gradlew check` (and `build`) now aggregates every included build's `check`, so CI, release scripts, and contributors all run the same single entry point
+- Config-file loading and log-level validation are now shared between the CLI and the Gradle plugin via `TestGenerationExecution` and `LogLevelResolver` in distribution-bundle; invalid levels are rejected before generation and the CLI error message reads "Invalid log level ..." instead of "Invalid --log-level ..."
+- **BREAKING (Gradle plugin)**: `OpenApiTestGeneratorTask.configFile` is now a `RegularFileProperty` (was `Property<String>`). The `openApiTestGenerator { configFile.set("...") }` extension DSL is unchanged; only directly registered tasks must now pass a file, e.g. `configFile.set(layout.projectDirectory.file("config.yaml"))`
+- The Gradle plugin is configuration-cache compatible: task wiring is lazy (no `afterEvaluate`), extension-to-task copying is explicit instead of reflection-based, and the task no longer touches `Task.project` at execution time; the monorepo build now runs with `org.gradle.configuration-cache=true`
+- The Gradle plugin content-tracks local spec files declared in either the DSL or YAML config, so editing the spec re-triggers generation instead of reporting UP-TO-DATE
+- Kotlin test-source wiring now honors `manualOnly` (previously the generation task was always attached for Kotlin projects)
+- Test tasks now receive the AspectJ weaver (for `@Step`/allure-assertj) through a configuration-cache-safe argument provider in build-logic instead of allure-gradle's built-in one, which fails task validation under the configuration cache (aspectjweaver 1.9.25.1)
+- `ResponseExampleExtractor` now returns the negotiated media type (with a `null` body) when a response declares content but no example can be extracted, instead of dropping both; `mediaType != null && body == null` means "content declared, nothing extractable"
+- **BREAKING (example-value)**: `SchemaExampleValueGeneratorOptions.REQUEST_DEFAULTS`/`RESPONSE_DEFAULTS` are now static fields (`@JvmField`) instead of companion getters. Kotlin sources compile unchanged; Java sources that called `Companion.getREQUEST_DEFAULTS()`/`getRESPONSE_DEFAULTS()` must switch to the static fields, and binaries compiled against 0.11.0 need a recompile
+- **Gradle 9.6.1** (wrapper, was 8.13): required by current plugin releases, which ship Kotlin 2.2+ metadata that Gradle 8.x's embedded Kotlin cannot read
+- **Dependency updates** (verified by the full aggregate `check` plus the new consumer compatibility matrix):
+    - Kotlin 2.2.10 → 2.3.21 (2.4.0 is out but dependency-analysis' kotlin-metadata-jvm reads metadata ≤ 2.3)
+    - Jackson 2.19.4 → 2.22.1, deliberately staying on the 2.x line: Jackson 3 moved to the `tools.jackson` group and is not fully supported by swagger-core/swagger-parser; jackson-annotations follows its new patchless scheme (2.22)
+    - swagger-core 2.2.41 → 2.2.52; swagger-parser 2.1.36 → 2.1.42 (pinned: 2.1.43+ silently breaks local `$defs` refs inside OAS 3.1 schemas that declare `$id` — generated negative test cases vanish; caught by the cli golden suites, see swagger-parser#2338/#2331)
+    - JUnit 5.14.4 (JUnit 6 deferred), AssertJ 3.27.7, Allure java 2.35.3 / generator 2.44.0 / Gradle plugin 4.1.0, aspectjweaver 1.9.25.1, SLF4J 2.0.18, Logback 1.5.38, Dokka 2.2.0, Kover 0.9.8, dependency-analysis 3.9.0, vanniktech maven-publish 0.37.0 (new `publishToMavenCentral()` API), GraalVM buildtools 1.1.4, shadow 9.5.1, plugin-publish 1.3.1, ben-manes versions 0.54.0
+    - Samples: Spring Boot 3.5.16, openapi-generator 7.23.0, rest-assured 5.5.7, Kotlin 2.2.21; the sample `GlobalExceptionHandler`s now also handle `HandlerMethodValidationException` (Spring 6.2 routes handler parameter validation through it)
+- `OpenApiTestGeneratorTask` declares itself `@DisableCachingByDefault` (Gradle 9's `validatePlugins` requires an explicit cacheability statement; the task stays non-cacheable because the default test-suite-writer `MERGE` mode and the template generator's `SKIP_IF_EXISTS` mode read the existing output directory, so a build-cache restore would replace user-preserved edits instead of merging them). `generatorOptions` is typed `MapProperty<String, Any>` instead of `MapProperty<String, Any?>` (Gradle 9 nullability bounds; null values were never accepted at runtime)
+- Publication signing is skipped when no `signingInMemoryKey` property is configured, so `publishAllToMavenLocal` works without GPG keys; CI releases still sign
+- Gradle plugin `logLevel` extension property now carries a `@Deprecated` annotation (the deprecation itself was announced in 0.12.0), so IDEs warn at the declaration site
+
+### Deprecated
+
+- Gradle plugin `logLevel` property: inside the Gradle daemon SLF4J is bound to Gradle's own backend, so the property has no effect; use `--info`/`--debug` instead. The value is still validated and invalid levels fail the task
+
+### Fixed
+
+- **Template-generated code now compiles when values contain `/` or `$`**: the string-literal escaper emitted the JSON-only `\/` escape (illegal in Java/Kotlin source) and left `$` unescaped (triggering Kotlin string-template interpolation). `/` is now left as-is, `$` and form feed are emitted as unicode escapes (`\u0024`, `\u000c`) valid in both languages
+- Gradle plugin: a `generator` declared only in the YAML config file was shadowed by the extension's empty-string default and generation failed with `Unknown generator: ''`; the empty default is now treated as unset, so the config-file value applies
+- Gradle plugin: config-file-only builds no longer fail while resolving the absent DSL `specFile`; the config-resolved local spec is now content-tracked for up-to-date checks
+- Documentation dependency installation is configuration-cache safe, so release-candidate and docs deployment builds run with the repository's default cache settings
+- The file-writer sample's secondary YAML output now lives under `build/`, avoiding a Gradle implicit-dependency error caused by declaring the project source tree as generated output
+- CLI `--log-level` help text now lists all accepted levels — `ALL` and `OFF` were missing from the description although both were already accepted
+
+### Documentation
+
+- Added a supported-specifications reference with Swagger 2.0 normalization behavior and known multipart/file-upload limits
+- The changelog now lives at the repository root (`CHANGELOG.md`); docs builds copy it into the site
+- Contributor entry points added at the root: `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, GitHub issue/PR templates
+- README gained CI and coverage badges
+
+### Infrastructure
+
+- New manual publication workflow: each dispatch publishes exactly one target (Maven Central staging, Gradle Plugin Portal, npm, or final GitHub Release), validates a successful release-candidate run for the same commit, and keeps the tag/GitHub Release last
+- New `Docs Deploy` workflow publishes the MkDocs site to GitHub Pages on release (or manually)
+- Dependabot enabled for Gradle (version catalog) and GitHub Actions
+- Release publication guards: publishing must be dispatched from `main`, the npm target requires a release candidate whose npm test matrix actually ran, packaging scripts only accept the fat JAR whose file name matches the release version, the npm CLI smoke test asserts the reported `--version`, and the post-publish npm registry check retries before failing
+- Kover XML coverage is uploaded to Codecov from CI
+- Root aggregate `publishAllToMavenCentral` task removes the hand-maintained module list from the publish path
+- pattern-support reuses `SchemaTypeHelpers` (ref resolution, string-type checks) from example-value instead of private duplicates
+- Drift-guard tests pin `BasicTestDataProvider` override keys, `TestSuiteWriter` protected-field names, and the Gradle plugin's extension-to-task wiring to their sources of truth
+- The `model` module gained a test suite (coverage floor 70%); the `distribution-bundle` floor rose from 70% to 90%
+
 ## 0.11.0
 
 ### Added

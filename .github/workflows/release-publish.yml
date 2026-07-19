@@ -1,0 +1,256 @@
+name: Manual Release Publication
+
+# Every publication is a separate workflow_dispatch run. Build and verify the release first with
+# release-candidate.yml, then provide that successful run id here. The preflight pins publication
+# to the same commit that produced the candidate artifacts.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version from gradle/libs.versions.toml
+        required: true
+        type: string
+      target:
+        description: One publication target for this manual run
+        required: true
+        type: choice
+        options:
+          - maven-central
+          - gradle-plugin
+          - npm
+          - github-release
+      release_candidate_run_id:
+        description: Successful Release Candidate workflow run id for this exact commit
+        required: true
+        type: string
+
+concurrency:
+  group: manual-release-${{ inputs.target }}-${{ inputs.version }}
+  cancel-in-progress: false
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  JAVA_VERSION: '21'
+  NODE_VERSION: '20'
+  RELEASE_VERSION: ${{ inputs.version }}
+  RELEASE_CANDIDATE_RUN_ID: ${{ inputs.release_candidate_run_id }}
+
+jobs:
+  preflight:
+    name: Validate Release Candidate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure release is dispatched from main
+        run: |
+          if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
+            echo "Release publication must be dispatched from main so the tag lands on a mainline commit (got $GITHUB_REF)." >&2
+            exit 1
+          fi
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Validate release metadata
+        run: ./scripts/release-preflight.sh "$RELEASE_VERSION" --skip-gradle
+      - name: Verify release-candidate run
+        run: |
+          if ! [[ "$RELEASE_CANDIDATE_RUN_ID" =~ ^[0-9]+$ ]]; then
+            echo "Release candidate run id must be numeric." >&2
+            exit 1
+          fi
+
+          run_json="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${RELEASE_CANDIDATE_RUN_ID}")"
+          run_sha="$(jq -r '.head_sha' <<< "$run_json")"
+          conclusion="$(jq -r '.conclusion' <<< "$run_json")"
+          workflow_path="$(jq -r '.path' <<< "$run_json")"
+
+          if [[ "$workflow_path" != ".github/workflows/release-candidate.yml" ]]; then
+            echo "Run $RELEASE_CANDIDATE_RUN_ID is not a Release Candidate workflow run: $workflow_path" >&2
+            exit 1
+          fi
+          if [[ "$conclusion" != "success" ]]; then
+            echo "Release Candidate run $RELEASE_CANDIDATE_RUN_ID has conclusion '$conclusion'." >&2
+            exit 1
+          fi
+          if [[ "$run_sha" != "$GITHUB_SHA" ]]; then
+            echo "Release Candidate SHA $run_sha does not match publication SHA $GITHUB_SHA." >&2
+            exit 1
+          fi
+
+          if [[ "$PUBLISH_TARGET" == "npm" ]]; then
+            jobs_json="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${RELEASE_CANDIDATE_RUN_ID}/jobs?per_page=100")"
+            npm_matrix_ok="$(jq -r '
+              [.jobs[] | select(.name | startswith("Test npm (") or endswith("(Verdaccio)")) | .conclusion]
+              | if length > 0 and all(. == "success") then "ok" else "bad" end
+            ' <<< "$jobs_json")"
+            if [[ "$npm_matrix_ok" != "ok" ]]; then
+              echo "Release Candidate run $RELEASE_CANDIDATE_RUN_ID did not run the npm test matrix successfully." >&2
+              echo "Rebuild the release candidate with run_npm_matrix=true before publishing to npm." >&2
+              exit 1
+            fi
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PUBLISH_TARGET: ${{ inputs.target }}
+      - name: Ensure final tag does not exist
+        if: inputs.target == 'github-release'
+        run: |
+          if git rev-parse -q --verify "refs/tags/$RELEASE_VERSION" >/dev/null; then
+            echo "Tag $RELEASE_VERSION already exists." >&2
+            exit 1
+          fi
+
+  publish-maven-central:
+    name: Stage Maven Central
+    if: inputs.target == 'maven-central'
+    needs: preflight
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: gradle/actions/setup-gradle@v5
+      - run: chmod +x ./gradlew
+      - name: Upload all modules to the Central Portal
+        run: ./gradlew publishAllToMavenCentral
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+      - name: Print manual Central step
+        run: |
+          echo "Artifacts are staged in USER_MANAGED mode."
+          echo "Review and publish them at https://central.sonatype.com/publishing/deployments"
+          echo "Wait until every module is public before running the gradle-plugin or github-release target."
+
+  publish-plugin-portal:
+    name: Publish Gradle Plugin
+    if: inputs.target == 'gradle-plugin'
+    needs: preflight
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: gradle/actions/setup-gradle@v5
+      - run: chmod +x ./gradlew
+      - name: Verify Maven Central publication
+        run: |
+          for module in model example-value core generator-template pattern-value pattern-support distribution-bundle plugin cli; do
+            url="https://repo1.maven.org/maven2/art/galushko/openapi/testgen/$module/$RELEASE_VERSION/$module-$RELEASE_VERSION.pom"
+            echo "Checking $url"
+            curl --fail --silent --show-error --location --retry 6 --retry-delay 10 --retry-all-errors --output /dev/null "$url"
+          done
+      - name: Publish plugin
+        run: ./gradlew :plugin:publishPlugins
+        env:
+          GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
+          GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
+
+  publish-npm:
+    name: Publish npm Packages
+    if: inputs.target == 'npm'
+    needs: preflight
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: https://registry.npmjs.org
+      - uses: actions/download-artifact@v4
+        with:
+          name: npm-tarballs-${{ inputs.version }}
+          path: tarballs
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.release_candidate_run_id }}
+      - name: Publish tarballs
+        run: ./scripts/publish-npm-tarballs.sh "$RELEASE_VERSION" --tarball-dir tarballs --yes
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-github-release:
+    name: Publish GitHub Release
+    if: inputs.target == 'github-release'
+    needs: preflight
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      actions: write
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: github-release-assets-${{ inputs.version }}
+          path: release-assets
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.release_candidate_run_id }}
+      - name: Verify Maven, Plugin Portal, and npm publications
+        run: |
+          for module in model example-value core generator-template pattern-value pattern-support distribution-bundle plugin cli; do
+            url="https://repo1.maven.org/maven2/art/galushko/openapi/testgen/$module/$RELEASE_VERSION/$module-$RELEASE_VERSION.pom"
+            curl --fail --silent --show-error --location --retry 6 --retry-delay 10 --retry-all-errors --output /dev/null "$url"
+          done
+
+          marker="https://plugins.gradle.org/m2/art/galushko/openapi-test-generator/art.galushko.openapi-test-generator.gradle.plugin/$RELEASE_VERSION/art.galushko.openapi-test-generator.gradle.plugin-$RELEASE_VERSION.pom"
+          curl --fail --silent --show-error --location --retry 6 --retry-delay 10 --retry-all-errors --output /dev/null "$marker"
+
+          # The npm registry can lag for a few minutes after publishing; retry before failing.
+          for package in cli cli-linux-x64 cli-linux-arm64 cli-darwin-arm64 cli-win32-x64; do
+            published=""
+            for attempt in 1 2 3 4 5 6; do
+              published="$(npm view "@openapi-testgen/$package@$RELEASE_VERSION" version 2>/dev/null || true)"
+              if [[ "$published" == "$RELEASE_VERSION" ]]; then
+                break
+              fi
+              echo "Attempt $attempt: @openapi-testgen/$package@$RELEASE_VERSION not visible yet, retrying in 20s..."
+              sleep 20
+            done
+            if [[ "$published" != "$RELEASE_VERSION" ]]; then
+              echo "Unexpected npm version for @openapi-testgen/$package: '$published'" >&2
+              exit 1
+            fi
+          done
+      - name: Extract changelog section
+        run: |
+          awk -v v="$RELEASE_VERSION" '$0 ~ "^## "v"([[:space:]]|$)"{f=1;next} /^## /{f=0} f' CHANGELOG.md > notes.md
+          if ! [ -s notes.md ]; then
+            echo "No changelog content extracted for $RELEASE_VERSION" >&2
+            exit 1
+          fi
+      - name: Create tag and GitHub release
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "$RELEASE_VERSION" -m "Release $RELEASE_VERSION"
+          git push origin "$RELEASE_VERSION"
+          gh release create "$RELEASE_VERSION" \
+            --title "$RELEASE_VERSION" \
+            --notes-file notes.md \
+            release-assets/*
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Deploy docs site
+        # The release above is created with the workflow's own GITHUB_TOKEN; GitHub suppresses
+        # events from that token, so docs-deploy.yml's `release: published` trigger never fires
+        # for pipeline releases. Dispatch it explicitly from the release tag instead.
+        run: gh workflow run docs-deploy.yml --ref "$RELEASE_VERSION"
+        env:
+          GH_TOKEN: ${{ github.token }}

@@ -1,0 +1,48 @@
+swagger: "2.0"
+info:
+  title: Swagger Form Data API
+  version: "1.0"
+consumes:
+  - application/x-www-form-urlencoded
+produces:
+  - application/json
+paths:
+  /sessions:
+    post:
+      operationId: createSession
+      parameters:
+        - name: username
+          in: formData
+          required: true
+          type: string
+          minLength: 3
+        - name: password
+          in: formData
+          required: true
+          type: string
+          minLength: 8
+        - name: remember
+          in: formData
+          required: false
+          type: boolean
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+  /uploads:
+    post:
+      operationId: uploadAvatar
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: avatar
+          in: formData
+          required: true
+          type: file
+      responses:
+        "201":
+          description: Created

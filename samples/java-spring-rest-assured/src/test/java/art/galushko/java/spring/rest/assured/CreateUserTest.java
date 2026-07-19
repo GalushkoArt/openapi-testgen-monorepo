@@ -158,6 +158,42 @@ public class CreateUserTest {
     }
 
     @Test
+    @DisplayName("Incorrect Request Body: Null For Required Property email")
+    public void incorrectRequestBodyNullForRequiredPropertyEmail() {
+        RequestSpecification requestSpec = RestAssured.given();
+        requestSpec.header("X-API-Key", "test-api-key-123");
+        requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
+        String requestBody = "{\"email\":null,\"name\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}";
+        requestSpec.body(requestBody);
+
+        Response response = requestSpec.post("/users");
+        response.then().statusCode(400);
+
+        String responseBody = response.getBody().asString();
+        String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
+    }
+
+    @Test
+    @DisplayName("Incorrect Request Body: Null For Required Property name")
+    public void incorrectRequestBodyNullForRequiredPropertyName() {
+        RequestSpecification requestSpec = RestAssured.given();
+        requestSpec.header("X-API-Key", "test-api-key-123");
+        requestSpec.header("Content-Type", "application/json");
+        requestSpec.header("Accept", "application/json");
+        String requestBody = "{\"email\":\"test0@example.com\",\"name\":null}";
+        requestSpec.body(requestBody);
+
+        Response response = requestSpec.post("/users");
+        response.then().statusCode(400);
+
+        String responseBody = response.getBody().asString();
+        String expectedBodyJson = "{\"code\":\"bad_request\",\"message\":\"Invalid input\"}";
+        assertExpectedJsonBody(expectedBodyJson, responseBody);
+    }
+
+    @Test
     @DisplayName("Incorrect Request Body: Object Property id Wrong UUID Format")
     public void incorrectRequestBodyObjectPropertyIdWrongUUIDFormat() {
         RequestSpecification requestSpec = RestAssured.given();

@@ -1,13 +1,15 @@
 site_name: OpenAPI Test Generator
-site_description: Deterministic test generation from OpenAPI specs (CLI + Gradle plugin)
+site_description: Deterministic negative and positive test generation from OpenAPI and Swagger specs (CLI + Gradle plugin)
 site_url: https://docs.galushko.art/openapi-test-generator
-repo_name: GalushkoArt/openapi-testgen
+repo_name: GalushkoArt/openapi-testgen-monorepo
 repo_url: https://github.com/GalushkoArt/openapi-testgen-monorepo
 docs_dir: docs
 strict: true
 
 theme:
   name: material
+  logo: assets/logo.svg
+  favicon: assets/favicon.svg
   palette:
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
@@ -52,6 +54,26 @@ plugins:
   - search:
       lang: en
       separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+  - llmstxt:
+      markdown_description: >-
+        Deterministic negative and positive API test generation from OpenAPI 3.x
+        and Swagger 2.0 specs. Ships a CLI and Gradle plugin emitting RestAssured
+        Java/Kotlin tests or JSON/YAML test suites.
+      sections:
+        Getting started:
+          - index.md
+          - getting-started/*.md
+        How-to guides:
+          - how-to/*.md
+        Concepts:
+          - concepts/*.md
+        Reference:
+          - reference/*.md
+          - reference/catalogs/*.md
+        Modules:
+          - modules/*.md
+        Samples:
+          - samples/*.md
   - minify:
       minify_html: true
   - git-revision-date-localized:
@@ -115,10 +137,12 @@ nav:
   - How-to:
       - Configuration: how-to/configuration.md
       - Negative testing: how-to/negative-testing.md
+      - Positive testing: how-to/positive-testing.md
       - Generators: how-to/generators.md
       - Extending: how-to/extending.md
       - CI/CD: how-to/ci-cd.md
       - Troubleshooting: how-to/troubleshooting.md
+      - FAQ: how-to/faq.md
   - Concepts:
       - Architecture: concepts/architecture.md
       - Schema composition: concepts/schema-composition.md
@@ -129,6 +153,7 @@ nav:
           - Rules: reference/catalogs/rules-catalog.md
           - Providers: reference/catalogs/providers-catalog.md
       - Distribution settings: reference/distribution-settings.md
+      - Supported specifications: reference/supported-specifications.md
       - Model: reference/model.md
       - SPI: reference/spi.md
       - API reference: reference/api.md
@@ -137,7 +162,10 @@ nav:
   - Modules:
       - Overview: modules/index.md
       - Core: modules/core.md
+      - Example-value: modules/example-value.md
       - Pattern-value: modules/pattern-value.md
+      - Pattern-support: modules/pattern-support.md
+      - Generator-template: modules/generator-template.md
       - Distribution-bundle: modules/distribution-bundle.md
   - Contributing:
       - Development setup: contributing/development-setup.md

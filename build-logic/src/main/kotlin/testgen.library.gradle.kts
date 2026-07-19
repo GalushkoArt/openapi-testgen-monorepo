@@ -1,4 +1,4 @@
-import com.vanniktech.maven.publish.SonatypeHost
+import org.gradle.plugins.signing.Sign
 
 plugins {
     id("testgen.kotlin-base")
@@ -6,9 +6,16 @@ plugins {
     id("com.vanniktech.maven.publish")
 }
 
+// Sign only when a key is configured (releases provide `signingInMemoryKey` via
+// ORG_GRADLE_PROJECT_ env vars); local publishing to Maven Local — used by the consumer
+// compatibility checks — runs unsigned.
+tasks.withType<Sign>().configureEach {
+    isRequired = providers.gradleProperty("signingInMemoryKey").isPresent
+}
+
 // Maven Central Publishing for Kotlin JVM libraries
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = false)
+    publishToMavenCentral(automaticRelease = false)
     signAllPublications()
 
     coordinates(

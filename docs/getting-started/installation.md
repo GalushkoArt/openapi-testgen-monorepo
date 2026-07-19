@@ -21,11 +21,14 @@ This project supports two primary entry points:
 
 - **OpenAPI 3.0.x**
 - **OpenAPI 3.1.x**
+- **Swagger 2.0**
+
+See [Supported specifications](../reference/supported-specifications.md) for Swagger 2.0 normalization behavior and known limits.
 
 ### Building from source
 
 - Java 21
-- Kotlin 2.2.x
+- Kotlin 2.3.x
 
 ## Version placeholders
 

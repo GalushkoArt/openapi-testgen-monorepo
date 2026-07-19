@@ -4,15 +4,30 @@ description: Quick-start guide for generating your first OpenAPI-derived tests w
 
 # Getting started
 
-Use OpenAPI Test Generator when you want deterministic negative test cases that verify your API rejects invalid requests exactly where the OpenAPI contract says it should.
+Use OpenAPI Test Generator when you want deterministic negative test cases — and optionally a baseline positive case per operation — that verify your API enforces the OpenAPI contract exactly where it says it should.
 
 This guide shows the fastest way to get useful output, then points you to the deeper install and reference docs.
+
+## Choose your path
+
+| You have | Use | You get | Start at |
+|----------|-----|---------|----------|
+| Any project, any language | **CLI** (`openapi-testgen`) | JSON/YAML suites or Java/Kotlin sources in a directory | [CLI quick start](#cli-quick-start) |
+| A Gradle build (Java/Kotlin) | **Gradle plugin** | Generated tests wired into your test source set and run by `./gradlew test` | [Gradle quick start](#gradle-quick-start) |
+| JVM code that should embed generation | **Programmatic API** (`TestGenerationRunner`) | Full control from Kotlin/Java | [Distribution-bundle](../modules/distribution-bundle.md#testgenerationrunner) |
+
+And pick an output with the `generator` option:
+
+| Generator | Output | Best for |
+|-----------|--------|----------|
+| `template` | Java/Kotlin test classes (RestAssured built-ins, custom Mustache) | Running tests directly in your build |
+| `test-suite-writer` | JSON/YAML `TestSuite` files | Data-driven frameworks, custom runners |
 
 ## 5-minute quick start
 
 ### Prerequisites
 
-- An OpenAPI 3.0.x or 3.1.x specification
+- An OpenAPI 3.0.x, OpenAPI 3.1.x, or Swagger 2.0 specification
 - Node.js 18+ for the npm CLI, or Java 21+ for the JVM distribution / Gradle plugin
 
 !!! note "Webhook-only specs"
@@ -69,7 +84,7 @@ Beyond the core flags shown above, the CLI provides several useful options:
 
 - `--log-level <level>`: set the log verbosity (ALL, TRACE, DEBUG, INFO, WARN, ERROR, OFF; default: INFO). Use `--log-level DEBUG` to troubleshoot generation issues.
 - `--always-write-test`: force writing output files even when generation encounters errors. Useful for inspecting partial results; when files are written, the command still exits successfully and the report retains the errors.
-- `--parser-setting <key=value>`: tune the OpenAPI parser (repeatable). For example, `--parser-setting yamlCodePointLimit=10000000` raises the YAML size limit for large specs.
+- `--parser-setting <key=value>`: tune the OpenAPI/Swagger parser (repeatable). For example, `--parser-setting yamlCodePointLimit=10000000` raises the YAML size limit for large specs.
 
 !!! note "Setting separators"
     Multiple `--setting` values in a single flag are separated by **semicolons** (`;`), for example `--setting 'maxErrors=10;maxSchemaDepth=5'`. Multiple `--generator-option` and `--parser-setting` values in a single flag are separated by **commas** (`,`).
@@ -160,5 +175,6 @@ By default, template output is wired into the test source set and `test-suite-wr
 - [Gradle integration](gradle-integration.md) for build setup
 - [Configuration](../how-to/configuration.md) for YAML, include/ignore rules, and security values
 - [Negative testing](../how-to/negative-testing.md) for scenario coverage
+- [Positive testing](../how-to/positive-testing.md) for the baseline valid (2xx) case per operation
 - [Samples](../samples/index.md) for runnable example projects
 - [CLI reference](../reference/cli.md) and [Gradle plugin reference](../reference/gradle-plugin.md) for exact flags and DSL fields

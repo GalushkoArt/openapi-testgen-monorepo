@@ -20,6 +20,7 @@ openapi-testgen [options]
 
 ## Operation scope
 
+- `--spec-file` accepts OpenAPI 3.0.x, OpenAPI 3.1.x, and Swagger 2.0 YAML or JSON specs.
 - Generation currently targets operations from `paths`.
 - `webhooks` are parsed but not generated as test suites.
 - If the spec contains only `webhooks` and no `paths`, the command succeeds and reports zero generated suites.
@@ -29,7 +30,7 @@ openapi-testgen [options]
 - `--help`, `-h`: show help
 - `--version`, `-V`: show version
 - `--config-file <path>`: path to YAML config file
-- `--spec-file <path>`: path to OpenAPI spec file (YAML/JSON)
+- `--spec-file <path>`: path to OpenAPI 3.x or Swagger 2.0 spec file (YAML/JSON)
 - `--output-dir <path>`: output directory for generated files
 - `--generator <id>`: generator id (e.g. `template`, `test-suite-writer`)
 - `--always-write-test`: write artifacts even if generation reports errors; when artifacts are written, the command exits successfully and the report still includes the errors (default: false)

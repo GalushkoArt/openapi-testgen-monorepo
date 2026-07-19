@@ -1,0 +1,299 @@
+name: Release Candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version from gradle/libs.versions.toml, for example 0.12.0
+        required: true
+        type: string
+      run_npm_matrix:
+        description: Run cross-platform npm install checks
+        required: true
+        default: true
+        type: boolean
+
+concurrency:
+  group: release-candidate-${{ inputs.version }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  JAVA_VERSION: '21'
+  NODE_VERSION: '20'
+  RELEASE_VERSION: ${{ inputs.version }}
+
+jobs:
+  preflight:
+    name: Release Preflight
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate release metadata
+        run: ./scripts/release-preflight.sh "$RELEASE_VERSION" --skip-gradle
+
+  build:
+    name: Build & Test Release Inputs
+    needs: preflight
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: gradle/actions/setup-gradle@v5
+      - run: chmod +x ./gradlew ./scripts/*.sh npm/scripts/*.sh
+      - name: Check modules, samples, docs, and fat JAR
+        # Root `build` aggregates every included build's `check` (see root build.gradle.kts)
+        # plus the samples' `build` via task-name matching.
+        run: ./gradlew build :cli:testFatJar docsBuild --scan
+      - name: Consumer compatibility checks
+        # Publishes the stack to Maven Local, then consumes the published plugin from real
+        # consumer projects (Gradle version matrix + consumer-forced Jackson versions).
+        run: ./scripts/compat-check.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-fatjar
+          path: cli/build/libs/openapi-testgen-*-all.jar
+          retention-days: 30
+
+  build-native:
+    name: Build Native (${{ matrix.target }})
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: linux-x64
+            os: ubuntu-latest
+            artifact: openapi-testgen
+            static: true
+          - target: linux-arm64
+            os: ubuntu-22.04-arm
+            artifact: openapi-testgen
+            static: false
+          - target: darwin-arm64
+            os: macos-latest
+            artifact: openapi-testgen
+            static: false
+          - target: win32-x64
+            os: windows-latest
+            artifact: openapi-testgen.exe
+            static: false
+    steps:
+      - uses: actions/checkout@v5
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: graalvm
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          native-image-job-reports: ${{ matrix.os != 'windows-latest' && matrix.os != 'macos-latest' }}
+          native-image-musl: ${{ matrix.static }}
+      - uses: gradle/actions/setup-gradle@v5
+      - run: chmod +x ./gradlew
+        if: runner.os != 'Windows'
+
+      - name: Create temp directory (Windows)
+        if: runner.os == 'Windows'
+        run: New-Item -ItemType Directory -Force -Path D:\Temp
+
+      - name: Build and test native image
+        run: ${{ runner.os == 'Windows' && '.\gradlew.bat' || './gradlew' }} :cli:testNative --build-cache ${{ matrix.static && '-Pstatic-linux' || '' }}
+        env:
+          GRADLE_OPTS: ${{ runner.os == 'Windows' && '-Djava.io.tmpdir=D:\Temp' || '' }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-${{ matrix.target }}
+          path: cli/build/native/nativeCompile/${{ matrix.artifact }}
+          retention-days: 30
+
+  package:
+    name: Package Release Candidate
+    needs: [build, build-native]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - run: sudo apt-get update && sudo apt-get install -y jq zip
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          pattern: native-*
+
+      - name: Build GitHub release ZIPs
+        run: |
+          ./scripts/package-github-release-assets.sh \
+            "$RELEASE_VERSION" \
+            --fat-jar-dir artifacts/native-fatjar \
+            --native-dir artifacts \
+            --output-dir cli/build/release-assets
+
+      - name: Build npm packages
+        run: |
+          FAT_JAR_DIR="artifacts/native-fatjar" NATIVE_DIR="artifacts" ./npm/scripts/build-packages.sh "$RELEASE_VERSION"
+          ./npm/scripts/verify-packages.sh
+
+      - name: Create npm tarballs
+        run: |
+          NPM_OUT="$GITHUB_WORKSPACE/cli/build/npm"
+          TARBALLS="$GITHUB_WORKSPACE/cli/build/npm-tarballs"
+          mkdir -p "$TARBALLS"
+
+          for platform in linux-x64 linux-arm64 darwin-arm64 win32-x64; do
+            npm pack "$NPM_OUT/cli-$platform" --pack-destination "$TARBALLS"
+          done
+          npm pack "$NPM_OUT/cli" --pack-destination "$TARBALLS"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: github-release-assets-${{ inputs.version }}
+          path: cli/build/release-assets/
+          retention-days: 30
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: npm-tarballs-${{ inputs.version }}
+          path: cli/build/npm-tarballs/
+          retention-days: 30
+
+  test-npm-install:
+    name: Test npm (${{ matrix.os }}, Node ${{ matrix.node }})
+    if: ${{ inputs.run_npm_matrix }}
+    needs: package
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, windows-latest]
+        node: ['18', '20', '22']
+    steps:
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: npm-tarballs-${{ inputs.version }}
+          path: tarballs
+
+      - name: Install main CLI package
+        shell: bash
+        run: |
+          cd tarballs
+          npm install -g "openapi-testgen-cli-$RELEASE_VERSION.tgz"
+          version_output="$(openapi-testgen --version)"
+          echo "$version_output"
+          if [[ "$version_output" != *"$RELEASE_VERSION"* ]]; then
+            echo "openapi-testgen --version reported '$version_output', expected it to contain $RELEASE_VERSION." >&2
+            exit 1
+          fi
+          openapi-testgen --help
+
+      - name: Install and test native package
+        shell: bash
+        run: |
+          cd tarballs
+
+          case "${{ matrix.os }}" in
+            ubuntu-latest)     PKG="openapi-testgen-cli-linux-x64-$RELEASE_VERSION.tgz" ;;
+            ubuntu-24.04-arm)  PKG="openapi-testgen-cli-linux-arm64-$RELEASE_VERSION.tgz" ;;
+            macos-latest)      PKG="openapi-testgen-cli-darwin-arm64-$RELEASE_VERSION.tgz" ;;
+            windows-latest)    PKG="openapi-testgen-cli-win32-x64-$RELEASE_VERSION.tgz" ;;
+          esac
+
+          npm uninstall -g @openapi-testgen/cli || true
+          npm install -g "$PKG"
+          openapi-testgen --version
+
+  test-verdaccio:
+    name: Test ${{ matrix.pm }} (Verdaccio)
+    if: ${{ inputs.run_npm_matrix }}
+    needs: package
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        pm: [npm, pnpm, yarn, bun]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: oven-sh/setup-bun@v2
+        if: matrix.pm == 'bun'
+      - uses: actions/download-artifact@v4
+        with:
+          name: npm-tarballs-${{ inputs.version }}
+          path: tarballs
+
+      - name: Setup package manager
+        run: |
+          case "${{ matrix.pm }}" in
+            pnpm|yarn) npm install -g ${{ matrix.pm }} ;;
+          esac
+
+      - name: Start Verdaccio
+        run: |
+          docker run -d -p 4873:4873 --name verdaccio \
+            -v "$GITHUB_WORKSPACE/.github/verdaccio/config.yaml:/verdaccio/conf/config.yaml" \
+            verdaccio/verdaccio
+          for i in {1..30}; do
+            curl -fsS http://localhost:4873/-/ping > /dev/null && echo "Verdaccio ready" && break
+            sleep 1
+          done
+
+      - name: Publish packages to Verdaccio
+        run: |
+          cd tarballs
+          npm config set registry http://localhost:4873
+          npm config set //localhost:4873/:_authToken "test-token"
+          for pkg in \
+            "openapi-testgen-cli-linux-x64-$RELEASE_VERSION.tgz" \
+            "openapi-testgen-cli-linux-arm64-$RELEASE_VERSION.tgz" \
+            "openapi-testgen-cli-darwin-arm64-$RELEASE_VERSION.tgz" \
+            "openapi-testgen-cli-win32-x64-$RELEASE_VERSION.tgz"; do
+            npm publish "$pkg" --access public
+          done
+          npm publish "openapi-testgen-cli-$RELEASE_VERSION.tgz" --access public
+
+      - name: Install and test
+        run: |
+          case "${{ matrix.pm }}" in
+            npm)
+              npm install -g @openapi-testgen/cli --registry http://localhost:4873
+              ;;
+            pnpm)
+              PNPM_HOME="$HOME/.local/share/pnpm"
+              mkdir -p "$PNPM_HOME"
+              export PNPM_HOME PATH="$PNPM_HOME:$PATH"
+              pnpm config set global-bin-dir "$PNPM_HOME"
+              pnpm add -g @openapi-testgen/cli --registry http://localhost:4873
+              ;;
+            yarn)
+              yarn config set registry http://localhost:4873
+              yarn global add @openapi-testgen/cli
+              ;;
+            bun)
+              bun add -g @openapi-testgen/cli --registry http://localhost:4873
+              ;;
+          esac
+          openapi-testgen --version
+          openapi-testgen --help
+
+      - name: Cleanup
+        if: always()
+        run: docker stop verdaccio || true

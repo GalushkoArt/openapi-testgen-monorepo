@@ -39,7 +39,7 @@ class MustacheLamdasTest {
         Arguments.of("Backspace escaped", "a\bb", "a\\bb"),
 
         // Form feed escaping
-        Arguments.of("Form feed escaped", "a\u000Cb", "a\\fb"),
+        Arguments.of("Form feed escaped as unicode", "a\u000Cb", "a\\u000cb"),
 
         // Line separator U+2028
         Arguments.of("Line separator U+2028 escaped", "a\u2028b", "a\\u2028b"),
@@ -47,8 +47,15 @@ class MustacheLamdasTest {
         // Paragraph separator U+2029
         Arguments.of("Paragraph separator U+2029 escaped", "a\u2029b", "a\\u2029b"),
 
-        // Forward slash escaping
-        Arguments.of("Forward slash escaped", "a/b", "a\\/b"),
+        // Forward slash must stay unescaped (\/ is illegal in Java/Kotlin literals)
+        Arguments.of("Forward slash left unescaped", "a/b", "a/b"),
+
+        // URL with slashes stays a valid Java/Kotlin literal
+        Arguments.of("URL not mangled", "https://example.com/a/b?q=1", "https://example.com/a/b?q=1"),
+
+        // Dollar sign escaped as unicode (guards Kotlin string-template interpolation)
+        Arguments.of("Dollar sign escaped", "price: $10", "price: \\u002410"),
+        Arguments.of("Dollar before identifier escaped", "\${injected}", "\\u0024{injected}"),
 
         // Control character (U+0001)
         Arguments.of("Control character U+0001 escaped", "a\u0001b", "a\\u0001b"),
@@ -67,7 +74,7 @@ class MustacheLamdasTest {
         Arguments.of(
             "Multiple special characters",
             "path/to\\file\twith\nlines",
-            "path\\/to\\\\file\\twith\\nlines"
+            "path/to\\\\file\\twith\\nlines"
         ),
 
         // Non-string input - Integer passthrough
@@ -81,13 +88,13 @@ class MustacheLamdasTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("escapeStringProvider")
-    @DisplayName("should escape strings correctly for JSON/Java string literals")
+    @DisplayName("should escape strings correctly for Java/Kotlin string literals")
     fun shouldEscapeStringsCorrectly(
         scenario: String,
         input: Any,
         expected: Any,
     ) {
-        val result = escapeString(input as Object)
+        val result = escapeString(input)
 
         assertThat(result).isEqualTo(expected)
     }

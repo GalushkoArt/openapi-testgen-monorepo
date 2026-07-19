@@ -28,12 +28,19 @@ dependencies {
 ```
 
 ```kotlin
-val engine = TestGenerationEngine(
-    modules = listOf(PatternSupportModule()),
-    settingsExtractors = listOf(PatternModuleSettingsExtractor()),
-    testGenerationSettings = settings
+val options = TestGeneratorExecutionOptionsFactory.fromConfig(
+    config = null,
+    overrides = overrides,
+    moduleExtractors = listOf(PatternModuleSettingsExtractor),
 )
+val patternOptions = options.moduleSettings
+    .get<PatternGenerationOptions>(PatternModuleSettingsExtractor.SETTINGS_KEY)
+    ?: PatternGenerationOptions()
+val report = TestGenerationEngine.generateReport(options, listOf(PatternSupportModule(patternOptions)))
 ```
+
+See the [pattern-support module page](https://docs.galushko.art/openapi-test-generator/modules/pattern-support/)
+for the complete embedding walkthrough.
 
 ## Configuration
 

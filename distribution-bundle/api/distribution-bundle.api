@@ -6,11 +6,24 @@ public final class art/galushko/openapi/testgen/distribution/DistributionDefault
 	public final fun settings ()Lart/galushko/openapi/testgen/config/TestGenerationSettings;
 }
 
+public final class art/galushko/openapi/testgen/distribution/LogLevelResolver {
+	public static final field INSTANCE Lart/galushko/openapi/testgen/distribution/LogLevelResolver;
+	public final fun getAllowedLevels ()Ljava/util/Set;
+	public final fun resolve (Lart/galushko/openapi/testgen/config/GeneratorConfig;Lart/galushko/openapi/testgen/config/TestGeneratorOverrides;)Ljava/lang/String;
+}
+
 public final class art/galushko/openapi/testgen/distribution/Slf4jReporter : art/galushko/openapi/testgen/distribution/TestGenerationReporter {
 	public fun <init> (Lorg/slf4j/Logger;)V
 	public fun formatReport (Lart/galushko/openapi/testgen/model/error/GenerationReport;)Ljava/lang/String;
 	public fun logError (Ljava/lang/String;)V
 	public fun logInfo (Ljava/lang/String;)V
+}
+
+public final class art/galushko/openapi/testgen/distribution/TestGenerationExecution {
+	public static final field INSTANCE Lart/galushko/openapi/testgen/distribution/TestGenerationExecution;
+	public final fun loadConfig (Ljava/nio/file/Path;)Lart/galushko/openapi/testgen/config/GeneratorConfig;
+	public final fun run (Lart/galushko/openapi/testgen/distribution/TestGenerationRunner;Lart/galushko/openapi/testgen/config/GeneratorConfig;Lart/galushko/openapi/testgen/config/TestGeneratorOverrides;Lkotlin/jvm/functions/Function1;)Lart/galushko/openapi/testgen/distribution/TestGenerationResult;
+	public static synthetic fun run$default (Lart/galushko/openapi/testgen/distribution/TestGenerationExecution;Lart/galushko/openapi/testgen/distribution/TestGenerationRunner;Lart/galushko/openapi/testgen/config/GeneratorConfig;Lart/galushko/openapi/testgen/config/TestGeneratorOverrides;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lart/galushko/openapi/testgen/distribution/TestGenerationResult;
 }
 
 public abstract interface class art/galushko/openapi/testgen/distribution/TestGenerationReporter {

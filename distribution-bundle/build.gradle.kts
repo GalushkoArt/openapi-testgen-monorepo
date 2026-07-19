@@ -5,7 +5,7 @@ plugins {
 description = "Distribution-ready bundle for CLI and Gradle plugin."
 
 testgenQuality {
-    koverMinCoverage = 70
+    koverMinCoverage = 90
 }
 
 dependencies {

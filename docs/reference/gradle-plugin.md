@@ -95,15 +95,15 @@ openApiTestGenerator {
 ### Fields
 
 - `configFile: Property<String>` (optional): path to YAML config.
-- `specFile: Property<String>`: path to the OpenAPI spec (relative to project dir or absolute).
+- `specFile: Property<String>`: path to the OpenAPI 3.x or Swagger 2.0 spec (relative to project dir or absolute).
 - `outputDir: DirectoryProperty`: output directory for generated artifacts.
-- `generator: Property<String>`: generator id (`template` or `test-suite-writer`).
-- `generatorOptions: MapProperty<String, Any?>`: generator-specific options.
+- `generator: Property<String>`: generator id (`template` or `test-suite-writer`). Unset by default (the convention is an empty string, treated as unset); when left unset, the id must come from the YAML config file's `generator` field, and no source-set auto-wiring is applied.
+- `generatorOptions: MapProperty<String, Any>`: generator-specific options.
 - `testGenerationSettings: TestGenerationSettingsExtension`: typed settings DSL (nested block).
 - `parserSettings: ParserSettingsExtension`: parser settings DSL (SnakeYAML).
 - `manualOnly: Property<Boolean>` (default `false`): disable automatic wiring when `true`.
 - `alwaysWriteTests: Property<Boolean>` (optional): force writing artifacts even when generation fails.
-- `logLevel: Property<String>` (optional): log level for generator logs (SLF4J backend).
+- `logLevel: Property<String>` (optional, deprecated): has no effect inside Gradle — the daemon owns the SLF4J binding; use `--info`/`--debug` instead. The value is still validated.
 
 ### Nested extension: `parserSettings { ... }`
 
@@ -155,6 +155,23 @@ The plugin registers a single task:
 - Name: `generateOpenApiTests`
 - Group: `verification`
 
+### Registering additional tasks
+
+Register extra `OpenApiTestGeneratorTask` instances to generate from several specs or
+configurations in one build. Directly registered tasks are not fed by the
+`openApiTestGenerator { ... }` extension and are not auto-wired into source sets — configure
+their inputs on the task itself (note that the task-level `configFile` is a `RegularFileProperty`,
+so pass a file, not a string):
+
+```kotlin
+import art.galushko.openapi.testgen.plugin.OpenApiTestGeneratorTask
+
+tasks.register<OpenApiTestGeneratorTask>("generateOpenApiTestsYaml") {
+    configFile.set(layout.projectDirectory.file("yaml-config.yaml"))
+    outputDir.set(layout.projectDirectory.dir("src/test/resources"))
+}
+```
+
 ## Wiring behavior
 
 Wiring depends on `generator` and `manualOnly`:
@@ -169,6 +186,7 @@ Wiring depends on `generator` and `manualOnly`:
 
 - Generation currently targets operations under `paths`.
 - OpenAPI `webhooks` are parsed but are not yet generated into test suites.
+- Swagger 2.0 input is normalized to the same OpenAPI model used for generation. See [Supported specifications](supported-specifications.md).
 - When a spec contains only `webhooks` and no `paths`, `generateOpenApiTests` completes successfully with zero generated suites.
 
 ## See also

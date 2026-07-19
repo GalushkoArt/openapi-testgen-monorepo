@@ -13,6 +13,7 @@ dependencies {
     api(libs.testgen.pattern.value)
     api(libs.swagger.models)
 
+    implementation(libs.testgen.example.value)
     implementation(libs.slf4j.api)
 
     // Logging implementation for test (SLF4J backend)

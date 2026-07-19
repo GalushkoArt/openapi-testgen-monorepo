@@ -11,7 +11,7 @@ kotlin = "2.3.21"
 dokka = "2.2.0"
 
 # Testing
-junit = "5.14.4"
+junit = "6.1.2"
 assertj = "3.27.7"
 allure-plugin = "4.1.0"
 aspectjweaver = "1.9.25.1"

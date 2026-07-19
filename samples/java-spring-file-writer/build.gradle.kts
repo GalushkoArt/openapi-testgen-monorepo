@@ -3,7 +3,7 @@ import art.galushko.openapi.testgen.plugin.OpenApiTestGeneratorTask
 
 plugins {
     id("java")
-    id("org.springframework.boot") version "3.5.16"
+    id("org.springframework.boot") version "4.1.0"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.openapi.generator") version "7.23.0"
     id("art.galushko.openapi-test-generator")

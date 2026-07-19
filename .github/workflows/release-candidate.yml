@@ -122,7 +122,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       - run: sudo apt-get update && sudo apt-get install -y jq zip
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           path: artifacts
           pattern: native-*
@@ -181,7 +181,7 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: npm-tarballs-${{ inputs.version }}
           path: tarballs
@@ -235,7 +235,7 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
       - uses: oven-sh/setup-bun@v2
         if: matrix.pm == 'bun'
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: npm-tarballs-${{ inputs.version }}
           path: tarballs

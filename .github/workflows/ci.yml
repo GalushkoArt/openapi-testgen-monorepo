@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: gradle/actions/wrapper-validation@v5
+      - uses: gradle/actions/wrapper-validation@v6
 
   build:
     name: Build & Test
@@ -31,7 +31,7 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
-      - uses: gradle/actions/setup-gradle@v5
+      - uses: gradle/actions/setup-gradle@v6
       - run: chmod +x ./gradlew
       - name: Build and Test All Modules
         # Root `build` aggregates every included build's `check` (see root build.gradle.kts)
@@ -55,7 +55,7 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
-      - uses: gradle/actions/setup-gradle@v5
+      - uses: gradle/actions/setup-gradle@v6
       - run: chmod +x ./gradlew ./scripts/compat-check.sh
       - name: Consumer compatibility checks
         # Publishes the full stack to Maven Local, then consumes the published plugin from real
@@ -80,7 +80,7 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
-      - uses: gradle/actions/setup-gradle@v5
+      - uses: gradle/actions/setup-gradle@v6
       - run: chmod +x ./gradlew
       - run: ./gradlew :cli:shadowJar --build-cache
       - run: ./gradlew :cli:testFatJar --build-cache
@@ -126,7 +126,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: ${{ matrix.os != 'windows-latest' && matrix.os != 'macos-latest' }}
           native-image-musl: ${{ matrix.static }}
-      - uses: gradle/actions/setup-gradle@v5
+      - uses: gradle/actions/setup-gradle@v6
       - run: chmod +x ./gradlew
         if: runner.os != 'Windows'
 

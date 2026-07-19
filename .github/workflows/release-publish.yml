@@ -115,7 +115,7 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
-      - uses: gradle/actions/setup-gradle@v5
+      - uses: gradle/actions/setup-gradle@v6
       - run: chmod +x ./gradlew
       - name: Upload all modules to the Central Portal
         run: ./gradlew publishAllToMavenCentral
@@ -142,7 +142,7 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
-      - uses: gradle/actions/setup-gradle@v5
+      - uses: gradle/actions/setup-gradle@v6
       - run: chmod +x ./gradlew
       - name: Verify Maven Central publication
         run: |

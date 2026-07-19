@@ -30,8 +30,8 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("io.rest-assured:rest-assured:5.5.7")
-    testImplementation("io.rest-assured:kotlin-extensions:5.5.7")
+    testImplementation("io.rest-assured:rest-assured:6.0.1")
+    testImplementation("io.rest-assured:kotlin-extensions:6.0.1")
 }
 
 tasks.test { useJUnitPlatform() }

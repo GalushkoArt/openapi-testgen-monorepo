@@ -26,7 +26,7 @@ dependencies {
     implementation("io.swagger.core.v3:swagger-annotations:2.2.52")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("io.rest-assured:rest-assured:5.5.7")
+    testImplementation("io.rest-assured:rest-assured:6.0.1")
 }
 
 tasks.test { useJUnitPlatform() }

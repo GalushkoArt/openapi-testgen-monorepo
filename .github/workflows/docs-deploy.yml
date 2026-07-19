@@ -34,7 +34,7 @@ jobs:
       - run: chmod +x ./gradlew
       - name: Build site (strict) with Dokka and sitemap
         run: ./gradlew docsFullBuild
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: build/docs-site
 

@@ -1,6 +1,8 @@
 name: Docs Deploy
 
 # Builds the MkDocs site (with Dokka API docs and sitemap) and deploys it to GitHub Pages.
+# The site is served under https://docs.galushko.art/openapi-test-generator/ (site_url in
+# mkdocs.yml), so the Pages artifact nests the site in an openapi-test-generator/ directory.
 # The custom domain (docs.galushko.art) is configured in the repository Pages settings.
 
 on:
@@ -34,9 +36,29 @@ jobs:
       - run: chmod +x ./gradlew
       - name: Build site (strict) with Dokka and sitemap
         run: ./gradlew docsFullBuild
+      - name: Stage site under openapi-test-generator/
+        # Pages serves the artifact at the domain root; site_url expects the subpath. The 404
+        # page goes to the artifact root (the only place Pages reads it; its links are absolute
+        # via site_url). The root index redirect is relative so it also works on *.github.io.
+        run: |
+          mkdir -p build/pages-root/openapi-test-generator
+          cp -a build/docs-site/. build/pages-root/openapi-test-generator/
+          cp build/docs-site/404.html build/pages-root/404.html
+          cat > build/pages-root/index.html <<'HTML'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+          <meta charset="utf-8">
+          <meta http-equiv="refresh" content="0; url=openapi-test-generator/">
+          <link rel="canonical" href="https://docs.galushko.art/openapi-test-generator/">
+          <title>OpenAPI Test Generator documentation</title>
+          </head>
+          <body><p><a href="openapi-test-generator/">OpenAPI Test Generator documentation</a></p></body>
+          </html>
+          HTML
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: build/docs-site
+          path: build/pages-root
 
   deploy:
     name: Deploy to GitHub Pages
